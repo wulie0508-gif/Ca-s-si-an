@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use CleanTech Finance, cite this software."
+title: "CleanTech Finance"
+type: software
+authors:
+  - name: "Cassian"
+version: 0.2.1
+date-released: 2026-07-14
+license: Apache-2.0
+abstract: "Evidence-first financial and bankability research for clean energy companies."

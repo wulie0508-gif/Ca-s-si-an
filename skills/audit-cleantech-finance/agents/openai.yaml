@@ -1,0 +1,4 @@
+interface:
+  display_name: "CleanTech Finance Auditor"
+  short_description: "Build bilingual cleantech finance evidence cards"
+  default_prompt: "Use $audit-cleantech-finance to build bilingual five-cell profitability and cash-flow evidence cards with the locked CleanTech Finance methodology, cited relative comparisons, and explicit human-review gaps."

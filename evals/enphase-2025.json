@@ -1,0 +1,22 @@
+{
+  "case": "Enphase Energy 2025 Form 10-K",
+  "tolerance": 1e-09,
+  "facts": [
+    {"period": "FY2025", "name": "revenue", "value": 1472985000.0, "locator": "page 69"},
+    {"period": "FY2024", "name": "revenue", "value": 1330383000.0, "locator": "page 69"},
+    {"period": "FY2025", "name": "operating_cost", "value": 785981000.0, "locator": "page 69"},
+    {"period": "FY2024", "name": "operating_cost", "value": 701245000.0, "locator": "page 69"},
+    {"period": "FY2025", "name": "operating_cash_flow", "value": 136540000.0, "locator": "page 72"},
+    {"period": "FY2024", "name": "operating_cash_flow", "value": 513693000.0, "locator": "page 72"},
+    {"period": "FY2025", "name": "capex", "value": 40639000.0, "locator": "page 72"},
+    {"period": "FY2024", "name": "capex", "value": 33604000.0, "locator": "page 72"},
+    {"period": "FY2025", "name": "cash_and_equivalents", "value": 474318000.0, "locator": "page 73"},
+    {"period": "FY2024", "name": "cash_and_equivalents", "value": 369110000.0, "locator": "page 73"}
+  ],
+  "metrics": {
+    "revenue-growth": 0.1072,
+    "gross-margin": 0.4664,
+    "free-cash-flow": 95901000.0,
+    "capex-to-revenue": 0.0276
+  }
+}

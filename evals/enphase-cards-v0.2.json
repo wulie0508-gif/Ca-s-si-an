@@ -1,0 +1,7 @@
+{
+  "case": "Enphase Energy 2025 five-cell evidence cards",
+  "signals": {
+    "profitability-unit-economics": "amber",
+    "cash-runway": "amber"
+  }
+}

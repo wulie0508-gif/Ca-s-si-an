@@ -1,0 +1,29 @@
+Example Storage Systems 2025 Annual Report
+
+Business review
+
+The company reported improved gross margin after product redesign and supplier qualification. Management also disclosed that scale assumptions still depend on production yield.
+
+3. Consolidated Income Statement
+(in USD)
+Item 2025 2024
+I. Revenue 120.00 100.00
+Including: Operating revenue 120.00 100.00
+II. Cost of sales 95.00 88.00
+Including: Operating costs 78.00 70.00
+V. Net profit/(loss) for the year 8.00 6.00
+
+5. Consolidated Statement of Cash Flows
+(in USD)
+Item 2025 2024
+Net cash flows from operating activities -12.00 -10.00
+Cash payments to acquire fixed, intangible and other long-term assets 3.00 2.00
+IV. Effect of foreign exchange rate changes on cash and cash equivalents -5.00 -3.00
+VI. Cash and cash equivalents at the end of the period 18.00 20.00
+
+6. Statement of Cash Flows of Parent Company
+(in USD)
+Item 2025 2024
+Net cash flows from operating activities 999.00 888.00
+Cash payments to acquire fixed, intangible and other long-term assets 1.00 1.00
+VI. Cash and cash equivalents at the end of the period 777.00 666.00

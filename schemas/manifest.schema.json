@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:manifest:0.2.1",
+  "title": "CleanTech Finance manifest",
+  "type": "object",
+  "required": ["subject", "assessment", "sources"],
+  "properties": {
+    "subject": {
+      "type": "object",
+      "required": ["organization", "technology"],
+      "properties": {
+        "organization": {"type": "string", "minLength": 1},
+        "technology": {"type": "string", "minLength": 1},
+        "ticker": {"type": ["string", "null"]}
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "required": ["as_of"],
+      "properties": {
+        "as_of": {"type": "string", "format": "date"},
+        "horizon_years": {"type": "integer", "minimum": 1, "maximum": 20},
+        "geography": {"type": "string"},
+        "value_chain_scope": {"type": "string"}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "title", "url", "publisher", "kind"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+          "path": {"type": "string"},
+          "title": {"type": "string"},
+          "url": {"type": "string", "format": "uri"},
+          "publisher": {"type": "string"},
+          "published": {"type": ["string", "null"], "format": "date"},
+          "kind": {"type": "string"},
+          "role": {"enum": ["subject", "benchmark"], "default": "subject"}
+        }
+      }
+    },
+    "financial_extraction": {
+      "type": "object",
+      "required": ["enabled", "source_id", "currency", "years"],
+      "properties": {
+        "enabled": {"const": true},
+        "source_id": {"type": "string"},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "years": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"type": "integer", "minimum": 1900, "maximum": 2200}
+        }
+      }
+    },
+    "financials": {
+      "type": "object",
+      "required": ["currency", "periods"],
+      "properties": {
+        "currency": {"type": "string"},
+        "periods": {"type": "array", "minItems": 1}
+      }
+    },
+    "judgment_context": {
+      "type": "object",
+      "required": ["prepared_by", "prepared_at", "subindustry", "dimensions"],
+      "properties": {
+        "prepared_by": {"type": "string", "minLength": 1},
+        "prepared_at": {"type": "string", "format": "date"},
+        "subindustry": {
+          "type": "object",
+          "required": ["name", "value_chain_position", "summary", "basis"],
+          "properties": {
+            "name": {"type": "string", "minLength": 1},
+            "value_chain_position": {"type": "string", "minLength": 1},
+            "summary": {"type": "string", "minLength": 1},
+            "basis": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"$ref": "#/$defs/citation"}
+            }
+          }
+        },
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "profitability-unit-economics": {"$ref": "#/$defs/dimensionJudgment"},
+            "cash-runway": {"$ref": "#/$defs/dimensionJudgment"}
+          }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {"required": ["financial_extraction"], "not": {"required": ["financials"]}},
+    {"required": ["financials"], "not": {"required": ["financial_extraction"]}}
+  ],
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "required": ["source_id", "locator"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "locator": {"type": "string", "minLength": 1}
+      }
+    },
+    "dimensionJudgment": {
+      "type": "object",
+      "required": ["benchmark", "application", "gaps"],
+      "not": {"required": ["framework"]},
+      "properties": {
+        "benchmark": {
+          "type": "object",
+          "required": ["scope", "observations", "limitations"],
+          "properties": {
+            "scope": {"type": "string", "minLength": 1},
+            "observations": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["entity", "business_model", "metric", "period", "value", "unit", "display_value", "citation"],
+                "properties": {
+                  "entity": {"type": "string"},
+                  "business_model": {"type": "string"},
+                  "metric": {"type": "string"},
+                  "period": {"type": "string"},
+                  "value": {"type": "number"},
+                  "unit": {"type": "string"},
+                  "display_value": {"type": "string"},
+                  "citation": {"$ref": "#/$defs/citation"}
+                }
+              }
+            },
+            "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+          }
+        },
+        "application": {
+          "type": "object",
+          "required": ["signal", "path", "summary", "basis"],
+          "properties": {
+            "signal": {"enum": ["red", "amber", "green"]},
+            "path": {"type": "string", "minLength": 1},
+            "summary": {"type": "string", "minLength": 1},
+            "basis": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/citation"}}
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["kind", "text", "text_zh"],
+            "properties": {
+              "kind": {"enum": ["evidence_gap", "human_judgment", "verification"]},
+              "text": {"type": "string", "minLength": 1},
+              "text_zh": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    }
+  }
+}

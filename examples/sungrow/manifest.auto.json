@@ -1,0 +1,231 @@
+{
+  "subject": {
+    "organization": "Sungrow Power Supply Co., Ltd.",
+    "technology": "PV inverters, energy-storage systems, and power-conversion equipment",
+    "ticker": "300274.SZ",
+    "jurisdiction": "China"
+  },
+  "assessment": {
+    "as_of": "2026-07-14",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "Consolidated company"
+  },
+  "sources": [
+    {
+      "id": "sungrow-2025-annual-report",
+      "path": "../../.cache/sungrow/sungrow-2025-annual-report-en-abridged.pdf",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-06-08/1225358186.PDF",
+      "title": "Sungrow 2025 Annual Report (English abridged)",
+      "publisher": "Sungrow Power Supply Co., Ltd.",
+      "published": "2026-06-08",
+      "kind": "audited_financial",
+      "role": "subject"
+    },
+    {
+      "id": "enphase-2025-annual-report",
+      "path": "../../.cache/enphase/enphase-2025-annual-report.pdf",
+      "url": "https://www.sec.gov/Archives/edgar/data/1463101/000146310126000030/annualreport2025.pdf",
+      "title": "Enphase Energy 2025 Annual Report",
+      "publisher": "Enphase Energy, Inc.",
+      "published": "2026-04-01",
+      "kind": "audited_financial",
+      "role": "benchmark"
+    }
+  ],
+  "financial_extraction": {
+    "enabled": true,
+    "source_id": "sungrow-2025-annual-report",
+    "currency": "CNY",
+    "years": [2025, 2024]
+  },
+  "judgment_context": {
+    "prepared_by": "agent-assisted, maintainer-authorized",
+    "prepared_at": "2026-07-14",
+    "subindustry": {
+      "name": "Diversified power-electronics and clean-energy equipment manufacturer",
+      "value_chain_position": "R&D, manufacturing, sales, and service of PV inverters, energy-storage systems, and adjacent power-conversion equipment",
+      "summary": "Sungrow is treated as a diversified equipment manufacturer rather than an asset owner or pure installer, because its disclosed business centers on power-conversion products and related systems.",
+      "basis": [
+        {
+          "source_id": "sungrow-2025-annual-report",
+          "locator": "PDF p.29"
+        }
+      ]
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "Primary comparison is Sungrow's own FY2024 consolidated gross margin. Enphase is used only as an adjacent inverter/equipment reference, not as a peer percentile or a like-for-like valuation benchmark.",
+          "observations": [
+            {
+              "entity": "Sungrow",
+              "business_model": "Diversified power-electronics and clean-energy equipment",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": 31.8317,
+              "unit": "percent",
+              "display_value": "31.8%",
+              "citation": {
+                "source_id": "sungrow-2025-annual-report",
+                "locator": "PDF p.135"
+              }
+            },
+            {
+              "entity": "Sungrow",
+              "business_model": "Diversified power-electronics and clean-energy equipment",
+              "metric": "Gross margin",
+              "period": "FY2024",
+              "value": 29.9425,
+              "unit": "percent",
+              "display_value": "29.9%",
+              "citation": {
+                "source_id": "sungrow-2025-annual-report",
+                "locator": "PDF p.135"
+              }
+            },
+            {
+              "entity": "Enphase Energy",
+              "business_model": "Residential and small-commercial microinverter and energy-system equipment",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": 46.6403,
+              "unit": "percent",
+              "display_value": "46.6%",
+              "citation": {
+                "source_id": "enphase-2025-annual-report",
+                "locator": "PDF p.69"
+              }
+            }
+          ],
+          "limitations": [
+            "Sungrow and Enphase differ in product mix, geography, route to market, incentives, warranty exposure, and accounting presentation.",
+            "The comparison is an adjacent-company sense check, not a clean-energy industry percentile or a claim of full comparability."
+          ]
+        },
+        "application": {
+          "signal": "green",
+          "path": "Classify as diversified equipment manufacturing; read Sungrow's own two-year trend first; use Enphase only as an adjacent equipment reference.",
+          "summary": "Sungrow's consolidated gross margin increased from 29.9% to 31.8%, a 1.9 percentage-point improvement. The lower level than Enphase is not treated as weakness because the business mixes are not fully comparable. The evidence supports an improving historical profitability signal, while durability remains a human judgment.",
+          "basis": [
+            {
+              "source_id": "sungrow-2025-annual-report",
+              "locator": "PDF p.135"
+            },
+            {
+              "source_id": "sungrow-2025-annual-report",
+              "locator": "PDF p.30"
+            },
+            {
+              "source_id": "enphase-2025-annual-report",
+              "locator": "PDF p.69"
+            }
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "No segment-consistent public peer set was assembled that cleanly separates inverter, storage, and project-development economics.",
+            "text_zh": "尚未建立口径一致的公开同业样本，以清晰区分逆变器、储能和项目开发业务的经济性。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess whether management's brand, product-mix, and scale explanations can persist under competition, warranty claims, and price pressure.",
+            "text_zh": "需人工判断管理层关于品牌、产品组合和规模效应的解释，在竞争、质保索赔和价格压力下能否持续。"
+          },
+          {
+            "kind": "verification",
+            "text": "Confirm that revenue and cost scopes, incentives, and warranty accounting are sufficiently comparable before making any peer-margin claim.",
+            "text_zh": "在提出任何同业毛利率结论前，需核验收入和成本口径、激励政策及质保会计处理是否具有足够可比性。"
+          }
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "Because Sungrow is profitable, the primary test is operating cash flow relative to capital expenditure, using FY2024 as the first benchmark. Enphase supplies adjacent cash-conversion context only.",
+          "observations": [
+            {
+              "entity": "Sungrow",
+              "business_model": "Diversified power-electronics and clean-energy equipment",
+              "metric": "Operating cash flow / capital expenditure",
+              "period": "FY2025",
+              "value": 5.6242,
+              "unit": "times",
+              "display_value": "5.62x",
+              "citation": {
+                "source_id": "sungrow-2025-annual-report",
+                "locator": "PDF p.139"
+              }
+            },
+            {
+              "entity": "Sungrow",
+              "business_model": "Diversified power-electronics and clean-energy equipment",
+              "metric": "Operating cash flow / capital expenditure",
+              "period": "FY2024",
+              "value": 4.3319,
+              "unit": "times",
+              "display_value": "4.33x",
+              "citation": {
+                "source_id": "sungrow-2025-annual-report",
+                "locator": "PDF p.139"
+              }
+            },
+            {
+              "entity": "Enphase Energy",
+              "business_model": "Residential and small-commercial microinverter and energy-system equipment",
+              "metric": "Operating cash flow / capital expenditure",
+              "period": "FY2025",
+              "value": 3.3598,
+              "unit": "times",
+              "display_value": "3.36x",
+              "citation": {
+                "source_id": "enphase-2025-annual-report",
+                "locator": "PDF p.72"
+              }
+            }
+          ],
+          "limitations": [
+            "Cash-flow coverage is historical and does not include every future factory, working-capital, acquisition, financing, or shareholder-return commitment.",
+            "Sungrow and Enphase have different operating footprints and capital intensity, so the adjacent comparison is directional only."
+          ]
+        },
+        "application": {
+          "signal": "green",
+          "path": "Profitable-company branch: verify positive net income, then compare operating cash flow with capital expenditure and its own prior-year coverage.",
+          "summary": "Sungrow was profitable in both periods, and operating cash flow covered reported capital expenditure by 5.62x in FY2025 versus 4.33x in FY2024. This is a green historical evidence signal for self-funding capacity, not proof that all future funding needs are covered.",
+          "basis": [
+            {
+              "source_id": "sungrow-2025-annual-report",
+              "locator": "PDF p.136"
+            },
+            {
+              "source_id": "sungrow-2025-annual-report",
+              "locator": "PDF p.139"
+            },
+            {
+              "source_id": "sungrow-2025-annual-report",
+              "locator": "PDF p.140"
+            }
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The card does not yet combine disclosed committed capital expenditure, working-capital stress, debt maturities, and contingent outflows into a forward funding schedule.",
+            "text_zh": "本卡尚未将已披露的承诺资本开支、营运资金压力、债务到期和或有现金流出整合为前瞻资金计划。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Stress-test future expansion and demand scenarios before concluding that historical coverage represents durable funding sufficiency.",
+            "text_zh": "在认定历史覆盖能力代表可持续资金充足性之前，需人工对未来扩张和需求情景进行压力测试。"
+          },
+          {
+            "kind": "verification",
+            "text": "Confirm consolidated cash scope and whether purchases of property, plant, and equipment are an adequate capital-expenditure proxy for the intended decision.",
+            "text_zh": "需核验合并现金口径，并确认购建固定资产等支出能否作为本次决策所需的资本开支代理指标。"
+          }
+        ]
+      }
+    }
+  }
+}

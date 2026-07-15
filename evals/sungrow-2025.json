@@ -1,0 +1,24 @@
+{
+  "case": "Sungrow 2025 annual report",
+  "tolerance": 1e-09,
+  "facts": [
+    {"period": "FY2025", "name": "revenue", "value": 89184357325.77, "locator": "page 135"},
+    {"period": "FY2024", "name": "revenue", "value": 77856966964.63, "locator": "page 135"},
+    {"period": "FY2025", "name": "operating_cost", "value": 60795459298.16, "locator": "page 135"},
+    {"period": "FY2024", "name": "operating_cost", "value": 54544610426.28, "locator": "page 135"},
+    {"period": "FY2025", "name": "operating_cash_flow", "value": 16917778579.11, "locator": "page 139"},
+    {"period": "FY2024", "name": "operating_cash_flow", "value": 12068326644.66, "locator": "page 139"},
+    {"period": "FY2025", "name": "capex", "value": 3008018823.60, "locator": "page 139"},
+    {"period": "FY2024", "name": "capex", "value": 2785952760.93, "locator": "page 139"},
+    {"period": "FY2025", "name": "cash_and_equivalents", "value": 21997964715.90, "locator": "page 140"},
+    {"period": "FY2024", "name": "cash_and_equivalents", "value": 17717233621.16, "locator": "page 140"}
+  ],
+  "metrics": {
+    "revenue-growth": 0.1455,
+    "gross-margin": 0.3183,
+    "free-cash-flow": 13909759755.51,
+    "capex-to-revenue": 0.0337
+  },
+  "forbidden_candidate_locators": ["page 141"]
+}
+

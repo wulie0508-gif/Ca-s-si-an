@@ -1,0 +1,22 @@
+Example Solar Systems 2025 Form 10-K
+
+Table of Contents
+Consolidated Statements of Operations 69
+Consolidated Statements of Cash Flows 72
+
+CONSOLIDATED STATEMENTS OF OPERATIONS
+(In thousands, except per share data)
+Years Ended December 31,
+2025 2024 2023
+Net revenues $ 1,472,985 $ 1,330,383 $ 2,290,786
+Cost of revenues 785,981 701,245 1,232,398
+Gross profit 687,004 629,138 1,058,388
+Net income $ 172,133 $ 102,658 $ 438,936
+
+CONSOLIDATED STATEMENTS OF CASH FLOWS
+(In thousands)
+Net cash provided by operating activities 136,540 513,693 696,780
+Purchases of property and equipment (40,639) (33,604) (110,401)
+Cash, cash equivalents and restricted cash - End of period $ 474,318 $ 464,116 $ 288,748
+Reconciliation of cash, cash equivalents and restricted cash to the consolidated balance sheets:
+Cash and cash equivalents $ 474,318 $ 369,110 $ 288,748

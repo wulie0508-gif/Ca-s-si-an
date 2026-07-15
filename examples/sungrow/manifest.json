@@ -1,0 +1,91 @@
+{
+  "subject": {
+    "organization": "Sungrow Power Supply Co., Ltd.",
+    "technology": "PV inverters and energy storage systems",
+    "ticker": "SZSE:300274"
+  },
+  "assessment": {
+    "as_of": "2026-07-14",
+    "horizon_years": 5,
+    "geography": "Global, consolidated company scope",
+    "value_chain_scope": "Manufacturing, sales, and project delivery"
+  },
+  "sources": [
+    {
+      "id": "sungrow-2025-annual-report",
+      "path": "../../.cache/sungrow/sungrow-2025-annual-report-en-abridged.pdf",
+      "title": "Sungrow Power Supply Co., Ltd. 2025 Annual Report (English full copy)",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-06-08/1225358186.PDF",
+      "publisher": "Sungrow Power Supply Co., Ltd. / CNINFO",
+      "published": "2026-06-08",
+      "kind": "audited_financial"
+    }
+  ],
+  "financials": {
+    "currency": "CNY",
+    "periods": [
+      {
+        "period": "FY2024",
+        "end_date": "2024-12-31",
+        "facts": {
+          "revenue": {
+            "value": 77856966964.63,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 135, consolidated income statement"
+          },
+          "operating_cost": {
+            "value": 54544610426.28,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 135, consolidated income statement"
+          },
+          "operating_cash_flow": {
+            "value": 12068326644.66,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 139, consolidated cash flow statement"
+          },
+          "capex": {
+            "value": 2785952760.93,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 139, cash paid for fixed, intangible and other long-term assets"
+          },
+          "cash_and_equivalents": {
+            "value": 17717233621.16,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 140, cash and cash equivalents at period end"
+          }
+        }
+      },
+      {
+        "period": "FY2025",
+        "end_date": "2025-12-31",
+        "facts": {
+          "revenue": {
+            "value": 89184357325.77,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 135, consolidated income statement"
+          },
+          "operating_cost": {
+            "value": 60795459298.16,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 135, consolidated income statement"
+          },
+          "operating_cash_flow": {
+            "value": 16917778579.11,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 139, consolidated cash flow statement"
+          },
+          "capex": {
+            "value": 3008018823.60,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 139, cash paid for fixed, intangible and other long-term assets"
+          },
+          "cash_and_equivalents": {
+            "value": 21997964715.90,
+            "source_id": "sungrow-2025-annual-report",
+            "locator": "PDF page 140, cash and cash equivalents at period end"
+          }
+        }
+      }
+    ]
+  }
+}
