@@ -37,7 +37,11 @@
     "enabled": true,
     "source_id": "enphase-2025-annual-report",
     "currency": "USD",
-    "years": [2025, 2024]
+    "fiscal_year_end": "12-31",
+    "years": [
+      2025,
+      2024
+    ]
   },
   "judgment_context": {
     "prepared_by": "agent-assisted, maintainer-authorized",
@@ -55,7 +59,11 @@
           "source_id": "enphase-2025-annual-report",
           "locator": "PDF p.10"
         }
-      ]
+      ],
+      "scope_id": "power-electronics-equipment",
+      "name_zh": "住宅及小型商业微型逆变器与能源系统设备提供商",
+      "value_chain_position_zh": "微型逆变器、电池、能源管理和相关服务的研发、销售与支持",
+      "summary_zh": "Enphase 按电力电子与能源系统设备提供商处理，而非资产持有方或纯安装商。"
     },
     "dimensions": {
       "profitability-unit-economics": {
@@ -73,20 +81,22 @@
               "citation": {
                 "source_id": "enphase-2025-annual-report",
                 "locator": "PDF p.69"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Enphase Energy",
               "business_model": "Residential and small-commercial microinverter and energy-system equipment",
               "metric": "Gross margin",
               "period": "FY2024",
-              "value": 47.2900,
+              "value": 47.29,
               "unit": "percent",
               "display_value": "47.3%",
               "citation": {
                 "source_id": "enphase-2025-annual-report",
                 "locator": "PDF p.69"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Sungrow",
@@ -99,27 +109,18 @@
               "citation": {
                 "source_id": "sungrow-2025-annual-report",
                 "locator": "PDF p.135"
-              }
+              },
+              "comparison_type": "adjacent_context"
             }
           ],
           "limitations": [
             "The adjacent comparison is not like-for-like because product mix, geography, channel economics, incentives, warranty exposure, and accounting scope differ.",
             "No public peer percentile was calculated; the card uses Enphase's own trend as its primary comparator."
-          ]
-        },
-        "application": {
-          "signal": "amber",
-          "path": "Classify as microinverter and energy-system equipment; read Enphase's own two-year trend first; use Sungrow only to test whether cross-model comparisons change the interpretation.",
-          "summary": "Enphase's gross margin remained high in absolute terms but declined from 47.3% to 46.6%. Its higher level than Sungrow is not treated as superiority because the business mixes differ. The slight deterioration and incomplete peer comparability produce an amber evidence signal rather than a rating conclusion.",
-          "basis": [
-            {
-              "source_id": "enphase-2025-annual-report",
-              "locator": "PDF p.69"
-            },
-            {
-              "source_id": "sungrow-2025-annual-report",
-              "locator": "PDF p.135"
-            }
+          ],
+          "scope_zh": "优先比较公司自身两个财年的同口径毛利率方向；外部公司仅作为相邻背景，不构成绝对阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
           ]
         },
         "gaps": [
@@ -155,7 +156,8 @@
               "citation": {
                 "source_id": "enphase-2025-annual-report",
                 "locator": "PDF p.72"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Enphase Energy",
@@ -168,7 +170,8 @@
               "citation": {
                 "source_id": "enphase-2025-annual-report",
                 "locator": "PDF p.72"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Sungrow",
@@ -181,31 +184,18 @@
               "citation": {
                 "source_id": "sungrow-2025-annual-report",
                 "locator": "PDF p.139"
-              }
+              },
+              "comparison_type": "adjacent_context"
             }
           ],
           "limitations": [
             "The coverage ratio is historical and does not by itself capture marketable securities, debt capacity, buybacks, future commitments, or stress scenarios.",
             "The Sungrow comparison is directional only because the companies have different capital intensity and operating footprints."
-          ]
-        },
-        "application": {
-          "signal": "amber",
-          "path": "Profitable-company branch: confirm positive net income, test operating cash flow coverage of capital expenditure, then compare the coverage trend and management's liquidity caveat.",
-          "summary": "Operating cash flow still covered capital expenditure by 3.36x in FY2025, but coverage fell materially from 15.29x in FY2024. Management also states that strategic actions may require additional capital or debt. The combined evidence is amber: current coverage exists, while the deterioration and future-funding caveat require review.",
-          "basis": [
-            {
-              "source_id": "enphase-2025-annual-report",
-              "locator": "PDF p.69"
-            },
-            {
-              "source_id": "enphase-2025-annual-report",
-              "locator": "PDF p.72"
-            },
-            {
-              "source_id": "enphase-2025-annual-report",
-              "locator": "PDF p.42"
-            }
+          ],
+          "scope_zh": "优先比较公司自身两个财年的盈利状态和现金覆盖方向；不采用统一现金跑道阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
           ]
         },
         "gaps": [
@@ -226,6 +216,7 @@
           }
         ]
       }
-    }
+    },
+    "contract_version": "0.3.0"
   }
 }

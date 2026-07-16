@@ -1,0 +1,28 @@
+FIRST SOLAR, INC. — FY2025 OFFICIAL-SOURCE FACT PACK
+Primary source: First Solar 2025 Annual Report
+Official URL: https://s202.q4cdn.com/499595574/files/doc_financials/2025/ar/FSLR-2025-Annual-Report-web.pdf
+Prepared as a normalized local excerpt for deterministic offline testing. Values below are USD.
+
+Business classification — Annual Report pages 1 and 2
+First Solar designs and manufactures advanced thin-film photovoltaic solar modules. The test scope is solar-module-manufacturing.
+
+Consolidated statements of operations — Annual Report page 80 (PDF page 92), USD thousands in source
+FY2025 net sales: 5,219,376,000
+FY2024 net sales: 4,206,289,000
+FY2025 cost of sales: 3,099,037,000
+FY2024 cost of sales: 2,348,425,000
+FY2025 net income: 1,528,229,000
+FY2024 net income: 1,292,044,000
+
+Consolidated statements of cash flows — Annual Report page 83 (PDF page 95), USD thousands in source
+FY2025 net cash provided by operating activities: 2,057,105,000
+FY2024 net cash provided by operating activities: 1,217,999,000
+FY2025 purchases of property plant and equipment: (869,875,000)
+FY2024 purchases of property plant and equipment: (1,526,076,000)
+
+Consolidated balance sheets — Annual Report page 79 (PDF page 91), USD thousands in source
+FY2025 cash and cash equivalents: 2,803,514,000
+FY2024 cash and cash equivalents: 1,621,376,000
+
+Government assistance — Annual Report page 100 (PDF page 112), USD thousands in source
+Income-based government grants recognized as a reduction to cost of sales were 1,606,722,000 in FY2025 and 1,009,451,000 in FY2024. These policy-support facts are context and do not replace GAAP cost of sales.

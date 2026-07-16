@@ -1,0 +1,162 @@
+[
+  {
+    "iteration": 1,
+    "id": "first-solar",
+    "entity_id": "sec-cik-0001274494",
+    "company": "First Solar, Inc.",
+    "manifest": "examples/company-loops/first-solar/manifest.json",
+    "scope_id": "solar-module-manufacturing",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "green"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/01-first-solar",
+    "optimization_zh": "新增可选非权威来源交叉核验，并建立新公司接入闭环",
+    "optimization": "optional non-authoritative source cross-check and first-class new-company onboarding"
+  },
+  {
+    "iteration": 2,
+    "id": "plug-power",
+    "entity_id": "sec-cik-0001093691",
+    "company": "Plug Power Inc.",
+    "manifest": "examples/company-loops/plug-power/manifest.json",
+    "scope_id": "hydrogen-fuel-cell-electrolyzer-integrated",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "amber"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/02-plug-power",
+    "optimization_zh": "支持已披露毛利，并区分亏损阶段改善与正向单位经济性",
+    "optimization": "support reported gross profit and distinguish loss-stage improvement from positive unit economics"
+  },
+  {
+    "iteration": 3,
+    "id": "chargepoint",
+    "entity_id": "sec-cik-0001777393",
+    "company": "ChargePoint Holdings, Inc.",
+    "manifest": "examples/company-loops/chargepoint/manifest.json",
+    "scope_id": "ev-charging-network-hardware-saas",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "amber"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/03-chargepoint",
+    "optimization_zh": "新增双语语义字段、上下文辅助事实及净利润门槛",
+    "optimization": "bilingual semantic fields, contextual auxiliary facts, and a net-income gate for improving positive gross margin"
+  },
+  {
+    "iteration": 4,
+    "id": "bloom-energy",
+    "entity_id": "sec-cik-0001664703",
+    "company": "Bloom Energy Corporation",
+    "manifest": "examples/company-loops/bloom-energy/manifest.json",
+    "scope_id": "onsite-solid-oxide-fuel-cell-systems",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "amber"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/04-bloom-energy",
+    "optimization_zh": "以报表恒等式确定性选择 XBRL 概念并保留双语溯源",
+    "optimization": "deterministic statement-identity reconciliation with bilingual XBRL concept-selection provenance"
+  },
+  {
+    "iteration": 5,
+    "id": "fluence",
+    "entity_id": "sec-cik-0001868941",
+    "company": "Fluence Energy, Inc.",
+    "manifest": "examples/company-loops/fluence/manifest.json",
+    "scope_id": "grid-scale-energy-storage-system-integration",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "amber"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/05-fluence",
+    "optimization_zh": "建立明确年度期间身份及非日历财年可比性校验",
+    "optimization": "explicit annual period identity and non-calendar fiscal-year comparability validation"
+  },
+  {
+    "iteration": 6,
+    "id": "albemarle",
+    "entity_id": "sec-cik-0000915913",
+    "company": "Albemarle Corporation",
+    "manifest": "examples/company-loops/albemarle/manifest.json",
+    "scope_id": "lithium-materials-diversified-chemicals",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "amber"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/06-albemarle",
+    "optimization_zh": "支持逐来源选择，并增加币种、期间、单位与会计口径可比门",
+    "optimization": "per-source auxiliary selection with currency, period, unit, and accounting-scope comparability gates"
+  },
+  {
+    "iteration": 7,
+    "id": "tpi-composites",
+    "entity_id": "sec-cik-0001455684",
+    "company": "TPI Composites, Inc.",
+    "manifest": "examples/company-loops/tpi-composites/manifest.json",
+    "scope_id": "wind-blade-contract-manufacturing",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "red"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/07-tpi-composites",
+    "optimization_zh": "按维度选择总经营或持续经营净利润并保留归属口径",
+    "optimization": "dimension-specific selection of total versus continuing-operations net income with explicit attribution provenance"
+  },
+  {
+    "iteration": 8,
+    "id": "clearway-energy",
+    "entity_id": "sec-cik-0001567683",
+    "company": "Clearway Energy, Inc.",
+    "manifest": "examples/company-loops/clearway-energy/manifest.json",
+    "scope_id": "contracted-renewable-generation-and-storage-asset-owner",
+    "expected_signals": {
+      "profitability-unit-economics": null,
+      "cash-runway": "amber"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/08-clearway-energy",
+    "optimization_zh": "增加维度与业务口径适用性门，抑制伪制造业毛利率",
+    "optimization": "dimension-by-scope applicability gate that suppresses false manufacturing margins while preserving an independent cash card"
+  },
+  {
+    "iteration": 9,
+    "id": "nextpower",
+    "entity_id": "sec-cik-0001852131",
+    "company": "Nextpower Inc. (formerly Nextracker Inc.)",
+    "manifest": "examples/company-loops/nextpower/manifest.json",
+    "scope_id": "solar-tracker-and-power-systems-manufacturing",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "amber"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/09-nextpower",
+    "optimization_zh": "以 CIK 稳定实体身份串联更名前后来源并对冲突失败关闭",
+    "optimization": "CIK-backed stable entity identity with explicit historical aliases and fail-closed source bindings across a legal-name change"
+  },
+  {
+    "iteration": 10,
+    "id": "shoals",
+    "entity_id": "sec-cik-0001831651",
+    "company": "Shoals Technologies Group, Inc.",
+    "manifest": "examples/company-loops/shoals/manifest.json",
+    "scope_id": "solar-ebos-electrical-infrastructure-manufacturing",
+    "expected_signals": {
+      "profitability-unit-economics": "amber",
+      "cash-runway": "red"
+    },
+    "expected_auxiliary_status": "passed",
+    "output_dir": "outputs/company-loops/10-shoals",
+    "optimization_zh": "建立 1.0 倍现金覆盖边界及可选 XBRL 现金影响符号规范化",
+    "optimization": "true 1.0x OCF-to-capex coverage boundary plus optional policy-versioned XBRL cash-effect polarity normalization"
+  }
+]

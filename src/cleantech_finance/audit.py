@@ -8,15 +8,19 @@ from time import perf_counter
 from typing import Any
 
 from . import __version__
+from .auxiliary import validate_auxiliary_sources
 from .capabilities import capability_matrix
+from .cash_conversion import build_cash_conversion_context
 from .fact_extraction import extract_financial_facts
 from .finance_framework import FINANCE_DIMENSIONS
 from .financials import derive_financial_metrics
 from .framework import DIMENSIONS
+from .identity import resolve_entity_identity
 from .ingest import ingest_sources, load_manifest
 from .judgment import build_judgment_layer
 from .models import Dimension, DimensionResult
 from .retrieval import EvidenceRetriever
+from .rules import dimension_applicability
 
 
 def _result_for(retriever: EvidenceRetriever, dimension: Dimension, top_k: int) -> DimensionResult:
@@ -106,15 +110,37 @@ def run_audit(
             manifest["financial_extraction"],
         )
         financials = auto_extraction["financials"]
-    financial_analysis = derive_financial_metrics(financials, {source.id for source in sources})
+    scope_id = str(
+        (manifest.get("judgment_context") or {}).get("subindustry", {}).get("scope_id")
+        or ""
+    )
+    inapplicable_dimensions = {
+        dimension_id
+        for dimension_id in ("profitability-unit-economics", "cash-runway")
+        if dimension_applicability(dimension_id, scope_id)["status"]
+        == "not_applicable"
+    }
+    financial_analysis = derive_financial_metrics(
+        financials,
+        {source.id for source in sources if source.role == "subject"},
+        inapplicable_dimensions,
+    )
     judgment_layer = build_judgment_layer(manifest, financials, sources, selected_ids)
+    auxiliary_validation = validate_auxiliary_sources(manifest, sources, financials)
+    cash_conversion_context = build_cash_conversion_context(
+        manifest,
+        sources,
+        auxiliary_validation.get("selected_source_ids", []),
+        financials,
+    )
     audit = {
-        "schema_version": "0.2.1",
+        "schema_version": "0.3.0",
         "tool": {"name": "cleantech-finance", "version": __version__},
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "manifest": str(resolved_manifest),
         "subject": manifest["subject"],
         "assessment": manifest["assessment"],
+        "identity_resolution": resolve_entity_identity(manifest),
         "selected_dimensions": sorted(only_dimensions) if only_dimensions else "all",
         "guardrails": {
             "automated_investment_rating": False,
@@ -146,6 +172,8 @@ def run_audit(
         "financial_analysis": financial_analysis,
         "financial_fact_extraction": auto_extraction,
         "judgment_layer": judgment_layer,
+        "auxiliary_validation": auxiliary_validation,
+        "cash_conversion_context": cash_conversion_context,
         "capability_matrix": capability_matrix(),
         "finance_evidence": [result.to_dict() for result in finance_results],
         "adoption_risk_evidence": [result.to_dict() for result in adoption_results],
@@ -189,6 +217,30 @@ def validate_audit(audit: dict[str, Any]) -> dict[str, Any]:
     judgment = audit.get("judgment_layer", {})
     if not judgment.get("validation", {}).get("passed", True):
         errors.extend(judgment["validation"].get("errors", []))
+    auxiliary = audit.get("auxiliary_validation", {})
+    if not auxiliary.get("validation", {}).get("passed", True):
+        errors.extend(auxiliary["validation"].get("errors", []))
+    for check in auxiliary.get("checks", []):
+        source = check.get("source") or {}
+        citation_count += 1
+        if source.get("source_id") not in source_ids:
+            errors.append(
+                f"Unknown auxiliary source citation: {source.get('source_id')}"
+            )
+        if not source.get("locator") or not source.get("url"):
+            errors.append("Auxiliary citation is missing a locator or URL")
+    cash_context = audit.get("cash_conversion_context", {})
+    if not cash_context.get("validation", {}).get("passed", True):
+        errors.extend(cash_context["validation"].get("errors", []))
+    for item in cash_context.get("items", []):
+        source = item.get("source") or {}
+        citation_count += 1
+        if source.get("source_id") not in source_ids:
+            errors.append(
+                f"Unknown cash-context source citation: {source.get('source_id')}"
+            )
+        if not source.get("locator") or not source.get("url"):
+            errors.append("Cash-context citation is missing a locator or URL")
 
     def card_citations(value: Any) -> Iterable[dict[str, Any]]:
         if isinstance(value, dict):

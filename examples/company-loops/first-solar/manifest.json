@@ -1,0 +1,290 @@
+{
+  "subject": {
+    "organization": "First Solar, Inc.",
+    "technology": "Thin-film photovoltaic modules and manufacturing",
+    "ticker": "FSLR",
+    "cik": "0001274494"
+  },
+  "assessment": {
+    "as_of": "2026-07-16",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "Thin-film solar module manufacturing"
+  },
+  "sources": [
+    {
+      "id": "first-solar-2025-annual-report",
+      "path": "source.txt",
+      "title": "First Solar 2025 Annual Report",
+      "url": "https://s202.q4cdn.com/499595574/files/doc_financials/2025/ar/FSLR-2025-Annual-Report-web.pdf",
+      "publisher": "First Solar, Inc.",
+      "published": "2026-02-24",
+      "kind": "audited_financial",
+      "role": "subject"
+    },
+    {
+      "id": "first-solar-2025-results",
+      "path": "auxiliary.txt",
+      "title": "First Solar Q4 and Full Year 2025 Financial Results",
+      "url": "https://investor.firstsolar.com/financials/quarterly-results/default.aspx",
+      "publisher": "First Solar, Inc.",
+      "published": "2026-02-24",
+      "kind": "press_release",
+      "role": "auxiliary"
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2024",
+        "fiscal_year": 2024,
+        "period_type": "annual",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "duration_days": 366,
+        "facts": {
+          "revenue": {
+            "value": 4206289000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.80 / PDF p.92",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "operating_cost": {
+            "value": 2348425000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.80 / PDF p.92",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "net_income": {
+            "value": 1292044000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.80 / PDF p.92",
+            "statement_scope": {"operations": "total_operations", "attribution": "consolidated"}
+          },
+          "operating_cash_flow": {
+            "value": 1217999000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.83 / PDF p.95",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "capex": {
+            "value": 1526076000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.83 / PDF p.95"
+          },
+          "cash_and_equivalents": {
+            "value": 1621376000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.79 / PDF p.91"
+          }
+        }
+      },
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {
+            "value": 5219376000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.80 / PDF p.92",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "operating_cost": {
+            "value": 3099037000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.80 / PDF p.92",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "net_income": {
+            "value": 1528229000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.80 / PDF p.92",
+            "statement_scope": {"operations": "total_operations", "attribution": "consolidated"}
+          },
+          "operating_cash_flow": {
+            "value": 2057105000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.83 / PDF p.95",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "capex": {
+            "value": 869875000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.83 / PDF p.95"
+          },
+          "cash_and_equivalents": {
+            "value": 2803514000,
+            "source_id": "first-solar-2025-annual-report",
+            "locator": "Annual Report p.79 / PDF p.91"
+          }
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": true,
+    "selected_source_ids": ["first-solar-2025-results"],
+    "relative_tolerance": 0,
+    "absolute_tolerance": 0,
+    "facts": [
+      {
+        "period": "FY2025",
+        "period_end": "2025-12-31",
+        "fact_id": "net_income",
+        "unit": "USD",
+        "currency": "USD",
+        "accounting_scope": "consolidated",
+        "value": 1528229000,
+        "source_id": "first-solar-2025-results",
+        "locator": "Q4/FY2025 release, GAAP-to-non-GAAP reconciliation"
+      }
+    ]
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "local new-company loop from official public sources",
+    "prepared_at": "2026-07-16",
+    "subindustry": {
+      "scope_id": "solar-module-manufacturing",
+      "name": "Thin-film solar module manufacturer",
+      "value_chain_position": "Technology development and vertically integrated module manufacturing",
+      "summary": "First Solar is tested as a solar-module manufacturer; it is not treated as an asset owner or installer.",
+      "basis": [
+        {
+          "source_id": "first-solar-2025-annual-report",
+          "locator": "Annual Report pp.1-2"
+        }
+      ],
+      "name_zh": "薄膜光伏组件制造商",
+      "value_chain_position_zh": "技术开发与垂直整合组件制造",
+      "summary_zh": "First Solar 按光伏组件制造商测试，不按资产持有方或安装商处理。"
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "First Solar's own two-year GAAP gross-margin direction is primary; no peer threshold is used.",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "First Solar",
+              "business_model": "Thin-film solar module manufacturing",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": 40.6243,
+              "unit": "percent",
+              "display_value": "40.6%",
+              "citation": {
+                "source_id": "first-solar-2025-annual-report",
+                "locator": "Annual Report p.80 / PDF p.92"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "First Solar",
+              "business_model": "Thin-film solar module manufacturing",
+              "metric": "Gross margin",
+              "period": "FY2024",
+              "value": 44.1687,
+              "unit": "percent",
+              "display_value": "44.2%",
+              "citation": {
+                "source_id": "first-solar-2025-annual-report",
+                "locator": "Annual Report p.80 / PDF p.92"
+              }
+            }
+          ],
+          "limitations": [
+            "Section 45X and other government assistance reduces reported cost of sales; the GAAP trend is retained while policy dependence remains a separate review item."
+          ],
+          "scope_zh": "优先比较公司自身两个财年的同口径毛利率方向；外部公司仅作为相邻背景，不构成绝对阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "A fully normalized margin excluding policy support is not asserted as a second GAAP result.",
+            "text_zh": "未把剔除政策支持后的情景毛利率宣称为第二套 GAAP 结果。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess durability of module pricing, utilization, logistics, and policy support.",
+            "text_zh": "需人工判断组件定价、产能利用、物流和政策支持的持续性。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify government assistance recognized against cost of sales before using a normalized scenario.",
+            "text_zh": "使用归一化情景前，需核验冲减销售成本的政府援助。"
+          }
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "First Solar is profitable, so its own OCF/capex direction is primary.",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "First Solar",
+              "business_model": "Thin-film solar module manufacturing",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2025",
+              "value": 2.3648,
+              "unit": "times",
+              "display_value": "2.36x",
+              "citation": {
+                "source_id": "first-solar-2025-annual-report",
+                "locator": "Annual Report p.83 / PDF p.95"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "First Solar",
+              "business_model": "Thin-film solar module manufacturing",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2024",
+              "value": 0.7981,
+              "unit": "times",
+              "display_value": "0.80x",
+              "citation": {
+                "source_id": "first-solar-2025-annual-report",
+                "locator": "Annual Report p.83 / PDF p.95"
+              }
+            }
+          ],
+          "limitations": [
+            "Historical coverage does not prove funding sufficiency for all planned manufacturing expansion."
+          ],
+          "scope_zh": "优先比较公司自身两个财年的盈利状态和现金覆盖方向；不采用统一现金跑道阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The case does not assemble a forward factory-commitment schedule.",
+            "text_zh": "本案例尚未汇总前瞻工厂资本承诺计划。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Stress-test new-factory ramp, working capital, and policy timing.",
+            "text_zh": "需人工压力测试新工厂爬坡、营运资金和政策兑现时间。"
+          },
+          {
+            "kind": "verification",
+            "text": "Confirm that reported PP&E purchases capture the relevant expansion cash outflows.",
+            "text_zh": "需确认已披露的固定资产购置覆盖相关扩产现金流出。"
+          }
+        ]
+      }
+    }
+  }
+}

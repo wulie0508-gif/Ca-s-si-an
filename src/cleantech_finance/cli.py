@@ -62,7 +62,11 @@ def _init_manifest(path: Path) -> None:
             "periods": [
                 {
                     "period": "FY2025",
+                    "fiscal_year": 2025,
+                    "period_type": "annual",
+                    "start_date": "2025-01-01",
                     "end_date": "2025-12-31",
+                    "duration_days": 365,
                     "facts": {
                         "revenue": {
                             "value": 0,
@@ -72,6 +76,13 @@ def _init_manifest(path: Path) -> None:
                     },
                 }
             ],
+        },
+        "auxiliary_validation": {
+            "enabled": False,
+            "selected_source_ids": [],
+            "relative_tolerance": 0.001,
+            "absolute_tolerance": 0,
+            "facts": [],
         },
     }
     path.parent.mkdir(parents=True, exist_ok=True)

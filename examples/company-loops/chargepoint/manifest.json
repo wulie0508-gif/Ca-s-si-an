@@ -1,0 +1,135 @@
+{
+  "subject": {
+    "organization": "ChargePoint Holdings, Inc.",
+    "technology": "Networked EV charging hardware, cloud subscriptions, and services",
+    "ticker": "CHPT",
+    "cik": "0001777393"
+  },
+  "assessment": {
+    "as_of": "2026-07-16",
+    "horizon_years": 5,
+    "geography": "North America and Europe",
+    "value_chain_scope": "EV charging hardware, network, software, and services"
+  },
+  "sources": [
+    {
+      "id": "chargepoint-2026-10k",
+      "path": "source.txt",
+      "title": "ChargePoint FY2026 Form 10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1777393/000177739326000013/chpt-20260131.htm",
+      "publisher": "ChargePoint Holdings, Inc.",
+      "published": "2026-04-02",
+      "kind": "regulatory_filing",
+      "role": "subject"
+    },
+    {
+      "id": "chargepoint-sec-companyfacts",
+      "path": "auxiliary.txt",
+      "title": "SEC company facts for ChargePoint",
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001777393.json",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "published": "2026-04-02",
+      "kind": "regulator",
+      "role": "auxiliary"
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2024-02-01",
+        "end_date": "2025-01-31",
+        "duration_days": 366,
+        "facts": {
+          "revenue": {"value": 417083000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL revenue, FY2025", "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}},
+          "gross_profit": {"value": 100681000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL gross profit, FY2025", "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}},
+          "net_income": {"value": -277066000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL net loss, FY2025", "statement_scope": {"operations": "total_operations", "attribution": "attributable_to_parent"}},
+          "operating_cash_flow": {"value": -146947000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL operating cash flow, FY2025", "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}},
+          "capex": {"value": 12073000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL PP&E purchases, FY2025"},
+          "cash_and_equivalents": {"value": 224571000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL cash, FY2025"}
+        }
+      },
+      {
+        "period": "FY2026",
+        "fiscal_year": 2026,
+        "period_type": "annual",
+        "start_date": "2025-02-01",
+        "end_date": "2026-01-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {"value": 411224000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL revenue, FY2026", "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}},
+          "gross_profit": {"value": 125602000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL gross profit, FY2026", "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}},
+          "net_income": {"value": -220197000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL net loss, FY2026", "statement_scope": {"operations": "total_operations", "attribution": "attributable_to_parent"}},
+          "operating_cash_flow": {"value": -62835000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL operating cash flow, FY2026", "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}},
+          "capex": {"value": 4165000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL PP&E purchases, FY2026"},
+          "cash_and_equivalents": {"value": 141564000, "source_id": "chargepoint-2026-10k", "locator": "Inline XBRL cash, FY2026"}
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": true,
+    "selected_source_ids": ["chargepoint-sec-companyfacts"],
+    "relative_tolerance": 0,
+    "absolute_tolerance": 0,
+    "facts": [
+      {"mode": "context", "period": "FY2026", "period_end": "2026-01-31", "fact_id": "hardware_revenue", "label": "Hardware revenue", "label_zh": "充电硬件收入", "unit": "USD", "currency": "USD", "accounting_scope": "segment", "value": 216514000, "source_id": "chargepoint-sec-companyfacts", "locator": "ProductMember, FY2026"},
+      {"mode": "context", "period": "FY2026", "period_end": "2026-01-31", "fact_id": "subscription_revenue", "label": "Subscription revenue", "label_zh": "订阅收入", "unit": "USD", "currency": "USD", "accounting_scope": "segment", "value": 162387000, "source_id": "chargepoint-sec-companyfacts", "locator": "LicenseAndServiceMember, FY2026"},
+      {"mode": "context", "period": "FY2026", "period_end": "2026-01-31", "fact_id": "deferred_revenue", "label": "Deferred revenue", "label_zh": "递延收入", "unit": "USD", "currency": "USD", "accounting_scope": "consolidated", "value": 250581000, "source_id": "chargepoint-sec-companyfacts", "locator": "ContractWithCustomerLiability, FY2026"}
+    ]
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "local new-company loop from official public sources",
+    "prepared_at": "2026-07-16",
+    "subindustry": {
+      "scope_id": "ev-charging-network-hardware-saas",
+      "name": "EV charging network, hardware, and SaaS provider",
+      "name_zh": "电动汽车充电网络、硬件与 SaaS 提供商",
+      "value_chain_position": "Charging hardware, cloud subscriptions, support, and network services",
+      "value_chain_position_zh": "充电硬件、云订阅、支持与网络服务",
+      "summary": "ChargePoint combines declining hardware revenue with growing subscriptions and remains loss-making despite gross-margin improvement.",
+      "summary_zh": "ChargePoint 的硬件收入下降、订阅收入增长；毛利率虽改善，公司仍处于亏损。",
+      "basis": [{"source_id": "chargepoint-2026-10k", "locator": "Form 10-K Item 1 and revenue footnote"}]
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "ChargePoint's own fiscal-year gross-margin direction is primary; hardware and subscription mix is optional context.",
+          "scope_zh": "优先比较 ChargePoint 自身财年的毛利率方向；硬件与订阅组合仅作可选背景。",
+          "observations": [
+            {"comparison_type": "subject_history", "entity": "ChargePoint", "business_model": "EV charging hardware and SaaS", "metric": "Gross margin", "period": "FY2026", "value": 30.543, "unit": "percent", "display_value": "30.5%", "citation": {"source_id": "chargepoint-2026-10k", "locator": "Inline XBRL gross profit and revenue, FY2026"}},
+            {"comparison_type": "subject_history", "entity": "ChargePoint", "business_model": "EV charging hardware and SaaS", "metric": "Gross margin", "period": "FY2025", "value": 24.139, "unit": "percent", "display_value": "24.1%", "citation": {"source_id": "chargepoint-2026-10k", "locator": "Inline XBRL gross profit and revenue, FY2025"}}
+          ],
+          "limitations": ["Positive gross margin does not equal company-level profitability while net income remains negative."],
+          "limitations_zh": ["毛利率为正不等于公司已实现整体盈利，当前净利润仍为负。"]
+        },
+        "gaps": [
+          {"kind": "evidence_gap", "text": "Hardware, subscription, and service cohort margins are not separately disclosed here.", "text_zh": "本案例未分别披露硬件、订阅和服务分组毛利。"},
+          {"kind": "human_judgment", "text": "Assess whether mix shift can produce durable company-level profitability.", "text_zh": "需人工判断收入组合变化能否形成可持续的公司整体盈利。"},
+          {"kind": "verification", "text": "Verify product and subscription XBRL dimensions against the revenue footnote.", "text_zh": "需将产品与订阅 XBRL 维度和收入附注核对。"}
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "ChargePoint is loss-making, so its own operating-cash-burn direction is primary.",
+          "scope_zh": "ChargePoint 仍亏损，因此优先观察公司自身经营现金消耗方向。",
+          "observations": [
+            {"comparison_type": "subject_history", "entity": "ChargePoint", "business_model": "EV charging hardware and SaaS", "metric": "Operating cash flow", "period": "FY2026", "value": -62835000, "unit": "USD", "display_value": "USD -62.8m", "citation": {"source_id": "chargepoint-2026-10k", "locator": "Inline XBRL operating cash flow, FY2026"}},
+            {"comparison_type": "subject_history", "entity": "ChargePoint", "business_model": "EV charging hardware and SaaS", "metric": "Operating cash flow", "period": "FY2025", "value": -146947000, "unit": "USD", "display_value": "USD -146.9m", "citation": {"source_id": "chargepoint-2026-10k", "locator": "Inline XBRL operating cash flow, FY2025"}}
+          ],
+          "limitations": ["Reduced historical burn does not prove that cash, financing access, and restructuring costs cover the forward path."],
+          "limitations_zh": ["历史现金消耗下降并不能证明现有现金、融资能力和重组成本足以覆盖前瞻路径。"]
+        },
+        "gaps": [
+          {"kind": "evidence_gap", "text": "The case does not assemble financing availability or restructuring cash needs.", "text_zh": "本案例尚未汇总可用融资或重组现金需求。"},
+          {"kind": "human_judgment", "text": "Stress-test the remaining cash path if subscription growth slows.", "text_zh": "若订阅增长放缓，需人工压力测试剩余现金路径。"},
+          {"kind": "verification", "text": "Confirm unrestricted cash and off-balance-sheet commitments.", "text_zh": "需确认非受限现金和表外承诺。"}
+        ]
+      }
+    }
+  }
+}

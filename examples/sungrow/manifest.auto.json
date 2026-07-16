@@ -37,7 +37,11 @@
     "enabled": true,
     "source_id": "sungrow-2025-annual-report",
     "currency": "CNY",
-    "years": [2025, 2024]
+    "fiscal_year_end": "12-31",
+    "years": [
+      2025,
+      2024
+    ]
   },
   "judgment_context": {
     "prepared_by": "agent-assisted, maintainer-authorized",
@@ -51,7 +55,11 @@
           "source_id": "sungrow-2025-annual-report",
           "locator": "PDF p.29"
         }
-      ]
+      ],
+      "scope_id": "power-electronics-equipment",
+      "name_zh": "多元化电力电子与清洁能源设备制造商",
+      "value_chain_position_zh": "光伏逆变器、储能系统及相邻电力转换设备的研发、制造、销售与服务",
+      "summary_zh": "阳光电源按多元化设备制造商处理，而非资产持有方或纯安装商，因为其披露业务以电力转换产品及相关系统为核心。"
     },
     "dimensions": {
       "profitability-unit-economics": {
@@ -69,7 +77,8 @@
               "citation": {
                 "source_id": "sungrow-2025-annual-report",
                 "locator": "PDF p.135"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Sungrow",
@@ -82,7 +91,8 @@
               "citation": {
                 "source_id": "sungrow-2025-annual-report",
                 "locator": "PDF p.135"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Enphase Energy",
@@ -95,31 +105,18 @@
               "citation": {
                 "source_id": "enphase-2025-annual-report",
                 "locator": "PDF p.69"
-              }
+              },
+              "comparison_type": "adjacent_context"
             }
           ],
           "limitations": [
             "Sungrow and Enphase differ in product mix, geography, route to market, incentives, warranty exposure, and accounting presentation.",
             "The comparison is an adjacent-company sense check, not a clean-energy industry percentile or a claim of full comparability."
-          ]
-        },
-        "application": {
-          "signal": "green",
-          "path": "Classify as diversified equipment manufacturing; read Sungrow's own two-year trend first; use Enphase only as an adjacent equipment reference.",
-          "summary": "Sungrow's consolidated gross margin increased from 29.9% to 31.8%, a 1.9 percentage-point improvement. The lower level than Enphase is not treated as weakness because the business mixes are not fully comparable. The evidence supports an improving historical profitability signal, while durability remains a human judgment.",
-          "basis": [
-            {
-              "source_id": "sungrow-2025-annual-report",
-              "locator": "PDF p.135"
-            },
-            {
-              "source_id": "sungrow-2025-annual-report",
-              "locator": "PDF p.30"
-            },
-            {
-              "source_id": "enphase-2025-annual-report",
-              "locator": "PDF p.69"
-            }
+          ],
+          "scope_zh": "优先比较公司自身两个财年的同口径毛利率方向；外部公司仅作为相邻背景，不构成绝对阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
           ]
         },
         "gaps": [
@@ -155,7 +152,8 @@
               "citation": {
                 "source_id": "sungrow-2025-annual-report",
                 "locator": "PDF p.139"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Sungrow",
@@ -168,7 +166,8 @@
               "citation": {
                 "source_id": "sungrow-2025-annual-report",
                 "locator": "PDF p.139"
-              }
+              },
+              "comparison_type": "subject_history"
             },
             {
               "entity": "Enphase Energy",
@@ -181,31 +180,18 @@
               "citation": {
                 "source_id": "enphase-2025-annual-report",
                 "locator": "PDF p.72"
-              }
+              },
+              "comparison_type": "adjacent_context"
             }
           ],
           "limitations": [
             "Cash-flow coverage is historical and does not include every future factory, working-capital, acquisition, financing, or shareholder-return commitment.",
             "Sungrow and Enphase have different operating footprints and capital intensity, so the adjacent comparison is directional only."
-          ]
-        },
-        "application": {
-          "signal": "green",
-          "path": "Profitable-company branch: verify positive net income, then compare operating cash flow with capital expenditure and its own prior-year coverage.",
-          "summary": "Sungrow was profitable in both periods, and operating cash flow covered reported capital expenditure by 5.62x in FY2025 versus 4.33x in FY2024. This is a green historical evidence signal for self-funding capacity, not proof that all future funding needs are covered.",
-          "basis": [
-            {
-              "source_id": "sungrow-2025-annual-report",
-              "locator": "PDF p.136"
-            },
-            {
-              "source_id": "sungrow-2025-annual-report",
-              "locator": "PDF p.139"
-            },
-            {
-              "source_id": "sungrow-2025-annual-report",
-              "locator": "PDF p.140"
-            }
+          ],
+          "scope_zh": "优先比较公司自身两个财年的盈利状态和现金覆盖方向；不采用统一现金跑道阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
           ]
         },
         "gaps": [
@@ -226,6 +212,7 @@
           }
         ]
       }
-    }
+    },
+    "contract_version": "0.3.0"
   }
 }

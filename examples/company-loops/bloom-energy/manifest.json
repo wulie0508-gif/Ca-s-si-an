@@ -1,0 +1,729 @@
+{
+  "subject": {
+    "organization": "Bloom Energy Corporation",
+    "technology": "On-site solid oxide fuel-cell systems and electrolyzers",
+    "ticker": "BE",
+    "cik": "0001664703"
+  },
+  "assessment": {
+    "as_of": "2026-07-16",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "On-site solid oxide fuel-cell systems and related services"
+  },
+  "sources": [
+    {
+      "id": "bloom-energy-corporation-10k",
+      "path": "../../../.cache/company-loops/bloom-energy-corporation/be-20251231.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/1664703/000162828026006516/be-20251231.htm",
+      "title": "Bloom Energy Corporation FY2025 Form 10-K",
+      "publisher": "Bloom Energy Corporation",
+      "published": "2026-02-09",
+      "kind": "regulatory_filing",
+      "role": "subject"
+    },
+    {
+      "id": "bloom-energy-corporation-sec-companyfacts",
+      "path": "../../../.cache/company-loops/bloom-energy-corporation/companyfacts.json",
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001664703.json",
+      "title": "SEC company facts for Bloom Energy Corporation",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "published": "2026-02-09",
+      "kind": "regulator",
+      "role": "auxiliary"
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2024",
+        "fiscal_year": 2024,
+        "period_type": "annual",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "duration_days": 366,
+        "facts": {
+          "revenue": {
+            "value": 1473856000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL Revenues; period ended 2024-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "Revenues",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [
+                {
+                  "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+                  "value": 1441394000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 1069208000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2024-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [
+                {
+                  "concept": "CostOfGoodsAndServicesSold",
+                  "value": 21200000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 404648000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2024-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": -27203000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL ProfitLoss; period ended 2024-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "consolidated"
+            },
+            "selection": {
+              "concept": "ProfitLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "operating_cash_flow": {
+            "value": 91998000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2024-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 58852000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2024-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 802851000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL CashAndCashEquivalentsAtCarryingValue; period ended 2024-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashAndCashEquivalentsAtCarryingValue",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                  "value": 950971000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {
+            "value": 2023994000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL Revenues; period ended 2025-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "Revenues",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [
+                {
+                  "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+                  "value": 2001614000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 1436594000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2025-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [
+                {
+                  "concept": "CostOfGoodsAndServicesSold",
+                  "value": 18000000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 587400000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2025-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": -87140000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL ProfitLoss; period ended 2025-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "consolidated"
+            },
+            "selection": {
+              "concept": "ProfitLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "operating_cash_flow": {
+            "value": 113949000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 56759000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2025-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 2454108000.0,
+            "source_id": "bloom-energy-corporation-10k",
+            "locator": "Inline XBRL CashAndCashEquivalentsAtCarryingValue; period ended 2025-12-31; accession 0001628280-26-006516",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashAndCashEquivalentsAtCarryingValue",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                  "value": 2481580000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": true,
+    "selected_source_ids": [
+      "bloom-energy-corporation-sec-companyfacts"
+    ],
+    "relative_tolerance": 0,
+    "absolute_tolerance": 0,
+    "facts": [
+      {
+        "period": "FY2024",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 1473856000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:Revenues / USD / end 2024-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 1069208000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2024-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 404648000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2024-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": -27203000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:ProfitLoss / USD / end 2024-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 91998000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2024-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 58852000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2024-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 802851000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:CashAndCashEquivalentsAtCarryingValue / USD / end 2024-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 2023994000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:Revenues / USD / end 2025-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 1436594000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2025-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 587400000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2025-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": -87140000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:ProfitLoss / USD / end 2025-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 113949000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2025-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 56759000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2025-12-31 / filed 2026-02-09"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 2454108000.0,
+        "source_id": "bloom-energy-corporation-sec-companyfacts",
+        "locator": "us-gaap:CashAndCashEquivalentsAtCarryingValue / USD / end 2025-12-31 / filed 2026-02-09"
+      }
+    ]
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "collect_sec_case.py with user-supplied business classification",
+    "prepared_at": "2026-07-16",
+    "subindustry": {
+      "scope_id": "onsite-solid-oxide-fuel-cell-systems",
+      "name": "On-site solid oxide fuel-cell systems and related services",
+      "name_zh": "现场固体氧化物燃料电池系统及相关服务",
+      "value_chain_position": "On-site solid oxide fuel-cell systems and related services",
+      "value_chain_position_zh": "现场固体氧化物燃料电池系统及相关服务",
+      "summary": "Bloom Energy Corporation is tested in the 'onsite-solid-oxide-fuel-cell-systems' scope. The classification must be verified against Item 1 before publication.",
+      "summary_zh": "Bloom Energy Corporation 按“现场固体氧化物燃料电池系统及相关服务”口径测试；发布前必须对照 Form 10-K Item 1 核验分类。",
+      "basis": [
+        {
+          "source_id": "bloom-energy-corporation-10k",
+          "locator": "Form 10-K Item 1"
+        }
+      ]
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "The company's own two-year gross-margin direction is primary; no peer threshold is used.",
+          "scope_zh": "优先比较公司自身连续两年的毛利率方向，不使用跨公司的绝对阈值。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Bloom Energy Corporation",
+              "business_model": "On-site solid oxide fuel-cell systems and related services",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": 29.02182516351333,
+              "unit": "percent",
+              "display_value": "29.0%",
+              "citation": {
+                "source_id": "bloom-energy-corporation-10k",
+                "locator": "Inline XBRL Revenues; period ended 2025-12-31; accession 0001628280-26-006516"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Bloom Energy Corporation",
+              "business_model": "On-site solid oxide fuel-cell systems and related services",
+              "metric": "Gross margin",
+              "period": "FY2024",
+              "value": 27.455056667679884,
+              "unit": "percent",
+              "display_value": "27.5%",
+              "citation": {
+                "source_id": "bloom-energy-corporation-10k",
+                "locator": "Inline XBRL Revenues; period ended 2024-12-31; accession 0001628280-26-006516"
+              }
+            }
+          ],
+          "limitations": [
+            "This automated onboarding case uses own-history direction and does not establish peer comparability."
+          ],
+          "limitations_zh": [
+            "本自动接入案例只使用公司自身历史方向，不能据此证明同业可比性。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not yet normalize segment mix, warranty accounting, or incentive effects.",
+            "text_zh": "自动化案例尚未统一分部组合、质保会计或激励政策影响。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess whether the observed margin direction is durable for this business model.",
+            "text_zh": "需人工判断观察到的毛利率方向对该商业模式是否可持续。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify the selected XBRL revenue and cost concepts against the audited statements and notes.",
+            "text_zh": "需将所选 XBRL 收入和成本概念与审计报表及附注核对。"
+          }
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "The profit-state branch and the company's own two-year OCF/capex direction are primary.",
+          "scope_zh": "优先使用盈亏状态分支及公司自身连续两年的经营现金流/资本开支方向。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Bloom Energy Corporation",
+              "business_model": "On-site solid oxide fuel-cell systems and related services",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2025",
+              "value": 2.00759350939939,
+              "unit": "times",
+              "display_value": "2.01x",
+              "citation": {
+                "source_id": "bloom-energy-corporation-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-12-31; accession 0001628280-26-006516"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Bloom Energy Corporation",
+              "business_model": "On-site solid oxide fuel-cell systems and related services",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2024",
+              "value": 1.5632094066471827,
+              "unit": "times",
+              "display_value": "1.56x",
+              "citation": {
+                "source_id": "bloom-energy-corporation-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2024-12-31; accession 0001628280-26-006516"
+              }
+            }
+          ],
+          "limitations": [
+            "Historical OCF/capex does not include every forward commitment or financing constraint."
+          ],
+          "limitations_zh": [
+            "历史经营现金流/资本开支并未覆盖所有前瞻承诺或融资约束。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not build a forward schedule of commitments, maturities, or working-capital needs.",
+            "text_zh": "自动化案例尚未建立承诺、到期债务或营运资金需求的前瞻计划。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Stress-test whether historical cash conversion remains representative under the company's next operating cycle.",
+            "text_zh": "需人工压力测试历史现金转化在公司下一经营周期是否仍具代表性。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify capex classification and restricted-cash scope against the cash-flow statement and notes.",
+            "text_zh": "需对照现金流量表及附注核验资本开支分类和受限现金口径。"
+          }
+        ]
+      }
+    }
+  }
+}

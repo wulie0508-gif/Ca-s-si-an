@@ -1,0 +1,748 @@
+{
+  "subject": {
+    "organization": "Nextpower Inc.",
+    "technology": "Solar tracking and power-conversion systems",
+    "ticker": "NXT",
+    "cik": "0001852131",
+    "identity": {
+      "entity_id": "sec-cik-0001852131",
+      "scheme": "sec_cik",
+      "value": "0001852131",
+      "legal_name": "Nextpower Inc.",
+      "display_name": "Nextpower Inc. (formerly Nextracker Inc.)",
+      "display_name_zh": "Nextpower Inc.（原 Nextracker Inc.）",
+      "legal_name_citation": {
+        "source_id": "nextpower-inc-10k",
+        "locator": "Cover page and registrant legal name"
+      },
+      "aliases": [
+        {
+          "name": "Nextracker Inc.",
+          "name_zh": "Nextracker Inc.",
+          "status": "former",
+          "effective_until": "2025-11",
+          "source_id": "nextpower-inc-former-name-10k",
+          "locator": "Cover page and registrant legal name"
+        }
+      ]
+    }
+  },
+  "assessment": {
+    "as_of": "2026-07-16",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "Solar tracker and power-systems manufacturer"
+  },
+  "sources": [
+    {
+      "id": "nextpower-inc-10k",
+      "path": "../../../.cache/company-loops/nextpower-inc/nxt-20260331.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/1852131/000185213126000017/nxt-20260331.htm",
+      "title": "Nextpower Inc. FY2026 Form 10-K",
+      "publisher": "Nextpower Inc.",
+      "published": "2026-05-19",
+      "kind": "regulatory_filing",
+      "role": "subject",
+      "subject_entity_id": "sec-cik-0001852131"
+    },
+    {
+      "id": "nextpower-inc-former-name-10k",
+      "path": "../../../.cache/company-loops/nextpower-inc/nxt-20250331.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/1852131/000185213125000021/nxt-20250331.htm",
+      "title": "Nextracker Inc. FY2025 Form 10-K",
+      "publisher": "Nextracker Inc.",
+      "published": "2025-05-22",
+      "kind": "regulatory_filing",
+      "role": "identity",
+      "subject_entity_id": "sec-cik-0001852131"
+    },
+    {
+      "id": "nextpower-inc-sec-companyfacts",
+      "path": "../../../.cache/company-loops/nextpower-inc/companyfacts.json",
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001852131.json",
+      "title": "SEC company facts for Nextpower Inc.",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "published": "2026-05-19",
+      "kind": "regulator",
+      "role": "auxiliary",
+      "subject_entity_id": "sec-cik-0001852131"
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2024-04-01",
+        "end_date": "2025-03-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {
+            "value": 2959197000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL Revenues; period ended 2025-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "Revenues",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 1950372000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2025-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 1008825000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2025-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": 509168000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL NetIncomeLoss; period ended 2025-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "attributable_to_parent",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "attributable_to_parent"
+            },
+            "selection": {
+              "concept": "NetIncomeLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "ProfitLoss",
+                  "value": 517246000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          },
+          "operating_cash_flow": {
+            "value": 655794000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 33921000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2025-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 766103000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL CashAndCashEquivalentsAtCarryingValue; period ended 2025-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashAndCashEquivalentsAtCarryingValue",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                  "value": 766103000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "period": "FY2026",
+        "fiscal_year": 2026,
+        "period_type": "annual",
+        "start_date": "2025-04-01",
+        "end_date": "2026-03-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {
+            "value": 3559390000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL Revenues; period ended 2026-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "Revenues",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 2399295000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2026-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 1160095000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2026-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": 585883000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL NetIncomeLoss; period ended 2026-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "attributable_to_parent",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "attributable_to_parent"
+            },
+            "selection": {
+              "concept": "NetIncomeLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "ProfitLoss",
+                  "value": 585883000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          },
+          "operating_cash_flow": {
+            "value": 562911000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2026-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 49277000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2026-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 1094976000.0,
+            "source_id": "nextpower-inc-10k",
+            "locator": "Inline XBRL CashAndCashEquivalentsAtCarryingValue; period ended 2026-03-31; accession 0001852131-26-000017",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashAndCashEquivalentsAtCarryingValue",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                  "value": 1094976000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": true,
+    "selected_source_ids": [
+      "nextpower-inc-sec-companyfacts"
+    ],
+    "relative_tolerance": 0,
+    "absolute_tolerance": 0,
+    "facts": [
+      {
+        "period": "FY2025",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-03-31",
+        "accounting_scope": "consolidated",
+        "value": 2959197000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:Revenues / USD / end 2025-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-03-31",
+        "accounting_scope": "consolidated",
+        "value": 1950372000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2025-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-03-31",
+        "accounting_scope": "consolidated",
+        "value": 1008825000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2025-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-03-31",
+        "accounting_scope": "attributable_to_parent",
+        "value": 509168000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:NetIncomeLoss / USD / end 2025-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-03-31",
+        "accounting_scope": "consolidated",
+        "value": 655794000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2025-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-03-31",
+        "accounting_scope": "consolidated",
+        "value": 33921000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2025-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-03-31",
+        "accounting_scope": "consolidated",
+        "value": 766103000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:CashAndCashEquivalentsAtCarryingValue / USD / end 2025-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2026",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2026-03-31",
+        "accounting_scope": "consolidated",
+        "value": 3559390000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:Revenues / USD / end 2026-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2026",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2026-03-31",
+        "accounting_scope": "consolidated",
+        "value": 2399295000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2026-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2026",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2026-03-31",
+        "accounting_scope": "consolidated",
+        "value": 1160095000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2026-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2026",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2026-03-31",
+        "accounting_scope": "attributable_to_parent",
+        "value": 585883000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:NetIncomeLoss / USD / end 2026-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2026",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2026-03-31",
+        "accounting_scope": "consolidated",
+        "value": 562911000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2026-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2026",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2026-03-31",
+        "accounting_scope": "consolidated",
+        "value": 49277000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2026-03-31 / filed 2026-05-19"
+      },
+      {
+        "period": "FY2026",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2026-03-31",
+        "accounting_scope": "consolidated",
+        "value": 1094976000.0,
+        "source_id": "nextpower-inc-sec-companyfacts",
+        "locator": "us-gaap:CashAndCashEquivalentsAtCarryingValue / USD / end 2026-03-31 / filed 2026-05-19"
+      }
+    ]
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "collect_sec_case.py with user-supplied business classification",
+    "prepared_at": "2026-07-16",
+    "subindustry": {
+      "scope_id": "solar-tracker-and-power-systems-manufacturing",
+      "name": "Solar tracker and power-systems manufacturer",
+      "name_zh": "太阳能跟踪与电力系统制造商",
+      "value_chain_position": "Solar tracker and power-systems manufacturer",
+      "value_chain_position_zh": "太阳能跟踪与电力系统制造商",
+      "summary": "Nextpower Inc. is tested in the 'solar-tracker-and-power-systems-manufacturing' scope. The classification must be verified against Item 1 before publication.",
+      "summary_zh": "Nextpower Inc. 按“太阳能跟踪与电力系统制造商”口径测试；发布前必须对照 Form 10-K Item 1 核验分类。",
+      "basis": [
+        {
+          "source_id": "nextpower-inc-10k",
+          "locator": "Form 10-K Item 1"
+        }
+      ]
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "The company's own two-year gross-margin direction is primary; no peer threshold is used.",
+          "scope_zh": "优先比较公司自身连续两年的毛利率方向，不使用跨公司的绝对阈值。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Nextpower Inc.",
+              "business_model": "Solar tracker and power-systems manufacturer",
+              "metric": "Gross margin",
+              "period": "FY2026",
+              "value": 32.5925228761108,
+              "unit": "percent",
+              "display_value": "32.6%",
+              "citation": {
+                "source_id": "nextpower-inc-10k",
+                "locator": "Inline XBRL Revenues; period ended 2026-03-31; accession 0001852131-26-000017"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Nextpower Inc.",
+              "business_model": "Solar tracker and power-systems manufacturer",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": 34.09117405836786,
+              "unit": "percent",
+              "display_value": "34.1%",
+              "citation": {
+                "source_id": "nextpower-inc-10k",
+                "locator": "Inline XBRL Revenues; period ended 2025-03-31; accession 0001852131-26-000017"
+              }
+            }
+          ],
+          "limitations": [
+            "This automated onboarding case uses own-history direction and does not establish peer comparability."
+          ],
+          "limitations_zh": [
+            "本自动接入案例只使用公司自身历史方向，不能据此证明同业可比性。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not yet normalize segment mix, warranty accounting, or incentive effects.",
+            "text_zh": "自动化案例尚未统一分部组合、质保会计或激励政策影响。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess whether the observed margin direction is durable for this business model.",
+            "text_zh": "需人工判断观察到的毛利率方向对该商业模式是否可持续。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify the selected XBRL revenue and cost concepts against the audited statements and notes.",
+            "text_zh": "需将所选 XBRL 收入和成本概念与审计报表及附注核对。"
+          }
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "The profit-state branch and the company's own two-year OCF/capex direction are primary.",
+          "scope_zh": "优先使用盈亏状态分支及公司自身连续两年的经营现金流/资本开支方向。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Nextpower Inc.",
+              "business_model": "Solar tracker and power-systems manufacturer",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2026",
+              "value": 11.423402398684985,
+              "unit": "times",
+              "display_value": "11.42x",
+              "citation": {
+                "source_id": "nextpower-inc-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2026-03-31; accession 0001852131-26-000017"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Nextpower Inc.",
+              "business_model": "Solar tracker and power-systems manufacturer",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2025",
+              "value": 19.332979570177766,
+              "unit": "times",
+              "display_value": "19.33x",
+              "citation": {
+                "source_id": "nextpower-inc-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-03-31; accession 0001852131-26-000017"
+              }
+            }
+          ],
+          "limitations": [
+            "Historical OCF/capex does not include every forward commitment or financing constraint."
+          ],
+          "limitations_zh": [
+            "历史经营现金流/资本开支并未覆盖所有前瞻承诺或融资约束。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not build a forward schedule of commitments, maturities, or working-capital needs.",
+            "text_zh": "自动化案例尚未建立承诺、到期债务或营运资金需求的前瞻计划。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Stress-test whether historical cash conversion remains representative under the company's next operating cycle.",
+            "text_zh": "需人工压力测试历史现金转化在公司下一经营周期是否仍具代表性。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify capex classification and restricted-cash scope against the cash-flow statement and notes.",
+            "text_zh": "需对照现金流量表及附注核验资本开支分类和受限现金口径。"
+          }
+        ]
+      }
+    }
+  }
+}

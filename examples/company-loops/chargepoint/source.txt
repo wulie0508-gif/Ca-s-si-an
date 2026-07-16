@@ -1,0 +1,30 @@
+CHARGEPOINT HOLDINGS, INC. — FY2026 OFFICIAL-SOURCE FACT PACK
+Primary source: ChargePoint FY2026 Form 10-K
+Official URL: https://www.sec.gov/Archives/edgar/data/1777393/000177739326000013/chpt-20260131.htm
+Prepared as a normalized local Inline XBRL excerpt for deterministic offline testing. Values below are USD.
+
+Business classification — Form 10-K Item 1
+ChargePoint combines networked charging hardware, cloud subscriptions, support, and related services. Its fiscal year ended January 31, 2026. The test scope is ev-charging-network-hardware-saas.
+
+Consolidated statements of operations — Inline XBRL
+FY2026 revenue: 411,224,000
+FY2025 revenue: 417,083,000
+FY2026 gross profit: 125,602,000
+FY2025 gross profit: 100,681,000
+FY2026 net loss: (220,197,000)
+FY2025 net loss: (277,066,000)
+
+Consolidated statements of cash flows — Inline XBRL
+FY2026 operating cash flow: (62,835,000)
+FY2025 operating cash flow: (146,947,000)
+FY2026 purchases of PP&E: (4,165,000)
+FY2025 purchases of PP&E: (12,073,000)
+
+Consolidated balance sheets — Inline XBRL
+FY2026 cash and cash equivalents: 141,564,000
+FY2025 cash and cash equivalents: 224,571,000
+
+Revenue-mix context — Inline XBRL
+FY2026 charging-hardware revenue: 216,514,000; FY2025: 234,802,000.
+FY2026 subscription revenue: 162,387,000; FY2025: 144,325,000.
+FY2026 deferred revenue: 250,581,000; FY2025: 239,215,000.

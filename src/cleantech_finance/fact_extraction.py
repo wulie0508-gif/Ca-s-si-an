@@ -11,6 +11,7 @@ to a positive magnitude.
 from __future__ import annotations
 
 import re
+from datetime import date, timedelta
 from typing import Any
 
 from .ingest import ManifestError
@@ -154,9 +155,11 @@ def extract_financial_facts(
     chunks: list[Chunk], sources: list[Source], config: dict[str, Any]
 ) -> dict[str, Any]:
     source_id = config.get("source_id")
-    source_ids = {source.id for source in sources}
-    if source_id not in source_ids:
+    source_lookup = {source.id: source for source in sources}
+    if source_id not in source_lookup:
         raise ManifestError("financial_extraction.source_id must reference a manifest source")
+    if source_lookup[source_id].role != "subject":
+        raise ManifestError("financial_extraction.source_id must reference a subject source")
     configured_years = config.get("years", [])
     if not (
         isinstance(configured_years, list)
@@ -258,16 +261,41 @@ def extract_financial_facts(
         )
         extraction_log.append(log)
         for year, fact in extracted.items():
+            fact["accounting_scope"] = "consolidated"
+            fact["statement_scope"] = {
+                "operations": "total_operations",
+                "attribution": (
+                    "consolidated" if fact_name == "net_income" else "not_applicable"
+                ),
+            }
             facts_by_year[year][fact_name] = fact
 
-    periods = [
-        {
-            "period": f"FY{year}",
-            "end_date": f"{year}-12-31",
-            "facts": facts_by_year[year],
-        }
-        for year in sorted(facts_by_year)
-    ]
+    fiscal_year_end = config.get("fiscal_year_end")
+    if not isinstance(fiscal_year_end, str) or not re.fullmatch(r"\d{2}-\d{2}", fiscal_year_end):
+        raise ManifestError(
+            "financial_extraction requires fiscal_year_end in MM-DD format"
+        )
+    month, day = (int(part) for part in fiscal_year_end.split("-"))
+    periods = []
+    for year in sorted(facts_by_year):
+        try:
+            end = date(year, month, day)
+            start = date(year - 1, month, day) + timedelta(days=1)
+        except ValueError as exc:
+            raise ManifestError(
+                f"Invalid fiscal_year_end '{fiscal_year_end}' for FY{year}"
+            ) from exc
+        periods.append(
+            {
+                "period": f"FY{year}",
+                "fiscal_year": year,
+                "period_type": "annual",
+                "start_date": start.isoformat(),
+                "end_date": end.isoformat(),
+                "duration_days": (end - start).days + 1,
+                "facts": facts_by_year[year],
+            }
+        )
     return {
         "mode": "anchored_regex_v0.2",
         "status": "extracted",

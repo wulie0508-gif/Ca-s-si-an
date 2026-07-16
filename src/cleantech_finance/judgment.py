@@ -11,9 +11,15 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from .fact_semantics import (
+    cash_operations_scope,
+    margin_operations_scope,
+    select_net_income_fact,
+)
 from .models import Source
+from .rules import dimension_applicability, evaluate_rule
 
-JUDGMENT_LAYER_VERSION = "0.2.1"
+JUDGMENT_LAYER_VERSION = "0.3.0"
 SUPPORTED_CARD_DIMENSIONS = (
     "profitability-unit-economics",
     "cash-runway",
@@ -78,9 +84,7 @@ def _source_map(sources: list[Source]) -> dict[str, Source]:
     return {source.id: source for source in sources}
 
 
-def _citation(
-    raw: dict[str, Any], sources: dict[str, Source], errors: list[str]
-) -> dict[str, Any]:
+def _citation(raw: dict[str, Any], sources: dict[str, Source], errors: list[str]) -> dict[str, Any]:
     source_id = raw.get("source_id")
     locator = raw.get("locator")
     source = sources.get(source_id)
@@ -146,7 +150,7 @@ def _financial_fact_items(
 
     def observed(name: str, label: str, period: dict[str, Any]) -> dict[str, Any]:
         item = fact(period, name)
-        return {
+        result = {
             "id": name,
             "name": label,
             "period": period["period"],
@@ -155,19 +159,71 @@ def _financial_fact_items(
             "label": "fact",
             "citations": [_fact_citation(item, sources)],
         }
-
-    latest_revenue = fact(latest, "revenue")
-    prior_revenue = fact(prior, "revenue")
-    latest_cost = fact(latest, "operating_cost")
-    prior_cost = fact(prior, "operating_cost")
-    latest_margin = (latest_revenue["value"] - latest_cost["value"]) / latest_revenue["value"]
-    prior_margin = (prior_revenue["value"] - prior_cost["value"]) / prior_revenue["value"]
+        if "selection" in item:
+            result["selection"] = item["selection"]
+        if "statement_scope" in item:
+            result["statement_scope"] = item["statement_scope"]
+        return result
 
     if dimension_id == "profitability-unit-economics":
+
+        def margin_inputs(
+            period: dict[str, Any],
+        ) -> tuple[float, dict[str, Any], dict[str, Any], str, str, str]:
+            revenue = fact(period, "revenue")
+            gross_profit = period["facts"].get("gross_profit")
+            if gross_profit is not None:
+                return (
+                    gross_profit["value"] / revenue["value"],
+                    revenue,
+                    gross_profit,
+                    "gross_profit",
+                    "Gross profit / (loss)",
+                    "gross profit / revenue",
+                )
+            operating_cost = fact(period, "operating_cost")
+            return (
+                (revenue["value"] - operating_cost["value"]) / revenue["value"],
+                revenue,
+                operating_cost,
+                "operating_cost",
+                "Operating cost / cost of revenues",
+                "(revenue - operating cost) / revenue",
+            )
+
+        (
+            latest_margin,
+            latest_revenue,
+            latest_margin_component,
+            latest_component_id,
+            latest_component_label,
+            latest_formula,
+        ) = margin_inputs(latest)
+        (
+            prior_margin,
+            prior_revenue,
+            prior_margin_component,
+            _prior_component_id,
+            _prior_component_label,
+            _prior_formula,
+        ) = margin_inputs(prior)
+        latest_operations = margin_operations_scope(latest)
+        prior_operations = margin_operations_scope(prior)
+        if latest_operations != prior_operations:
+            raise ValueError("Profitability card mixes different operations scopes")
+        latest_income_id, _, _ = select_net_income_fact(latest, latest_operations)
+        prior_income_id, _, _ = select_net_income_fact(prior, prior_operations)
+        if latest_income_id != prior_income_id:
+            raise ValueError("Profitability card mixes different net-income fact ids")
+        income_label = (
+            "Net income from continuing operations"
+            if latest_operations == "continuing_operations"
+            else "Net income"
+        )
         return [
             observed("revenue", "Revenue", latest),
-            observed("operating_cost", "Operating cost / cost of revenues", latest),
-            observed("net_income", "Net income", latest),
+            observed(latest_component_id, latest_component_label, latest),
+            observed(latest_income_id, income_label, latest),
             {
                 "id": "gross-margin",
                 "name": "Gross margin",
@@ -175,10 +231,10 @@ def _financial_fact_items(
                 "value": round(latest_margin, 4),
                 "display_value": f"{latest_margin * 100:.1f}%",
                 "label": "calculation",
-                "formula": "(revenue - operating cost) / revenue",
+                "formula": latest_formula,
                 "citations": [
                     _fact_citation(latest_revenue, sources),
-                    _fact_citation(latest_cost, sources),
+                    _fact_citation(latest_margin_component, sources),
                 ],
             },
             {
@@ -191,19 +247,27 @@ def _financial_fact_items(
                 "formula": "latest gross margin - prior gross margin",
                 "citations": [
                     _fact_citation(latest_revenue, sources),
-                    _fact_citation(latest_cost, sources),
+                    _fact_citation(latest_margin_component, sources),
                     _fact_citation(prior_revenue, sources),
-                    _fact_citation(prior_cost, sources),
+                    _fact_citation(prior_margin_component, sources),
                 ],
             },
         ]
 
-    latest_income = fact(latest, "net_income")
-    prior_income = fact(prior, "net_income")
+    latest_operations = cash_operations_scope(latest)
+    prior_operations = cash_operations_scope(prior)
+    if latest_operations != prior_operations:
+        raise ValueError("Cash card mixes different operations scopes")
+    latest_income_id, latest_income, _ = select_net_income_fact(latest, latest_operations)
+    prior_income_id, prior_income, _ = select_net_income_fact(prior, prior_operations)
+    if latest_income_id != prior_income_id:
+        raise ValueError("Cash card mixes different net-income fact ids")
     latest_ocf = fact(latest, "operating_cash_flow")
     prior_ocf = fact(prior, "operating_cash_flow")
     latest_capex = fact(latest, "capex")
     prior_capex = fact(prior, "capex")
+    if latest_capex["value"] == 0 or prior_capex["value"] == 0:
+        raise ValueError("Cash judgment requires non-zero capex in both observed periods")
     latest_coverage = latest_ocf["value"] / abs(latest_capex["value"])
     prior_coverage = prior_ocf["value"] / abs(prior_capex["value"])
     sustained_loss = latest_income["value"] < 0 and prior_income["value"] < 0
@@ -211,7 +275,7 @@ def _financial_fact_items(
         observed("operating_cash_flow", "Net operating cash flow", latest),
         observed("capex", "Capital expenditure cash outflow", latest),
         observed("cash_and_equivalents", "Period-end cash and equivalents", latest),
-        observed("net_income", "Net income", latest),
+        observed(latest_income_id, "Net income", latest),
         {
             "id": "sustained-loss",
             "name": "Loss in both observed years",
@@ -253,6 +317,17 @@ def _contains_absolute_threshold(value: Any) -> bool:
     return False
 
 
+def _unique_citations(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    unique: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for item in items:
+        key = (str(item.get("source_id")), str(item.get("locator")))
+        if key not in seen:
+            seen.add(key)
+            unique.append(item)
+    return unique
+
+
 def build_judgment_layer(
     manifest: dict[str, Any],
     financials: dict[str, Any] | None,
@@ -265,6 +340,7 @@ def build_judgment_layer(
             "version": JUDGMENT_LAYER_VERSION,
             "status": "not_provided",
             "cards": [],
+            "dimension_outcomes": [],
             "structured_stage_trace": [],
             "framework_coverage": {"locked": 0, "implemented": 0, "ratio": 0},
             "validation": {"passed": True, "errors": []},
@@ -275,32 +351,87 @@ def build_judgment_layer(
             "version": JUDGMENT_LAYER_VERSION,
             "status": "invalid",
             "cards": [],
+            "dimension_outcomes": [],
             "structured_stage_trace": [],
             "framework_coverage": {"locked": 0, "implemented": 0, "ratio": 0},
             "validation": {"passed": False, "errors": ["Judgment cards require financial facts"]},
         }
 
     errors: list[str] = []
+    if context.get("contract_version") != JUDGMENT_LAYER_VERSION:
+        errors.append(f"judgment_context.contract_version must be '{JUDGMENT_LAYER_VERSION}'")
     source_lookup = _source_map(sources)
     subindustry = context.get("subindustry") or {}
     subindustry_basis = _citations(subindustry.get("basis"), source_lookup, errors)
-    for key in ("name", "value_chain_position", "summary"):
+    for key in (
+        "scope_id",
+        "name",
+        "name_zh",
+        "value_chain_position",
+        "value_chain_position_zh",
+        "summary",
+        "summary_zh",
+    ):
         if not subindustry.get(key):
             errors.append(f"judgment_context.subindustry is missing '{key}'")
     if not subindustry_basis:
         errors.append("Subindustry classification requires at least one citation")
+    if any(item.get("role") != "subject" for item in subindustry_basis):
+        errors.append("Subindustry classification may cite subject sources only")
 
     cards: list[dict[str, Any]] = []
+    outcomes: list[dict[str, Any]] = []
     traces: list[dict[str, Any]] = []
     dimension_context = context.get("dimensions") or {}
     enabled = [item for item in SUPPORTED_CARD_DIMENSIONS if item in selected_dimensions]
     for dimension_id in enabled:
+        applicability = dimension_applicability(
+            dimension_id, str(subindustry.get("scope_id") or "")
+        )
+        if applicability["status"] == "not_applicable":
+            outcome = {
+                "dimension_id": dimension_id,
+                "status": "not_applicable",
+                "signal": None,
+                "scope_id": subindustry.get("scope_id"),
+                "reason": applicability["reason"],
+                "reason_zh": applicability["reason_zh"],
+                "basis": subindustry_basis,
+            }
+            outcomes.append(outcome)
+            traces.append(
+                {
+                    "dimension_id": dimension_id,
+                    "stage": "applicability_gate",
+                    "actor": "deterministic_rule_engine",
+                    "output": applicability["reason"],
+                    "citation_count": len(subindustry_basis),
+                    "sources": subindustry_basis,
+                    "status": "not_applicable",
+                }
+            )
+            continue
         raw = dimension_context.get(dimension_id)
         if not raw:
             errors.append(f"Missing judgment context for '{dimension_id}'")
             continue
         if "framework" in raw:
             errors.append(f"'{dimension_id}' attempts to override the locked framework")
+        external_assertions = {
+            "application",
+            "signal",
+            "rule_id",
+            "rule_version",
+            "condition",
+            "path",
+            "summary",
+            "rationale",
+        }.intersection(raw)
+        if external_assertions:
+            errors.append(
+                f"'{dimension_id}' cannot provide deterministic application fields: "
+                + ", ".join(sorted(external_assertions))
+            )
         framework = FRAMEWORKS[dimension_id]
         if _contains_absolute_threshold(framework):
             errors.append(f"Locked framework '{dimension_id}' contains an absolute threshold")
@@ -311,19 +442,35 @@ def build_judgment_layer(
         observations: list[dict[str, Any]] = []
         for item in benchmark.get("observations") or []:
             citation = _citation(item.get("citation") or {}, source_lookup, errors)
+            comparison_type = item.get("comparison_type")
+            if comparison_type not in {
+                "subject_history",
+                "comparable_peer",
+                "adjacent_context",
+            }:
+                errors.append(f"'{dimension_id}' benchmark observation requires comparison_type")
+            if comparison_type == "subject_history" and citation.get("role") != "subject":
+                errors.append(f"'{dimension_id}' subject_history must cite a subject source")
+            if (
+                comparison_type in {"comparable_peer", "adjacent_context"}
+                and citation.get("role") != "benchmark"
+            ):
+                errors.append(f"'{dimension_id}' external comparison must cite a benchmark source")
             observations.append({**item, "citation": citation})
         if not benchmark.get("scope") or not observations:
             errors.append(f"'{dimension_id}' requires a scoped benchmark with observations")
+        if not benchmark.get("scope_zh"):
+            errors.append(f"'{dimension_id}' benchmark requires Chinese scope in 'scope_zh'")
+        if observations and not any(
+            item.get("comparison_type") == "subject_history" for item in observations
+        ):
+            errors.append(f"'{dimension_id}' benchmark must include subject_history first")
         if not benchmark.get("limitations"):
             errors.append(f"'{dimension_id}' benchmark requires an explicit limitation")
-
-        application = raw.get("application") or {}
-        signal = application.get("signal")
-        if signal not in SIGNALS:
-            errors.append(f"'{dimension_id}' signal must be red, amber, or green")
-        application_basis = _citations(application.get("basis"), source_lookup, errors)
-        if not application.get("path") or not application.get("summary") or not application_basis:
-            errors.append(f"'{dimension_id}' application requires path, summary, and cited basis")
+        if not benchmark.get("limitations_zh"):
+            errors.append(
+                f"'{dimension_id}' benchmark requires Chinese limitations in 'limitations_zh'"
+            )
 
         gaps = raw.get("gaps") or []
         gap_kinds = {item.get("kind") for item in gaps}
@@ -335,6 +482,48 @@ def build_judgment_layer(
             errors.append(f"'{dimension_id}' gap items require Chinese text in 'text_zh'")
 
         facts = _financial_fact_items(dimension_id, financials, source_lookup)
+        try:
+            application = evaluate_rule(
+                dimension_id, str(subindustry.get("scope_id") or ""), financials
+            )
+        except ValueError as exc:
+            errors.append(str(exc))
+            continue
+        signal = application["signal"]
+        basis_fact_ids = set(application["basis_fact_ids"])
+        application_basis = _unique_citations(
+            [
+                citation
+                for fact in facts
+                if fact["id"] in basis_fact_ids
+                for citation in fact["citations"]
+            ]
+        )
+        benchmark_sources = _unique_citations(
+            [item["citation"] for item in observations if item.get("citation")]
+        )
+        reviewed_sources = _unique_citations(
+            subindustry_basis + benchmark_sources + application_basis
+        )
+        rule_provenance = {
+            key: application[key]
+            for key in (
+                "rule_id",
+                "rule_version",
+                "rule_status",
+                "rule_library_version",
+                "rule_digest",
+                "inputs_digest",
+                "subindustry_scope",
+                "deterministic",
+                "inputs",
+                "condition",
+                "rationale",
+                "rationale_zh",
+                "basis",
+                "basis_zh",
+            )
+        }
         cards.append(
             {
                 "dimension_id": dimension_id,
@@ -347,23 +536,32 @@ def build_judgment_layer(
                 "cells": {
                     "1_subindustry_position": {
                         "label": "agent_structured_output",
+                        "scope_id": subindustry.get("scope_id"),
                         "name": subindustry.get("name"),
+                        "name_zh": subindustry.get("name_zh"),
                         "value_chain_position": subindustry.get("value_chain_position"),
+                        "value_chain_position_zh": subindustry.get("value_chain_position_zh"),
                         "summary": subindustry.get("summary"),
+                        "summary_zh": subindustry.get("summary_zh"),
                         "basis": subindustry_basis,
                     },
                     "2_extracted_facts": {"label": "facts_and_calculations", "items": facts},
                     "3_judgment_framework": framework,
                     "4_framework_application": {
-                        "label": "inference",
+                        "label": "deterministic_rule_output",
                         "signal": signal,
-                        "path": application.get("path"),
-                        "summary": application.get("summary"),
+                        "path": application["path"],
+                        "path_zh": application["path_zh"],
+                        "summary": application["summary"],
+                        "summary_zh": application["summary_zh"],
                         "basis": application_basis,
+                        "rule_provenance": rule_provenance,
                         "benchmark": {
                             "scope": benchmark.get("scope"),
+                            "scope_zh": benchmark.get("scope_zh"),
                             "observations": observations,
                             "limitations": benchmark.get("limitations"),
+                            "limitations_zh": benchmark.get("limitations_zh"),
                         },
                     },
                     "5_gaps_and_human_judgment": {
@@ -375,9 +573,18 @@ def build_judgment_layer(
                     "This card contains no investment rating. Every signal is an evidence "
                     "signal, not investment advice."
                 ),
-                "disclaimer_zh": (
-                    "本卡不包含投资评级。所有信号均为证据信号，不构成投资建议。"
-                ),
+                "disclaimer_zh": ("本卡不包含投资评级。所有信号均为证据信号，不构成投资建议。"),
+            }
+        )
+        outcomes.append(
+            {
+                "dimension_id": dimension_id,
+                "status": "evaluated",
+                "signal": signal,
+                "scope_id": subindustry.get("scope_id"),
+                "reason": None,
+                "reason_zh": None,
+                "rule_id": application["rule_id"],
             }
         )
         traces.extend(
@@ -385,47 +592,59 @@ def build_judgment_layer(
                 {
                     "dimension_id": dimension_id,
                     "stage": "subindustry_identification",
-                    "actor": "agent_structured_output",
+                    "actor": "semantic_agent",
                     "output": subindustry.get("summary"),
                     "citation_count": len(subindustry_basis),
+                    "sources": subindustry_basis,
                 },
                 {
                     "dimension_id": dimension_id,
                     "stage": "benchmark_retrieval",
-                    "actor": "agent_structured_output",
+                    "actor": "semantic_agent",
                     "output": benchmark.get("scope"),
                     "citation_count": len(observations),
+                    "sources": benchmark_sources,
                 },
                 {
                     "dimension_id": dimension_id,
-                    "stage": "relative_positioning_and_trend",
-                    "actor": "agent_structured_output",
-                    "output": application.get("summary"),
+                    "stage": "deterministic_signal",
+                    "actor": "deterministic_rule_engine",
+                    "output": application["summary"],
                     "citation_count": len(application_basis),
+                    "sources": application_basis,
+                    "rule_id": application["rule_id"],
+                    "rule_version": application["rule_version"],
+                    "rule_digest": application["rule_digest"],
+                    "inputs_digest": application["inputs_digest"],
                 },
                 {
                     "dimension_id": dimension_id,
                     "stage": "gap_exposure",
-                    "actor": "agent_structured_output",
+                    "actor": "semantic_agent",
                     "output": f"{len(gaps)} review items",
-                    "citation_count": 0,
+                    "citation_count": len(reviewed_sources),
+                    "sources": reviewed_sources,
                 },
             ]
         )
 
     locked = sum(card["cells"]["3_judgment_framework"]["locked"] is True for card in cards)
-    implemented = len(enabled)
+    implemented = len(cards)
+    not_applicable = sum(item["status"] == "not_applicable" for item in outcomes)
     return {
         "version": JUDGMENT_LAYER_VERSION,
-        "status": "generated" if cards and not errors else "invalid",
+        "status": "generated" if (cards or outcomes) and not errors else "invalid",
         "prepared_by": context.get("prepared_by", "agent-assisted"),
         "prepared_at": context.get("prepared_at"),
         "trace_policy": "Structured stage outputs only; hidden chain-of-thought is not stored.",
         "cards": cards,
+        "dimension_outcomes": outcomes,
         "structured_stage_trace": traces,
         "framework_coverage": {
             "locked": locked,
             "implemented": implemented,
+            "not_applicable": not_applicable,
+            "requested": len(enabled),
             "ratio": round(locked / implemented, 4) if implemented else 0,
         },
         "validation": {"passed": not errors, "errors": errors},

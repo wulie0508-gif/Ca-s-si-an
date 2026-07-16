@@ -1,86 +1,77 @@
 ---
 name: audit-cleantech-finance
-description: Build bilingual, source-traceable five-cell evidence cards for a clean energy company's profitability and cash-flow/funding-gap dimensions from annual reports, filings, PDFs, and cited public comparators. Use when Codex needs to classify a cleantech business model, extract audited facts, apply the locked CleanTech Finance methodology framework, expose evidence gaps in English and Chinese, or prepare human-reviewed financial research without issuing an investment, credit, or risk rating.
+description: Run deterministic, bilingual CleanTech Finance evidence audits and failure-driven new-company generalization loops for profitability/unit economics and cash runway. Use when Codex must onboard or audit a clean-energy company, build source-traceable English/Chinese five-cell cards and local HTML reports, choose optional non-authoritative validation sources, test a new company, or improve the versioned rule and evidence contracts without issuing an investment rating.
 ---
 
 # Audit CleanTech Finance
 
-Build one fixed five-cell evidence card per implemented dimension with the repository's deterministic CLI. Keep agent-prepared structured outputs, source facts, formulas, the locked framework, inference, and required human judgment separate.
+Use the repository's offline deterministic core to build one five-cell card per implemented dimension. Keep source facts, deterministic calculations, locked methodology, rule output, and human-review gaps separate.
 
-Only `profitability-unit-economics` and `cash-runway` are implemented and publicly validated end to end. Treat the other four financial lenses and all 17 adoption-risk dimensions as retrieval scaffolds, not completed judgment products.
+Only `profitability-unit-economics` and `cash-runway` are validated end to end. Treat the other four financial dimensions as `authored` only and all 17 adoption-risk dimensions as retrieval scaffolds.
 
-## Workflow
+## Preserve the authority boundary
 
-1. Define the subject before extracting evidence:
-   - Name the legal entity and ticker when applicable.
-   - Name the exact technology or product scope.
-   - Set the `as_of` date, geography, value-chain boundary, and decision horizon.
-   - Prefer consolidated company results unless the user explicitly requests parent-company results.
+- Let deterministic extraction code produce financial facts.
+- Let cited structured research provide the subindustry classification, own-history/comparator observations, and gaps.
+- Let the versioned rule library alone choose `red`, `amber`, or `green` and produce the application path and summary.
+- Reject manifest or Agent attempts to supply a signal, framework, rule, path, or application summary.
+- Store structured stage outputs only. Never request or save hidden chain-of-thought.
 
-2. Gather public primary sources:
-   - Prefer audited annual reports, regulatory filings, regulator publications, standards, and government documents.
-   - Record publisher, publication date, stable URL, and local path for every source.
-   - Do not place private CRM, contact, agreement, or internal pipeline data in the repository or output.
-   - Assign the subject filing `role: subject`. Assign comparator filings `role: benchmark`; benchmark documents must not contaminate subject-company fact extraction or retrieval.
+## Choose a mode
 
-3. Create a manifest. Read [references/manifest-contract.md](references/manifest-contract.md) when creating or repairing one.
-   - Use `financial_extraction` for supported English consolidated statements.
-   - Use `financials` for other formats, and cite every numeric fact with a source id and page or line locator.
-   - Never provide both modes in one manifest.
+### Audit one company
 
-4. Prepare `judgment_context`. Read [references/judgment-context.md](references/judgment-context.md) and record four concise, cited stage outputs for each implemented dimension:
-   - `subindustry_identification`: classify manufacturing, power electronics/equipment, installation/service, or asset ownership/operation and state the value-chain position.
-   - `benchmark_retrieval`: use the subject's own prior period first, then genuinely comparable peers; label adjacent-company context when comparability is incomplete.
-   - `relative_positioning_and_trend`: apply the locked framework and select a conservative red/amber/green evidence signal with cited basis.
-   - `gap_exposure`: include at least one `evidence_gap`, `human_judgment`, and `verification` item, with accurate English `text` and Chinese `text_zh`.
+1. Define the legal entity, stable identifier, technology, value-chain scope, geography, date, and horizon.
+2. Gather public primary sources. Prefer audited filings and regulator data. Assign `subject`, `identity`, `auxiliary`, and `benchmark` roles deliberately.
+3. Read [references/manifest-contract.md](references/manifest-contract.md) and create or repair the manifest. Never mix automatic and structured financial modes.
+4. Read [references/judgment-context.md](references/judgment-context.md) and prepare cited bilingual classification, benchmark, and gap fields. Do not provide a signal.
+5. Run only the two validated dimensions:
 
-   Store only these structured outputs. Do not request, reveal, or save hidden chain-of-thought. Do not put a `framework` key in `judgment_context`; the CLI rejects attempts to replace the locked methodology text.
-
-5. Run only the two implemented dimensions:
-
-   ```bash
-   cleantech-finance audit manifest.json \
-     --only profitability-unit-economics cash-runway \
-     --out outputs/company
+   ```powershell
+   .\.venv-new\Scripts\python.exe -m cleantech_finance audit manifest.json `
+     --only profitability-unit-economics cash-runway `
+     --out outputs\company
    ```
 
-   Do not present a wider all-dimension run as validated product output.
+6. Inspect `audit.json`, `dimension_cards.json`, `cards/*.html`, and `report.html`. Verify entity, periods, units, statement scopes, XBRL selection provenance, formulas, citations, rule id/version/digests, bilingual text, and applicability outcomes.
+7. Read [references/review-protocol.md](references/review-protocol.md), then validate:
 
-6. Inspect `audit.json`, `dimension_cards.json`, `cards/*.html`, and `report.html`:
-   - Verify each automatically extracted financial fact against its cited page.
-   - Recompute a sample of formulas from cited inputs.
-   - Open the top candidate passages; do not treat relevance as truth probability.
-   - Confirm parent-company statements were not mixed into consolidated evidence.
-   - Confirm each card has exactly five cells, the neutral methodology framework is locked, and the signal remains attached to its cited basis and bilingual gaps.
-   - Confirm the framework, cell headings, signal meaning, gap items, and disclaimer are accurate in both English and Chinese.
-
-7. Read [references/review-protocol.md](references/review-protocol.md) before interpreting evidence statuses or drafting conclusions.
-
-8. Write conclusions with explicit labels:
-   - `Fact` for a statement directly supported by a cited source.
-   - `Calculation` for a deterministic formula with cited inputs.
-   - `Inference` for a reasoned interpretation.
-   - `Needs human verification` for evidence gaps, conflicting boundaries, forecasts, or material judgment.
-
-9. Run validation before delivery:
-
-   ```bash
-   cleantech-finance validate outputs/company/audit.json
+   ```powershell
+   .\.venv-new\Scripts\python.exe -m cleantech_finance validate outputs\company\audit.json
    ```
 
-   Stop and repair the run if citation integrity fails, a source locator is missing, or software populated a human rating.
+8. If the user chooses auxiliary sources, use the whitelist-checked runner. Auxiliary values must never alter signals or rule/input digests:
 
-10. For a release, extractor, framework-application, or card-rendering change, run `python scripts/run_release_gate.py`. It must pass Sungrow first, then Enphase, including both extraction and card-contract evaluations. Fix failures with format-level or contract-level rules, never company-name extraction branches, and rerun both cases before claiming generalization.
+   ```powershell
+   .\.venv-new\Scripts\python.exe scripts\run_company_loop_case.py `
+     --case albemarle `
+     --aux-source albemarle-2025-results
+   ```
+
+### Generalize with a new company
+
+Read [references/company-loop-protocol.md](references/company-loop-protocol.md) and execute its complete failure-driven loop. A foundation refactor is not a company loop. Do not count a loop until the new case, focused regression, full suite, ordered release gate, final artifacts, and residual insight all pass.
+
+## Release gates
+
+For any extractor, rule, framework-application, schema, or rendering change:
+
+1. Run Ruff and the full test suite.
+2. Validate every manifest against Draft 2020-12 schema.
+3. Run `python scripts/run_release_gate.py`; preserve Sungrow first and Enphase second.
+4. Run the registered company-loop suite and confirm zero model calls.
+5. Regenerate the bilingual local index with `python scripts/build_company_loop_index.py`.
+6. Open the index and representative reports locally. Check Chinese rendering, desktop/mobile layout, navigation, filters, source-selection draft commands, and the Clearway not-applicable state.
 
 ## Guardrails
 
-- Do not issue buy, sell, credit, or risk ratings on the user's behalf.
-- Do not use a universal gross-margin or cash threshold across unlike clean-energy business models.
-- Do not calculate a numeric score or weighted aggregate from the evidence signals.
-- Do not let manifest or agent output alter the locked CleanTech Finance methodology framework.
-- Do not calculate an aggregate DOE ARL score.
-- Do not equate evidence coverage with low risk.
-- Do not infer funding sufficiency from positive historical cash flow alone.
-- Do not hide extraction failure. Preserve the missing field in the review queue.
-- Keep the deterministic core offline unless the user explicitly authorizes source retrieval.
-- State honestly that 29/29 and 28/28 validate extraction and provenance, while 27/27 validates the card contract; none validates an investment conclusion.
+- Do not issue buy, sell, credit, aggregate risk, or investment ratings.
+- Do not combine dimension signals into a score, rank, or weighted result.
+- Do not use one absolute performance threshold across unlike subindustries. A direct arithmetic identity such as OCF/capex coverage at `1.0x` is allowed only when its meaning is explicit and scoped.
+- Require an exact `subindustry_scope`; forbid `all`, `any`, `global`, or company-name branches.
+- Treat `authored` and `validated` as different product states.
+- Keep benchmark and auxiliary documents out of subject fact extraction.
+- Fail closed on missing period identity, mixed accounting scope, conflicting entity identity, unknown XBRL semantics, or an unvalidated rule scope.
+- Keep auxiliary validation optional and user-selectable. Display available, selected, and ignored sources; report non-comparable facts before numerical mismatches.
+- Keep cash-conversion context non-authoritative and label selected drivers as an incomplete OCF reconciliation.
+- State that 29/29 and 28/28 validate extraction/provenance and 27/27 validates the card contract; none validates an investment conclusion.

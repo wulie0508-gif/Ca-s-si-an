@@ -18,7 +18,7 @@
 8. Check whether product and project evidence comes from the company, an independent evaluator, a lender, an insurer, or a regulator.
 9. Record conflicts and missing evidence without resolving them by intuition.
 
-For five-cell cards, verify that cell 3 presents a neutral methodology statement and remains locked, cell 4 follows that framework, and cell 5 contains bilingual evidence, judgment, and verification gaps. Confirm the signal meaning and disclaimer are equally strict in English and Chinese. A red/amber/green label is only an evidence signal.
+For five-cell cards, verify that cell 3 presents a neutral methodology statement and remains locked, cell 4 was produced by exactly one validated scoped rule, and cell 5 contains bilingual evidence, judgment, and verification gaps. Recompute the rule inputs and inspect the rule id, version, rule digest, and input digest. Confirm the signal meaning and disclaimer are equally strict in English and Chinese. A red/amber/green label is only an evidence signal; the Agent must never choose it.
 
 ## Required conclusion labels
 

@@ -26,7 +26,11 @@
     "periods": [
       {
         "period": "FY2024",
+        "fiscal_year": 2024,
+        "period_type": "annual",
+        "start_date": "2024-01-01",
         "end_date": "2024-12-31",
+        "duration_days": 366,
         "facts": {
           "revenue": {
             "value": 77856966964.63,
@@ -57,7 +61,11 @@
       },
       {
         "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2025-01-01",
         "end_date": "2025-12-31",
+        "duration_days": 365,
         "facts": {
           "revenue": {
             "value": 89184357325.77,

@@ -1,0 +1,3 @@
+PLUG POWER INC. — OPTIONAL SEC COMPANYFACTS CROSS-CHECK
+Official URL: https://data.sec.gov/api/xbrl/companyfacts/CIK0001093691.json
+Normalized facts: FY2025 us-gaap:GrossProfit = -242,040,000 USD; FY2025 us-gaap:NetIncomeLoss = -1,631,594,000 USD. These optional values can flag transcription differences but cannot replace the designated 10-K facts or alter a signal.

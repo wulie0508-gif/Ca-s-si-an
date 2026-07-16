@@ -1,0 +1,728 @@
+{
+  "subject": {
+    "organization": "Shoals Technologies Group, Inc.",
+    "technology": "Solar electrical balance-of-systems infrastructure",
+    "ticker": "SHLS",
+    "cik": "0001831651",
+    "identity": {
+      "entity_id": "sec-cik-0001831651",
+      "scheme": "sec_cik",
+      "value": "0001831651",
+      "legal_name": "Shoals Technologies Group, Inc.",
+      "display_name": "Shoals Technologies Group, Inc.",
+      "display_name_zh": "Shoals Technologies Group, Inc.",
+      "legal_name_citation": {
+        "source_id": "shoals-technologies-group-inc-10k",
+        "locator": "Cover page and registrant legal name"
+      },
+      "aliases": []
+    }
+  },
+  "assessment": {
+    "as_of": "2026-07-16",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "Solar electrical balance-of-systems manufacturer"
+  },
+  "sources": [
+    {
+      "id": "shoals-technologies-group-inc-10k",
+      "path": "../../../.cache/company-loops/shoals-technologies-group-inc/shls-20251231.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/1831651/000183165126000021/shls-20251231.htm",
+      "title": "Shoals Technologies Group, Inc. FY2025 Form 10-K",
+      "publisher": "Shoals Technologies Group, Inc.",
+      "published": "2026-02-24",
+      "kind": "regulatory_filing",
+      "role": "subject",
+      "subject_entity_id": "sec-cik-0001831651"
+    },
+    {
+      "id": "shoals-technologies-group-inc-sec-companyfacts",
+      "path": "../../../.cache/company-loops/shoals-technologies-group-inc/companyfacts.json",
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001831651.json",
+      "title": "SEC company facts for Shoals Technologies Group, Inc.",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "published": "2026-02-24",
+      "kind": "regulator",
+      "role": "auxiliary",
+      "subject_entity_id": "sec-cik-0001831651"
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2024",
+        "fiscal_year": 2024,
+        "period_type": "annual",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "duration_days": 366,
+        "facts": {
+          "revenue": {
+            "value": 399208000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL RevenueFromContractWithCustomerExcludingAssessedTax; period ended 2024-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 257191000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2024-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 142017000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2024-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": 24127000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL NetIncomeLoss; period ended 2024-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "attributable_to_parent",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "attributable_to_parent"
+            },
+            "selection": {
+              "concept": "NetIncomeLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "ProfitLoss",
+                  "value": 24127000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          },
+          "operating_cash_flow": {
+            "value": 80388000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2024-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 8393000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2024-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 23511000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL CashAndCashEquivalentsAtCarryingValue; period ended 2024-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashAndCashEquivalentsAtCarryingValue",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                  "value": 23511000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {
+            "value": 475331000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL RevenueFromContractWithCustomerExcludingAssessedTax; period ended 2025-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 308823000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2025-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 166508000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2025-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": 33574000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL NetIncomeLoss; period ended 2025-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "attributable_to_parent",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "attributable_to_parent"
+            },
+            "selection": {
+              "concept": "NetIncomeLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "ProfitLoss",
+                  "value": 33574000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          },
+          "operating_cash_flow": {
+            "value": 17067000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 33043000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2025-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 7320000.0,
+            "source_id": "shoals-technologies-group-inc-10k",
+            "locator": "Inline XBRL CashAndCashEquivalentsAtCarryingValue; period ended 2025-12-31; accession 0001831651-26-000021",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashAndCashEquivalentsAtCarryingValue",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                  "value": 7320000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": true,
+    "selected_source_ids": [
+      "shoals-technologies-group-inc-sec-companyfacts"
+    ],
+    "relative_tolerance": 0,
+    "absolute_tolerance": 0,
+    "facts": [
+      {
+        "period": "FY2024",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 399208000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax / USD / end 2024-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 257191000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2024-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 142017000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2024-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "attributable_to_parent",
+        "value": 24127000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:NetIncomeLoss / USD / end 2024-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 80388000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2024-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 8393000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2024-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 23511000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:CashAndCashEquivalentsAtCarryingValue / USD / end 2024-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 475331000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax / USD / end 2025-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 308823000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2025-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 166508000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2025-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "attributable_to_parent",
+        "value": 33574000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:NetIncomeLoss / USD / end 2025-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 17067000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2025-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 33043000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2025-12-31 / filed 2026-02-24"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 7320000.0,
+        "source_id": "shoals-technologies-group-inc-sec-companyfacts",
+        "locator": "us-gaap:CashAndCashEquivalentsAtCarryingValue / USD / end 2025-12-31 / filed 2026-02-24"
+      }
+    ]
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "collect_sec_case.py with user-supplied business classification",
+    "prepared_at": "2026-07-16",
+    "subindustry": {
+      "scope_id": "solar-ebos-electrical-infrastructure-manufacturing",
+      "name": "Solar electrical balance-of-systems manufacturer",
+      "name_zh": "太阳能电气系统平衡部件制造商",
+      "value_chain_position": "Solar electrical balance-of-systems manufacturer",
+      "value_chain_position_zh": "太阳能电气系统平衡部件制造商",
+      "summary": "Shoals Technologies Group, Inc. is tested in the 'solar-ebos-electrical-infrastructure-manufacturing' scope. The classification must be verified against Item 1 before publication.",
+      "summary_zh": "Shoals Technologies Group, Inc. 按“太阳能电气系统平衡部件制造商”口径测试；发布前必须对照 Form 10-K Item 1 核验分类。",
+      "basis": [
+        {
+          "source_id": "shoals-technologies-group-inc-10k",
+          "locator": "Form 10-K Item 1"
+        }
+      ]
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "The company's own two-year gross-margin direction is primary; no peer threshold is used.",
+          "scope_zh": "优先比较公司自身连续两年的毛利率方向，不使用跨公司的绝对阈值。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Shoals Technologies Group, Inc.",
+              "business_model": "Solar electrical balance-of-systems manufacturer",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": 35.02990547639435,
+              "unit": "percent",
+              "display_value": "35.0%",
+              "citation": {
+                "source_id": "shoals-technologies-group-inc-10k",
+                "locator": "Inline XBRL RevenueFromContractWithCustomerExcludingAssessedTax; period ended 2025-12-31; accession 0001831651-26-000021"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Shoals Technologies Group, Inc.",
+              "business_model": "Solar electrical balance-of-systems manufacturer",
+              "metric": "Gross margin",
+              "period": "FY2024",
+              "value": 35.57468788200637,
+              "unit": "percent",
+              "display_value": "35.6%",
+              "citation": {
+                "source_id": "shoals-technologies-group-inc-10k",
+                "locator": "Inline XBRL RevenueFromContractWithCustomerExcludingAssessedTax; period ended 2024-12-31; accession 0001831651-26-000021"
+              }
+            }
+          ],
+          "limitations": [
+            "This automated onboarding case uses own-history direction and does not establish peer comparability."
+          ],
+          "limitations_zh": [
+            "本自动接入案例只使用公司自身历史方向，不能据此证明同业可比性。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not yet normalize segment mix, warranty accounting, or incentive effects.",
+            "text_zh": "自动化案例尚未统一分部组合、质保会计或激励政策影响。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess whether the observed margin direction is durable for this business model.",
+            "text_zh": "需人工判断观察到的毛利率方向对该商业模式是否可持续。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify the selected XBRL revenue and cost concepts against the audited statements and notes.",
+            "text_zh": "需将所选 XBRL 收入和成本概念与审计报表及附注核对。"
+          }
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "The profit-state branch and the company's own two-year OCF/capex direction are primary.",
+          "scope_zh": "优先使用盈亏状态分支及公司自身连续两年的经营现金流/资本开支方向。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Shoals Technologies Group, Inc.",
+              "business_model": "Solar electrical balance-of-systems manufacturer",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2025",
+              "value": 0.5165087915746149,
+              "unit": "times",
+              "display_value": "0.52x",
+              "citation": {
+                "source_id": "shoals-technologies-group-inc-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-12-31; accession 0001831651-26-000021"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Shoals Technologies Group, Inc.",
+              "business_model": "Solar electrical balance-of-systems manufacturer",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2024",
+              "value": 9.577981651376147,
+              "unit": "times",
+              "display_value": "9.58x",
+              "citation": {
+                "source_id": "shoals-technologies-group-inc-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2024-12-31; accession 0001831651-26-000021"
+              }
+            }
+          ],
+          "limitations": [
+            "Historical OCF/capex does not include every forward commitment or financing constraint."
+          ],
+          "limitations_zh": [
+            "历史经营现金流/资本开支并未覆盖所有前瞻承诺或融资约束。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not build a forward schedule of commitments, maturities, or working-capital needs.",
+            "text_zh": "自动化案例尚未建立承诺、到期债务或营运资金需求的前瞻计划。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Stress-test whether historical cash conversion remains representative under the company's next operating cycle.",
+            "text_zh": "需人工压力测试历史现金转化在公司下一经营周期是否仍具代表性。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify capex classification and restricted-cash scope against the cash-flow statement and notes.",
+            "text_zh": "需对照现金流量表及附注核验资本开支分类和受限现金口径。"
+          }
+        ]
+      }
+    }
+  }
+}

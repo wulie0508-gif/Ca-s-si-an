@@ -1,0 +1,735 @@
+{
+  "subject": {
+    "organization": "Albemarle Corporation",
+    "technology": "Lithium energy-storage materials and diversified specialty chemicals",
+    "ticker": "ALB",
+    "cik": "0000915913"
+  },
+  "assessment": {
+    "as_of": "2026-07-16",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "Lithium materials and diversified specialty chemicals"
+  },
+  "sources": [
+    {
+      "id": "albemarle-corporation-10k",
+      "path": "../../../.cache/company-loops/albemarle-corporation/alb-20251231.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000018/alb-20251231.htm",
+      "title": "Albemarle Corporation FY2025 Form 10-K",
+      "publisher": "Albemarle Corporation",
+      "published": "2026-02-11",
+      "kind": "regulatory_filing",
+      "role": "subject"
+    },
+    {
+      "id": "albemarle-corporation-sec-companyfacts",
+      "path": "../../../.cache/company-loops/albemarle-corporation/companyfacts.json",
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000915913.json",
+      "title": "SEC company facts for Albemarle Corporation",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "published": "2026-02-11",
+      "kind": "regulator",
+      "role": "auxiliary"
+    },
+    {
+      "id": "albemarle-2025-results",
+      "path": "results.txt",
+      "url": "https://investors.albemarle.com/news-and-events/news/news-details/2026/Albemarle-Reports-Fourth-Quarter-and-Full-Year-2025-Results/default.aspx",
+      "title": "Albemarle fourth-quarter and full-year 2025 results",
+      "publisher": "Albemarle Corporation",
+      "published": "2026-02-11",
+      "kind": "company_results",
+      "role": "auxiliary"
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2024",
+        "fiscal_year": 2024,
+        "period_type": "annual",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "duration_days": 366,
+        "facts": {
+          "revenue": {
+            "value": 5377526000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL Revenues; period ended 2024-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "Revenues",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 5314987000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2024-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 62539000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2024-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": -1179449000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL NetIncomeLoss; period ended 2024-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "attributable_to_parent",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "attributable_to_parent"
+            },
+            "selection": {
+              "concept": "NetIncomeLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "ProfitLoss",
+                  "value": -1135477000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          },
+          "operating_cash_flow": {
+            "value": 687876000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2024-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 1680529000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2024-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 1192230000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents; period ended 2024-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          }
+        }
+      },
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {
+            "value": 5142733000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL Revenues; period ended 2025-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "Revenues",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "operating_cost": {
+            "value": 4474014000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL CostOfRevenue; period ended 2025-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CostOfRevenue",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "gross_profit": {
+            "value": 668719000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL GrossProfit; period ended 2025-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "GrossProfit",
+              "method": "statement_identity_reconciliation",
+              "basis": "Selected the consolidated concept combination that best reconciles reported revenue, cost of revenue, and gross profit.",
+              "basis_zh": "选择最能勾稽已披露收入、营业成本与毛利的合并报表概念组合。",
+              "excluded_candidates": [],
+              "reconciliation": {
+                "equation": "revenue - operating_cost = gross_profit",
+                "difference": 0.0,
+                "unit": "USD",
+                "passed": true
+              }
+            }
+          },
+          "net_income": {
+            "value": -510628000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL NetIncomeLoss; period ended 2025-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "attributable_to_parent",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "attributable_to_parent"
+            },
+            "selection": {
+              "concept": "NetIncomeLoss",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": [
+                {
+                  "concept": "ProfitLoss",
+                  "value": -465210000.0,
+                  "unit": "USD",
+                  "reason": "Not selected by the deterministic semantic policy.",
+                  "reason_zh": "未被确定性语义口径策略选中。"
+                }
+              ]
+            }
+          },
+          "operating_cash_flow": {
+            "value": 1282267000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "capex": {
+            "value": 589801000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL PaymentsToAcquirePropertyPlantAndEquipment; period ended 2025-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          },
+          "cash_and_equivalents": {
+            "value": 1618001000.0,
+            "source_id": "albemarle-corporation-10k",
+            "locator": "Inline XBRL CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents; period ended 2025-12-31; accession 0000915913-26-000018",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            },
+            "selection": {
+              "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+              "method": "ordered_concept_policy",
+              "basis": "Selected the first available annual concept in the documented policy.",
+              "basis_zh": "按已记录的概念优先级选择首个可用年度事实。",
+              "excluded_candidates": []
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": true,
+    "selected_source_ids": [
+      "albemarle-corporation-sec-companyfacts"
+    ],
+    "relative_tolerance": 0,
+    "absolute_tolerance": 0,
+    "facts": [
+      {
+        "period": "FY2024",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 5377526000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:Revenues / USD / end 2024-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 5314987000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2024-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 62539000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2024-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "attributable_to_parent",
+        "value": -1179449000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:NetIncomeLoss / USD / end 2024-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 687876000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2024-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 1680529000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2024-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2024",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2024-12-31",
+        "accounting_scope": "consolidated",
+        "value": 1192230000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents / USD / end 2024-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Revenue",
+        "label_zh": "营业收入",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 5142733000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:Revenues / USD / end 2025-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cost",
+        "mode": "crosscheck",
+        "label": "Operating Cost",
+        "label_zh": "营业成本",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 4474014000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:CostOfRevenue / USD / end 2025-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "gross_profit",
+        "mode": "crosscheck",
+        "label": "Gross Profit",
+        "label_zh": "毛利",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 668719000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit / USD / end 2025-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "net_income",
+        "mode": "crosscheck",
+        "label": "Net Income",
+        "label_zh": "净利润",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "attributable_to_parent",
+        "value": -510628000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:NetIncomeLoss / USD / end 2025-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating Cash Flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 1282267000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:NetCashProvidedByUsedInOperatingActivities / USD / end 2025-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "capex",
+        "mode": "crosscheck",
+        "label": "Capex",
+        "label_zh": "资本开支",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 589801000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment / USD / end 2025-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "fact_id": "cash_and_equivalents",
+        "mode": "crosscheck",
+        "label": "Cash And Equivalents",
+        "label_zh": "现金及现金等价物",
+        "unit": "USD",
+        "currency": "USD",
+        "period_end": "2025-12-31",
+        "accounting_scope": "consolidated",
+        "value": 1618001000.0,
+        "source_id": "albemarle-corporation-sec-companyfacts",
+        "locator": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents / USD / end 2025-12-31 / filed 2026-02-11"
+      },
+      {
+        "period": "FY2025",
+        "period_end": "2025-12-31",
+        "fact_id": "operating_cash_flow",
+        "mode": "crosscheck",
+        "label": "Operating cash flow",
+        "label_zh": "经营活动现金流",
+        "unit": "USD",
+        "currency": "USD",
+        "accounting_scope": "consolidated",
+        "value": 1282267000,
+        "source_id": "albemarle-2025-results",
+        "locator": "Selected consolidated cash flow data, year ended December 31, 2025"
+      },
+      {
+        "period": "FY2025",
+        "period_end": "2025-12-31",
+        "fact_id": "revenue",
+        "mode": "crosscheck",
+        "label": "Energy Storage segment net sales",
+        "label_zh": "储能分部净销售额",
+        "unit": "USD",
+        "currency": "USD",
+        "accounting_scope": "segment:energy-storage",
+        "value": 2710035000,
+        "source_id": "albemarle-2025-results",
+        "locator": "Consolidated summary of segment results, year ended December 31, 2025"
+      }
+    ]
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "collect_sec_case.py with user-supplied business classification",
+    "prepared_at": "2026-07-16",
+    "subindustry": {
+      "scope_id": "lithium-materials-diversified-chemicals",
+      "name": "Lithium materials and diversified specialty chemicals",
+      "name_zh": "锂材料与多元化特种化学品",
+      "value_chain_position": "Lithium materials and diversified specialty chemicals",
+      "value_chain_position_zh": "锂材料与多元化特种化学品",
+      "summary": "Albemarle Corporation is tested in the 'lithium-materials-diversified-chemicals' scope. The classification must be verified against Item 1 before publication.",
+      "summary_zh": "Albemarle Corporation 按“锂材料与多元化特种化学品”口径测试；发布前必须对照 Form 10-K Item 1 核验分类。",
+      "basis": [
+        {
+          "source_id": "albemarle-corporation-10k",
+          "locator": "Form 10-K Item 1"
+        }
+      ]
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "The company's own two-year gross-margin direction is primary; no peer threshold is used.",
+          "scope_zh": "优先比较公司自身连续两年的毛利率方向，不使用跨公司的绝对阈值。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Albemarle Corporation",
+              "business_model": "Lithium materials and diversified specialty chemicals",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": 13.003183326841972,
+              "unit": "percent",
+              "display_value": "13.0%",
+              "citation": {
+                "source_id": "albemarle-corporation-10k",
+                "locator": "Inline XBRL Revenues; period ended 2025-12-31; accession 0000915913-26-000018"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Albemarle Corporation",
+              "business_model": "Lithium materials and diversified specialty chemicals",
+              "metric": "Gross margin",
+              "period": "FY2024",
+              "value": 1.1629697373848122,
+              "unit": "percent",
+              "display_value": "1.2%",
+              "citation": {
+                "source_id": "albemarle-corporation-10k",
+                "locator": "Inline XBRL Revenues; period ended 2024-12-31; accession 0000915913-26-000018"
+              }
+            }
+          ],
+          "limitations": [
+            "This automated onboarding case uses own-history direction and does not establish peer comparability."
+          ],
+          "limitations_zh": [
+            "本自动接入案例只使用公司自身历史方向，不能据此证明同业可比性。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not yet normalize segment mix, warranty accounting, or incentive effects.",
+            "text_zh": "自动化案例尚未统一分部组合、质保会计或激励政策影响。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess whether the observed margin direction is durable for this business model.",
+            "text_zh": "需人工判断观察到的毛利率方向对该商业模式是否可持续。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify the selected XBRL revenue and cost concepts against the audited statements and notes.",
+            "text_zh": "需将所选 XBRL 收入和成本概念与审计报表及附注核对。"
+          }
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "The profit-state branch and the company's own two-year OCF/capex direction are primary.",
+          "scope_zh": "优先使用盈亏状态分支及公司自身连续两年的经营现金流/资本开支方向。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Albemarle Corporation",
+              "business_model": "Lithium materials and diversified specialty chemicals",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2025",
+              "value": 2.1740671853726936,
+              "unit": "times",
+              "display_value": "2.17x",
+              "citation": {
+                "source_id": "albemarle-corporation-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2025-12-31; accession 0000915913-26-000018"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Albemarle Corporation",
+              "business_model": "Lithium materials and diversified specialty chemicals",
+              "metric": "Operating cash flow / capex",
+              "period": "FY2024",
+              "value": 0.4093211125782417,
+              "unit": "times",
+              "display_value": "0.41x",
+              "citation": {
+                "source_id": "albemarle-corporation-10k",
+                "locator": "Inline XBRL NetCashProvidedByUsedInOperatingActivities; period ended 2024-12-31; accession 0000915913-26-000018"
+              }
+            }
+          ],
+          "limitations": [
+            "Historical OCF/capex does not include every forward commitment or financing constraint."
+          ],
+          "limitations_zh": [
+            "历史经营现金流/资本开支并未覆盖所有前瞻承诺或融资约束。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The automated case does not build a forward schedule of commitments, maturities, or working-capital needs.",
+            "text_zh": "自动化案例尚未建立承诺、到期债务或营运资金需求的前瞻计划。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Stress-test whether historical cash conversion remains representative under the company's next operating cycle.",
+            "text_zh": "需人工压力测试历史现金转化在公司下一经营周期是否仍具代表性。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify capex classification and restricted-cash scope against the cash-flow statement and notes.",
+            "text_zh": "需对照现金流量表及附注核验资本开支分类和受限现金口径。"
+          }
+        ]
+      }
+    }
+  }
+}

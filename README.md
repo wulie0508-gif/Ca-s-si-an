@@ -29,7 +29,7 @@ The deterministic core runs offline after documents are downloaded: zero model c
 
 See [the landscape review](docs/landscape.md) for the adjacent open-source projects considered and the gap this repository targets.
 
-## What v0.2 actually delivers
+## What v0.3 actually delivers
 
 Two dimensions are validated end to end:
 
@@ -41,16 +41,24 @@ Each dimension produces one fixed card with exactly five cells:
 1. cited subindustry and value-chain position;
 2. extracted facts and deterministic calculations, each labeled and cited;
 3. a locked, open-source-neutral methodology framework with an explicit comparison basis;
-4. a red/amber/green **evidence signal** after applying that framework;
+4. a locally computed red/amber/green **evidence signal**, with rule ID,
+   version, exact subindustry scope, inputs, and digests;
 5. evidence gaps, required human judgment, and verification items.
 
 The signal is never detached from its basis and gaps. There is no numeric score, weighted total, investment rating, credit rating, or aggregate risk rating.
 
-From v0.2.1, formal cards present all five cell headings, the locked framework, signal meaning, review gaps, and disclaimer in English and Chinese. Numeric facts, page locators, source titles, and links stay in their original form.
+In v0.3, the Agent Skill prepares cited semantic inputs but cannot supply or
+override a signal, rule, path, or rationale. The deterministic core is the only
+signal authority. Formal cards present all five cell headings, locked framework,
+rule explanation, review gaps, and disclaimer in English and Chinese. Numeric
+facts, page locators, source titles, and links stay in their original form.
 
 ## Honest capability inventory
 
-Six financial retrieval lenses exist, but only the two listed above are validated and have implemented five-cell cards. The remaining four are `framework_ready_unvalidated`:
+Six financial retrieval lenses exist, but only the two listed above are
+validated and have implemented five-cell cards. The other four have explicitly
+scoped, authored **input-contract blueprints** only; authored does not mean
+validated, executable, or complete:
 
 - Revenue, traction, and quality
 - Profitability and unit economics
@@ -146,6 +154,36 @@ python scripts/evaluate_cards.py outputs/enphase/audit.json evals/enphase-cards-
 # Ordered final gate: full product on Sungrow, then Enphase; stops on failure.
 python scripts/run_release_gate.py
 ```
+
+## Ten-company local validation
+
+v0.3 was generalized through ten distinct public-company loops. Each loop
+preserves its initial failure, one general optimization, focused regression,
+final artifacts, and the next residual risk. Run the strict registry gate and
+rebuild the offline bilingual index:
+
+```powershell
+.\.venv-new\Scripts\python.exe scripts\run_company_loop_registry.py
+.\.venv-new\Scripts\python.exe scripts\build_company_loop_index.py
+```
+
+Open `outputs/company-loops/index.html`. It contains exactly the ten registered
+final cases, independent profitability and cash signals, validation status,
+auxiliary-source state, and links to each bilingual report.
+
+Auxiliary sources are optional and non-authoritative. The index lets a user
+draft a source selection and produces a whitelist-checked local command. For
+example:
+
+```powershell
+.\.venv-new\Scripts\python.exe scripts\run_company_loop_case.py `
+  --case albemarle `
+  --aux-source albemarle-2025-results
+```
+
+The runner rejects unknown sources and regenerates the report only after the
+selected facts validate. Changing auxiliary sources cannot change a core
+signal, rule digest, or input digest.
 
 ## Trust model
 

@@ -1,0 +1,302 @@
+{
+  "subject": {
+    "organization": "Plug Power Inc.",
+    "technology": "Hydrogen, fuel cells, electrolyzers, infrastructure, and fuel supply",
+    "ticker": "PLUG",
+    "cik": "0001093691"
+  },
+  "assessment": {
+    "as_of": "2026-07-16",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "Integrated hydrogen and fuel-cell platform"
+  },
+  "sources": [
+    {
+      "id": "plug-2025-10k",
+      "path": "source.txt",
+      "title": "Plug Power 2025 Form 10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1093691/000110465926022286/plug-20251231x10k.htm",
+      "publisher": "Plug Power Inc.",
+      "published": "2026-03-02",
+      "kind": "regulatory_filing",
+      "role": "subject"
+    },
+    {
+      "id": "plug-sec-companyfacts",
+      "path": "auxiliary.txt",
+      "title": "SEC company facts for Plug Power",
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001093691.json",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "published": "2026-03-02",
+      "kind": "regulator",
+      "role": "auxiliary"
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2024",
+        "fiscal_year": 2024,
+        "period_type": "annual",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "duration_days": 366,
+        "facts": {
+          "revenue": {
+            "value": 628814000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:Revenues, FY2024",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "gross_profit": {
+            "value": -624887000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:GrossProfit, FY2024",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "net_income": {
+            "value": -2104701000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:NetIncomeLoss, FY2024",
+            "statement_scope": {"operations": "total_operations", "attribution": "attributable_to_parent"}
+          },
+          "operating_cash_flow": {
+            "value": -728643000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities, FY2024",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "capex": {
+            "value": 287098000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment, FY2024"
+          },
+          "cash_and_equivalents": {
+            "value": 205693000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue, FY2024"
+          }
+        }
+      },
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "duration_days": 365,
+        "facts": {
+          "revenue": {
+            "value": 709919000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:Revenues, FY2025",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "gross_profit": {
+            "value": -242040000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:GrossProfit, FY2025",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "net_income": {
+            "value": -1631594000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:NetIncomeLoss, FY2025",
+            "accounting_scope": "attributable_to_parent",
+            "statement_scope": {"operations": "total_operations", "attribution": "attributable_to_parent"}
+          },
+          "operating_cash_flow": {
+            "value": -535835000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities, FY2025",
+            "statement_scope": {"operations": "total_operations", "attribution": "not_applicable"}
+          },
+          "capex": {
+            "value": 111164000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment, FY2025"
+          },
+          "cash_and_equivalents": {
+            "value": 368540000,
+            "source_id": "plug-2025-10k",
+            "locator": "Inline XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue, FY2025"
+          }
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": true,
+    "selected_source_ids": ["plug-sec-companyfacts"],
+    "relative_tolerance": 0,
+    "absolute_tolerance": 0,
+    "facts": [
+      {
+        "period": "FY2025",
+        "period_end": "2025-12-31",
+        "fact_id": "gross_profit",
+        "unit": "USD",
+        "currency": "USD",
+        "accounting_scope": "consolidated",
+        "value": -242040000,
+        "source_id": "plug-sec-companyfacts",
+        "locator": "us-gaap:GrossProfit, FY2025"
+      },
+      {
+        "period": "FY2025",
+        "period_end": "2025-12-31",
+        "fact_id": "net_income",
+        "unit": "USD",
+        "currency": "USD",
+        "accounting_scope": "attributable_to_parent",
+        "value": -1631594000,
+        "source_id": "plug-sec-companyfacts",
+        "locator": "us-gaap:NetIncomeLoss, FY2025"
+      }
+    ]
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "local new-company loop from official public sources",
+    "prepared_at": "2026-07-16",
+    "subindustry": {
+      "scope_id": "hydrogen-fuel-cell-electrolyzer-integrated",
+      "name": "Integrated hydrogen, fuel-cell, and electrolyzer platform",
+      "value_chain_position": "Equipment, infrastructure, service, power, and hydrogen fuel supply",
+      "summary": "Plug Power is a vertically broad hydrogen platform rather than a single-product equipment manufacturer.",
+      "basis": [
+        {
+          "source_id": "plug-2025-10k",
+          "locator": "Form 10-K Item 1"
+        }
+      ],
+      "name_zh": "氢能、燃料电池与电解槽一体化平台",
+      "value_chain_position_zh": "设备、基础设施、服务、电力和氢燃料供应",
+      "summary_zh": "Plug Power 是覆盖多环节的氢能平台，而不是单一产品设备制造商。"
+    },
+    "dimensions": {
+      "profitability-unit-economics": {
+        "benchmark": {
+          "scope": "Plug Power's own two-year reported gross-margin direction is primary; no peer threshold is used.",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Plug Power",
+              "business_model": "Integrated hydrogen platform",
+              "metric": "Gross margin",
+              "period": "FY2025",
+              "value": -34.094,
+              "unit": "percent",
+              "display_value": "-34.1%",
+              "citation": {
+                "source_id": "plug-2025-10k",
+                "locator": "Inline XBRL us-gaap:GrossProfit and us-gaap:Revenues, FY2025"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Plug Power",
+              "business_model": "Integrated hydrogen platform",
+              "metric": "Gross margin",
+              "period": "FY2024",
+              "value": -99.376,
+              "unit": "percent",
+              "display_value": "-99.4%",
+              "citation": {
+                "source_id": "plug-2025-10k",
+                "locator": "Inline XBRL us-gaap:GrossProfit and us-gaap:Revenues, FY2024"
+              }
+            }
+          ],
+          "limitations": [
+            "Gross loss narrowed materially but remained negative; improvement is not the same as achieving positive unit economics."
+          ],
+          "scope_zh": "优先比较公司自身两个财年的同口径毛利率方向；外部公司仅作为相邻背景，不构成绝对阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "Product, service, PPA, and fuel margins are not normalized into like-for-like cohorts.",
+            "text_zh": "尚未将产品、服务、购电协议和燃料毛利统一为可比组。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess whether the loss reduction is repeatable without temporary mix or support effects.",
+            "text_zh": "需人工判断亏损收窄能否在排除暂时性组合或支持因素后持续。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify the consolidated gross-profit tag against the revenue-stream footnote.",
+            "text_zh": "需将合并毛利润标签与收入流附注核对。"
+          }
+        ]
+      },
+      "cash-runway": {
+        "benchmark": {
+          "scope": "Plug Power is loss-making, so its own operating-cash-burn direction is primary.",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "Plug Power",
+              "business_model": "Integrated hydrogen platform",
+              "metric": "Operating cash flow",
+              "period": "FY2025",
+              "value": -535835000,
+              "unit": "USD",
+              "display_value": "USD -535.8m",
+              "citation": {
+                "source_id": "plug-2025-10k",
+                "locator": "Inline XBRL operating cash flow, FY2025"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "Plug Power",
+              "business_model": "Integrated hydrogen platform",
+              "metric": "Operating cash flow",
+              "period": "FY2024",
+              "value": -728643000,
+              "unit": "USD",
+              "display_value": "USD -728.6m",
+              "citation": {
+                "source_id": "plug-2025-10k",
+                "locator": "Inline XBRL operating cash flow, FY2024"
+              }
+            }
+          ],
+          "limitations": [
+            "Lower historical burn does not establish a complete forward funding plan."
+          ],
+          "scope_zh": "优先比较公司自身两个财年的盈利状态和现金覆盖方向；不采用统一现金跑道阈值。",
+          "limitations_zh": [
+            "商业模式、产品组合、地区、政策支持和会计口径可能不同。",
+            "该比较仅为方向性背景，不能视为完全可比的同业基准。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The case does not assemble restricted liquidity, commitments, or financing milestones.",
+            "text_zh": "本案例尚未汇总受限流动性、承诺或融资里程碑。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Stress-test the pace of burn reduction and access to capital.",
+            "text_zh": "需人工压力测试现金消耗下降速度和资本获取能力。"
+          },
+          {
+            "kind": "verification",
+            "text": "Confirm whether capex and project-finance cash flows are fully captured.",
+            "text_zh": "需确认资本开支和项目融资现金流是否完整纳入。"
+          }
+        ]
+      }
+    }
+  }
+}

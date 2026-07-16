@@ -1,0 +1,3 @@
+CHARGEPOINT HOLDINGS, INC. — OPTIONAL SEC XBRL CONTEXT
+Official URL: https://data.sec.gov/api/xbrl/companyfacts/CIK0001777393.json
+User-selectable context for FY2026: hardware revenue 216,514,000 USD; subscription revenue 162,387,000 USD; deferred revenue 250,581,000 USD. These facts explain mix and recurring-revenue direction but never change the deterministic evidence signal.

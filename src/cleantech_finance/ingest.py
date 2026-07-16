@@ -10,6 +10,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 
+from .identity import resolve_entity_identity
 from .models import Chunk, Source
 
 
@@ -60,7 +61,7 @@ def load_manifest(path: str | Path) -> tuple[dict[str, Any], list[Source], Path]
         if raw["id"] in source_ids:
             raise ManifestError(f"Duplicate source id: {raw['id']}")
         role = raw.get("role", "subject")
-        if role not in {"subject", "benchmark"}:
+        if role not in {"subject", "benchmark", "auxiliary", "identity"}:
             raise ManifestError(f"Source {index} has unsupported role '{role}'")
         source_ids.add(raw["id"])
         source_path = (manifest_path.parent / raw["path"]).resolve()
@@ -80,6 +81,10 @@ def load_manifest(path: str | Path) -> tuple[dict[str, Any], list[Source], Path]
                 sha256=digest,
             )
         )
+    try:
+        resolve_entity_identity(manifest)
+    except ValueError as exc:
+        raise ManifestError(f"Invalid subject identity: {exc}") from exc
     return manifest, sources, manifest_path
 
 
@@ -174,6 +179,8 @@ def _pack_blocks(
 def ingest_sources(sources: list[Source]) -> list[Chunk]:
     chunks: list[Chunk] = []
     for source in sources:
+        if source.role in {"auxiliary", "identity"}:
+            continue
         packed = _pack_blocks(_read_blocks(Path(source.path)))
         for ordinal, (text, locator) in enumerate(packed, start=1):
             chunks.append(

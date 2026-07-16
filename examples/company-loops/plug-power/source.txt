@@ -1,0 +1,27 @@
+PLUG POWER INC. — FY2025 OFFICIAL-SOURCE FACT PACK
+Primary source: Plug Power 2025 Form 10-K
+Official URL: https://www.sec.gov/Archives/edgar/data/1093691/000110465926022286/plug-20251231x10k.htm
+Prepared as a normalized local XBRL excerpt for deterministic offline testing. Values below are USD.
+
+Business classification — Form 10-K Item 1
+Plug Power operates an integrated hydrogen, fuel-cell, electrolyzer, infrastructure, service, power-purchase, and fuel platform. The test scope is hydrogen-fuel-cell-electrolyzer-integrated.
+
+Consolidated statements of operations — Inline XBRL, USD
+FY2025 revenue: 709,919,000
+FY2024 revenue: 628,814,000
+FY2025 gross loss: (242,040,000)
+FY2024 gross loss: (624,887,000)
+FY2025 net loss attributable to common stockholders: (1,631,594,000)
+FY2024 net loss attributable to common stockholders: (2,104,701,000)
+
+Consolidated statements of cash flows — Inline XBRL, USD
+FY2025 net cash used in operating activities: (535,835,000)
+FY2024 net cash used in operating activities: (728,643,000)
+FY2025 purchases of property plant and equipment: (111,164,000)
+FY2024 purchases of property plant and equipment: (287,098,000)
+
+Consolidated balance sheets — Inline XBRL, USD
+FY2025 cash and cash equivalents: 368,540,000
+FY2024 cash and cash equivalents: 205,693,000
+
+The company remained gross-loss-making in both periods even though the loss narrowed. Improvement direction must not be presented as achieved positive unit economics.

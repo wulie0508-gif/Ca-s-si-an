@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:cleantech-finance:manifest:0.2.1",
+  "$id": "urn:cleantech-finance:manifest:0.3.0",
   "title": "CleanTech Finance manifest",
   "type": "object",
   "required": ["subject", "assessment", "sources"],
@@ -11,7 +11,9 @@
       "properties": {
         "organization": {"type": "string", "minLength": 1},
         "technology": {"type": "string", "minLength": 1},
-        "ticker": {"type": ["string", "null"]}
+        "ticker": {"type": ["string", "null"]},
+        "cik": {"type": "string", "pattern": "^\\d{10}$"},
+        "identity": {"$ref": "#/$defs/entityIdentity"}
       }
     },
     "assessment": {
@@ -38,17 +40,22 @@
           "publisher": {"type": "string"},
           "published": {"type": ["string", "null"], "format": "date"},
           "kind": {"type": "string"},
-          "role": {"enum": ["subject", "benchmark"], "default": "subject"}
+          "role": {"enum": ["subject", "benchmark", "auxiliary", "identity"], "default": "subject"},
+          "subject_entity_id": {"type": "string", "pattern": "^sec-cik-\\d{10}$"}
         }
       }
     },
     "financial_extraction": {
       "type": "object",
-      "required": ["enabled", "source_id", "currency", "years"],
+      "required": ["enabled", "source_id", "currency", "years", "fiscal_year_end"],
       "properties": {
         "enabled": {"const": true},
         "source_id": {"type": "string"},
         "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "fiscal_year_end": {
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+        },
         "years": {
           "type": "array",
           "minItems": 2,
@@ -62,22 +69,102 @@
       "required": ["currency", "periods"],
       "properties": {
         "currency": {"type": "string"},
-        "periods": {"type": "array", "minItems": 1}
+        "periods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/financialPeriod"}
+        }
+      }
+    },
+    "auxiliary_validation": {
+      "type": "object",
+      "required": ["enabled", "selected_source_ids"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "selected_source_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "relative_tolerance": {"type": "number", "minimum": 0},
+        "absolute_tolerance": {"type": "number", "minimum": 0},
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["period", "period_end", "fact_id", "value", "unit", "currency", "accounting_scope", "source_id", "locator"],
+            "additionalProperties": false,
+            "properties": {
+              "period": {"type": "string", "minLength": 1},
+              "period_end": {"type": "string", "format": "date"},
+              "fact_id": {"type": "string", "minLength": 1},
+              "mode": {"enum": ["crosscheck", "context"]},
+              "label": {"type": "string", "minLength": 1},
+              "label_zh": {"type": "string", "minLength": 1},
+              "unit": {"type": "string", "minLength": 1},
+              "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+              "accounting_scope": {"type": "string", "minLength": 1},
+              "value": {"type": "number"},
+              "source_id": {"type": "string", "minLength": 1},
+              "locator": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "cash_conversion_context": {
+      "type": "object",
+      "required": ["enabled", "facts"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["period", "period_start", "period_end", "driver_id", "reported_value", "sign_semantics", "unit", "currency", "accounting_scope", "source_id", "locator"],
+            "additionalProperties": false,
+            "properties": {
+              "period": {"type": "string", "minLength": 1},
+              "period_start": {"type": "string", "format": "date"},
+              "period_end": {"type": "string", "format": "date"},
+              "driver_id": {"enum": ["accounts_receivable_change", "inventory_change", "accounts_payable_change", "contract_liability_change", "warranty_claim_payments"]},
+              "reported_value": {"type": "number"},
+              "sign_semantics": {"enum": ["increase_decrease", "payment_magnitude"]},
+              "unit": {"type": "string", "minLength": 1},
+              "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+              "accounting_scope": {"const": "consolidated"},
+              "source_id": {"type": "string", "minLength": 1},
+              "locator": {"type": "string", "minLength": 1}
+            }
+          }
+        }
       }
     },
     "judgment_context": {
       "type": "object",
-      "required": ["prepared_by", "prepared_at", "subindustry", "dimensions"],
+      "required": ["contract_version", "prepared_by", "prepared_at", "subindustry", "dimensions"],
+      "additionalProperties": false,
       "properties": {
+        "contract_version": {"const": "0.3.0"},
         "prepared_by": {"type": "string", "minLength": 1},
         "prepared_at": {"type": "string", "format": "date"},
         "subindustry": {
           "type": "object",
-          "required": ["name", "value_chain_position", "summary", "basis"],
+          "required": ["scope_id", "name", "name_zh", "value_chain_position", "value_chain_position_zh", "summary", "summary_zh", "basis"],
+          "additionalProperties": false,
           "properties": {
+            "scope_id": {
+              "type": "string",
+              "pattern": "^(?!all$|any$|global$)[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
             "name": {"type": "string", "minLength": 1},
+            "name_zh": {"type": "string", "minLength": 1},
             "value_chain_position": {"type": "string", "minLength": 1},
+            "value_chain_position_zh": {"type": "string", "minLength": 1},
             "summary": {"type": "string", "minLength": 1},
+            "summary_zh": {"type": "string", "minLength": 1},
             "basis": {
               "type": "array",
               "minItems": 1,
@@ -87,6 +174,7 @@
         },
         "dimensions": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "profitability-unit-economics": {"$ref": "#/$defs/dimensionJudgment"},
             "cash-runway": {"$ref": "#/$defs/dimensionJudgment"}
@@ -100,9 +188,118 @@
     {"required": ["financials"], "not": {"required": ["financial_extraction"]}}
   ],
   "$defs": {
+    "entityIdentity": {
+      "type": "object",
+      "required": ["entity_id", "scheme", "value", "legal_name", "display_name", "display_name_zh", "legal_name_citation", "aliases"],
+      "additionalProperties": false,
+      "properties": {
+        "entity_id": {"type": "string", "pattern": "^sec-cik-\\d{10}$"},
+        "scheme": {"const": "sec_cik"},
+        "value": {"type": "string", "pattern": "^\\d{10}$"},
+        "legal_name": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "display_name_zh": {"type": "string", "minLength": 1},
+        "legal_name_citation": {"$ref": "#/$defs/citation"},
+        "aliases": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/entityAlias"}
+        }
+      }
+    },
+    "entityAlias": {
+      "type": "object",
+      "required": ["name", "name_zh", "status", "effective_until", "source_id", "locator"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "name_zh": {"type": "string", "minLength": 1},
+        "status": {"const": "former"},
+        "effective_until": {"type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"},
+        "source_id": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1}
+      }
+    },
+    "financialPeriod": {
+      "type": "object",
+      "required": ["period", "fiscal_year", "period_type", "start_date", "end_date", "duration_days", "facts"],
+      "additionalProperties": false,
+      "properties": {
+        "period": {"type": "string", "minLength": 1},
+        "fiscal_year": {"type": "integer", "minimum": 1900, "maximum": 2200},
+        "period_type": {"const": "annual"},
+        "start_date": {"type": "string", "format": "date"},
+        "end_date": {"type": "string", "format": "date"},
+        "duration_days": {"type": "integer", "minimum": 350, "maximum": 380},
+        "facts": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"$ref": "#/$defs/financialFact"}
+        }
+      }
+    },
+    "financialFact": {
+      "type": "object",
+      "required": ["value", "source_id", "locator"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {"type": "number"},
+        "source_id": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1},
+        "accounting_scope": {"type": "string", "minLength": 1},
+        "statement_scope": {"$ref": "#/$defs/statementScope"},
+        "selection": {"$ref": "#/$defs/factSelection"}
+      }
+    },
+    "statementScope": {
+      "type": "object",
+      "required": ["operations", "attribution"],
+      "additionalProperties": false,
+      "properties": {
+        "operations": {"enum": ["total_operations", "continuing_operations"]},
+        "attribution": {"enum": ["consolidated", "attributable_to_parent", "not_applicable"]}
+      }
+    },
+    "factSelection": {
+      "type": "object",
+      "required": ["concept", "method", "basis", "basis_zh", "excluded_candidates"],
+      "additionalProperties": false,
+      "properties": {
+        "concept": {"type": "string", "minLength": 1},
+        "method": {"enum": ["statement_identity_reconciliation", "ordered_concept_policy"]},
+        "basis": {"type": "string", "minLength": 1},
+        "basis_zh": {"type": "string", "minLength": 1},
+        "excluded_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["concept", "value", "unit", "reason", "reason_zh"],
+            "additionalProperties": false,
+            "properties": {
+              "concept": {"type": "string", "minLength": 1},
+              "value": {"type": "number"},
+              "unit": {"type": "string", "minLength": 1},
+              "reason": {"type": "string", "minLength": 1},
+              "reason_zh": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "reconciliation": {
+          "type": "object",
+          "required": ["equation", "difference", "unit", "passed"],
+          "additionalProperties": false,
+          "properties": {
+            "equation": {"const": "revenue - operating_cost = gross_profit"},
+            "difference": {"type": "number", "minimum": 0},
+            "unit": {"type": "string", "minLength": 1},
+            "passed": {"const": true}
+          }
+        }
+      }
+    },
     "citation": {
       "type": "object",
       "required": ["source_id", "locator"],
+      "additionalProperties": false,
       "properties": {
         "source_id": {"type": "string"},
         "locator": {"type": "string", "minLength": 1}
@@ -110,21 +307,27 @@
     },
     "dimensionJudgment": {
       "type": "object",
-      "required": ["benchmark", "application", "gaps"],
-      "not": {"required": ["framework"]},
+      "required": ["benchmark", "gaps"],
+      "additionalProperties": false,
       "properties": {
         "benchmark": {
           "type": "object",
-          "required": ["scope", "observations", "limitations"],
+          "required": ["scope", "scope_zh", "observations", "limitations", "limitations_zh"],
+          "additionalProperties": false,
           "properties": {
             "scope": {"type": "string", "minLength": 1},
+            "scope_zh": {"type": "string", "minLength": 1},
             "observations": {
               "type": "array",
               "minItems": 1,
               "items": {
                 "type": "object",
-                "required": ["entity", "business_model", "metric", "period", "value", "unit", "display_value", "citation"],
+                "required": ["comparison_type", "entity", "business_model", "metric", "period", "value", "unit", "display_value", "citation"],
+                "additionalProperties": false,
                 "properties": {
+                  "comparison_type": {
+                    "enum": ["subject_history", "comparable_peer", "adjacent_context"]
+                  },
                   "entity": {"type": "string"},
                   "business_model": {"type": "string"},
                   "metric": {"type": "string"},
@@ -136,17 +339,8 @@
                 }
               }
             },
-            "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
-          }
-        },
-        "application": {
-          "type": "object",
-          "required": ["signal", "path", "summary", "basis"],
-          "properties": {
-            "signal": {"enum": ["red", "amber", "green"]},
-            "path": {"type": "string", "minLength": 1},
-            "summary": {"type": "string", "minLength": 1},
-            "basis": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/citation"}}
+            "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+            "limitations_zh": {"type": "array", "minItems": 1, "items": {"type": "string"}}
           }
         },
         "gaps": {
@@ -155,6 +349,7 @@
           "items": {
             "type": "object",
             "required": ["kind", "text", "text_zh"],
+            "additionalProperties": false,
             "properties": {
               "kind": {"enum": ["evidence_gap", "human_judgment", "verification"]},
               "text": {"type": "string", "minLength": 1},

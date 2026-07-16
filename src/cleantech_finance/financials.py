@@ -2,9 +2,93 @@
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
+from .fact_semantics import margin_operations_scope, select_net_income_fact, statement_scope
 from .ingest import ManifestError
+
+
+def validate_period_contract(periods: list[dict[str, Any]]) -> dict[str, Any]:
+    """Validate annual period identity before any trend calculation."""
+
+    labels: set[str] = set()
+    end_dates: set[str] = set()
+    normalized: list[dict[str, Any]] = []
+    for period in periods:
+        for key in (
+            "period",
+            "fiscal_year",
+            "period_type",
+            "start_date",
+            "end_date",
+            "duration_days",
+        ):
+            if key not in period:
+                raise ManifestError(f"Financial period missing '{key}'")
+        if period["period_type"] != "annual":
+            raise ManifestError(
+                f"Financial period '{period['period']}' is not an annual period"
+            )
+        if period["period"] != f"FY{period['fiscal_year']}":
+            raise ManifestError(
+                f"Financial period label '{period['period']}' does not match fiscal_year "
+                f"{period['fiscal_year']}"
+            )
+        try:
+            start = date.fromisoformat(period["start_date"])
+            end = date.fromisoformat(period["end_date"])
+        except (TypeError, ValueError) as exc:
+            raise ManifestError(
+                f"Financial period '{period['period']}' has invalid start/end dates"
+            ) from exc
+        if end < start:
+            raise ManifestError(
+                f"Financial period '{period['period']}' ends before it starts"
+            )
+        actual_duration = (end - start).days + 1
+        if period["duration_days"] != actual_duration:
+            raise ManifestError(
+                f"Financial period '{period['period']}' duration_days must be "
+                f"{actual_duration}, found {period['duration_days']}"
+            )
+        if not 350 <= actual_duration <= 380:
+            raise ManifestError(
+                f"Financial period '{period['period']}' is {actual_duration} days; "
+                "transition or non-annual periods cannot drive an annual trend"
+            )
+        if period["period"] in labels or period["end_date"] in end_dates:
+            raise ManifestError("Financial periods require unique labels and end dates")
+        labels.add(period["period"])
+        end_dates.add(period["end_date"])
+        normalized.append(
+            {
+                "period": period["period"],
+                "fiscal_year": period["fiscal_year"],
+                "start_date": period["start_date"],
+                "end_date": period["end_date"],
+                "duration_days": actual_duration,
+            }
+        )
+
+    normalized.sort(key=lambda item: item["end_date"])
+    if len(normalized) >= 2:
+        prior, latest = normalized[-2:]
+        duration_delta = abs(latest["duration_days"] - prior["duration_days"])
+        if duration_delta > 7:
+            raise ManifestError(
+                "Latest and prior annual periods differ by more than 7 days and are not "
+                "comparable without human normalization"
+            )
+    else:
+        duration_delta = None
+    return {
+        "status": "comparable_annual" if len(normalized) >= 2 else "single_annual_period",
+        "label_basis": "fiscal year ending year",
+        "uses_sec_frame": False,
+        "duration_delta_days": duration_delta,
+        "periods": normalized,
+    }
 
 
 def _fact(period: dict[str, Any], name: str, source_ids: set[str]) -> dict[str, Any] | None:
@@ -20,21 +104,54 @@ def _fact(period: dict[str, Any], name: str, source_ids: set[str]) -> dict[str, 
         raise ManifestError(f"Financial fact '{name}' must have a numeric value")
     if raw["source_id"] not in source_ids:
         raise ManifestError(f"Financial fact '{name}' cites unknown source id '{raw['source_id']}'")
+    if name in {
+        "revenue",
+        "operating_cost",
+        "gross_profit",
+        "net_income",
+        "net_income_continuing",
+        "operating_cash_flow",
+    }:
+        try:
+            statement_scope(raw, name)
+        except ValueError as exc:
+            raise ManifestError(str(exc)) from exc
+    selection = raw.get("selection")
+    if selection is not None:
+        for key in ("concept", "method", "basis", "basis_zh", "excluded_candidates"):
+            if key not in selection:
+                raise ManifestError(
+                    f"Financial fact '{name}' selection metadata missing '{key}'"
+                )
+        reconciliation = selection.get("reconciliation")
+        if reconciliation is not None and reconciliation.get("passed") is not True:
+            raise ManifestError(
+                f"Financial fact '{name}' failed statement-identity reconciliation"
+            )
     return raw
 
 
 def _input(name: str, period: dict[str, Any], fact: dict[str, Any]) -> dict[str, Any]:
-    return {
+    item = {
         "name": name,
         "period": period["period"],
         "value": fact["value"],
         "source_id": fact["source_id"],
         "locator": fact["locator"],
     }
+    if "selection" in fact:
+        item["selection"] = fact["selection"]
+    if "statement_scope" in fact:
+        item["statement_scope"] = fact["statement_scope"]
+    if "accounting_scope" in fact:
+        item["accounting_scope"] = fact["accounting_scope"]
+    return item
 
 
 def derive_financial_metrics(
-    financials: dict[str, Any] | None, source_ids: set[str]
+    financials: dict[str, Any] | None,
+    source_ids: set[str],
+    inapplicable_dimensions: set[str] | None = None,
 ) -> dict[str, Any]:
     if not financials:
         return {
@@ -47,15 +164,17 @@ def derive_financial_metrics(
     periods = financials.get("periods")
     if not isinstance(periods, list) or not periods:
         raise ManifestError("'financials.periods' must be a non-empty list")
-    for period in periods:
-        if not period.get("period") or not period.get("end_date"):
-            raise ManifestError("Each financial period needs 'period' and 'end_date'")
+    period_contract = validate_period_contract(periods)
     periods = sorted(periods, key=lambda period: period["end_date"])
     latest = periods[-1]
     prior = periods[-2] if len(periods) > 1 else None
     currency = financials.get("currency", "USD")
     metrics: list[dict[str, Any]] = []
     screening_notes: list[dict[str, str]] = []
+    inapplicable_dimensions = inapplicable_dimensions or set()
+    profitability_applicable = (
+        "profitability-unit-economics" not in inapplicable_dimensions
+    )
 
     def add(
         metric_id: str,
@@ -92,9 +211,13 @@ def derive_financial_metrics(
             [_input("revenue", latest, revenue), _input("revenue", prior, prior_revenue)],
         )
 
-    gross_profit = _fact(latest, "gross_profit", source_ids)
-    operating_cost = _fact(latest, "operating_cost", source_ids)
-    if revenue and gross_profit and revenue["value"]:
+    gross_profit = (
+        _fact(latest, "gross_profit", source_ids) if profitability_applicable else None
+    )
+    operating_cost = (
+        _fact(latest, "operating_cost", source_ids) if profitability_applicable else None
+    )
+    if profitability_applicable and revenue and gross_profit and revenue["value"]:
         value = gross_profit["value"] / revenue["value"]
         add(
             "gross-margin",
@@ -105,7 +228,7 @@ def derive_financial_metrics(
             [_input("gross_profit", latest, gross_profit), _input("revenue", latest, revenue)],
             "attention" if value < 0 else "observed",
         )
-    elif revenue and operating_cost and revenue["value"]:
+    elif profitability_applicable and revenue and operating_cost and revenue["value"]:
         value = (revenue["value"] - operating_cost["value"]) / revenue["value"]
         add(
             "gross-margin",
@@ -136,7 +259,15 @@ def derive_financial_metrics(
             "attention" if value < 0 else "observed",
         )
 
-    net_income = _fact(latest, "net_income", source_ids)
+    net_income = None
+    net_income_id = "net_income"
+    if profitability_applicable and revenue and (gross_profit or operating_cost):
+        try:
+            target_scope = margin_operations_scope(latest)
+            net_income_id, _, _ = select_net_income_fact(latest, target_scope)
+            net_income = _fact(latest, net_income_id, source_ids)
+        except ValueError as exc:
+            raise ManifestError(str(exc)) from exc
     if revenue and net_income and revenue["value"]:
         value = net_income["value"] / revenue["value"]
         add(
@@ -145,8 +276,22 @@ def derive_financial_metrics(
             value,
             "ratio",
             "net income / revenue",
-            [_input("net_income", latest, net_income), _input("revenue", latest, revenue)],
+            [
+                _input(net_income_id, latest, net_income),
+                _input("revenue", latest, revenue),
+            ],
             "attention" if value < 0 else "observed",
+        )
+    if not profitability_applicable:
+        screening_notes.append(
+            {
+                "id": "profitability-unit-economics-not-applicable",
+                "status": "not_applicable",
+                "text": (
+                    "Manufacturing gross-margin and net-margin calculations were suppressed "
+                    "because the classified business-model scope is not applicable."
+                ),
+            }
         )
 
     operating_cash_flow = _fact(latest, "operating_cash_flow", source_ids)
@@ -257,6 +402,7 @@ def derive_financial_metrics(
     return {
         "currency": currency,
         "periods": [period["period"] for period in periods],
+        "period_contract": period_contract,
         "metrics": metrics,
         "screening_notes": screening_notes,
         "status": "calculated",

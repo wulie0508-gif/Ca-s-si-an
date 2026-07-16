@@ -1,4 +1,4 @@
-"""Evaluate the v0.2 five-cell judgment-card contract."""
+"""Evaluate the v0.3 deterministic five-cell judgment-card contract."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ EXPECTED_CELLS = {
 EXPECTED_STAGES = {
     "subindustry_identification",
     "benchmark_retrieval",
-    "relative_positioning_and_trend",
+    "deterministic_signal",
     "gap_exposure",
 }
 EXPECTED_GAPS = {"evidence_gap", "human_judgment", "verification"}
@@ -48,7 +48,12 @@ def evaluate_cards(audit: dict[str, Any], ground: dict[str, Any]) -> dict[str, A
         layer.get("validation"),
         "passed",
     )
-    check("card-dimensions", set(cards) == expected_dimensions, sorted(cards), sorted(expected_dimensions))
+    check(
+        "card-dimensions",
+        set(cards) == expected_dimensions,
+        sorted(cards),
+        sorted(expected_dimensions),
+    )
     coverage = layer.get("framework_coverage", {})
     check(
         "locked-framework-coverage",
@@ -114,12 +119,27 @@ def evaluate_cards(audit: dict[str, Any], ground: dict[str, Any]) -> dict[str, A
         )
         application = cells.get("4_framework_application", {})
         observations = application.get("benchmark", {}).get("observations", [])
+        provenance = application.get("rule_provenance", {})
         check(
             f"{dimension_id}:relative-application-cited",
             bool(application.get("path") and application.get("basis") and observations)
-            and all(item.get("citation") for item in observations),
-            application,
-            "path, basis, and cited benchmark observations",
+            and all(item.get("citation") for item in observations)
+            and application.get("label") == "deterministic_rule_output"
+            and provenance.get("deterministic") is True
+            and provenance.get("rule_status") == "validated"
+            and provenance.get("rule_id")
+            and provenance.get("rule_version")
+            and str(provenance.get("rule_digest", "")).startswith("sha256:")
+            and str(provenance.get("inputs_digest", "")).startswith("sha256:")
+            and application.get("path_zh")
+            and application.get("summary_zh"),
+            {
+                "path": application.get("path"),
+                "basis": application.get("basis"),
+                "observations": observations,
+                "rule_provenance": provenance,
+            },
+            "cited benchmark plus validated deterministic scoped rule with bilingual output",
         )
         gaps = cells.get("5_gaps_and_human_judgment", {}).get("items", [])
         gap_kinds = {item.get("kind") for item in gaps}
@@ -156,9 +176,28 @@ def evaluate_cards(audit: dict[str, Any], ground: dict[str, Any]) -> dict[str, A
         }
         check(
             f"{dimension_id}:structured-stages",
-            stages == EXPECTED_STAGES,
-            sorted(str(item) for item in stages),
-            sorted(EXPECTED_STAGES),
+            stages == EXPECTED_STAGES
+            and all(
+                item.get("sources")
+                for item in layer.get("structured_stage_trace", [])
+                if item.get("dimension_id") == dimension_id
+            )
+            and any(
+                item.get("stage") == "deterministic_signal"
+                and item.get("actor") == "deterministic_rule_engine"
+                for item in layer.get("structured_stage_trace", [])
+                if item.get("dimension_id") == dimension_id
+            ),
+            [
+                {
+                    "stage": item.get("stage"),
+                    "actor": item.get("actor"),
+                    "source_count": len(item.get("sources") or []),
+                }
+                for item in layer.get("structured_stage_trace", [])
+                if item.get("dimension_id") == dimension_id
+            ],
+            "four sourced stages with deterministic rule engine for signal",
         )
 
     capability = audit.get("capability_matrix", {}).get("summary", {})
@@ -166,9 +205,11 @@ def evaluate_cards(audit: dict[str, Any], ground: dict[str, Any]) -> dict[str, A
         "honest-capability-matrix",
         capability.get("validated_finance_dimensions") == 2
         and capability.get("total_finance_dimensions") == 6
+        and capability.get("validated_rule_dimensions") == 2
+        and capability.get("authored_only_rule_dimensions") == 4
         and capability.get("validated_adoption_dimensions") == 0,
         capability,
-        "2/6 finance and 0 adoption dimensions validated",
+        "2/6 finance dimensions validated, 2 rule dimensions validated, 4 authored only",
     )
     check(
         "offline-zero-model-core",
