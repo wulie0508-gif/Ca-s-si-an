@@ -185,6 +185,150 @@ The runner rejects unknown sources and regenerates the report only after the
 selected facts validate. Changing auxiliary sources cannot change a core
 signal, rule digest, or input digest.
 
+## Local company evidence workbench (v0.4)
+
+The project now also includes a local-first enterprise intake workbench. It
+does not replace the validated financial core; it prepares a company interview,
+consent record, claim ledger, evidence ledger, stage-specific material request,
+optional local-agent task contracts, and a human-review-ready local packet.
+
+Create an editable bilingual case, or generate the included offline example:
+
+```powershell
+cleantech-finance case init case.json
+cleantech-finance case report `
+  examples/company-intake/demo-distributed-solar/case.json `
+  --out outputs/local-company-workbench-demo
+```
+
+Open `outputs/local-company-workbench-demo/workbench.html` locally. The page
+contains no CDN, network request, or external upload; it can edit core fields
+and download an updated `case.json`. Re-run `case report` after editing to
+produce the controlling validation result and artifacts.
+
+The workbench produces:
+
+- a bilingual 30-minute founder interview guide;
+- separated internal/public-content consent controls;
+- a management-statement, claim, and evidence ledger with E0–E4 boundaries;
+- five deterministic gates: authorization, entity/scope, minimum evidence,
+  assessment eligibility, and publication;
+- stage-specific material requests for R&D, pilot, early commercial, scaling,
+  or mature companies;
+- optional allowlist-bound local-agent task contracts whose outputs remain
+  candidate evidence pending human review;
+- a safe cohort-comparison contract that refuses percentile output below five
+  comparable observations.
+
+The workbench does not issue a score, investment conclusion, credit conclusion,
+formal ESG assurance, or automated ARL score. Existing red/amber/green finance
+evidence signals remain independent and cannot be aggregated. See
+[the local workbench guide](docs/local-company-workbench.md).
+
+## Traceable QA diagnostic and routing layer
+
+The QA layer turns a human-selected company's exact answers and supplied public
+source excerpts into a six-field entry profile: product/technology,
+subindustry, target markets, export stage, core gaps, and resource needs. Its
+question router asks targeted follow-ups and branches on the previous export-
+stage answer instead of emitting one fixed questionnaire.
+When a field is still incomplete, the corresponding `-clarification` question
+ID may be issued again until the field is complete. Each answer ID remains
+unique and may not collide with a source ID.
+
+Every profile field must cite an exact non-empty substring of a supplied source
+or company answer. Answers are replayed in the router's actual order; answer-
+backed values must equal `response[field]`, while document-backed values need a
+matching entity-bound field/value/quote assertion. Every structured answer
+field also needs one exact field/value/quote assertion, and both document
+sources and company respondents bind the full identifier scheme, value, and
+legal name. An unsupported field is
+cleared from the accepted profile, preserved only as a candidate, and added to
+the gap queue. This deterministic gate proves traceability structure, not
+truth; company statements remain statements.
+
+```powershell
+cleantech-finance qa init qa-case.json
+cleantech-finance qa next qa-case.json
+cleantech-finance qa validate qa-case.json
+cleantech-finance qa report qa-case.json --out outputs/qa-company
+```
+
+Triage output points to Expert, Map, and Radar with cited reasons, but those
+downstream agents are stubs and are not executed. A separate five-company
+runner stops on the first failure. A countable delivery additionally requires
+an externally confirmed five-company digest, human-reviewed profile ground
+truth for every field, five case hashes, five profile-ground-truth hashes, and
+a hash-chained rerun history
+whose entries bind the complete immutable run artifact tree. Delivery histories
+lock the selection batch and input digest; input corrections are not reported as
+general rule fixes. Synthetic `contract_test` fixtures can exercise orchestration
+but have separate execution/delivery statuses and can never count as delivery.
+Annual-report cases retain the existing 2-dimension
+financial ground truth; profile-only cases require an explicit human waiver.
+At least one of the five cases must set `annual_report_status=available` and
+pass that financial contract. An all-waiver batch is
+`financial_not_exercised`; it cannot claim financial traceability or a complete
+delivery.
+
+From the repository root, preview and pin the human-supplied selection before
+running it:
+
+```powershell
+& .\.venv-new\Scripts\python.exe .\scripts\run_qa_loop.py `
+  --registry D:\private-cases\qa-registry.json `
+  --selection-digest-only
+```
+
+The preview works before the declared hashes are populated. It prints the five
+actual case hashes, five actual profile-ground-truth hashes, aggregate
+`case_set_sha256`, and an explicitly unconfirmed attestation template. Missing
+or mismatched declared hashes produce exit code `2` while retaining the JSON
+report. Copy all ten actual hashes into the registry and rerun until
+`ready_for_human_attestation=true`; that flag means the materials are ready for
+human review, not that a person has attested. The reviewer then checks all five
+companies and fills the attestation. This remains an unsigned human claim, not
+cryptographic identity proof; a `qa_delivery` result's top-level
+`human_attestation_assurance`
+therefore reports `status=unsigned_claim_only` and
+`cryptographic_identity_verified=false`.
+
+After the attestation is filled, use the disposable preflight and then the
+formal run:
+
+```powershell
+& .\.venv-new\Scripts\python.exe .\scripts\run_qa_loop.py `
+  --registry D:\private-cases\qa-registry.json `
+  --preflight `
+  --out D:\private-results\qa-company-loops
+
+& .\.venv-new\Scripts\python.exe .\scripts\run_qa_loop.py `
+  --registry D:\private-cases\qa-registry.json `
+  --out D:\private-results\qa-company-loops
+```
+
+Preflight runs the production path in temporary storage and, on normal return,
+removes its temporary artifacts and history. Its optional `--out` is only
+checked as the intended external location and is not created. A formal run
+requires an explicit `--out` outside the project tree. The generalization guard
+also scans decision literals across the complete QA rule bundle, including
+Python control-flow/dictionary-key literals and Schema `const`/`enum` values,
+and fails closed on current-company identity exceptions.
+Result and history `regression_evidence` record the observed required,
+executed, passed, failed, missing, and input-changed sets from each case's latest
+prior execution pass. It is complete only for a non-empty baseline fully rerun
+and passed with identical inputs after a rule change; Markdown and HTML show its
+`status` and `complete` values. If that run stops early, retries with the same
+rule digest retain the pending requirement until the full baseline passes.
+The runner executes from a volatile content-addressed snapshot outside the
+repository and output tree. It binds every Manifest source role, uses the same
+captured source bytes for hashing and extraction, evaluates ground truth in
+memory, removes the snapshot before committing history, and rejects repository-
+local delivery outputs. Durable QA artifacts are `internal_restricted` and retain
+only logical input references rather than local source paths.
+The runner never selects companies. See
+[the QA diagnostic loop guide](docs/qa-diagnostic-loop.md).
+
 ## Trust model
 
 - A retrieved passage is a **candidate**, not a verified conclusion.

@@ -7,6 +7,7 @@ import json
 import re
 from collections.abc import Iterable
 from html.parser import HTMLParser
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 
@@ -38,11 +39,30 @@ class _VisibleTextParser(HTMLParser):
             self.blocks.append(text)
 
 
-def load_manifest(path: str | Path) -> tuple[dict[str, Any], list[Source], Path]:
+def load_manifest(
+    path: str | Path,
+    *,
+    allowed_root: str | Path | None = None,
+    manifest_bytes: bytes | None = None,
+    include_payloads: bool = False,
+) -> (
+    tuple[dict[str, Any], list[Source], Path]
+    | tuple[dict[str, Any], list[Source], Path, dict[str, bytes]]
+):
     manifest_path = Path(path).resolve()
+    resolved_allowed_root = Path(allowed_root).resolve() if allowed_root is not None else None
+    if resolved_allowed_root is not None:
+        try:
+            manifest_path.relative_to(resolved_allowed_root)
+        except ValueError as exc:
+            raise ManifestError("Manifest escapes the allowed input root") from exc
     try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+        manifest = json.loads(
+            manifest_bytes.decode("utf-8")
+            if manifest_bytes is not None
+            else manifest_path.read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ManifestError(f"Cannot read manifest {manifest_path}: {exc}") from exc
 
     required = {"subject", "assessment", "sources"}
@@ -54,6 +74,7 @@ def load_manifest(path: str | Path) -> tuple[dict[str, Any], list[Source], Path]
 
     source_ids: set[str] = set()
     sources: list[Source] = []
+    source_payloads: dict[str, bytes] = {}
     for index, raw in enumerate(manifest["sources"], start=1):
         for key in ("id", "path", "title", "url", "publisher", "kind"):
             if not raw.get(key):
@@ -65,9 +86,18 @@ def load_manifest(path: str | Path) -> tuple[dict[str, Any], list[Source], Path]
             raise ManifestError(f"Source {index} has unsupported role '{role}'")
         source_ids.add(raw["id"])
         source_path = (manifest_path.parent / raw["path"]).resolve()
+        if resolved_allowed_root is not None:
+            try:
+                source_path.relative_to(resolved_allowed_root)
+            except ValueError as exc:
+                raise ManifestError(
+                    f"Source file escapes the allowed input root: {raw['id']}"
+                ) from exc
         if not source_path.is_file():
             raise ManifestError(f"Source file not found: {source_path}")
-        digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
+        payload = source_path.read_bytes()
+        digest = hashlib.sha256(payload).hexdigest()
+        source_payloads[raw["id"]] = payload
         sources.append(
             Source(
                 id=raw["id"],
@@ -85,6 +115,8 @@ def load_manifest(path: str | Path) -> tuple[dict[str, Any], list[Source], Path]
         resolve_entity_identity(manifest)
     except ValueError as exc:
         raise ManifestError(f"Invalid subject identity: {exc}") from exc
+    if include_payloads:
+        return manifest, sources, manifest_path, source_payloads
     return manifest, sources, manifest_path
 
 
@@ -107,13 +139,23 @@ def _paragraphs_from_text(text: str) -> list[tuple[str, str]]:
     return blocks
 
 
-def _read_blocks(path: Path) -> list[tuple[str, str]]:
+def _read_blocks(path: Path, payload: bytes | None = None) -> list[tuple[str, str]]:
     suffix = path.suffix.lower()
     if suffix in {".txt", ".md", ".csv", ".json"}:
-        return _paragraphs_from_text(path.read_text(encoding="utf-8", errors="replace"))
+        text = (
+            payload.decode("utf-8", errors="replace")
+            if payload is not None
+            else path.read_text(encoding="utf-8", errors="replace")
+        )
+        return _paragraphs_from_text(text)
     if suffix in {".html", ".htm"}:
         parser = _VisibleTextParser()
-        parser.feed(path.read_text(encoding="utf-8", errors="replace"))
+        text = (
+            payload.decode("utf-8", errors="replace")
+            if payload is not None
+            else path.read_text(encoding="utf-8", errors="replace")
+        )
+        parser.feed(text)
         return [(block, f"text block {index}") for index, block in enumerate(parser.blocks, 1)]
     if suffix == ".pdf":
         try:
@@ -123,7 +165,8 @@ def _read_blocks(path: Path) -> list[tuple[str, str]]:
                 "PDF input requires the optional dependency: pip install 'cleantech-finance[pdf]'"
             ) from exc
         blocks: list[tuple[str, str]] = []
-        for page_number, page in enumerate(PdfReader(str(path)).pages, start=1):
+        reader_input: str | BytesIO = BytesIO(payload) if payload is not None else str(path)
+        for page_number, page in enumerate(PdfReader(reader_input).pages, start=1):
             text = page.extract_text() or ""
             for paragraph, _ in _paragraphs_from_text(text):
                 blocks.append((paragraph, f"page {page_number}"))
@@ -176,12 +219,16 @@ def _pack_blocks(
     return chunks
 
 
-def ingest_sources(sources: list[Source]) -> list[Chunk]:
+def ingest_sources(
+    sources: list[Source],
+    source_payloads: dict[str, bytes] | None = None,
+) -> list[Chunk]:
     chunks: list[Chunk] = []
     for source in sources:
         if source.role in {"auxiliary", "identity"}:
             continue
-        packed = _pack_blocks(_read_blocks(Path(source.path)))
+        payload = source_payloads.get(source.id) if source_payloads is not None else None
+        packed = _pack_blocks(_read_blocks(Path(source.path), payload))
         for ordinal, (text, locator) in enumerate(packed, start=1):
             chunks.append(
                 Chunk(

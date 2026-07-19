@@ -8,7 +8,7 @@ import pytest
 from cleantech_finance.audit import run_audit, validate_audit
 from cleantech_finance.financials import validate_period_contract
 from cleantech_finance.ingest import ManifestError
-from cleantech_finance.reporting import card_html, card_markdown, write_artifacts
+from cleantech_finance.reporting import card_html, card_markdown, html_report, write_artifacts
 
 
 @pytest.fixture()
@@ -143,6 +143,15 @@ def test_writes_all_artifacts(manifest: Path, tmp_path: Path) -> None:
         "financial_metrics_csv",
     }
     assert all(Path(path).is_file() for path in paths.values())
+
+
+def test_html_report_contains_mobile_overflow_guards(manifest: Path) -> None:
+    audit = run_audit(str(manifest), only_dimensions={"cash-runway"})
+    rendered = html_report(audit)
+
+    assert "overflow-x:clip" in rendered
+    assert ".cell>div{min-width:0}" in rendered
+    assert "a,code,blockquote,.retrieval li{overflow-wrap:anywhere" in rendered
 
 
 def test_validation_rejects_automated_human_rating(manifest: Path) -> None:

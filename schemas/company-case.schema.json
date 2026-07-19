@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:company-case:1.0.0",
+  "title": "CleanTech Finance local company evidence case",
+  "type": "object",
+  "required": ["schema_version", "case", "company", "permissions", "interview", "claims", "evidence", "materials", "agent_settings"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "case": {"type": "object", "required": ["id", "created_at", "language", "purpose"]},
+    "company": {
+      "type": "object",
+      "required": ["legal_name", "entity_identifier", "country", "industry", "business_model", "stage", "technology_or_solution"],
+      "properties": {
+        "stage": {"enum": ["research_development", "pilot", "early_commercial", "scaling", "mature"]},
+        "entity_identifier": {"type": "object", "required": ["scheme", "value"]}
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "required": ["recording_and_transcription", "internal_analysis", "public_content", "identity_and_brand", "translation_and_subtitles", "ai_synthetic_media"]
+    },
+    "interview": {"type": "object", "required": ["statements"]},
+    "claims": {"type": "array"},
+    "evidence": {"type": "array"},
+    "materials": {"type": "array"},
+    "benchmark_observations": {"type": "array"},
+    "agent_settings": {"type": "object", "required": ["enabled", "mode", "allowed_source_families"]}
+  },
+  "$comment": "Use cleantech-finance case validate for the stricter semantic and evidence-level checks. An optional local Agent may only return candidate evidence and cannot generate verified facts or scores."
+}

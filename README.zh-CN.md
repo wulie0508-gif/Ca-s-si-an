@@ -76,6 +76,48 @@ v0.3 使用十家不同的公开公司完成了十轮泛化。每一轮都保留
 
 本项目仅用于研究辅助，不构成投资、会计、法律、工程、安全或监管建议。
 
+## QA 企业进入诊断与分诊
+
+QA 层接收人工指定企业的原话和人工提供的公开资料，形成产品/技术、子行业、目标市场、出海阶段、核心缺口、资源需求六项画像。问题会根据前一轮答案补问缺失字段，并按不同出海阶段进入市场依据、试点证据或商业可重复性分支，不是固定问卷。字段仍不完整时，同一个 `-clarification` 补问 ID 可以重复出现直至完整；每条回答的 `answer_id` 仍必须唯一，且不能与来源 ID 冲突。
+
+每个画像字段必须引用来源中的精确原文。系统会按实际 router 顺序重放问答；原话支持的画像值必须等于对应 `response[field]`，文档支持的画像值必须有主体绑定的字段/值/引文 assertion。无出处、主体不符、值不符或原文不匹配时，字段正式值会清空，候选值保留并进入缺口队列；通过只证明可追溯结构，不证明企业陈述为真。
+
+```powershell
+cleantech-finance qa init qa-case.json
+cleantech-finance qa next qa-case.json
+cleantech-finance qa validate qa-case.json
+cleantech-finance qa report qa-case.json --out outputs/qa-company
+```
+
+分诊只输出 Expert、Map、Radar 指向及其引用理由，三个下游 Agent 当前均不执行。可计数的五家公司交付还必须有外部确认的五家公司摘要、逐字段人工画像 ground truth、五个案例哈希、五个画像 ground truth 哈希和哈希链重跑历史；库内 `contract_test` 即使五次执行全过也不能计数。有年报案例继续使用既有两项财务 ground truth，无年报案例必须有人工 waiver。五家公司中至少一家必须是 `annual_report_status=available` 并通过财务合同；五家全部 waiver 会得到 `financial_not_exercised`，不能宣称财务溯源或完整交付。
+
+在仓库根目录先预览并固定人工提供的选择材料：
+
+```powershell
+& .\.venv-new\Scripts\python.exe .\scripts\run_qa_loop.py `
+  --registry D:\private-cases\qa-registry.json `
+  --selection-digest-only
+```
+
+即使十个声明哈希尚未填写，该命令也会输出五个实际案例哈希、五个实际画像 ground truth 哈希、聚合的 `case_set_sha256` 和明确未确认的 attestation 模板。哈希缺失或不匹配时，JSON 仍会打印，但退出码为 `2`。把十个实际哈希复制回注册表并重跑，直到 `ready_for_human_attestation=true`；这只表示材料可以交给人核对，不表示已经有人确认。人工逐一核对五家公司后再填写 attestation。它仍是未附加密码学签名的人类声明，不是声明者身份的密码学证明；`qa_delivery` 结果顶层 `human_attestation_assurance` 明示 `status=unsigned_claim_only`、`cryptographic_identity_verified=false`。
+
+填写 attestation 后先做可丢弃预检，再做正式运行：
+
+```powershell
+& .\.venv-new\Scripts\python.exe .\scripts\run_qa_loop.py `
+  --registry D:\private-cases\qa-registry.json `
+  --preflight `
+  --out D:\private-results\qa-company-loops
+
+& .\.venv-new\Scripts\python.exe .\scripts\run_qa_loop.py `
+  --registry D:\private-cases\qa-registry.json `
+  --out D:\private-results\qa-company-loops
+```
+
+`--preflight` 在临时目录执行生产路径，正常返回时删除临时制品和临时历史；其中可选的 `--out` 只检查拟用目录在项目树外，不会创建正式目录。正式运行必须显式提供项目树外的 `--out`。公司特例检查会扫描整个 QA rule bundle 的决策字面量，包括 Python 控制流/字典键和 Schema `const` / `enum`，发现当前公司身份特例即失败关闭。企业只能由人指定。详见 [QA 诊断与循环说明](docs/qa-diagnostic-loop.md)。
+
+结果与历史的 `regression_evidence` 按每家公司最近一次既有执行通过记录观察到的 required、executed、passed、failed、missing、input-changed 集合；只有非空基线在规则变化后以相同输入全部重跑通过才是 `complete=true`。若该次运行首错即停，同一规则摘要的后续重跑会继续保留这一待完成要求，直至完整基线通过。Markdown 与 HTML 同步显示其 `status` 和 `complete`。
+
 ## 作者归属
 
 初始方法论与实现：Cassian。作者归属保留在仓库层；单张证据卡采用开源中性的方法论声明，不再展示个人署名。

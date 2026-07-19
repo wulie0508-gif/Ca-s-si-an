@@ -1,5 +1,11 @@
 {
+  "schema_version": "1.0.0",
   "case": "Sungrow 2025 five-cell evidence cards",
+  "entity": {
+    "scheme": "ticker",
+    "value": "300274.SZ",
+    "legal_name": "Sungrow Power Supply Co., Ltd."
+  },
   "signals": {
     "profitability-unit-economics": "green",
     "cash-runway": "green"

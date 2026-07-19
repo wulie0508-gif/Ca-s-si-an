@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cleantech-finance"
-version = "0.3.0"
+version = "0.4.0"
 description = "Evidence-first financial and bankability research for clean energy companies"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -32,7 +32,7 @@ dependencies = []
 
 [project.optional-dependencies]
 pdf = ["pypdf>=5,<7"]
-dev = ["pytest>=8,<9", "ruff>=0.9,<1"]
+dev = ["pytest>=8,<9", "ruff>=0.9,<1", "jsonschema>=4.23,<5"]
 
 [project.scripts]
 cleantech-finance = "cleantech_finance.cli:main"

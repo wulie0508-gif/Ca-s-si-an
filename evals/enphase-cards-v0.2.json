@@ -1,5 +1,11 @@
 {
+  "schema_version": "1.0.0",
   "case": "Enphase Energy 2025 five-cell evidence cards",
+  "entity": {
+    "scheme": "ticker",
+    "value": "ENPH",
+    "legal_name": "Enphase Energy, Inc."
+  },
   "signals": {
     "profitability-unit-economics": "amber",
     "cash-runway": "amber"

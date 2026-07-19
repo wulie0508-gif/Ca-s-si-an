@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:card-ground-truth:1.0.0",
+  "title": "Human-reviewed two-dimension card ground truth",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case", "entity", "signals"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "case": {"type": "string", "minLength": 1},
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "value", "legal_name"],
+      "properties": {
+        "scheme": {"type": "string", "minLength": 1},
+        "value": {"type": "string", "minLength": 1},
+        "legal_name": {"type": "string", "minLength": 1}
+      }
+    },
+    "signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profitability-unit-economics", "cash-runway"],
+      "properties": {
+        "profitability-unit-economics": {"enum": ["red", "amber", "green", null]},
+        "cash-runway": {"enum": ["red", "amber", "green", null]}
+      }
+    }
+  }
+}

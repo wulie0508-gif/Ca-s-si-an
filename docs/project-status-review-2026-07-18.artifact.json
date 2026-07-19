@@ -1,0 +1,397 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "CleanTech Finance v0.4 项目状态与独立审视报告",
+    "description": "面向项目负责人和 Claude 的真实状态快照：区分已验证能力、工程门禁、尚未完成的真实五企交付与下一阶段决策。",
+    "generatedAt": "2026-07-18T12:00:00+08:00",
+    "cards": [
+      {
+        "id": "tests-passed",
+        "description": "当前工作树的完整 pytest 集合；这是代码回归证据，不等于真实企业交付证据。",
+        "dataset": "metric_tests",
+        "sourceId": "test_receipt",
+        "metrics": [
+          {"label": "完整测试通过", "field": "value", "format": "number"}
+        ]
+      },
+      {
+        "id": "schemas-valid",
+        "description": "按 JSON Schema Draft 2020-12 校验成功的仓库 Schema。",
+        "dataset": "metric_schemas",
+        "sourceId": "schema_receipt",
+        "metrics": [
+          {"label": "Schema 有效", "field": "value", "format": "number"}
+        ]
+      },
+      {
+        "id": "finance-reference-gates",
+        "description": "Sungrow 与 Enphase 两个既有财务参考案例按顺序发布门禁通过；只覆盖两项端到端财务维度。",
+        "dataset": "metric_finance_references",
+        "sourceId": "release_gate_receipt",
+        "metrics": [
+          {"label": "财务参考案例通过", "field": "value", "format": "number"}
+        ]
+      },
+      {
+        "id": "registry-passed",
+        "description": "历史十家公司财务注册表回归通过；不能替代本轮五家公司人工指定验证。",
+        "dataset": "metric_registry",
+        "sourceId": "registry_receipt",
+        "metrics": [
+          {"label": "注册表公司通过", "field": "value", "format": "number"}
+        ]
+      },
+      {
+        "id": "real-five-executed",
+        "description": "本轮满足外部人工选择、独立画像真值、不可变哈希与正式 qa_delivery 条件的公司执行数。",
+        "dataset": "metric_real_five",
+        "sourceId": "delivery_inventory",
+        "metrics": [
+          {"label": "真实五企已执行", "field": "value", "format": "number"}
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "five-company-count",
+        "title": "真实五企交付计数",
+        "subtitle": "仅统计满足正式 qa_delivery 合同的公司；工程测试、历史案例和夹具均不计入。",
+        "type": "bar",
+        "dataset": "five_company_count",
+        "sourceId": "delivery_inventory",
+        "encodings": {
+          "x": {"field": "status", "type": "nominal", "label": "状态"},
+          "y": {"field": "count", "type": "quantitative", "label": "公司数", "format": "number"},
+          "label": {"field": "count", "type": "text", "label": "公司数"}
+        },
+        "yAxisTitle": "公司数",
+        "valueFormat": "number",
+        "maxRows": 2
+      }
+    ],
+    "tables": [
+      {
+        "id": "capability-matrix",
+        "title": "能力成熟度矩阵",
+        "subtitle": "“已实现”不自动等于“已被真实企业材料端到端验证”。",
+        "dataset": "capabilities",
+        "sourceId": "product_sources",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "序号", "format": "number"},
+          {"field": "capability", "label": "能力"},
+          {"field": "current_status", "label": "当前成熟度"},
+          {"field": "verified_scope", "label": "已验证范围"},
+          {"field": "truth_boundary", "label": "真实边界"}
+        ]
+      },
+      {
+        "id": "qa-deliverables",
+        "title": "本轮 QA 诊断层已交付内容",
+        "subtitle": "这些条目是通用合同、失败关闭和审计机制；尚未以五家真实公司完成最终验收。",
+        "dataset": "qa_deliverables",
+        "sourceId": "qa_implementation",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "序号", "format": "number"},
+          {"field": "area", "label": "领域"},
+          {"field": "delivered", "label": "已实现"},
+          {"field": "evidence", "label": "可复核证据"},
+          {"field": "remaining", "label": "仍未覆盖"}
+        ]
+      },
+      {
+        "id": "validation-evidence",
+        "title": "当前机器验证结果",
+        "subtitle": "结果证明当前工作树的合同与回归状态；不把测试夹具升级成真实企业事实。",
+        "dataset": "validation_evidence",
+        "sourceId": "validation_receipts",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "序号", "format": "number"},
+          {"field": "check", "label": "检查"},
+          {"field": "result", "label": "结果"},
+          {"field": "evidence", "label": "明细"},
+          {"field": "interpretation", "label": "正确解释"}
+        ]
+      },
+      {
+        "id": "completion-gaps",
+        "title": "阻止真实五企交付完成的缺口",
+        "subtitle": "以下是当前必须由人或外部材料解除的具体阻塞，不是可以用测试夹具绕过的工程待办。",
+        "dataset": "completion_gaps",
+        "sourceId": "delivery_contract",
+        "defaultSort": {"field": "priority", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "priority", "label": "优先级", "format": "number"},
+          {"field": "missing", "label": "缺少内容"},
+          {"field": "consequence", "label": "直接后果"},
+          {"field": "unblock", "label": "解除方式"}
+        ]
+      },
+      {
+        "id": "risk-register",
+        "title": "残余风险与不能省略的边界",
+        "subtitle": "风险状态为公开记录，不通过聚合分数掩盖。",
+        "dataset": "risks",
+        "sourceId": "risk_sources",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "序号", "format": "number"},
+          {"field": "severity", "label": "重要性"},
+          {"field": "risk", "label": "风险／边界"},
+          {"field": "current_control", "label": "现有控制"},
+          {"field": "residual", "label": "残余问题"}
+        ]
+      },
+      {
+        "id": "claude-review-checklist",
+        "title": "给 Claude 的独立审视清单",
+        "subtitle": "目标是主动寻找错误完成、能力夸大和可绕过路径；不是确认本报告措辞是否顺眼。",
+        "dataset": "claude_checklist",
+        "sourceId": "review_targets",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "序号", "format": "number"},
+          {"field": "review_area", "label": "审查面"},
+          {"field": "challenge", "label": "应尝试推翻的主张"},
+          {"field": "evidence_target", "label": "重点文件／行为"},
+          {"field": "pass_condition", "label": "通过标准"}
+        ]
+      }
+    ],
+    "sources": [
+      {"id": "status_synthesis", "label": "2026-07-18 reviewed project status synthesis", "path": "docs/project-status-validation-receipt-2026-07-18.md"},
+      {"id": "test_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+      {"id": "schema_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+      {"id": "release_gate_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+      {"id": "registry_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+      {"id": "delivery_inventory", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+      {"id": "product_sources", "label": "Product maturity and handoff sources", "path": "docs/product-overview-brief.md"},
+      {"id": "qa_implementation", "label": "QA diagnostic implementation and tests", "path": "src/cleantech_finance/qa_loop.py"},
+      {"id": "validation_receipts", "label": "Validation detail SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+      {"id": "product_boundaries", "label": "Canonical product capability boundaries", "path": "docs/CLAUDE_HANDOFF_v0.4.md"},
+      {"id": "delivery_contract", "label": "Five-company QA delivery contract", "path": "docs/qa-diagnostic-loop.md"},
+      {"id": "risk_sources", "label": "QA security, assurance, and maturity controls", "path": "docs/qa-diagnostic-loop.md"},
+      {"id": "review_targets", "label": "Claude adversarial review targets", "path": "tests/test_qa_diagnostics.py"}
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# CleanTech Finance v0.4 项目状态与独立审视报告\n\n**状态日期：2026-07-18｜分支：main｜基线提交：350d497｜工作树：保留未提交本地变更**"
+      },
+      {
+        "id": "executive-summary",
+        "type": "markdown",
+        "body": "## Executive Summary\n\n当前最准确的结论是：**CleanTech Finance 的 v0.4 核心与新增 QA 诊断合同已经达到可复核、可回归的工程状态，但本轮真实五家公司验证与交付尚未开始计数。**\n\n代码层面，动态问答路由、逐字段来源绑定、重放错误失败关闭、五企材料哈希引导、外置正式输出、财务行权要求、回归证据、人类声明保证边界和移动端报告安全均已实现并通过当前测试门禁。\n\n交付层面，满足 `qa_delivery` 全部条件的真实公司仍为 **0/5**。缺少的不是一个可以由系统自行补造的参数，而是由人确定的五家公司顺序、五份案例材料、五份独立人工画像真值、不可变哈希与人工选择声明；且本批至少一家公司必须有可用年报并真正运行现有两项财务合同。\n\n因此，管理决策应是：**允许进入真实材料预检与 fail-first 验证，不应宣布五企交付完成、整体产品投产、完整 ESG/ARL/出海评估完成，也不应把红黄绿信号汇总成评级。**",
+        "sourceId": "status_synthesis"
+      },
+      {
+        "id": "headline-metrics-heading",
+        "type": "markdown",
+        "body": "## 一眼看懂当前状态\n\n前四项是工程与既有财务基准的验证结果；最后一项是本轮真实五企可计数交付。两类指标不能互相替代。"
+      },
+      {
+        "id": "headline-metrics",
+        "type": "metric-strip",
+        "cardIds": [
+          "tests-passed",
+          "schemas-valid",
+          "finance-reference-gates",
+          "registry-passed",
+          "real-five-executed"
+        ]
+      },
+      {"id": "five-company-chart", "type": "chart", "chartId": "five-company-count"},
+      {
+        "id": "maturity-heading",
+        "type": "markdown",
+        "body": "## 产品现在真正能做什么\n\n产品已经形成以案例、原子主张、证据等级、授权和五道闸门为骨架的本地优先尽调工作台。成熟度不是一个总分：不同模块必须分别陈述。"
+      },
+      {
+        "id": "maturity-detail",
+        "type": "markdown",
+        "sourceId": "product_sources",
+        "body": "### 能力成熟度明细\n\n1. **企业案例、主张、证据台账与五道闸门 — 已实现。** 已覆盖案例 Schema、E0–E4、六种主张状态，以及授权／主体／最低证据／分析资格／发布闸门；框架控制证据流转，但不自动证明企业主张为真。\n2. **企业阶段路由与 30 分钟访谈 — 已实现。** 覆盖研发、试点、早期商业化、规模化、成熟，中英双语提纲和分离授权；访谈原话只证明说过什么。\n3. **QA 动态诊断与画像溯源 — 工程合同已实现。** 已有动态追问、重复澄清、精确来源绑定、重放失败关闭和人工画像真值合同；尚未完成五家真实企业的行为与材料泛化验证。\n4. **盈利／单位经济性 — 端到端已验证。** Sungrow、Enphase 基准及十家公司注册表回归通过；只在证据满足时输出独立红／黄／绿信号，不汇总评级。\n5. **现金流／资金缺口 — 端到端已验证。** 使用同一确定性抽取、规则与报告链；不等于信用评级或投资结论。\n6. **其余四个财务维度 — 输入蓝图。** 有字段与材料请求设计，没有端到端规则和验证。\n7. **ESG、清洁技术影响、出海准备度 — 证据框架。** 支持主张—证据组织和闸门，不是自动认证。\n8. **DOE ARL 17 维度 — 检索脚手架。** 不输出 ARL 1–9 分数。\n9. **同行比较 — 边界已实现。** 只比较同行业、同阶段；少于五个样本不输出百分位，也不形成综合排名。\n10. **企业补件中心 — 路线图。** 目前只有阶段化材料请求，没有持久化状态机、企业端 UI 或 API。"
+      },
+      {
+        "id": "qa-heading",
+        "type": "markdown",
+        "body": "## 本轮 QA 诊断层进展\n\n新增工作重点不是再造一个自动评级器，而是让诊断问答、人工真值、材料哈希、失败记录和回归范围能够被第三方逐项重放。任何 Agent 结果仍只能作为候选证据。"
+      },
+      {
+        "id": "qa-detail",
+        "type": "markdown",
+        "sourceId": "qa_implementation",
+        "body": "### 已实现的 QA 控制\n\n- **动态问答：** 根据缺失字段路由；字段完成前允许 `*-clarification` 重复追问。真实企业回答分布尚未验证。\n- **逐字段溯源：** 回答响应或文档断言必须绑定归一化字段值、精确引文和实体；尚待五份独立人工画像真值对照。\n- **错误可见性：** 重放或断言错误返回 `blocked_by_replay_errors`，CLI 退出码为 2。\n- **五企材料引导：** 可输出十个实际输入哈希、聚合摘要和未确认 attestation 模板。\n- **正式运行隔离：** preflight 使用一次性本地存储；正式 `qa_delivery` 强制仓库外输出并绑定不可变输入。\n- **财务行权：** 五企至少一家年报可用并通过现有财务合同；全 waiver 为 `financial_not_exercised`。\n- **泛化与回归：** 记录 required／executed／passed／failed／missing／input-changed；同规则摘要继承未完成回归。\n- **特例污染防护：** 扫描 QA rule bundle 的 Python 决策字面量和 Schema const／enum 中的五企身份；静态扫描不是完整形式化证明。\n- **人类声明边界：** 显式输出 `unsigned_claim_only` 和 `cryptographic_identity_verified=false`。\n- **报告可用性：** 长哈希在 375px 不再造成页面级横向溢出，表格保留局部滚动。\n- **下游分诊：** 只输出 Expert／Map／Radar 指向与引用理由，三个下游 Agent 当前均不执行。"
+      },
+      {
+        "id": "validation-heading",
+        "type": "markdown",
+        "body": "## 工程与财务内核验证\n\n当前工作树在本机通过完整测试、Ruff、Schema、顺序发布门禁、十家公司注册表与浏览器检查。发布门禁中的模型调用均为零，说明结果来自确定性抽取／规则／渲染链，而不是由模型临时补写。"
+      },
+      {"id": "validation-table", "type": "table", "tableId": "validation-evidence"},
+      {
+        "id": "not-claimable",
+        "type": "markdown",
+        "body": "## 目前不能宣称什么\n\n- 不能宣称本轮五家公司已经完成；真实 `qa_delivery` 为 0/5。\n- 不能把 145 项测试、十家公司历史注册表、Sungrow/Enphase 基准、Demo 或复制的 contract fixture 当成本轮五企验收。\n- 不能宣称六个财务维度都端到端验证；只有盈利／单位经济性与现金流／资金缺口。\n- 不能输出 DOE ARL 1–9 分数；17 个维度目前只是检索脚手架。\n- 不能把 ESG、清洁技术影响或出海准备度描述为自动认证。\n- 不能把红／黄／绿独立财务证据信号加权、汇总为总分，不能输出投资、信用或综合风险评级。\n- 不能把访谈原话当成事实证明，也不能让 Agent 覆盖确定性规则。\n- 不能在没有单独授权和人工审核时公开发布。",
+        "sourceId": "product_boundaries"
+      },
+      {
+        "id": "gaps-heading",
+        "type": "markdown",
+        "body": "## 为什么真实五企仍然阻塞\n\n当前阻塞是有意设计的证据闸门：系统没有被授权替用户选择企业、制造人工真值或伪造人类确认。解除阻塞需要真实输入，而不是放宽合同。"
+      },
+      {
+        "id": "gaps-detail",
+        "type": "markdown",
+        "sourceId": "delivery_contract",
+        "body": "### 六个明确缺口\n\n1. **人类指定的五家公司及固定顺序：** 没有它就不能建立可计数 selection batch。\n2. **五份真实案例输入包：** 没有它就不能计算并绑定五个 case SHA-256。\n3. **五份独立人工画像 ground truth：** 没有它就不能逐字段对照系统输出。\n4. **十个实际哈希与聚合摘要的人工选择声明：** 缺失或不匹配时正式 `qa_delivery` 必须失败关闭。\n5. **至少一家年报可用公司的正式财务输入：** 全员 waiver 会得到 `financial_not_exercised`，不能完成。\n6. **仓库外正式输出目录与操作责任人：** 需要本地、非网络、非 reparse 且由 ACL／加密保护的目录。"
+      },
+      {
+        "id": "risk-heading",
+        "type": "markdown",
+        "body": "## 残余风险与工程债务\n\n以下风险不会因为测试全绿而自动消失。它们应在真实五企运行、部署设计或下一阶段补件中心中继续处理。"
+      },
+      {
+        "id": "risk-detail",
+        "type": "markdown",
+        "sourceId": "risk_sources",
+        "body": "### 风险登记\n\n- **关键｜真实五企尚未运行：** 目前无法证明 QA 在陌生公司上的可理解性和泛化，只能用真实材料 fail-first 循环解除。\n- **高｜人工声明无密码学身份保证：** 哈希证明材料未变，不证明是谁签署；强保证需要 detached signature 或外部身份系统。\n- **高｜waiver 误读：** waiver 是人工声明，不是客观证明不存在；全 waiver 已被禁止完成。\n- **高｜敏感输出存储：** 路径硬化拒绝仓库内、UNC、设备路径和 reparse point，但磁盘加密、ACL、备份和安全删除仍属于部署控制。\n- **中高｜公司特例的语义代理：** 精确身份静态扫描已覆盖多类决策字面量，但仍需对代理变量和间接分支做对抗审查。\n- **中｜下游 Agent 能力暗示：** Expert／Map／Radar 只是 stub；UI 与外部材料必须持续避免暗示已执行。\n- **中｜证据框架被营销成认证：** 必须持续保持财务、ESG、影响、出海和 ARL 的真实成熟度表述。\n- **中｜补件中心未实现：** submission 聚合根、状态机、权限、版本、幂等和局部重算仍待设计。"
+      },
+      {
+        "id": "next-steps",
+        "type": "markdown",
+        "body": "## Recommended Next Steps\n\n1. **由项目负责人给出五家公司与固定顺序。** 每家公司提供案例材料和独立人工画像 ground truth；不要由 Codex 或 Claude代选。\n2. **至少纳入一家年报可用企业。** 该公司必须真实运行盈利／单位经济性和现金流／资金缺口合同；全员 waiver 的批次不能完成。\n3. **先生成选择材料报告。** 取得五个案例哈希、五个画像真值哈希和聚合摘要，由人逐一核对后填写外部 attestation。\n4. **运行一次性 preflight。** 在临时本地存储中验证同一套正式输入，确认不会在仓库内落正式 `qa_delivery` 历史。\n5. **使用仓库外正式输出目录逐家 fail-first。** 每次失败只修通用规则；输入修订单列，不得冒充泛化改进。\n6. **每次规则变化重跑已通过基线。** 只有观察到同输入、完整基线再次通过，`regression_evidence.complete` 才能为真。\n7. **五家全部通过后再生成最终交付报告。** 在此之前，项目状态保持“工程可复核／真实五企未完成”。\n\n建议下一阶段补件中心复用同一原则：提交对象版本化、哈希与幂等、自动校验和人工审核分离、退回原因结构化、局部重算范围显式、任何 Agent 只产出候选证据。",
+        "sourceId": "delivery_contract"
+      },
+      {
+        "id": "claude-heading",
+        "type": "markdown",
+        "body": "## 给 Claude 的审视任务\n\n请将本报告视为待证伪主张。优先构造能够错误计数完成、绕过人工真值、污染规则或夸大成熟度的反例；发现问题时区分 **bug、工程债务、产品选择、尚未实现路线图**，并引用具体文件与代码位置。"
+      },
+      {
+        "id": "claude-detail",
+        "type": "markdown",
+        "sourceId": "review_targets",
+        "body": "### 十项对抗性检查\n\n1. **完成计数：** 尝试用 contract_test、Demo、历史十企或复制夹具让 0/5 错误变成完成。\n2. **选择与真值：** 尝试缺少、交换或篡改 case/profile GT 哈希仍进入正式运行。\n3. **动态问答：** 构造重复 answer ID、无限 clarification、错误实体、伪引文和归一化值不一致。\n4. **路径与隐私：** 尝试仓库内输出、UNC、设备路径、映射远程盘、reparse point 和 preflight 遗留。\n5. **财务行权：** 尝试五家全部 waiver 或年报状态虚假可用仍完成。\n6. **回归证据：** 构造首错即停、同规则摘要重跑、输入变化或空基线，让 incomplete 被错误标 complete。\n7. **特例污染：** 把公司身份写入 Python 控制流、字典键、match/assert 或 Schema const/enum，并继续寻找语义代理绕过。\n8. **能力边界：** 搜索把四个财务蓝图、ESG、影响、出海或 ARL 脚手架描述成评分／认证的代码或文案。\n9. **Agent 权限：** 寻找 Agent 候选证据覆盖规则、升级为事实或触发未授权公开发布的路径。\n10. **补件中心衔接：** 审查现有 case/claim/evidence/gate 是否足以承载 submission 状态机、版本、权限、幂等与局部重算。\n\nClaude 应对每个发现标注 bug／工程债务／产品选择／路线图，并给出文件、行号、复现步骤和影响；没有可复现证据时不要把猜测写成缺陷。"
+      },
+      {
+        "id": "further-questions",
+        "type": "markdown",
+        "body": "## Further Questions\n\n- 五家公司是否已经由业务负责人确定，且顺序是否不可变？\n- 哪一家公司提供可用年报，以确保财务合同真正被行权？\n- 谁负责逐字段画像真值、选择声明与最终人工复核？\n- 正式 `qa_delivery` 的仓库外目录、磁盘加密和访问控制由谁维护？\n- 下一阶段优先级是先完成五企验证，还是并行设计补件中心的持久化状态机与企业端 UI/API？\n- 是否需要在仓库外增加 detached signature 或企业身份体系，为人工声明提供密码学身份保证？"
+      },
+      {
+        "id": "caveats",
+        "type": "markdown",
+        "body": "## Caveats and Assumptions\n\n- 本报告是 2026-07-18 当前本地工作树的快照；分支为 `main`、HEAD 为 `350d497`，且存在必须保留的未提交变更。\n- 测试和发布门禁证明的是代码合同与既有基准没有观察到回归，不证明任何新公司的商业事实。\n- `actor_type=human` 加哈希仍只是未附加密码学签名的声明；`cryptographic_identity_verified=false` 是有意保留的真实边界。\n- waiver 表示人工声明当前材料不适用或不可得，不等于客观证明不存在。\n- 本报告没有绘制“总体完成率”或趋势图，因为各能力没有共同且有效的分母；把工程门禁、产品成熟度和真实五企交付压成百分比会制造虚假精度。\n- 报告不包含投资建议、信用判断或综合风险评级。"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-07-18T12:00:00+08:00",
+    "status": "ready",
+    "datasets": {
+      "metric_tests": [{"value": 145}],
+      "metric_schemas": [{"value": 7}],
+      "metric_finance_references": [{"value": 2}],
+      "metric_registry": [{"value": 10}],
+      "metric_real_five": [{"value": 0}],
+      "five_company_count": [
+        {"status": "已执行", "count": 0},
+        {"status": "尚待执行", "count": 5}
+      ],
+      "capabilities": [
+        {"order": 1, "capability": "企业案例、主张、证据台账与五道闸门", "current_status": "已实现", "verified_scope": "案例 Schema、E0–E4、六种主张状态、授权／主体／最低证据／分析资格／发布闸门", "truth_boundary": "框架控制证据流转；不自动证明企业主张为真"},
+        {"order": 2, "capability": "企业阶段路由与 30 分钟访谈", "current_status": "已实现", "verified_scope": "研发、试点、早期商业化、规模化、成熟；中英双语提纲与分离授权", "truth_boundary": "访谈原话只证明说过什么；不能替代外部证据"},
+        {"order": 3, "capability": "QA 动态诊断与画像溯源", "current_status": "工程合同已实现", "verified_scope": "动态追问、重复澄清、精确来源绑定、重放失败关闭、人工画像真值合同", "truth_boundary": "尚未完成五家真实企业的行为与材料泛化验证"},
+        {"order": 4, "capability": "盈利／单位经济性", "current_status": "端到端已验证", "verified_scope": "Sungrow、Enphase 基准及十家公司注册表回归", "truth_boundary": "只在证据满足时输出独立红／黄／绿信号；不汇总评级"},
+        {"order": 5, "capability": "现金流／资金缺口", "current_status": "端到端已验证", "verified_scope": "同一确定性抽取、规则与报告链", "truth_boundary": "不等于信用评级或投资结论"},
+        {"order": 6, "capability": "其余四个财务维度", "current_status": "输入蓝图", "verified_scope": "字段／材料请求设计", "truth_boundary": "尚无端到端规则与验证，不可描述为已评估"},
+        {"order": 7, "capability": "ESG、清洁技术影响、出海准备度", "current_status": "证据框架", "verified_scope": "主张—证据组织与闸门", "truth_boundary": "不是自动认证，也不输出综合评级"},
+        {"order": 8, "capability": "DOE ARL 17 维度", "current_status": "检索脚手架", "verified_scope": "维度级信息检索接口", "truth_boundary": "不输出 ARL 1–9 分数"},
+        {"order": 9, "capability": "同行比较", "current_status": "边界已实现", "verified_scope": "只比较同行业、同阶段；少于五个样本不输出百分位", "truth_boundary": "不形成投资、信用或综合风险排名"},
+        {"order": 10, "capability": "企业补件中心", "current_status": "路线图／尚未实现", "verified_scope": "已有阶段化材料请求", "truth_boundary": "没有持久化状态机、企业端 UI 或 API"}
+      ],
+      "qa_deliverables": [
+        {"order": 1, "area": "动态问答", "delivered": "根据缺失字段动态路由；字段完成前允许 `*-clarification` 重复追问", "evidence": "qa_diagnostics.py 与严格重放测试", "remaining": "需要真实企业回答分布验证问题可理解性与覆盖率"},
+        {"order": 2, "area": "逐字段溯源", "delivered": "回答响应或文档断言必须绑定归一化字段值、精确引文与实体", "evidence": "qa-case Schema、确定性验证器与负向测试", "remaining": "尚未以五份独立人工画像真值完成对照"},
+        {"order": 3, "area": "错误可见性", "delivered": "重放／断言错误返回 `blocked_by_replay_errors`，CLI 退出码为 2", "evidence": "CLI 与 replay error 测试", "remaining": "尚未统计真实操作员最常见错误类型"},
+        {"order": 4, "area": "五企材料引导", "delivered": "输出十个实际输入哈希、聚合摘要和未确认 attestation 模板", "evidence": "selection_material_report 与幂等测试", "remaining": "尚无本轮真实五企材料与人工确认"},
+        {"order": 5, "area": "正式运行隔离", "delivered": "preflight 使用一次性本地存储；正式 `qa_delivery` 强制仓库外输出并绑定不可变输入", "evidence": "路径硬化、run mode 与历史绑定测试", "remaining": "部署环境仍需磁盘加密、ACL 和备份策略"},
+        {"order": 6, "area": "财务行权", "delivered": "五企至少一家年报可用并通过现有财务合同；全 waiver 为 `financial_not_exercised`", "evidence": "qa_loop.py 与财务未行权负向测试", "remaining": "本轮尚未提供年报案例"},
+        {"order": 7, "area": "泛化与回归", "delivered": "记录 required／executed／passed／failed／missing／input-changed；同规则摘要继承未完成回归", "evidence": "regression_evidence 实现与跨运行测试", "remaining": "真实五企失败驱动的通用规则修复尚未发生"},
+        {"order": 8, "area": "特例污染防护", "delivered": "扫描 QA rule bundle 的 Python 决策字面量和 Schema const／enum 中的五企身份", "evidence": "规则摘要与 company-specific literal 测试", "remaining": "静态扫描降低风险，但不是形式化证明所有语义代理均不存在"},
+        {"order": 9, "area": "人类声明边界", "delivered": "显式输出 `unsigned_claim_only` 与 `cryptographic_identity_verified=false`", "evidence": "qa_delivery 结果、Markdown/HTML 报告和测试", "remaining": "强身份保证需仓库外 detached signature 或身份系统"},
+        {"order": 10, "area": "报告可用性", "delivered": "长哈希移动端不再造成页面级横向溢出；表格保留局部滚动", "evidence": "375px 与桌面浏览器验证、无 console 错误", "remaining": "共享阅读器的多浏览器、键盘、触控和打印认证不在本轮逐报告范围"},
+        {"order": 11, "area": "下游分诊", "delivered": "只输出 Expert／Map／Radar 指向与引用理由", "evidence": "产品合同与 QA 报告", "remaining": "三个下游 Agent 均为 stub，不执行分析"}
+      ],
+      "validation_evidence": [
+        {"order": 1, "check": "完整 pytest", "result": "145 passed", "evidence": "当前工作树完整测试集合", "interpretation": "代码合同与回归测试全绿；不等于五企交付"},
+        {"order": 2, "check": "Ruff", "result": "All checks passed", "evidence": "仓库 Python 静态检查", "interpretation": "未观察到 Ruff 规则违例"},
+        {"order": 3, "check": "JSON Schema", "result": "7/7 valid", "evidence": "Draft 2020-12 Schema 校验", "interpretation": "Schema 语法与元 Schema 有效"},
+        {"order": 4, "check": "Sungrow 顺序发布门禁", "result": "通过", "evidence": "extraction 29/29；cards 27/27；citations 112；model calls 0", "interpretation": "既有两项财务维度的参考链未观察到回归"},
+        {"order": 5, "check": "Enphase 顺序发布门禁", "result": "通过", "evidence": "extraction 28/28；cards 27/27；citations 113；model calls 0", "interpretation": "第二个既有参考链未观察到回归"},
+        {"order": 6, "check": "十家公司财务注册表", "result": "10/10 pass", "evidence": "所有运行 model calls 0", "interpretation": "历史泛化回归健康；不能替代本轮五家"},
+        {"order": 7, "check": "本地索引", "result": "已重新生成", "evidence": "当前报告入口与案例索引刷新", "interpretation": "本地工作台可浏览最新静态输出"},
+        {"order": 8, "check": "浏览器桌面与 375px", "result": "通过", "evidence": "无页面级横向溢出；回归与保证字段可见；console 0 errors/warnings", "interpretation": "本轮已观察的报告布局可用"},
+        {"order": 9, "check": "正式五企产物盘点", "result": "0 个", "evidence": "qa_delivery JSON 0；候选 qa registry 0", "interpretation": "真实五企交付尚未执行，不能以绿灯推断完成"}
+      ],
+      "completion_gaps": [
+        {"priority": 1, "missing": "人类指定的五家公司及固定顺序", "consequence": "系统不能建立可计数 selection batch", "unblock": "由项目负责人在仓库外或受控输入中明确给出"},
+        {"priority": 2, "missing": "五份真实案例输入包", "consequence": "无法计算并绑定五个 case SHA-256", "unblock": "逐家公司准备材料、授权、主体范围和阶段信息"},
+        {"priority": 3, "missing": "五份独立人工画像 ground truth", "consequence": "系统输出无法与外部真值逐字段对照", "unblock": "由非系统规则的人工审阅者填写并复核"},
+        {"priority": 4, "missing": "十个实际哈希与聚合摘要的人工选择声明", "consequence": "正式 `qa_delivery` 必须失败关闭", "unblock": "先运行 digest-only 报告，再由人逐一核对并填写 attestation"},
+        {"priority": 5, "missing": "至少一家年报可用公司的正式财务输入", "consequence": "全 waiver 批次将为 `financial_not_exercised`，不能完成", "unblock": "选择并提供至少一家可运行两项财务合同的公司"},
+        {"priority": 6, "missing": "仓库外正式输出目录与操作责任人", "consequence": "不能安全建立不可变批次历史", "unblock": "指定本地非网络、非 reparse、受 ACL/加密保护的目录"}
+      ],
+      "risks": [
+        {"order": 1, "severity": "关键", "risk": "真实五企尚未运行，无法证明 QA 在陌生公司上的可理解性和泛化", "current_control": "严格区分 contract_test 与 qa_delivery，0/5 显式呈现", "residual": "必须通过真实材料 fail-first 循环解除"},
+        {"order": 2, "severity": "高", "risk": "人工 attestation 没有密码学身份保证", "current_control": "结果显式标记 unsigned_claim_only / identity=false，并绑定材料哈希", "residual": "哈希证明材料未变，不证明是谁签署"},
+        {"order": 3, "severity": "高", "risk": "waiver 可能被误读为客观不存在", "current_control": "waiver 与可用年报状态分离；全 waiver 禁止完成", "residual": "仍依赖人工声明质量与审阅"},
+        {"order": 4, "severity": "高", "risk": "正式输出含敏感企业材料与历史", "current_control": "强制仓库外、本地、拒绝 UNC／设备路径／reparse point", "residual": "磁盘加密、ACL、备份和安全删除属于部署控制"},
+        {"order": 5, "severity": "中高", "risk": "公司特例可能通过语义代理而非精确名称进入规则", "current_control": "扫描决策字面量、Schema const/enum，并要求规则摘要变化和基线回归", "residual": "静态扫描不是完整形式化验证，需要 Claude 设计规避测试"},
+        {"order": 6, "severity": "中", "risk": "Expert／Map／Radar 名称可能被外部读者误解为已执行的 Agent", "current_control": "文档和报告明确只输出指向与理由", "residual": "UI 文案和对外材料仍需持续避免能力暗示"},
+        {"order": 7, "severity": "中", "risk": "产品多个证据框架容易被营销语言升级为自动认证", "current_control": "能力矩阵逐项陈述真实成熟度", "residual": "公开发布仍必须单独授权和人工审核"},
+        {"order": 8, "severity": "中", "risk": "补件中心尚无持久化状态机、企业端 UI 或 API", "current_control": "当前仅保留阶段化材料请求，不伪装为已实现", "residual": "需要独立设计 submission、版本、权限、幂等与局部重算"}
+      ],
+      "claude_checklist": [
+        {"order": 1, "review_area": "完成计数", "challenge": "尝试用 contract_test、Demo、历史十企或复制夹具让 0/5 错误变成完成", "evidence_target": "qa_loop.py、qa-loop.schema.json、run_qa_loop.py", "pass_condition": "所有替代路径都失败关闭，只有合规 qa_delivery 五家可计数"},
+        {"order": 2, "review_area": "选择与真值", "challenge": "尝试缺少、交换或篡改 case/profile GT 哈希仍进入正式运行", "evidence_target": "selection_material_report、selection attestation、历史输入绑定", "pass_condition": "缺失／不匹配退出非零；批次变化必须新目录"},
+        {"order": 3, "review_area": "动态问答", "challenge": "构造重复 answer ID、无限 clarification、错误实体、伪引文和归一化值不一致", "evidence_target": "qa_diagnostics.py、qa-case.schema.json、test_qa_diagnostics.py", "pass_condition": "有效澄清可继续，其余重放／断言错误明确阻塞"},
+        {"order": 4, "review_area": "路径与隐私", "challenge": "尝试仓库内输出、UNC、设备路径、映射远程盘、reparse point 和 preflight 遗留", "evidence_target": "qa_loop.py 路径校验与 preflight_qa_registry", "pass_condition": "所有不安全路径失败关闭；临时状态不变成正式历史"},
+        {"order": 5, "review_area": "财务行权", "challenge": "尝试五家全部 waiver 或年报状态虚假可用仍完成", "evidence_target": "financial_summary、annual_report_status、财务合同调用", "pass_condition": "至少一家公司真实通过两项财务合同，否则批次不完整"},
+        {"order": 6, "review_area": "回归证据", "challenge": "构造首错即停、同规则摘要重跑、输入变化或空基线，让 incomplete 被错误标 complete", "evidence_target": "_build_regression_evidence 与 run history", "pass_condition": "只有同输入、非空基线、全部实际重跑通过时 complete=true"},
+        {"order": 7, "review_area": "特例污染", "challenge": "把公司身份写入 Python 控制流、字典键、match/assert 或 Schema const/enum，并寻找语义代理绕过", "evidence_target": "QA rule bundle digest 与 company-specific literal scanner", "pass_condition": "精确身份全部失败；对代理绕过给出可执行增强建议"},
+        {"order": 8, "review_area": "能力边界", "challenge": "寻找把四个财务蓝图、ESG、影响、出海或 ARL 脚手架描述成评分／认证的代码或文案", "evidence_target": "README、产品简介、报告器、CLI 输出", "pass_condition": "所有用户可见面保持真实成熟度且无综合评级"},
+        {"order": 9, "review_area": "Agent 权限", "challenge": "寻找 Agent 候选证据覆盖规则、升级为事实或触发未授权公开发布的路径", "evidence_target": "task contract、gate、reporting 与发布路径", "pass_condition": "Agent 永远非权威；发布仍需独立授权和人工审核"},
+        {"order": 10, "review_area": "补件中心衔接", "challenge": "评估现有 case/claim/evidence/gate 是否足以承载 submission 状态机、版本和局部重算", "evidence_target": "onboarding.py、onboarding_reporting.py、company-case.schema.json、cli.py", "pass_condition": "指出可复用边界、缺失聚合根、幂等键、权限与迁移风险"}
+      ]
+    }
+  },
+  "sources": [
+    {"id": "status_synthesis", "label": "2026-07-18 reviewed project status synthesis", "path": "docs/project-status-validation-receipt-2026-07-18.md"},
+    {"id": "test_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+    {"id": "schema_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+    {"id": "release_gate_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+    {"id": "registry_receipt", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+    {"id": "delivery_inventory", "label": "Headline metrics SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+    {"id": "product_sources", "label": "Product maturity and handoff sources", "path": "docs/product-overview-brief.md"},
+    {"id": "qa_implementation", "label": "QA diagnostic implementation and tests", "path": "src/cleantech_finance/qa_loop.py"},
+    {"id": "validation_receipts", "label": "Validation detail SQL; upstream receipt identified in SQL comments", "path": "docs/project-status-headline-metrics-2026-07-18.sql"},
+    {"id": "product_boundaries", "label": "Canonical product capability boundaries", "path": "docs/CLAUDE_HANDOFF_v0.4.md"},
+    {"id": "delivery_contract", "label": "Five-company QA delivery contract", "path": "docs/qa-diagnostic-loop.md"},
+    {"id": "risk_sources", "label": "QA security, assurance, and maturity controls", "path": "docs/qa-diagnostic-loop.md"},
+    {"id": "review_targets", "label": "Claude adversarial review targets", "path": "tests/test_qa_diagnostics.py"}
+  ]
+}

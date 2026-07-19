@@ -68,11 +68,21 @@ def _coverage(results: Iterable[DimensionResult]) -> dict[str, Any]:
 
 
 def run_audit(
-    manifest_path: str, top_k: int = 3, only_dimensions: set[str] | None = None
+    manifest_path: str,
+    top_k: int = 3,
+    only_dimensions: set[str] | None = None,
+    *,
+    allowed_input_root: str | None = None,
+    manifest_bytes: bytes | None = None,
 ) -> dict[str, Any]:
     started = perf_counter()
-    manifest, sources, resolved_manifest = load_manifest(manifest_path)
-    chunks = ingest_sources(sources)
+    manifest, sources, resolved_manifest, source_payloads = load_manifest(
+        manifest_path,
+        allowed_root=allowed_input_root,
+        manifest_bytes=manifest_bytes,
+        include_payloads=True,
+    )
+    chunks = ingest_sources(sources, source_payloads)
     as_of = manifest["assessment"].get("as_of")
     if not as_of:
         raise ValueError("Manifest assessment requires an 'as_of' date")
@@ -111,14 +121,12 @@ def run_audit(
         )
         financials = auto_extraction["financials"]
     scope_id = str(
-        (manifest.get("judgment_context") or {}).get("subindustry", {}).get("scope_id")
-        or ""
+        (manifest.get("judgment_context") or {}).get("subindustry", {}).get("scope_id") or ""
     )
     inapplicable_dimensions = {
         dimension_id
         for dimension_id in ("profitability-unit-economics", "cash-runway")
-        if dimension_applicability(dimension_id, scope_id)["status"]
-        == "not_applicable"
+        if dimension_applicability(dimension_id, scope_id)["status"] == "not_applicable"
     }
     financial_analysis = derive_financial_metrics(
         financials,
@@ -224,9 +232,7 @@ def validate_audit(audit: dict[str, Any]) -> dict[str, Any]:
         source = check.get("source") or {}
         citation_count += 1
         if source.get("source_id") not in source_ids:
-            errors.append(
-                f"Unknown auxiliary source citation: {source.get('source_id')}"
-            )
+            errors.append(f"Unknown auxiliary source citation: {source.get('source_id')}")
         if not source.get("locator") or not source.get("url"):
             errors.append("Auxiliary citation is missing a locator or URL")
     cash_context = audit.get("cash_conversion_context", {})
@@ -236,9 +242,7 @@ def validate_audit(audit: dict[str, Any]) -> dict[str, Any]:
         source = item.get("source") or {}
         citation_count += 1
         if source.get("source_id") not in source_ids:
-            errors.append(
-                f"Unknown cash-context source citation: {source.get('source_id')}"
-            )
+            errors.append(f"Unknown cash-context source citation: {source.get('source_id')}")
         if not source.get("locator") or not source.get("url"):
             errors.append("Cash-context citation is missing a locator or URL")
 

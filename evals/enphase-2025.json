@@ -1,5 +1,11 @@
 {
+  "schema_version": "1.0.0",
   "case": "Enphase Energy 2025 Form 10-K",
+  "entity": {
+    "scheme": "ticker",
+    "value": "ENPH",
+    "legal_name": "Enphase Energy, Inc."
+  },
   "tolerance": 1e-09,
   "facts": [
     {"period": "FY2025", "name": "revenue", "value": 1472985000.0, "locator": "page 69"},

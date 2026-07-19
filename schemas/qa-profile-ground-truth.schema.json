@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:qa-profile-ground-truth:1.0.0",
+  "title": "Human-reviewed QA profile traceability ground truth",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "entity",
+    "review",
+    "fields"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "case_id": {"type": "string", "minLength": 1},
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "value", "legal_name"],
+      "properties": {
+        "scheme": {"type": "string", "minLength": 1},
+        "value": {"type": "string", "minLength": 1},
+        "legal_name": {"type": "string", "minLength": 1}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_type", "reviewed_by", "reviewed_at", "scope"],
+      "properties": {
+        "actor_type": {"const": "human"},
+        "reviewed_by": {"type": "string", "minLength": 1},
+        "reviewed_at": {"type": "string", "format": "date-time"},
+        "scope": {"const": "field_value_quote_and_entity_binding"}
+      }
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "accepted",
+          "value",
+          "conclusion_type",
+          "evidence_refs"
+        ],
+        "properties": {
+          "field": {
+            "enum": [
+              "product_technology",
+              "subindustry",
+              "target_markets",
+              "export_stage",
+              "core_gaps",
+              "resource_needs"
+            ]
+          },
+          "accepted": {"const": true},
+          "value": {},
+          "conclusion_type": {"enum": ["source_statement", "inference"]},
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["source_id", "quote"],
+              "properties": {
+                "source_id": {"type": "string", "minLength": 1},
+                "quote": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$comment": "This file must be supplied by a human reviewer. The runner binds it by SHA-256, binds the full entity identity, and compares every accepted value and exact quote reference."
+}

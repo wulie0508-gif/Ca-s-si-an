@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:qa-case:1.0.0",
+  "title": "CleanTech Evidence QA diagnostic case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case",
+    "company",
+    "sources",
+    "qa_session",
+    "profile_candidates",
+    "financial_evidence"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "created_at", "purpose", "selection_origin"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "created_at": {"type": "string", "format": "date"},
+        "purpose": {"const": "company_entry_diagnostic"},
+        "selection_origin": {"const": "human_supplied"}
+      }
+    },
+    "company": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["legal_name", "stable_identifier"],
+      "properties": {
+        "legal_name": {"type": "string", "minLength": 1},
+        "display_name": {"type": ["string", "null"]},
+        "display_name_zh": {"type": ["string", "null"]},
+        "stable_identifier": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scheme", "value"],
+          "properties": {
+            "scheme": {"type": "string", "minLength": 1, "not": {"const": "replace"}},
+            "value": {"type": "string", "minLength": 1, "not": {"const": "replace"}}
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source"}
+    },
+    "qa_session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["answers"],
+      "properties": {
+        "answers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/answer"}
+        }
+      }
+    },
+    "profile_candidates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/profileCandidate"}
+    },
+    "financial_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "annual_report_status",
+        "manifest",
+        "ground_truth",
+        "card_ground_truth",
+        "review",
+        "profile_only_waiver"
+      ],
+      "properties": {
+        "annual_report_status": {"enum": ["available", "not_available"]},
+        "manifest": {"type": ["string", "null"]},
+        "ground_truth": {"type": ["string", "null"]},
+        "card_ground_truth": {"type": ["string", "null"]},
+        "review": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/financialReview"}
+          ]
+        },
+        "profile_only_waiver": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/profileOnlyWaiver"}
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "annual_report_status": {"const": "available"},
+            "manifest": {"type": "string", "minLength": 1},
+            "ground_truth": {"type": "string", "minLength": 1},
+            "card_ground_truth": {"type": "string", "minLength": 1},
+            "review": {"$ref": "#/$defs/financialReview"},
+            "profile_only_waiver": {"type": "null"}
+          }
+        },
+        {
+          "properties": {
+            "annual_report_status": {"const": "not_available"},
+            "manifest": {"type": "null"},
+            "ground_truth": {"type": "null"},
+            "card_ground_truth": {"type": "null"},
+            "review": {"type": "null"},
+            "profile_only_waiver": {"$ref": "#/$defs/profileOnlyWaiver"}
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "value", "legal_name"],
+      "properties": {
+        "scheme": {"type": "string", "minLength": 1},
+        "value": {"type": "string", "minLength": 1},
+        "legal_name": {"type": "string", "minLength": 1}
+      }
+    },
+    "financialReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "status",
+        "actor_type",
+        "scope",
+        "reviewed_by",
+        "reviewed_at",
+        "entity",
+        "manifest_sha256",
+        "ground_truth_sha256",
+        "card_ground_truth_sha256",
+        "subject_sources",
+        "all_sources"
+      ],
+      "properties": {
+        "approval_id": {"type": "string", "minLength": 1},
+        "status": {"const": "approved"},
+        "actor_type": {"const": "human"},
+        "scope": {"const": "financial_ground_truth_and_entity_binding"},
+        "reviewed_by": {"type": "string", "minLength": 1},
+        "reviewed_at": {"type": "string", "format": "date-time"},
+        "entity": {"$ref": "#/$defs/entity"},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "ground_truth_sha256": {"$ref": "#/$defs/sha256"},
+        "card_ground_truth_sha256": {"$ref": "#/$defs/sha256"},
+        "subject_sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source_id", "sha256"],
+            "properties": {
+              "source_id": {"type": "string", "minLength": 1},
+              "sha256": {"$ref": "#/$defs/sha256"}
+            }
+          }
+        },
+        "all_sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source_id", "role", "sha256"],
+            "properties": {
+              "source_id": {"type": "string", "minLength": 1},
+              "role": {
+                "enum": ["subject", "benchmark", "auxiliary", "identity"]
+              },
+              "sha256": {"$ref": "#/$defs/sha256"}
+            }
+          }
+        }
+      }
+    },
+    "profileOnlyWaiver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "status",
+        "actor_type",
+        "scope",
+        "approved_by",
+        "approved_at",
+        "entity",
+        "reason_code",
+        "rationale",
+        "basis_evidence_refs"
+      ],
+      "properties": {
+        "approval_id": {"type": "string", "minLength": 1},
+        "status": {"const": "approved"},
+        "actor_type": {"const": "human"},
+        "scope": {"const": "profile_only_annual_report_waiver"},
+        "approved_by": {"type": "string", "minLength": 1},
+        "approved_at": {"type": "string", "format": "date-time"},
+        "entity": {"$ref": "#/$defs/entity"},
+        "reason_code": {"const": "annual_report_not_available_to_run"},
+        "rationale": {"type": "string", "minLength": 1},
+        "basis_evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/evidenceRef"}
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "title", "excerpt", "locator", "captured_at", "url_or_source_id", "subject_entity", "selection_origin", "field_assertions"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {
+          "enum": ["public_source", "company_document", "provided_case_material"]
+        },
+        "title": {"type": "string", "minLength": 1},
+        "excerpt": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1},
+        "captured_at": {"type": "string", "format": "date"},
+        "url_or_source_id": {"type": "string", "minLength": 1, "format": "uri-reference"},
+        "subject_entity": {"$ref": "#/$defs/entity"},
+        "sha256": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/sha256"}
+          ]
+        },
+        "selection_origin": {"const": "human_supplied"},
+        "field_assertions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/fieldAssertion"}
+        }
+      }
+    },
+    "answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question_id", "statement", "response", "response_assertions", "respondent_entity", "answered_at", "answer_origin"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "question_id": {"type": "string", "minLength": 1},
+        "statement": {"type": "string", "minLength": 1},
+        "response": {"type": "object"},
+        "response_assertions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/responseAssertion"}
+        },
+        "respondent_entity": {"$ref": "#/$defs/entity"},
+        "answered_at": {"type": "string", "format": "date-time"},
+        "answer_origin": {"const": "company_statement"}
+      }
+    },
+    "responseAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "value", "quote"],
+      "properties": {
+        "field": {"type": "string", "minLength": 1},
+        "value": {},
+        "quote": {"type": "string", "minLength": 1}
+      }
+    },
+    "evidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "quote"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "quote": {"type": "string", "minLength": 1}
+      }
+    },
+    "fieldAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "value", "quote"],
+      "properties": {
+        "field": {
+          "enum": [
+            "product_technology",
+            "subindustry",
+            "target_markets",
+            "export_stage",
+            "core_gaps",
+            "resource_needs"
+          ]
+        },
+        "value": {},
+        "quote": {"type": "string", "minLength": 1}
+      }
+    },
+    "profileCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "value", "conclusion_type", "evidence_refs"],
+      "properties": {
+        "field": {
+          "enum": [
+            "product_technology",
+            "subindustry",
+            "target_markets",
+            "export_stage",
+            "core_gaps",
+            "resource_needs"
+          ]
+        },
+        "value": {},
+        "conclusion_type": {"enum": ["source_statement", "inference"]},
+        "rationale": {"type": ["string", "null"]},
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/evidenceRef"}
+        }
+      }
+    }
+  },
+  "$comment": "The deterministic validator additionally checks strict dynamic-QA replay, entity binding, answer-response or document-assertion value binding, exact quote containment, normalized field types, and inference rationale. A standalone pass proves structural traceability only. A qa_delivery still requires independent human profile ground truth."
+}

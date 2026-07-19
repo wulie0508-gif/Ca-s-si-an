@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "case": {
+    "id": "demo-distributed-solar",
+    "created_at": "2026-07-17",
+    "language": "bilingual",
+    "purpose": "enterprise_self_improvement"
+  },
+  "company": {
+    "legal_name": "Demo Distributed Solar Services Co., Ltd.",
+    "display_name": "Demo Solar",
+    "display_name_zh": "示例分布式光伏服务企业",
+    "entity_identifier": {"scheme": "cn_uscc", "value": "91310000DEMO00001X"},
+    "country": "CN",
+    "industry": "distributed-solar-operations",
+    "business_model": "asset-light-energy-service",
+    "stage": "early_commercial",
+    "technology_or_solution": "Solar operations and monitoring service for commercial rooftops.",
+    "technology_or_solution_zh": "面向工商业屋顶的光伏运维与监控服务。",
+    "target_markets": ["CN"]
+  },
+  "permissions": {
+    "recording_and_transcription": false,
+    "internal_analysis": true,
+    "public_content": false,
+    "identity_and_brand": false,
+    "translation_and_subtitles": false,
+    "ai_synthetic_media": false,
+    "restricted_topics": [],
+    "retention_until": null
+  },
+  "interview": {"occurred_at": null, "interviewer": "", "participants": [], "summary_zh": "", "summary_en": "", "statements": []},
+  "claims": [
+    {
+      "id": "claim-paid-customers",
+      "category": "commercial",
+      "text_zh": "企业有三家已回款的付费客户。",
+      "text_en": "The company has three paying customers with collected cash.",
+      "statement_id": null,
+      "critical": true,
+      "minimum_evidence_level": "E3",
+      "evidence_ids": ["evidence-contracts"],
+      "status": "verified",
+      "visibility": "internal",
+      "subject_scope": "Demo Distributed Solar Services Co., Ltd.",
+      "period": "2026-01-01/2026-06-30"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-contracts",
+      "level": "E3",
+      "source_type": "transaction_document",
+      "title": "Redacted contract, invoice and collection package",
+      "captured_at": "2026-07-17",
+      "visibility": "restricted",
+      "review_status": "accepted",
+      "raw_artifact": "sources/contracts-and-receipts.pdf",
+      "url_or_source_id": "company-provided",
+      "sha256": "sha256:demo",
+      "agent_run_id": null,
+      "claim_ids": ["claim-paid-customers"]
+    }
+  ],
+  "materials": [
+    {"id": "entity_identity", "status": "provided", "evidence_ids": ["evidence-contracts"]},
+    {"id": "product_technology", "status": "provided", "evidence_ids": []},
+    {"id": "ip", "status": "missing", "evidence_ids": []},
+    {"id": "pilot_evidence", "status": "missing", "evidence_ids": []},
+    {"id": "customer_revenue", "status": "provided", "evidence_ids": ["evidence-contracts"]},
+    {"id": "financials", "status": "provided", "evidence_ids": []},
+    {"id": "unit_economics", "status": "provided", "evidence_ids": []},
+    {"id": "cash_summary", "status": "provided", "evidence_ids": []},
+    {"id": "operations_supply_chain", "status": "missing", "evidence_ids": []},
+    {"id": "environment_impact", "status": "missing", "evidence_ids": []},
+    {"id": "people_safety", "status": "missing", "evidence_ids": []},
+    {"id": "governance", "status": "missing", "evidence_ids": []},
+    {"id": "compliance", "status": "provided", "evidence_ids": []}
+  ],
+  "benchmark_observations": [],
+  "agent_settings": {
+    "enabled": false,
+    "mode": "local_optional",
+    "allowed_source_families": ["official_registry", "ip_office", "regulator"],
+    "commercial_provider_authorized": false
+  }
+}

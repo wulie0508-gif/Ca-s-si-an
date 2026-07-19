@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:qa-loop:1.0.0",
+  "title": "Five externally selected QA company loops",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_mode",
+    "selection_policy",
+    "selection_attestation",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "run_mode": {"enum": ["qa_delivery", "contract_test"]},
+    "selection_policy": {"const": "human_supplied_only"},
+    "selection_attestation": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/selectionAttestation"}
+      ]
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/case"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"run_mode": {"const": "qa_delivery"}},
+        "required": ["run_mode"]
+      },
+      "then": {
+        "properties": {
+          "selection_attestation": {"$ref": "#/$defs/selectionAttestation"},
+          "cases": {
+            "items": {
+              "allOf": [
+                {"$ref": "#/$defs/case"},
+                {
+                  "properties": {
+                    "input_sha256": {"$ref": "#/$defs/sha256"},
+                    "profile_ground_truth": {"type": "string", "minLength": 1},
+                    "profile_ground_truth_sha256": {"$ref": "#/$defs/sha256"}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "selection_attestation": {"type": "null"},
+          "cases": {
+            "items": {
+              "allOf": [
+                {"$ref": "#/$defs/case"},
+                {
+                  "properties": {
+                    "input_sha256": {"type": "null"},
+                    "profile_ground_truth": {"type": "null"},
+                    "profile_ground_truth_sha256": {"type": "null"}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "selectionAttestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_type",
+        "confirmed_by",
+        "confirmed_at",
+        "selection_batch_id",
+        "case_set_sha256",
+        "statement"
+      ],
+      "properties": {
+        "actor_type": {"const": "human"},
+        "confirmed_by": {"type": "string", "minLength": 1},
+        "confirmed_at": {"type": "string", "format": "date-time"},
+        "selection_batch_id": {"type": "string", "minLength": 1},
+        "case_set_sha256": {"$ref": "#/$defs/sha256"},
+        "statement": {
+          "const": "I selected these five companies and supplied their case inputs; the Evidence Agent did not discover or choose them."
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "iteration",
+        "id",
+        "entity_scheme",
+        "entity_id",
+        "company",
+        "input",
+        "input_sha256",
+        "profile_ground_truth",
+        "profile_ground_truth_sha256",
+        "selection_origin"
+      ],
+      "properties": {
+        "iteration": {"type": "integer", "minimum": 1, "maximum": 5},
+        "id": {"type": "string", "minLength": 1},
+        "entity_scheme": {"type": "string", "minLength": 1},
+        "entity_id": {"type": "string", "minLength": 1},
+        "company": {"type": "string", "minLength": 1},
+        "input": {"type": "string", "minLength": 1},
+        "input_sha256": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/sha256"}
+          ]
+        },
+        "profile_ground_truth": {"type": ["string", "null"]},
+        "profile_ground_truth_sha256": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/sha256"}
+          ]
+        },
+        "selection_origin": {"const": "human_supplied"}
+      }
+    }
+  },
+  "$comment": "qa_delivery requires a human selection attestation, hashes of all five immutable inputs, and a separate human-reviewed profile ground truth for every company. contract_test is library-only and never counts as a five-company delivery."
+}

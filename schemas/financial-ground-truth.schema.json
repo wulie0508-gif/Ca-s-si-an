@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:financial-ground-truth:1.0.0",
+  "title": "Human-reviewed extraction and metric ground truth",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case", "entity", "tolerance", "facts", "metrics"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "case": {"type": "string", "minLength": 1},
+    "entity": {"$ref": "#/$defs/entity"},
+    "tolerance": {"type": "number", "exclusiveMinimum": 0, "maximum": 0.01},
+    "facts": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/fact"}
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revenue-growth", "gross-margin", "free-cash-flow", "capex-to-revenue"],
+      "properties": {
+        "revenue-growth": {"type": "number"},
+        "gross-margin": {"type": "number"},
+        "free-cash-flow": {"type": "number"},
+        "capex-to-revenue": {"type": "number"}
+      }
+    },
+    "forbidden_candidate_locators": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    }
+  },
+  "$defs": {
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "value", "legal_name"],
+      "properties": {
+        "scheme": {"type": "string", "minLength": 1},
+        "value": {"type": "string", "minLength": 1},
+        "legal_name": {"type": "string", "minLength": 1}
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["period", "name", "value", "locator"],
+      "properties": {
+        "period": {"type": "string", "minLength": 1},
+        "name": {
+          "enum": ["revenue", "operating_cost", "operating_cash_flow", "capex", "cash_and_equivalents"]
+        },
+        "value": {"type": "number"},
+        "locator": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$comment": "Runtime validation additionally enforces finite numbers, unique period/name keys, and an exact two-period by five-fact Cartesian product."
+}

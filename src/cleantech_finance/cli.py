@@ -11,6 +11,10 @@ from .audit import run_audit, validate_audit
 from .finance_framework import FINANCE_DIMENSIONS
 from .framework import DIMENSIONS
 from .ingest import ManifestError
+from .onboarding import build_agent_tasks, new_company_case, validate_company_case
+from .onboarding_reporting import write_onboarding_artifacts
+from .qa_diagnostics import new_qa_case, next_qa_question_status, validate_qa_case
+from .qa_reporting import write_qa_artifacts
 from .reporting import write_artifacts
 
 
@@ -89,6 +93,30 @@ def _init_manifest(path: Path) -> None:
     path.write_text(json.dumps(template, indent=2) + "\n", encoding="utf-8")
 
 
+def _init_company_case(path: Path) -> None:
+    if path.exists():
+        raise FileExistsError(f"Refusing to overwrite existing file: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(new_company_case(), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def _init_qa_case(path: Path) -> None:
+    if path.exists():
+        raise FileExistsError(f"Refusing to overwrite existing file: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(new_qa_case(), indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _load_json_object(path: str) -> dict[str, object]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("JSON root must be an object")
+    return payload
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="cleantech-finance",
@@ -115,6 +143,53 @@ def build_parser() -> argparse.ArgumentParser:
 
     validate_parser = subparsers.add_parser("validate", help="Validate a generated audit.json")
     validate_parser.add_argument("audit_json")
+
+    case_parser = subparsers.add_parser(
+        "case",
+        help="Create and run the local company interview, evidence and readiness workbench",
+    )
+    case_subparsers = case_parser.add_subparsers(dest="case_command", required=True)
+    case_init = case_subparsers.add_parser("init", help="Write a bilingual company-case template")
+    case_init.add_argument("path", nargs="?", default="case.json")
+    case_validate = case_subparsers.add_parser("validate", help="Validate a local company case")
+    case_validate.add_argument("case_json")
+    case_report = case_subparsers.add_parser(
+        "report", help="Write the local bilingual evidence-workbench packet"
+    )
+    case_report.add_argument("case_json")
+    case_report.add_argument("--out", default="output-case", help="Output directory")
+    case_tasks = case_subparsers.add_parser(
+        "agent-tasks", help="Emit optional local-agent evidence task contracts"
+    )
+    case_tasks.add_argument("case_json")
+    case_tasks.add_argument("--out", help="Optional JSON output path; stdout when omitted")
+
+    qa_parser = subparsers.add_parser(
+        "qa",
+        help="Run the traceable company-entry QA diagnostic and routing layer",
+    )
+    qa_subparsers = qa_parser.add_subparsers(dest="qa_command", required=True)
+    qa_init = qa_subparsers.add_parser(
+        "init",
+        help="Write an empty QA case for a human-selected company",
+    )
+    qa_init.add_argument("path", nargs="?", default="qa-case.json")
+    qa_next = qa_subparsers.add_parser(
+        "next",
+        help="Choose the next question from prior structured answers",
+    )
+    qa_next.add_argument("qa_case_json")
+    qa_validate = qa_subparsers.add_parser(
+        "validate",
+        help="Validate dynamic-QA completeness and field-level traceability",
+    )
+    qa_validate.add_argument("qa_case_json")
+    qa_report = qa_subparsers.add_parser(
+        "report",
+        help="Write the bilingual profile, triage, gaps, and QA report packet",
+    )
+    qa_report.add_argument("qa_case_json")
+    qa_report.add_argument("--out", default="output-qa", help="Output directory")
     return parser
 
 
@@ -151,6 +226,71 @@ def main(argv: list[str] | None = None) -> int:
             result = validate_audit(audit)
             print(json.dumps(result, indent=2))
             return 0 if result["passed"] else 2
+        if args.command == "case":
+            if args.case_command == "init":
+                _init_company_case(Path(args.path))
+                print(f"Created {Path(args.path).resolve()}")
+                return 0
+            case = _load_json_object(args.case_json)
+            if args.case_command == "validate":
+                result = validate_company_case(case)
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+                return 0 if result["passed"] else 2
+            if args.case_command == "report":
+                paths = write_onboarding_artifacts(case, args.out)
+                validation = validate_company_case(case)
+                print(json.dumps({"validation": validation, "artifacts": paths}, indent=2, ensure_ascii=False))
+                return 0 if validation["passed"] else 2
+            if args.case_command == "agent-tasks":
+                tasks = build_agent_tasks(case)
+                payload = json.dumps(tasks, indent=2, ensure_ascii=False) + "\n"
+                if args.out:
+                    path = Path(args.out)
+                    if path.exists():
+                        raise FileExistsError(f"Refusing to overwrite existing file: {path}")
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(payload, encoding="utf-8")
+                    print(path.resolve())
+                else:
+                    print(payload, end="")
+                return 0
+        if args.command == "qa":
+            if args.qa_command == "init":
+                _init_qa_case(Path(args.path))
+                print(f"Created {Path(args.path).resolve()}")
+                return 0
+            case = _load_json_object(args.qa_case_json)
+            if args.qa_command == "next":
+                status = next_qa_question_status(case)
+                if status["status"] == "blocked_by_replay_errors":
+                    print(json.dumps(status, indent=2, ensure_ascii=False))
+                    return 2
+                print(
+                    json.dumps(
+                        {
+                            "complete": status["complete"],
+                            "next_question": status["next_question"],
+                        },
+                        indent=2,
+                        ensure_ascii=False,
+                    )
+                )
+                return 0
+            if args.qa_command == "validate":
+                result = validate_qa_case(case)
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+                return 0 if result["passed"] else 2
+            if args.qa_command == "report":
+                paths = write_qa_artifacts(case, args.out)
+                result = validate_qa_case(case)
+                print(
+                    json.dumps(
+                        {"validation": result, "artifacts": paths},
+                        indent=2,
+                        ensure_ascii=False,
+                    )
+                )
+                return 0 if result["passed"] else 2
     except (ManifestError, FileExistsError, OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

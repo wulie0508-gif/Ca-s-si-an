@@ -1,5 +1,11 @@
 {
+  "schema_version": "1.0.0",
   "case": "Sungrow 2025 annual report",
+  "entity": {
+    "scheme": "ticker",
+    "value": "300274.SZ",
+    "legal_name": "Sungrow Power Supply Co., Ltd."
+  },
   "tolerance": 1e-09,
   "facts": [
     {"period": "FY2025", "name": "revenue", "value": 89184357325.77, "locator": "page 135"},
@@ -21,4 +27,3 @@
   },
   "forbidden_candidate_locators": ["page 141"]
 }
-
