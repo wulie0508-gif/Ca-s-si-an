@@ -2,6 +2,13 @@
 
 Evidence-first financial and bankability research for clean energy companies.
 
+[![Version](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?logo=python&logoColor=white)](pyproject.toml)
+[![Tests](https://img.shields.io/badge/tests-145%20passing-17865b)](tests)
+[![License](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
+
+> **Explore the product story:** [GitHub showcase](SHOWCASE.md) · [中文说明](README.zh-CN.md) · [current project status](docs/project-status-validation-receipt-2026-07-18.md)
+
 `cleantech-finance` turns annual reports and cited public comparators into fixed, five-cell financial evidence cards. It extracts a conservative set of audited facts, calculates reproducible metrics, applies a locked maintainer-authored framework, and exposes every unresolved judgment in a human review queue.
 
 It does **not** produce an investment recommendation or an automated technology-readiness score.
@@ -376,4 +383,4 @@ Initial methodology and implementation: Cassian. Open-source contributions are a
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+MIT License. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
