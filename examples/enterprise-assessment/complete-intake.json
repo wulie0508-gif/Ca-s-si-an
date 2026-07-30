@@ -1,0 +1,32 @@
+{
+  "company": {
+    "canonical_name": "Qinglan Thermal Storage",
+    "legal_name": "青岚储热科技（示例）有限公司",
+    "jurisdiction": "CN-SH",
+    "registry_id": "FICTIONAL:QLTS-001",
+    "aliases": ["Qinglan Storage"]
+  },
+  "case": {
+    "external_id": "demo-complete-001",
+    "stage": "early_commercial",
+    "as_of": "2026-07-30",
+    "owner": "demo-reviewer",
+    "profile": {
+      "technology": ["thermal storage", "industrial heat"],
+      "business_model": "equipment + long-term service",
+      "stage": ["early_commercial"],
+      "geography": ["China", "EU"],
+      "target_market": ["industrial decarbonization"],
+      "industry": ["energy storage", "industrial heat"],
+      "needs": ["cash flow", "EU market entry"],
+      "tags": {
+        "industry": ["energy storage", "industrial heat"],
+        "stage": ["early_commercial"],
+        "need": ["cash flow", "EU market entry"],
+        "technology": ["thermal storage"],
+        "geography": ["China", "EU"],
+        "market": ["industrial decarbonization"]
+      }
+    }
+  }
+}

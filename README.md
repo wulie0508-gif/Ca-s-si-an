@@ -1,5 +1,10 @@
 # CleanTech Finance
 
+> New: the local SQLite enterprise assessment and triage integration MVP is documented in
+> [docs/enterprise-assessment-system.md](docs/enterprise-assessment-system.md). It keeps NEX
+> RAG as a citation sidecar, applies deterministic course/policy matching, and requires a
+> human `draft → pending_review → approved/rejected` decision.
+
 Evidence-first financial and bankability research for clean energy companies.
 
 [![Version](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)

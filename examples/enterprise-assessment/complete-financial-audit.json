@@ -1,0 +1,75 @@
+{
+  "validation": {
+    "passed": true,
+    "citation_count": 4,
+    "errors": []
+  },
+  "sources": [
+    {
+      "id": "fictional-reviewed-accounts",
+      "title": "Qinglan reviewed management accounts",
+      "url": "https://example.invalid/qinglan/accounts",
+      "publisher": "Qinglan Thermal Storage",
+      "published": "2026-07-15",
+      "kind": "company_financial_document",
+      "role": "subject",
+      "sha256": "fictional-demo-sha256"
+    }
+  ],
+  "financial_analysis": {
+    "currency": "CNY",
+    "status": "calculated",
+    "metrics": [
+      {
+        "id": "gross-margin",
+        "name": "Gross margin",
+        "period": "2026H1",
+        "value": 0.31,
+        "unit": "ratio",
+        "formula": "(revenue - operating cost) / revenue",
+        "signal": "observed",
+        "inputs": [
+          {
+            "name": "revenue",
+            "period": "2026H1",
+            "value": 12000000,
+            "source_id": "fictional-reviewed-accounts",
+            "locator": "p.4 revenue table"
+          },
+          {
+            "name": "operating_cost",
+            "period": "2026H1",
+            "value": 8280000,
+            "source_id": "fictional-reviewed-accounts",
+            "locator": "p.4 cost table"
+          }
+        ]
+      },
+      {
+        "id": "free-cash-flow",
+        "name": "Free cash flow",
+        "period": "2026H1",
+        "value": -1800000,
+        "unit": "CNY",
+        "formula": "operating cash flow - abs(capex)",
+        "signal": "observed",
+        "inputs": [
+          {
+            "name": "operating_cash_flow",
+            "period": "2026H1",
+            "value": -900000,
+            "source_id": "fictional-reviewed-accounts",
+            "locator": "p.7 cash flow table"
+          },
+          {
+            "name": "capex",
+            "period": "2026H1",
+            "value": 900000,
+            "source_id": "fictional-reviewed-accounts",
+            "locator": "p.7 investing cash flow"
+          }
+        ]
+      }
+    ]
+  }
+}
