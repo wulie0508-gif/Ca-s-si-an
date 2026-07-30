@@ -10,7 +10,7 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?style=for-the-badge&logo=python&logoColor=white)](pyproject.toml)
 [![Tests](https://img.shields.io/badge/tests-145%20passing-17865b?style=for-the-badge)](tests)
 [![Core](https://img.shields.io/badge/core-zero%20model%20calls-4f46e5?style=for-the-badge)](README.md)
-[![License](https://img.shields.io/badge/license-Apache--2.0-111827?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-111827?style=for-the-badge)](LICENSE)
 
 **[English README](README.md) · [中文说明](README.zh-CN.md) · [完整状态报告](docs/CleanTech-Finance-project-status-review-2026-07-18.html) · [方法与边界](docs/methodology.md)**
 
@@ -164,7 +164,7 @@ timeline
 
 CleanTech Finance 不输出投资建议、信用评级或综合风险评级；不把 Agent 输出自动升级为事实；不把企业访谈原话视作事实证明；不在缺少单独授权与人工审核时公开发布。
 
-项目采用 [Apache License 2.0](LICENSE)。方法、限制、证据边界和验证协议均随代码公开，欢迎从可复现案例、负向测试和具体规则开始审查。
+项目采用 [MIT License](LICENSE)。方法、限制、证据边界和验证协议均随代码公开，欢迎从可复现案例、负向测试和具体规则开始审查。
 
 ---
 

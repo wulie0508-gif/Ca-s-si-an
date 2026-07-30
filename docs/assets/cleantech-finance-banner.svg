@@ -53,5 +53,5 @@
     <text x="1004" y="314" fill="#111827" text-anchor="middle" font-size="19" font-weight="800">人工复核</text>
   </g>
 
-  <text x="1098" y="394" fill="#6f879a" text-anchor="end" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13">v0.4 · Apache-2.0</text>
+  <text x="1098" y="394" fill="#6f879a" text-anchor="end" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13">v0.4 · MIT</text>
 </svg>
