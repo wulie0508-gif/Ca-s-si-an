@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:enterprise-evidence:1.0.0",
+  "title": "Unified enterprise assessment evidence",
+  "type": "object",
+  "required": [
+    "claim",
+    "source",
+    "locator",
+    "entity_id",
+    "source_level",
+    "type",
+    "confidence",
+    "review_status"
+  ],
+  "properties": {
+    "evidence_key": {"type": "string", "minLength": 1},
+    "claim": {"type": "string", "minLength": 1},
+    "source": {"type": "string", "minLength": 1},
+    "locator": {"type": "string", "minLength": 1},
+    "date": {"type": ["string", "null"]},
+    "entity_id": {"type": "string", "minLength": 1},
+    "source_level": {"enum": ["L1", "L2", "L3", "L4"]},
+    "type": {"enum": ["fact", "opinion", "owner_statement"]},
+    "confidence": {"enum": ["high", "medium", "low"]},
+    "review_status": {"enum": ["verified", "pending"]},
+    "source_url": {"type": ["string", "null"]},
+    "sha256": {"type": ["string", "null"]},
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": true
+}

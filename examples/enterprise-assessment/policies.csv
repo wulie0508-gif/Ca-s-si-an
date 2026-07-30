@@ -1,0 +1,4 @@
+policy_id,title,review_status,expiry_date,industry_tags,stage_tags,need_tags,technology_tags,geography_tags,market_tags
+POLICY-001,示例工业低碳试点支持,已复核通过,2027-12-31,industrial heat,early_commercial,cash flow,thermal storage,China,industrial decarbonization
+POLICY-002,示例过期储能补贴,已复核通过,2025-12-31,energy storage,early_commercial,cash flow,thermal storage,China,industrial decarbonization
+POLICY-003,示例待复核出海计划,待复核,2027-12-31,energy storage,early_commercial,EU market entry,thermal storage,EU,industrial decarbonization

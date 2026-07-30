@@ -1,0 +1,37 @@
+[
+  {
+    "evidence_key": "interview-revenue",
+    "claim": "创始人称 2026 年上半年确认收入为人民币 1,200 万元。",
+    "source": "founder-interview.txt",
+    "locator": "00:08:13-00:08:31",
+    "date": "2026-07-20",
+    "entity_id": "replace-with-case-id",
+    "source_level": "L4",
+    "type": "owner_statement",
+    "confidence": "medium",
+    "review_status": "pending",
+    "metadata": {
+      "input_module": "interview",
+      "topic": "2026H1_revenue",
+      "normalized_value": 12000000,
+      "bearing_fact": false
+    }
+  },
+  {
+    "evidence_key": "public-revenue-filing",
+    "claim": "正式提交的管理报表列示 2026 年上半年收入为人民币 1,200 万元。",
+    "source": "management-accounts-2026H1.pdf",
+    "locator": "p.4, revenue table, row Total",
+    "date": "2026-07-15",
+    "entity_id": "replace-with-case-id",
+    "source_level": "L1",
+    "type": "fact",
+    "confidence": "high",
+    "review_status": "verified",
+    "metadata": {
+      "input_module": "public",
+      "topic": "2026H1_revenue",
+      "normalized_value": 12000000
+    }
+  }
+]

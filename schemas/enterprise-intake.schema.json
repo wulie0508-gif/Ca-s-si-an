@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cleantech-finance:enterprise-intake:1.0.0",
+  "title": "Enterprise assessment intake",
+  "type": "object",
+  "required": ["company", "case"],
+  "properties": {
+    "company": {
+      "type": "object",
+      "required": ["canonical_name"],
+      "properties": {
+        "canonical_name": {"type": "string", "minLength": 1},
+        "legal_name": {"type": "string"},
+        "jurisdiction": {"type": ["string", "null"]},
+        "registry_id": {"type": ["string", "null"]},
+        "aliases": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "case": {
+      "type": "object",
+      "required": ["stage", "as_of", "profile"],
+      "properties": {
+        "external_id": {"type": ["string", "null"]},
+        "stage": {
+          "enum": [
+            "research_development",
+            "pilot",
+            "early_commercial",
+            "scaling",
+            "mature"
+          ]
+        },
+        "as_of": {"type": "string", "format": "date"},
+        "owner": {"type": ["string", "null"]},
+        "source_case_path": {"type": ["string", "null"]},
+        "profile": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,4 @@
+course_id,title,industry_tags,stage_tags,need_tags,technology_tags,geography_tags,market_tags
+COURSE-001,清洁技术现金流与单位经济性,energy storage;industrial heat,early_commercial,cash flow,thermal storage,China,industrial decarbonization
+COURSE-002,欧盟市场进入证据准备,energy storage,early_commercial,EU market entry,thermal storage,EU,industrial decarbonization
+COURSE-003,成熟制造企业运营,mature manufacturing,mature,operations,manufacturing,China,mass market

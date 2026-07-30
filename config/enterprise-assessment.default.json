@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "sidecar": {
+    "enabled": true,
+    "base_url": "http://127.0.0.1:8000",
+    "timeout_seconds": 5,
+    "top_k": 5
+  },
+  "evidence": {
+    "source_levels": {
+      "L1": "official or primary authoritative source",
+      "L2": "authoritative media or industry association",
+      "L3": "industry media",
+      "L4": "self-media, owner statement or other reference-only source"
+    },
+    "fact_burden": {
+      "L1_minimum_independent_sources": 1,
+      "L2_minimum_independent_sources": 2,
+      "L3_L4_reference_only": true
+    }
+  },
+  "assessment": {
+    "required_profile_fields": [
+      "technology",
+      "business_model",
+      "stage",
+      "geography",
+      "needs"
+    ],
+    "validated_financial_dimensions": [
+      "profitability-unit-economics",
+      "cash-runway"
+    ],
+    "minimum_verified_financial_evidence": 2,
+    "hard_negative_severities": [
+      "critical"
+    ]
+  },
+  "matching": {
+    "tag_weights": {
+      "industry": 3.0,
+      "stage": 2.5,
+      "need": 3.0,
+      "technology": 2.0,
+      "geography": 1.5,
+      "market": 1.5
+    },
+    "minimum_match_score": 2.0,
+    "maximum_results": 5,
+    "policy_allowed_review_statuses": [
+      "已复核通过",
+      "approved",
+      "verified"
+    ]
+  }
+}

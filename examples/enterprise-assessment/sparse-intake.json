@@ -1,0 +1,18 @@
+{
+  "company": {
+    "canonical_name": "Mosslight Materials",
+    "legal_name": "苔光材料（示例）工作室",
+    "jurisdiction": "CN-GD",
+    "registry_id": "FICTIONAL:MLM-001"
+  },
+  "case": {
+    "external_id": "demo-sparse-001",
+    "stage": "research_development",
+    "as_of": "2026-07-30",
+    "owner": "demo-reviewer",
+    "profile": {
+      "technology": ["bio-based material"],
+      "stage": ["research_development"]
+    }
+  }
+}

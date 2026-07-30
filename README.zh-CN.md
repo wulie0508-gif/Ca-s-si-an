@@ -2,7 +2,7 @@
 
 [![版本](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?logo=python&logoColor=white)](pyproject.toml)
-[![测试](https://img.shields.io/badge/tests-145%20passing-17865b)](tests)
+[![测试](https://img.shields.io/badge/tests-155%20passing-17865b)](tests)
 [![许可证](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
 > **先看产品故事：** [GitHub 宣传页](SHOWCASE.md) · [英文 README](README.md) · [当前项目状态](docs/project-status-validation-receipt-2026-07-18.md)

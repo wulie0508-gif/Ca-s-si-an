@@ -4,10 +4,25 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
 from .audit import run_audit, validate_audit
+from .enterprise_assessment import (
+    EnterpriseAssessmentEngine,
+    load_assessment_config,
+)
+from .enterprise_evidence import (
+    CompanyDirectoryAdapter,
+    EnergyAssetAdapter,
+    NexSidecarClient,
+    evidence_from_owner_statement,
+)
+from .enterprise_interview import transcribe_media
+from .enterprise_matching import load_matching_config
+from .enterprise_reporting import write_enterprise_report
+from .enterprise_store import AssessmentStore
 from .finance_framework import FINANCE_DIMENSIONS
 from .framework import DIMENSIONS
 from .ingest import ManifestError
@@ -117,6 +132,10 @@ def _load_json_object(path: str) -> dict[str, object]:
     return payload
 
 
+def _load_json_value(path: str) -> object:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="cleantech-finance",
@@ -190,6 +209,136 @@ def build_parser() -> argparse.ArgumentParser:
     )
     qa_report.add_argument("qa_case_json")
     qa_report.add_argument("--out", default="output-qa", help="Output directory")
+
+    enterprise_parser = subparsers.add_parser(
+        "enterprise",
+        help="Run the local enterprise assessment and human-review workflow",
+    )
+    enterprise_subparsers = enterprise_parser.add_subparsers(
+        dest="enterprise_command",
+        required=True,
+    )
+    enterprise_init = enterprise_subparsers.add_parser(
+        "init-store",
+        help="Initialize the authoritative SQLite assessment store",
+    )
+    enterprise_init.add_argument("database")
+
+    enterprise_create = enterprise_subparsers.add_parser(
+        "create",
+        help="Create or reuse a Company master and create one assessment Case",
+    )
+    enterprise_create.add_argument("database")
+    enterprise_create.add_argument("intake_json")
+
+    enterprise_ingest = enterprise_subparsers.add_parser(
+        "ingest-evidence",
+        help="Validate and persist one or more unified evidence objects",
+    )
+    enterprise_ingest.add_argument("database")
+    enterprise_ingest.add_argument("case_id")
+    enterprise_ingest.add_argument("evidence_json")
+
+    enterprise_transcribe = enterprise_subparsers.add_parser(
+        "transcribe",
+        help="Transcribe local interview media and attach case-owned artifacts",
+    )
+    enterprise_transcribe.add_argument("database")
+    enterprise_transcribe.add_argument("case_id")
+    enterprise_transcribe.add_argument("media")
+    enterprise_transcribe.add_argument("--out", required=True)
+    enterprise_transcribe.add_argument("--consent-ref", required=True)
+    enterprise_transcribe.add_argument("--language")
+    enterprise_transcribe.add_argument("--model", default="base")
+    enterprise_transcribe.add_argument("--model-cache")
+
+    enterprise_interview = enterprise_subparsers.add_parser(
+        "add-interview",
+        help="Attach an existing transcript and optional timestamped owner statements",
+    )
+    enterprise_interview.add_argument("database")
+    enterprise_interview.add_argument("case_id")
+    enterprise_interview.add_argument("transcript")
+    enterprise_interview.add_argument("--consent-ref", required=True)
+    enterprise_interview.add_argument("--language")
+    enterprise_interview.add_argument("--model", default="base")
+    enterprise_interview.add_argument("--audio")
+    enterprise_interview.add_argument("--segments-json")
+    enterprise_interview.add_argument("--points-json")
+
+    enterprise_sidecar = enterprise_subparsers.add_parser(
+        "sidecar-query",
+        help="Query NEX for candidate citations and store only valid unified evidence",
+    )
+    enterprise_sidecar.add_argument("database")
+    enterprise_sidecar.add_argument("case_id")
+    enterprise_sidecar.add_argument("question")
+    enterprise_sidecar.add_argument("--base-url", default="http://127.0.0.1:8000")
+    enterprise_sidecar.add_argument(
+        "--mode",
+        choices=("internal", "external", "hybrid"),
+        default="hybrid",
+    )
+    enterprise_sidecar.add_argument("--top-k", type=int, default=5)
+    enterprise_sidecar.add_argument(
+        "--purpose",
+        choices=("enterprise_fact", "industry_background"),
+        default="enterprise_fact",
+    )
+    enterprise_sidecar.add_argument("--time-sensitive", action="store_true")
+
+    enterprise_assess = enterprise_subparsers.add_parser(
+        "assess",
+        help="Run deterministic dimensions, gaps, matching and draft recommendation",
+    )
+    enterprise_assess.add_argument("database")
+    enterprise_assess.add_argument("case_id")
+    enterprise_assess.add_argument("--financial-audit")
+    enterprise_assess.add_argument("--course-catalog")
+    enterprise_assess.add_argument("--policy-catalog")
+    enterprise_assess.add_argument("--config")
+    enterprise_assess.add_argument("--sidecar-check", action="store_true")
+    enterprise_assess.add_argument("--sidecar-url", default="http://127.0.0.1:8000")
+    enterprise_assess.add_argument("--actor")
+    enterprise_assess.add_argument("--out", default="output-enterprise")
+
+    enterprise_decision = enterprise_subparsers.add_parser(
+        "decision",
+        help="Submit, approve or reject the latest draft through the locked workflow",
+    )
+    enterprise_decision.add_argument("database")
+    enterprise_decision.add_argument("case_id")
+    enterprise_decision.add_argument(
+        "action",
+        choices=("submit", "approve", "reject"),
+    )
+    enterprise_decision.add_argument("--actor", required=True)
+    enterprise_decision.add_argument("--reason")
+    enterprise_decision.add_argument("--eval-dir")
+
+    enterprise_show = enterprise_subparsers.add_parser(
+        "show",
+        help="Print the complete traceable case bundle",
+    )
+    enterprise_show.add_argument("database")
+    enterprise_show.add_argument("case_id")
+
+    enterprise_company_candidates = enterprise_subparsers.add_parser(
+        "company-candidates",
+        help="Search the NEX company directory without automatic entity merging",
+    )
+    enterprise_company_candidates.add_argument("directory_database")
+    enterprise_company_candidates.add_argument("name")
+    enterprise_company_candidates.add_argument("--limit", type=int, default=10)
+
+    enterprise_asset_candidates = enterprise_subparsers.add_parser(
+        "asset-candidates",
+        help="Search NEX energy assets and emit candidate evidence",
+    )
+    enterprise_asset_candidates.add_argument("asset_database")
+    enterprise_asset_candidates.add_argument("case_id")
+    enterprise_asset_candidates.add_argument("query")
+    enterprise_asset_candidates.add_argument("--limit", type=int, default=10)
     return parser
 
 
@@ -291,6 +440,231 @@ def main(argv: list[str] | None = None) -> int:
                     )
                 )
                 return 0 if result["passed"] else 2
+        if args.command == "enterprise":
+            if args.enterprise_command == "init-store":
+                store = AssessmentStore(args.database)
+                store.initialize()
+                print(json.dumps({"database": str(store.path.resolve()), "initialized": True}))
+                return 0
+            if args.enterprise_command == "create":
+                intake = _load_json_object(args.intake_json)
+                company = intake.get("company")
+                case = intake.get("case")
+                if not isinstance(company, dict) or not isinstance(case, dict):
+                    raise ValueError("Intake requires company and case objects")
+                store = AssessmentStore(args.database)
+                company_id = store.upsert_company(
+                    canonical_name=str(company.get("canonical_name") or ""),
+                    legal_name=(
+                        str(company["legal_name"]) if company.get("legal_name") else None
+                    ),
+                    jurisdiction=(
+                        str(company["jurisdiction"]) if company.get("jurisdiction") else None
+                    ),
+                    registry_id=(
+                        str(company["registry_id"]) if company.get("registry_id") else None
+                    ),
+                    aliases=[str(item) for item in company.get("aliases") or []],
+                )
+                case_id = store.create_case(
+                    company_id=company_id,
+                    stage=str(case.get("stage") or ""),
+                    as_of=str(case.get("as_of") or ""),
+                    profile=case.get("profile") if isinstance(case.get("profile"), dict) else {},
+                    owner=str(case["owner"]) if case.get("owner") else None,
+                    external_id=str(case["external_id"]) if case.get("external_id") else None,
+                    source_case_path=(
+                        str(case["source_case_path"]) if case.get("source_case_path") else None
+                    ),
+                )
+                print(
+                    json.dumps(
+                        {"database": str(store.path.resolve()), "company_id": company_id, "case_id": case_id},
+                        ensure_ascii=False,
+                    )
+                )
+                return 0
+            if args.enterprise_command == "ingest-evidence":
+                store = AssessmentStore(args.database)
+                raw = _load_json_value(args.evidence_json)
+                items = raw if isinstance(raw, list) else [raw]
+                if any(not isinstance(item, dict) for item in items):
+                    raise ValueError("Evidence JSON must be an object or array of objects")
+                identifiers = [
+                    store.add_evidence(args.case_id, item)
+                    for item in items
+                    if isinstance(item, dict)
+                ]
+                print(json.dumps({"evidence_ids": identifiers}, ensure_ascii=False))
+                return 0
+            if args.enterprise_command == "transcribe":
+                result = transcribe_media(
+                    args.media,
+                    args.out,
+                    model_name=args.model,
+                    language=args.language,
+                    model_cache=args.model_cache,
+                )
+                store = AssessmentStore(args.database)
+                interview_id = store.add_interview(
+                    args.case_id,
+                    transcript_path=result["transcript_path"],
+                    consent_ref=args.consent_ref,
+                    language=result["language"],
+                    model=result["model"],
+                    audio_path=str(Path(args.media).resolve()),
+                    segments=result["segments"],
+                )
+                print(
+                    json.dumps(
+                        {**result, "interview_id": interview_id},
+                        indent=2,
+                        ensure_ascii=False,
+                    )
+                )
+                return 0
+            if args.enterprise_command == "add-interview":
+                segments = _load_json_value(args.segments_json) if args.segments_json else []
+                points = _load_json_value(args.points_json) if args.points_json else []
+                if not isinstance(segments, list) or not isinstance(points, list):
+                    raise ValueError("segments and points JSON roots must be arrays")
+                store = AssessmentStore(args.database)
+                interview_id = store.add_interview(
+                    args.case_id,
+                    transcript_path=args.transcript,
+                    consent_ref=args.consent_ref,
+                    language=args.language,
+                    model=args.model,
+                    audio_path=args.audio,
+                    segments=segments,
+                    structured_points=points,
+                )
+                evidence_ids = []
+                for point in points:
+                    if not isinstance(point, dict):
+                        raise ValueError("Every structured interview point must be an object")
+                    evidence = evidence_from_owner_statement(
+                        claim=str(point.get("claim") or ""),
+                        source=str(Path(args.transcript).resolve()),
+                        locator=str(point.get("locator") or ""),
+                        case_id=args.case_id,
+                        date=str(point["date"]) if point.get("date") else None,
+                        metadata={
+                            "input_module": "interview",
+                            **(
+                                point.get("metadata")
+                                if isinstance(point.get("metadata"), dict)
+                                else {}
+                            ),
+                        },
+                    )
+                    evidence_ids.append(store.add_evidence(args.case_id, evidence))
+                print(
+                    json.dumps(
+                        {"interview_id": interview_id, "owner_statement_ids": evidence_ids},
+                        ensure_ascii=False,
+                    )
+                )
+                return 0
+            if args.enterprise_command == "sidecar-query":
+                client = NexSidecarClient(
+                    args.base_url,
+                    api_key=os.environ.get("NEX_API_KEY"),
+                )
+                result = client.query(
+                    question=args.question,
+                    case_id=args.case_id,
+                    mode=args.mode,
+                    top_k=args.top_k,
+                    purpose=args.purpose,
+                    time_sensitive=args.time_sensitive,
+                )
+                store = AssessmentStore(args.database)
+                identifiers = [
+                    store.add_evidence(args.case_id, evidence)
+                    for evidence in result["evidence"]
+                ]
+                print(
+                    json.dumps(
+                        {**result, "stored_evidence_ids": identifiers},
+                        indent=2,
+                        ensure_ascii=False,
+                    )
+                )
+                return 0 if result["status"] == "ok" else 3
+            if args.enterprise_command == "assess":
+                store = AssessmentStore(args.database)
+                assessment_config = load_assessment_config(args.config)
+                matching_config = load_matching_config(args.config)
+                sidecar_status = None
+                if args.sidecar_check:
+                    health = NexSidecarClient(
+                        args.sidecar_url,
+                        api_key=os.environ.get("NEX_API_KEY"),
+                    ).health()
+                    sidecar_status = {
+                        "status": "ok" if health["available"] else "sidecar_unavailable",
+                        "warnings": [health["warning"]] if health["warning"] else [],
+                        "health": health["payload"],
+                    }
+                financial_audit = (
+                    _load_json_object(args.financial_audit) if args.financial_audit else None
+                )
+                assessment = EnterpriseAssessmentEngine(
+                    store,
+                    assessment_config=assessment_config,
+                    matching_config=matching_config,
+                ).run(
+                    args.case_id,
+                    financial_audit=financial_audit,
+                    course_catalog=args.course_catalog,
+                    policy_catalog=args.policy_catalog,
+                    sidecar_status=sidecar_status,
+                    actor=args.actor,
+                )
+                paths = write_enterprise_report(store, assessment, args.out)
+                print(
+                    json.dumps(
+                        {"assessment": assessment, "artifacts": paths},
+                        indent=2,
+                        ensure_ascii=False,
+                    )
+                )
+                return 0
+            if args.enterprise_command == "decision":
+                targets = {
+                    "submit": "pending_review",
+                    "approve": "approved",
+                    "reject": "rejected",
+                }
+                result = AssessmentStore(args.database).transition_decision(
+                    args.case_id,
+                    targets[args.action],
+                    actor=args.actor,
+                    rejection_reason=args.reason,
+                    eval_dir=args.eval_dir,
+                )
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+                return 0
+            if args.enterprise_command == "show":
+                bundle = AssessmentStore(args.database).get_case_bundle(args.case_id)
+                print(json.dumps(bundle, indent=2, ensure_ascii=False))
+                return 0
+            if args.enterprise_command == "company-candidates":
+                candidates = CompanyDirectoryAdapter(args.directory_database).search(
+                    args.name,
+                    limit=args.limit,
+                )
+                print(json.dumps(candidates, indent=2, ensure_ascii=False))
+                return 0
+            if args.enterprise_command == "asset-candidates":
+                candidates = EnergyAssetAdapter(args.asset_database).search(
+                    args.query,
+                    case_id=args.case_id,
+                    limit=args.limit,
+                )
+                print(json.dumps(candidates, indent=2, ensure_ascii=False))
+                return 0
     except (ManifestError, FileExistsError, OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

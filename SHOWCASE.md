@@ -8,7 +8,7 @@
 
 [![Version](https://img.shields.io/badge/version-0.4.0-f97316?style=for-the-badge)](pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?style=for-the-badge&logo=python&logoColor=white)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-145%20passing-17865b?style=for-the-badge)](tests)
+[![Tests](https://img.shields.io/badge/tests-155%20passing-17865b?style=for-the-badge)](tests)
 [![Core](https://img.shields.io/badge/core-zero%20model%20calls-4f46e5?style=for-the-badge)](README.md)
 [![License](https://img.shields.io/badge/license-MIT-111827?style=for-the-badge)](LICENSE)
 
@@ -62,8 +62,8 @@ flowchart LR
 
 <table>
   <tr>
-    <td align="center"><strong>145</strong><br/>完整测试</td>
-    <td align="center"><strong>7 / 7</strong><br/>JSON Schema</td>
+    <td align="center"><strong>155</strong><br/>完整测试</td>
+    <td align="center"><strong>9 / 9</strong><br/>JSON Schema</td>
     <td align="center"><strong>29 / 29</strong><br/>Sungrow 抽取</td>
     <td align="center"><strong>28 / 28</strong><br/>Enphase 抽取</td>
     <td align="center"><strong>10 / 10</strong><br/>历史公司回归</td>
