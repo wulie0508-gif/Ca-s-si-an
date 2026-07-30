@@ -1,5 +1,12 @@
 # CleanTech Finance（中文说明）
 
+[![版本](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?logo=python&logoColor=white)](pyproject.toml)
+[![测试](https://img.shields.io/badge/tests-145%20passing-17865b)](tests)
+[![许可证](https://img.shields.io/badge/license-Apache--2.0-111827)](LICENSE)
+
+> **先看产品故事：** [GitHub 宣传页](SHOWCASE.md) · [英文 README](README.md) · [当前项目状态](docs/project-status-validation-receipt-2026-07-18.md)
+
 这是一个以金融研究为主线的清洁能源公司证据审计工具。v0.3 的正式产出不是自由分析，而是“单维度五格证据卡”。
 
 输入公司年报和可选公开资料后，它会：
