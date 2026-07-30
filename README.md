@@ -1,22 +1,48 @@
+<div align="center">
+
+![CleanTech Finance — Evidence before judgment](docs/assets/cleantech-finance-banner.svg)
+
 # CleanTech Finance
 
-> New: the local SQLite enterprise assessment and triage integration MVP is documented in
-> [docs/enterprise-assessment-system.md](docs/enterprise-assessment-system.md). It keeps NEX
-> RAG as a citation sidecar, applies deterministic course/policy matching, and requires a
-> human `draft → pending_review → approved/rejected` decision.
+### Evidence before judgment.
 
-Evidence-first financial and bankability research for clean energy companies.
+**Local-first diligence infrastructure for clean technology companies.**
 
 [![Version](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?logo=python&logoColor=white)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-145%20passing-17865b)](tests)
+[![Tests](https://img.shields.io/badge/tests-155%20passing-17865b)](tests)
 [![License](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
-> **Explore the product story:** [GitHub showcase](SHOWCASE.md) · [中文说明](README.zh-CN.md) · [current project status](docs/project-status-validation-receipt-2026-07-18.md)
+[Product story](SHOWCASE.md) · [中文说明](README.zh-CN.md) · [System guide](docs/enterprise-assessment-system.md) · [Validation report](docs/enterprise-assessment-integration-report-2026-07-30.md)
 
-`cleantech-finance` turns annual reports and cited public comparators into fixed, five-cell financial evidence cards. It extracts a conservative set of audited facts, calculates reproducible metrics, applies a locked maintainer-authored framework, and exposes every unresolved judgment in a human review queue.
+</div>
 
-It does **not** produce an investment recommendation or an automated technology-readiness score.
+---
+
+CleanTech Finance turns filings, company materials, interviews, public sources,
+and controlled Agent outputs into a traceable chain:
+
+**claim → evidence → deterministic rule → human review**
+
+It helps research teams see what is supported, what is calculated, what remains
+uncertain, and what must be requested next. The system runs locally, preserves
+source-level provenance, and keeps every consequential decision reviewable.
+
+> It does not replace judgment. It makes judgment inspectable.
+
+The current release combines three working layers:
+
+- **Financial evidence** — two end-to-end validated dimensions with reproducible
+  calculations and fixed five-cell evidence cards.
+- **Enterprise diligence** — structured intake, consent, interviews, claims,
+  evidence, gaps, triage, and a versioned human decision workflow.
+- **Controlled automation** — deterministic matching and allowlist-bound Agent
+  assistance whose outputs remain candidate evidence until reviewed.
+
+There is no aggregate score, investment recommendation, credit rating, or
+automated ARL score. ESG, clean-technology impact, export readiness, and the
+remaining four financial dimensions retain their documented evidence-framework
+or input-blueprint maturity.
 
 ## Why this exists
 
