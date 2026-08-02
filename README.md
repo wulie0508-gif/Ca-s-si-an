@@ -1,48 +1,40 @@
 <div align="center">
 
-![CleanTech Finance — Evidence before judgment](docs/assets/cleantech-finance-banner.svg)
+![CleanTech Finance](docs/assets/cleantech-finance-banner.svg)
 
 # CleanTech Finance
 
-### Evidence before judgment.
-
-**Local-first diligence infrastructure for clean technology companies.**
+**Traceable diligence infrastructure for clean-technology research.**
 
 [![Version](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?logo=python&logoColor=white)](pyproject.toml)
 [![Tests](https://img.shields.io/badge/tests-155%20passing-17865b)](tests)
 [![License](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
-[Product story](SHOWCASE.md) · [中文说明](README.zh-CN.md) · [System guide](docs/enterprise-assessment-system.md) · [Validation report](docs/enterprise-assessment-integration-report-2026-07-30.md)
+[Product overview](SHOWCASE.md) | [中文说明](README.zh-CN.md) | [System guide](docs/enterprise-assessment-system.md) | [Validation report](docs/enterprise-assessment-integration-report-2026-07-30.md)
 
 </div>
 
----
-
 CleanTech Finance turns filings, company materials, interviews, public sources,
-and controlled Agent outputs into a traceable chain:
+and controlled agent outputs into a reviewable evidence chain:
 
-**claim → evidence → deterministic rule → human review**
+**source → fact → calculation → rule → human judgment**
 
-It helps research teams see what is supported, what is calculated, what remains
-uncertain, and what must be requested next. The system runs locally, preserves
-source-level provenance, and keeps every consequential decision reviewable.
+The project helps research teams separate sourced facts, deterministic
+calculations, unresolved gaps, and human decisions. It runs locally, preserves
+source-level provenance, and keeps consequential outputs inspectable.
 
-> It does not replace judgment. It makes judgment inspectable.
+The current release includes:
 
-The current release combines three working layers:
+- **Financial evidence:** reproducible calculations and fixed evidence cards for
+  two end-to-end validated dimensions.
+- **Enterprise diligence:** structured intake, consent, interviews, claims,
+  evidence, gaps, triage, and versioned human review.
+- **Controlled automation:** deterministic matching and allowlist-bound agent
+  assistance. Automated outputs remain candidate evidence until reviewed.
 
-- **Financial evidence** — two end-to-end validated dimensions with reproducible
-  calculations and fixed five-cell evidence cards.
-- **Enterprise diligence** — structured intake, consent, interviews, claims,
-  evidence, gaps, triage, and a versioned human decision workflow.
-- **Controlled automation** — deterministic matching and allowlist-bound Agent
-  assistance whose outputs remain candidate evidence until reviewed.
-
-There is no aggregate score, investment recommendation, credit rating, or
-automated ARL score. ESG, clean-technology impact, export readiness, and the
-remaining four financial dimensions retain their documented evidence-framework
-or input-blueprint maturity.
+This is research infrastructure, not an investment recommendation, credit
+rating, aggregate score, or automated ARL assessment.
 
 ## Why this exists
 
