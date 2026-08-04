@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0.0",
+  "round": 2,
+  "status": "passed_with_material_product_gaps",
+  "test_theme": "financial_basis_conflicts_and_candidate_supplement_receipts",
+  "data_classification": {
+    "company_materials": "synthetic",
+    "software_outputs": "real_local_execution",
+    "interaction_telemetry": "real_test_interactions",
+    "real_company_validation_claimed": false
+  },
+  "phases": {
+    "initial": {
+      "case_id": "case-20260804-a437a545de",
+      "files": 6,
+      "product_score": 48,
+      "system_questions": 0,
+      "fa_questions": 8,
+      "deal_created": false,
+      "valuation_run": false,
+      "calculation_run": false
+    },
+    "supplement_baseline": {
+      "case_id": "case-20260804-4ec053c985",
+      "files": 9,
+      "fa_reconciliation": {
+        "answered": 1,
+        "partial": 6,
+        "contradicted": 0,
+        "not_available": 1,
+        "open": 0,
+        "weighted_evidence_progress_percent": 50.0,
+        "fully_answered_percent": 12.5,
+        "not_a_company_rating": true
+      },
+      "product_native_questions_detected": 0,
+      "product_native_questions_closed": 0,
+      "request_tracking_state": "not_implemented",
+      "deal_created": false,
+      "valuation_run": false,
+      "calculation_run": false
+    },
+    "postfix_replay": {
+      "initial_case_id": "case-20260804-00814b4a0b",
+      "combined_case_id": "case-20260804-9a6d5fdd05",
+      "scoped_gate_score": 100,
+      "scoped_gate_maximum": 100,
+      "question_ids": [
+        "R02-Q01",
+        "R02-Q02",
+        "R02-Q03",
+        "R02-Q04",
+        "R02-Q05",
+        "R02-Q06",
+        "R02-Q07",
+        "R02-Q08"
+      ],
+      "calculation_status": "blocked",
+      "candidate_response_receipts": 8,
+      "responses_accepted_as_truth": 0,
+      "questions_closed": 0,
+      "all_automatic_selections_null": true,
+      "deal_created": false,
+      "valuation_run": false,
+      "calculation_run": false
+    }
+  },
+  "fixed_issue_ids": ["R02-01", "R02-02", "R02-03", "R02-04", "R02-05", "R02-10"],
+  "remaining_issue_ids": ["R02-06", "R02-07", "R02-08", "R02-09"],
+  "verification": {
+    "python_tests_collected_and_passed": 370,
+    "node_tests_passed": 6,
+    "ruff": "passed",
+    "git_diff_check": "passed",
+    "postfix_ui_assets_http_200": true,
+    "postfix_browser_dom_render_claimed": true,
+    "postfix_browser_console_errors": 0,
+    "route_scroll_reset_verified": true
+  },
+  "method_limitations": [
+    "The clean initial FA child performed the real test but its report-writing step stalled; retained initial artifacts are a coordinator transcription of its telemetry and persisted workspace.",
+    "Global agent thread capacity prevented brand-new supplement and postfix threads; reused specialists followed strict allowlists and disclosed that limitation.",
+    "No real enterprise data was used."
+  ],
+  "authority_boundaries": {
+    "enterprise_response_automatically_accepted": false,
+    "management_statement_upgraded_to_fact": false,
+    "agent_approved": false,
+    "investment_or_credit_rating_produced": false,
+    "aggregate_risk_score_produced": false,
+    "public_release_performed": false
+  }
+}

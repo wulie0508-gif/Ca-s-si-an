@@ -1,0 +1,445 @@
+{
+  "schema_version": "1.0.0",
+  "round": "03",
+  "status": "pre_fix_plan_only",
+  "scope": {
+    "read": [
+      "evals/double-blind-fa-v0.5/round-03/company-submission/",
+      "evals/double-blind-fa-v0.5/round-03/fa-initial/",
+      "src/cleantech_finance/",
+      "tests/"
+    ],
+    "not_read": [
+      "evals/double-blind-fa-v0.5/round-04/",
+      "evals/double-blind-fa-v0.5/round-05/"
+    ],
+    "product_code_modified": false,
+    "service_run_or_restarted": false
+  },
+  "overall_assessment": {
+    "verified_defect_count": 5,
+    "input_integrity_gate": "blocked",
+    "calculation_gate": "blocked",
+    "automatic_fact_selection_allowed": false,
+    "automatic_valuation_or_rating_allowed": false,
+    "critical_dependency": "The provenance-and-duplicates index is itself hash-mismatched and must remain quarantined until the uploader corrects either the payload or declaration."
+  },
+  "verified_defects": [
+    {
+      "id": "R03-ENG-01",
+      "title": "Manifest declared hashes are not reconciled with actual uploads",
+      "classification": "true_integrity_bug",
+      "severity": "critical",
+      "observed_evidence": {
+        "filename": "07-artifact-provenance-and-duplicates.csv",
+        "actual_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+        "declared_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b4",
+        "other_declared_payloads": "six matched"
+      },
+      "root_cause": {
+        "locations": [
+          {
+            "path": "src/cleantech_finance/workspace_service.py",
+            "symbol": "create_case",
+            "finding": "Computes and stores actual SHA-256 and checks duplicate filenames, but does not link actual artifacts to manifest files[].declared_sha256."
+          },
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "_parse_json / _manifest_file_record",
+            "finding": "Parses existing Round 2 declaration fields but ignores the Round 3 declared_sha256 and document-control fields."
+          }
+        ]
+      },
+      "minimal_deterministic_fix": {
+        "component": "new company-intake evidence-integrity helper",
+        "matching_key": "exact normalized safe filename",
+        "per_file_statuses": [
+          "matched",
+          "mismatch",
+          "missing_upload",
+          "unlisted_upload",
+          "invalid_digest",
+          "duplicate_manifest_entry"
+        ],
+        "gate_rule": "Only all declared payloads matched, with no invalid or duplicate manifest entries, may pass input integrity.",
+        "quarantine_rule": "A mismatched artifact and every assertion derived only from it remain quarantined.",
+        "manifest_self_rule": "The manifest is excluded from declared-payload matching unless explicitly self-declared."
+      },
+      "forbidden_automation": [
+        "Do not overwrite the declared hash with the actual hash.",
+        "Do not infer whether the declaration or payload is correct.",
+        "Do not downgrade mismatch, missing upload, invalid digest, or duplicate manifest entry to a non-blocking warning."
+      ],
+      "local_recompute": {
+        "include": [
+          "manifest reconciliation",
+          "input-integrity gate",
+          "quarantine status for the affected artifact",
+          "duplicate/provenance groups derived from that artifact",
+          "questions whose dependencies include that artifact"
+        ],
+        "exclude": [
+          "unrelated business claims",
+          "valuation",
+          "rating",
+          "public-release state"
+        ]
+      },
+      "planned_tests": [
+        "Round 3 fixture yields six matches and one exact mismatch.",
+        "The mismatched 07 index is quarantined and its rows cannot count as evidence.",
+        "Missing upload, unlisted upload, invalid digest, and duplicate manifest entry fail closed.",
+        "The implementation never auto-repairs a declared digest."
+      ]
+    },
+    {
+      "id": "R03-ENG-02",
+      "title": "Authority, approval, effectiveness, signature, as-of date, and version are not independent axes",
+      "classification": "true_document_control_gap",
+      "severity": "high",
+      "observed_evidence": {
+        "forecast_v1_1": "newer as-of; Draft; not approved; unsigned; no effective date",
+        "forecast_v1_0": "older as-of; approved by resolution; effective; signed by chair and secretary",
+        "current_result": "forecast status is not_present",
+        "field_mismatch": "input uses version while parser requires forecast_version"
+      },
+      "root_cause": {
+        "locations": [
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "_forecast_candidate",
+            "finding": "Recognizes only forecast_version and does not model independent document-control axes."
+          },
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "_parse_json / _manifest_file_record",
+            "finding": "Ignores authority_class, effective_date, version, approval_status, signature_status, and assertion_status from the Round 3 manifest."
+          }
+        ]
+      },
+      "minimal_deterministic_fix": {
+        "component": "document_control_candidates",
+        "independent_fields": [
+          "version",
+          "as_of_date",
+          "effective_date",
+          "approval_status",
+          "signature_status",
+          "authority_class",
+          "assertion_status",
+          "verification_status"
+        ],
+        "forecast_alias_rule": "Accept version or forecast_version only inside a recognized, versioned forecast schema.",
+        "selection_rule": "Emit eligibility candidates under explicit versioned rules, but keep selected_authoritative_artifact_id null until human acceptance.",
+        "expected_round_3_result": "Both board plans are visible as forecast candidates; v1.0 and v1.1 retain their distinct controls; neither is automatically selected."
+      },
+      "forbidden_automation": [
+        "Do not select the maximum version or latest as-of date.",
+        "Do not treat approval, effectiveness, or signature alone as proof of a business claim.",
+        "Do not treat authority_class as independently verified.",
+        "Do not silently prefer a current corporate register over another version."
+      ],
+      "local_recompute": {
+        "include": [
+          "the affected document family",
+          "document-control eligibility candidates",
+          "the corresponding authority-selection question",
+          "downstream readiness gates that explicitly depend on the selected family"
+        ],
+        "exclude": [
+          "automatic fact selection",
+          "unrelated claim families",
+          "calculations before human acceptance"
+        ]
+      },
+      "planned_tests": [
+        "v1.1 remains newer but draft, unsigned, and ineffective; v1.0 remains older but approved, signed, and effective.",
+        "All control axes are preserved independently and selected_authoritative_artifact_id remains null.",
+        "Corporate-register v1.2 and v2.0 receive the same independent-axis treatment.",
+        "Input order does not change candidate or question IDs."
+      ]
+    },
+    {
+      "id": "R03-ENG-03",
+      "title": "Repeated underlying content hashes are not folded into evidence units",
+      "classification": "true_evidence_counting_gap",
+      "severity": "high",
+      "observed_evidence": {
+        "candidate_aliases": [
+          "P2602_框架协议_签署版.pdf",
+          "P2602_contract_final_v3.pdf"
+        ],
+        "declared_underlying_sha256": "8c0f7a231c8d0449a4d622f24f0e37d1ebbd5cc3b2f96997d1dd65df5d1e930a",
+        "declared_duplicate_group": "SYN-DUP-01",
+        "underlying_payloads_uploaded": false,
+        "index_integrity": "quarantined because its own upload hash mismatches the manifest"
+      },
+      "root_cause": {
+        "locations": [
+          {
+            "path": "src/cleantech_finance/workspace_service.py",
+            "symbol": "create_case",
+            "finding": "Company intake checks duplicate filenames but has no content-addressed evidence-unit model for uploaded payloads."
+          },
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "CSV parsing and diagnosis",
+            "finding": "Ignores artifact_content_sha256 and duplicate_group, and has no distinction between uploaded payload hashes and index-declared underlying hashes."
+          }
+        ]
+      },
+      "minimal_deterministic_fix": {
+        "actual_payload_layer": "Group identical actual upload SHA-256 values into one evidence unit while retaining every artifact and filename alias.",
+        "declared_underlying_layer": "Create a candidate provenance group from an exact valid artifact_content_sha256 only; mark underlying_payload_status=missing when no matching payload was uploaded.",
+        "quarantine_rule": "If the source index is quarantined, its candidate group is quarantined and contributes zero accepted evidence units.",
+        "canonical_rule": "Canonical selection remains null until a human or corrected authoritative manifest explicitly designates it."
+      },
+      "forbidden_automation": [
+        "Do not delete alias artifacts.",
+        "Do not choose a canonical artifact by filename, version, date, or row order.",
+        "Do not count metadata-only rows as underlying evidence.",
+        "Do not use a quarantined index to change evidence counts or fact status."
+      ],
+      "local_recompute": {
+        "include": [
+          "affected duplicate/provenance group",
+          "alias list",
+          "evidence-unit count",
+          "questions directly dependent on that group"
+        ],
+        "exclude": [
+          "automatic resolution of P2602",
+          "unrelated evidence groups",
+          "downstream calculations"
+        ]
+      },
+      "planned_tests": [
+        "Two uploaded filenames with identical actual SHA-256 yield one evidence unit and two retained aliases.",
+        "The Round 3 P2602 index rows yield only a missing-underlying candidate group.",
+        "Quarantining 07 suppresses the group from accepted evidence counts.",
+        "Alias and group IDs remain deterministic under row reordering."
+      ]
+    },
+    {
+      "id": "R03-ENG-04",
+      "title": "Cross-file claim contradictions are not surfaced",
+      "classification": "true_claim_ledger_gap",
+      "severity": "high",
+      "observed_conflict_families": [
+        "P2601 final acceptance, performance conditions, holdback, and missing acceptance certificate",
+        "P2602 contracted backlog versus framework-only status and missing executable PO",
+        "P2603 confirmed PO versus conditional non-binding email and unsigned draft PO",
+        "forecast v1.0 versus v1.1 values and document-control states",
+        "CEO and ESOP ownership between corporate-register versions",
+        "A01/A02 pledge and A03-A05 ownership between corporate-register versions",
+        "Southeast Asia licence versus non-binding MOU"
+      ],
+      "root_cause": {
+        "locations": [
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "parse and diagnose pipeline",
+            "finding": "Aggregates financial dimensions and source-precedence metadata but has no versioned schema adapters, stable claim keys, assertion ledger, or conflict graph."
+          }
+        ]
+      },
+      "minimal_deterministic_fix": {
+        "component": "versioned claim adapters plus claim_conflicts",
+        "stable_keys": [
+          "exact project identifier plus enumerated claim dimension",
+          "exact record_type plus record_id",
+          "exact document_family plus period"
+        ],
+        "assertion_rule": "Preserve every candidate assertion, provenance record, control status, and verification status; emit unresolved when incompatible candidates share a stable key.",
+        "insufficient_schema_rule": "If semantic meaning exists only in free prose, request an explicit assertion_code or structured supplement rather than inferring truth.",
+        "question_contract": "Stable question IDs derive from the versioned rule and stable claim key, never file order or row count."
+      },
+      "forbidden_automation": [
+        "Do not resolve a conflict by source class, recency, signature, approval, or filename.",
+        "Do not use fuzzy entity matching or unrestricted prose NLP to assert a fact.",
+        "Do not convert evidence_excerpt into accepted truth.",
+        "Do not close a conflict until the relevant claim key receives an explicit human decision or verified structured supplement."
+      ],
+      "local_recompute": {
+        "include": [
+          "the affected stable claim key",
+          "its candidate assertions and conflict status",
+          "its question",
+          "readiness gates explicitly mapped to that claim key"
+        ],
+        "exclude": [
+          "other claim keys",
+          "unrelated document families",
+          "valuation or rating"
+        ]
+      },
+      "planned_tests": [
+        "Stable conflicts are produced for P2601, P2602, P2603, forecast, ownership, IP, and licence fixtures.",
+        "Conflict and question IDs remain identical when files and rows are reordered.",
+        "No conflict is fabricated when a stable key or explicit assertion semantics are absent.",
+        "Human acceptance updates only the matching claim key and mapped readiness gates."
+      ]
+    },
+    {
+      "id": "R03-ENG-05",
+      "title": "Generic as_of_date falsely triggers financial preflight for non-financial CSVs",
+      "classification": "true_applicability_bug",
+      "severity": "high",
+      "observed_evidence": {
+        "initial_detected_artifacts": "all seven CSV payloads, artifact IDs 0002 through 0008",
+        "initial_forecast_status": "not_present",
+        "initial_cash_candidates": 0,
+        "trigger": "generic as_of_date and other basis-like metadata are sufficient to create a basis record"
+      },
+      "root_cause": {
+        "locations": [
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "_basis_record",
+            "finding": "Returns a basis record when any one generic metadata field, including as_of_date, is present."
+          },
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "_parse_csv",
+            "finding": "Calls _basis_record for every row regardless of document type and sets detected from the resulting records."
+          },
+          {
+            "path": "src/cleantech_finance/company_intake_preflight.py",
+            "symbol": "_cash_candidate and _forecast_candidate",
+            "finding": "The recognized cash and forecast schemas are narrow in inconsistent ways: generic metadata over-detects files while version aliasing under-detects the real plans."
+          }
+        ]
+      },
+      "minimal_deterministic_fix": {
+        "component": "financial schema applicability classifier",
+        "rule": "Parseability and control metadata do not imply financial applicability; require a complete recognized financial schema archetype.",
+        "as_of_rule": "as_of_date alone, or with version/approval/signature metadata, never makes a file financially applicable.",
+        "recognized_archetypes": [
+          "P&L with explicit line item, numeric value, period, currency/unit",
+          "sales ledger with explicit transaction and amount fields",
+          "treasury with account/balance and restriction or availability fields",
+          "forecast with financial metric columns, period, version, and control metadata"
+        ],
+        "expected_round_3_result": "Only the two board-plan files are forecast candidates; management, counterparty, corporate-register, and provenance CSVs are not financial artifacts solely because they contain as_of_date.",
+        "cash_rule": "The management Available cash 4.4 claim remains an unverified claim, not a treasury basis candidate, until account/entity/restriction evidence is supplied."
+      },
+      "forbidden_automation": [
+        "Do not infer a financial schema from generic dates or control metadata.",
+        "Do not convert a management cash claim into available cash without account-level restriction evidence.",
+        "Do not run calculations merely because a financial-looking column exists.",
+        "Do not auto-select a forecast version after it becomes detectable."
+      ],
+      "local_recompute": {
+        "include": [
+          "financial artifact routing",
+          "financial preflight applicability",
+          "forecast and cash readiness questions",
+          "calculation gate"
+        ],
+        "exclude": [
+          "automatic normalization",
+          "financial calculations",
+          "non-financial claim resolution"
+        ]
+      },
+      "planned_tests": [
+        "A non-financial CSV containing as_of_date, version, approval, and signature metadata is not applicable.",
+        "Round 3 non-board CSVs alone do not trigger financial preflight.",
+        "The full Round 3 pack detects only the two board plans as forecast candidates.",
+        "Both version and forecast_version are supported only within a recognized forecast schema.",
+        "Available cash 4.4 without account and restriction fields is not a treasury basis candidate.",
+        "Existing supported Round 2 financial fixtures remain green."
+      ]
+    }
+  ],
+  "proposed_output_contract": {
+    "manifest_reconciliation": {
+      "required": true,
+      "selection": "none",
+      "blocking": true
+    },
+    "document_control_candidates": {
+      "required": true,
+      "selected_authoritative_artifact_id_default": null
+    },
+    "duplicate_groups": {
+      "actual_payload_groups": true,
+      "declared_underlying_candidate_groups": true,
+      "retain_all_aliases": true
+    },
+    "claim_conflicts": {
+      "required": true,
+      "resolution_default": "unresolved",
+      "free_text_truth_inference": false
+    },
+    "question_priority": [
+      "extraction failure",
+      "manifest integrity and quarantine",
+      "document control and evidence conflicts",
+      "financial basis completeness",
+      "reference-only follow-up"
+    ]
+  },
+  "global_forbidden_boundaries": [
+    "No automatic repair or trust of a mismatched declaration.",
+    "No automatic authoritative-document selection.",
+    "No automatic conflict winner.",
+    "No evidence credit for missing underlying payloads or quarantined indexes.",
+    "No silent deletion of aliases.",
+    "No valuation, rating, runway, or public conclusion before human acceptance and ready gates."
+  ],
+  "implementation_sequence": [
+    {
+      "order": 1,
+      "work": "Implement exact manifest reconciliation and quarantine propagation.",
+      "reason": "The integrity status of 07 controls whether its provenance assertions may be used."
+    },
+    {
+      "order": 2,
+      "work": "Tighten financial applicability and add controlled version alias support for recognized forecasts.",
+      "reason": "This removes the broad false positive while restoring the two actual forecast candidates."
+    },
+    {
+      "order": 3,
+      "work": "Add independent document-control candidates with human-only selection.",
+      "reason": "Version, recency, approval, effectiveness, signature, authority, and verification must remain distinct."
+    },
+    {
+      "order": 4,
+      "work": "Add actual-payload and declared-underlying duplicate layers.",
+      "reason": "Counting and provenance require different trust rules."
+    },
+    {
+      "order": 5,
+      "work": "Add explicit-schema claim adapters, stable conflict IDs, and dependency-scoped recompute.",
+      "reason": "Conflicts can be surfaced safely only after identity, integrity, and control metadata are reliable."
+    }
+  ],
+  "test_files": {
+    "new": [
+      "tests/test_company_intake_evidence_integrity.py"
+    ],
+    "extend": [
+      "tests/test_company_intake_preflight.py",
+      "tests/test_agent_bridge.py"
+    ],
+    "required_properties": [
+      "fail closed",
+      "deterministic IDs",
+      "input-order invariance",
+      "quarantine propagation",
+      "human-only selection",
+      "localized recompute",
+      "Round 2 regression compatibility"
+    ]
+  },
+  "completion_criteria_for_future_fix": [
+    "All five defect regressions pass.",
+    "The exact 07 hash mismatch is visible and blocking.",
+    "Only recognized financial schemas trigger financial preflight.",
+    "Both board-plan versions are visible with independent controls and no automatic selection.",
+    "Duplicate aliases are retained while accepted evidence counts are content-addressed.",
+    "Cross-file conflicts are stable, unresolved by default, and locally recomputable.",
+    "No product calculation, valuation, rating, or release occurs from unaccepted evidence."
+  ]
+}

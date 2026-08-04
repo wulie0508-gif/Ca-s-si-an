@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R03-FA-SUPPLEMENT-BASELINE-20260804",
+  "source_totals": {
+    "initial_file_count": 8,
+    "initial_byte_count": 26978,
+    "supplement_file_count": 13,
+    "supplement_byte_count": 42668,
+    "physical_file_count": 21,
+    "physical_byte_count": 69646,
+    "unique_byte_sha256_count": 20,
+    "declared_payload_hash_count": 19,
+    "declared_payload_hash_match_count": 18,
+    "declared_payload_hash_mismatch_count": 1
+  },
+  "transport_policy": {
+    "full_probe": "All 21 physical files were sent over real HTTP. Case creation was rejected because the product accepts at most 20 files.",
+    "primary_case": "The supplement copy of 07-artifact-provenance-and-duplicates.csv was omitted only after evaluator-side SHA-256 proved it byte-identical to the initial copy. This fold was necessary to fit the product limit and is not product deduplication.",
+    "jsonl_mapping": "The product rejected .jsonl. For the successful primary case, the two JSONL payloads were uploaded byte-for-byte under .jsonl.txt transport names; they were therefore treated as text, not parsed as JSONL records.",
+    "duplicate_filename_mapping": "The supplement manifest used supplement-submission-manifest.json so both manifests could coexist in one case. The full probe and duplicate control used a supplement-prefixed name for the second 07 file.",
+    "source_bytes_changed": false
+  },
+  "files": [
+    {
+      "source_package": "company-submission",
+      "original_file_name": "01-management-claims.csv",
+      "byte_size": 2650,
+      "actual_sha256": "fe201f97b5596516df45b4ce9d9f7002c382d457178d90c210fe443e9cf90a3c",
+      "declared_sha256": "fe201f97b5596516df45b4ce9d9f7002c382d457178d90c210fe443e9cf90a3c",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "01-management-claims.csv",
+      "primary_case_artifact_id": "artifact-0001"
+    },
+    {
+      "source_package": "company-submission",
+      "original_file_name": "02-counterparty-evidence-register.csv",
+      "byte_size": 3396,
+      "actual_sha256": "45813776294b828ad12c357b01471945f698d45f64b3e7f484ee1168131b4a6b",
+      "declared_sha256": "45813776294b828ad12c357b01471945f698d45f64b3e7f484ee1168131b4a6b",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "02-counterparty-evidence-register.csv",
+      "primary_case_artifact_id": "artifact-0002"
+    },
+    {
+      "source_package": "company-submission",
+      "original_file_name": "03-board-plan-draft-v1.1.csv",
+      "byte_size": 1378,
+      "actual_sha256": "1e21951c888ed0f23a9ffc09633c2692d04cef8b8cde171b5baa486c8b83d4c0",
+      "declared_sha256": "1e21951c888ed0f23a9ffc09633c2692d04cef8b8cde171b5baa486c8b83d4c0",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "03-board-plan-draft-v1.1.csv",
+      "primary_case_artifact_id": "artifact-0003"
+    },
+    {
+      "source_package": "company-submission",
+      "original_file_name": "04-board-plan-approved-v1.0.csv",
+      "byte_size": 1636,
+      "actual_sha256": "cb2ff3e170f25919f6075b84aa9cbe907c8378099533ef6cf827bc7c0ad9171d",
+      "declared_sha256": "cb2ff3e170f25919f6075b84aa9cbe907c8378099533ef6cf827bc7c0ad9171d",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "04-board-plan-approved-v1.0.csv",
+      "primary_case_artifact_id": "artifact-0004"
+    },
+    {
+      "source_package": "company-submission",
+      "original_file_name": "05-corporate-register-v1.2.csv",
+      "byte_size": 3212,
+      "actual_sha256": "cfa8b952a857d1543859b86ac2ef23c48b41179cfbbf57c03caaaa1e4349724f",
+      "declared_sha256": "cfa8b952a857d1543859b86ac2ef23c48b41179cfbbf57c03caaaa1e4349724f",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "05-corporate-register-v1.2.csv",
+      "primary_case_artifact_id": "artifact-0005"
+    },
+    {
+      "source_package": "company-submission",
+      "original_file_name": "06-corporate-register-v2.0.csv",
+      "byte_size": 4830,
+      "actual_sha256": "04897dca8cf60be4701d7d21f9b569325164a1a284d3597ae99383d76928fe1e",
+      "declared_sha256": "04897dca8cf60be4701d7d21f9b569325164a1a284d3597ae99383d76928fe1e",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "06-corporate-register-v2.0.csv",
+      "primary_case_artifact_id": "artifact-0006"
+    },
+    {
+      "source_package": "company-submission",
+      "original_file_name": "07-artifact-provenance-and-duplicates.csv",
+      "byte_size": 3411,
+      "actual_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "declared_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b4",
+      "declared_hash_match": false,
+      "primary_case_transport_name": "07-artifact-provenance-and-duplicates.csv",
+      "primary_case_artifact_id": "artifact-0007",
+      "product_hash_warning_emitted": false
+    },
+    {
+      "source_package": "company-submission",
+      "original_file_name": "submission-manifest.json",
+      "byte_size": 6465,
+      "actual_sha256": "d394a8afa64485d3e8af98c225793a35569859980d41cf41a6a1562bc075592d",
+      "declared_sha256": null,
+      "declared_hash_match": null,
+      "primary_case_transport_name": "submission-manifest.json",
+      "primary_case_artifact_id": "artifact-0008"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "07-artifact-provenance-and-duplicates.csv",
+      "byte_size": 3411,
+      "actual_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "declared_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "declared_hash_match": true,
+      "primary_case_transport_name": null,
+      "primary_case_omission_reason": "Exact-byte duplicate of the initial copy; evaluator-side fold required by the 20-file product limit.",
+      "duplicate_control_transport_name": "supplement-07-artifact-provenance-and-duplicates.csv",
+      "duplicate_control_artifact_id": "artifact-0002"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "08-p2602-canonical-designation.json",
+      "byte_size": 1622,
+      "actual_sha256": "89fd11cc155937f9ef25d63ab3e98f1a4cbc1f42772316b5a0339db9dc0b19ca",
+      "declared_sha256": "89fd11cc155937f9ef25d63ab3e98f1a4cbc1f42772316b5a0339db9dc0b19ca",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "08-p2602-canonical-designation.json",
+      "primary_case_artifact_id": "artifact-0009"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "09-p2601-evidence-gap-and-claim-withdrawal.json",
+      "byte_size": 2193,
+      "actual_sha256": "1d745fd366e8b0934683236e1fb15a1cfbaac6f7ec3926d49cf4c5680e70a0d9",
+      "declared_sha256": "1d745fd366e8b0934683236e1fb15a1cfbaac6f7ec3926d49cf4c5680e70a0d9",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "09-p2601-evidence-gap-and-claim-withdrawal.json",
+      "primary_case_artifact_id": "artifact-0010"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "10-order-reconciliation-p2602-p2603.csv",
+      "byte_size": 1230,
+      "actual_sha256": "e50cea6709158a2d88821f7a255b8a03d522c32813f7df4c13db78648ef939ca",
+      "declared_sha256": "e50cea6709158a2d88821f7a255b8a03d522c32813f7df4c13db78648ef939ca",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "10-order-reconciliation-p2602-p2603.csv",
+      "primary_case_artifact_id": "artifact-0011"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "11-forecast-source-precedence.json",
+      "byte_size": 1644,
+      "actual_sha256": "773ea8929c5f5ac8d522f3de786784ced0fe6be822c52a2a63aef40b3645bde9",
+      "declared_sha256": "773ea8929c5f5ac8d522f3de786784ced0fe6be822c52a2a63aef40b3645bde9",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "11-forecast-source-precedence.json",
+      "primary_case_artifact_id": "artifact-0012"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "12-forecast-v1.0-to-v1.1-bridge.csv",
+      "byte_size": 1564,
+      "actual_sha256": "8de8ba1e08a91fa37ade668a76326ad81222398eda34939901d787d9503aaa08",
+      "declared_sha256": "8de8ba1e08a91fa37ade668a76326ad81222398eda34939901d787d9503aaa08",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "12-forecast-v1.0-to-v1.1-bridge.csv",
+      "primary_case_artifact_id": "artifact-0013"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "13-cash-evidence-gap-and-claim-withdrawal.json",
+      "byte_size": 1654,
+      "actual_sha256": "5ce91ee05a227bb8342032d4719df26fd54a060433139acff90cca06e7e0cbb7",
+      "declared_sha256": "5ce91ee05a227bb8342032d4719df26fd54a060433139acff90cca06e7e0cbb7",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "13-cash-evidence-gap-and-claim-withdrawal.json",
+      "primary_case_artifact_id": "artifact-0014"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "14-cap-table-version-reconciliation.csv",
+      "byte_size": 2640,
+      "actual_sha256": "3724671abecc78e34528b4973889a01b34412dfe8f868159a9ac44e6e6737d2f",
+      "declared_sha256": "3724671abecc78e34528b4973889a01b34412dfe8f868159a9ac44e6e6737d2f",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "14-cap-table-version-reconciliation.csv",
+      "primary_case_artifact_id": "artifact-0015"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "15-ip-rights-status-and-evidence-gaps.csv",
+      "byte_size": 2305,
+      "actual_sha256": "e5a01e82e06b0c25565ec8e30d6aa851b4dfdf443e08c58a5c3e6a59a0d3e86b",
+      "declared_sha256": "e5a01e82e06b0c25565ec8e30d6aa851b4dfdf443e08c58a5c3e6a59a0d3e86b",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "15-ip-rights-status-and-evidence-gaps.csv",
+      "primary_case_artifact_id": "artifact-0016"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "16-sea-licence-absence-confirmation.json",
+      "byte_size": 1801,
+      "actual_sha256": "f6196c354a981214d4e27b700c1427cb154d278bf6798838a6f2bc914802ace4",
+      "declared_sha256": "f6196c354a981214d4e27b700c1427cb154d278bf6798838a6f2bc914802ace4",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "16-sea-licence-absence-confirmation.json",
+      "primary_case_artifact_id": "artifact-0017"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "company-action-log.jsonl",
+      "byte_size": 6063,
+      "actual_sha256": "ab5df628da7e410b7d6270b0cbd8f8074448cc05ffe15eb9eab73066ea7ef252",
+      "declared_sha256": "ab5df628da7e410b7d6270b0cbd8f8074448cc05ffe15eb9eab73066ea7ef252",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "company-action-log.jsonl.txt",
+      "primary_case_artifact_id": "artifact-0018",
+      "transport_parse_mode": "plain_text"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "response-register.jsonl",
+      "byte_size": 8946,
+      "actual_sha256": "25cbb737a1626344252ab8921aa3dca3dd9355b7e5a30b531d9345f82839fd6b",
+      "declared_sha256": "25cbb737a1626344252ab8921aa3dca3dd9355b7e5a30b531d9345f82839fd6b",
+      "declared_hash_match": true,
+      "primary_case_transport_name": "response-register.jsonl.txt",
+      "primary_case_artifact_id": "artifact-0019",
+      "transport_parse_mode": "plain_text"
+    },
+    {
+      "source_package": "company-supplement",
+      "original_file_name": "submission-manifest.json",
+      "byte_size": 7595,
+      "actual_sha256": "ddabca7ec094e887050a3f5b3902b4a9baff4e45c8ece728c376978b0e251dbc",
+      "declared_sha256": null,
+      "declared_hash_match": null,
+      "primary_case_transport_name": "supplement-submission-manifest.json",
+      "primary_case_artifact_id": "artifact-0020"
+    }
+  ]
+}

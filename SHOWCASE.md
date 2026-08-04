@@ -6,9 +6,9 @@
 
 ### 从企业材料到可追溯判断：本地优先、证据优先、规则受控
 
-[![Version](https://img.shields.io/badge/version-0.4.0-f97316?style=for-the-badge)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.5.0-f97316?style=for-the-badge)](pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?style=for-the-badge&logo=python&logoColor=white)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-155%20passing-17865b?style=for-the-badge)](tests)
+[![Tests](https://img.shields.io/badge/tests-361%20passing-17865b?style=for-the-badge)](tests)
 [![Core](https://img.shields.io/badge/core-zero%20model%20calls-4f46e5?style=for-the-badge)](README.md)
 [![License](https://img.shields.io/badge/license-MIT-111827?style=for-the-badge)](LICENSE)
 
@@ -53,6 +53,7 @@ flowchart LR
 | 现金流／资金缺口 | **端到端已验证** | 经营现金流、资本开支、自由现金流与证据缺口 | 不输出信用评级 |
 | 其余四个财务维度 | 输入蓝图 | 字段与材料请求合同 | 尚无端到端判断卡 |
 | 企业进入与访谈 | 已实现 | 阶段路由、双语访谈、分离授权、主张与证据台账 | 访谈原话不直接证明为真 |
+| Deal／估值工作站 | P0 可运行 | 来源化 DCF／Trading Comps、EV→Equity、版本哈希、复核与 XLSX | 不输出正式估值意见，不加权方法 |
 | QA 动态诊断 | 工程合同已实现 | 动态追问、逐字段出处、重放校验、人工画像真值合同 | 真实五企正式批次尚未执行 |
 | DOE ARL 17 维度 | 检索脚手架 | 维度级证据组织 | 不输出 ARL 1–9 分数 |
 | ESG／影响／出海 | 证据框架 | 主张—证据与闸门 | 不是自动认证 |
@@ -62,7 +63,7 @@ flowchart LR
 
 <table>
   <tr>
-    <td align="center"><strong>155</strong><br/>完整测试</td>
+    <td align="center"><strong>361</strong><br/>完整测试</td>
     <td align="center"><strong>9 / 9</strong><br/>JSON Schema</td>
     <td align="center"><strong>29 / 29</strong><br/>Sungrow 抽取</td>
     <td align="center"><strong>28 / 28</strong><br/>Enphase 抽取</td>

@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R04-FA-SUPPLEMENT-BASELINE-20260804",
+  "status": "completed",
+  "case_id": "case-20260804-d9b768b723",
+  "business_data_status": "Synthetic",
+  "company_response_classification": {
+    "answered": 7,
+    "partial": 1,
+    "contradicted": 0,
+    "not_available": 0,
+    "open": 0
+  },
+  "workflow_metrics": {
+    "response_coverage_percent": 100.0,
+    "evidence_package_progress_percent": 93.75,
+    "formula": "(answered + 0.5 * partial) / 8",
+    "boundary": "FA workflow completeness only; not a company, investment, credit, aggregate-risk or product rating."
+  },
+  "real_http_execution": {
+    "post_status": 201,
+    "case_get_status": 200,
+    "dashboard_get_status": 200,
+    "physical_files": 16,
+    "artifacts": 16,
+    "all_local_and_product_hashes_matched": true
+  },
+  "pre_fix_product_observation": {
+    "authorization_preflight_present": false,
+    "native_authorization_question_count": 0,
+    "evidence_control_candidate_response_receipts": 8,
+    "candidate_receipts_accepted_as_truth": false,
+    "candidate_receipts_closed_questions": false,
+    "dashboard_operational_status": "materials_organized",
+    "dashboard_next_action": "generate_reference_suggestions",
+    "authorization_review_routed": false,
+    "meaning": "The generic evidence layer retained the response rows as candidates, but the pre-fix product did not understand permission decisions, scopes, requests, withdrawals or the Agent override attempt."
+  },
+  "safety_boundaries": {
+    "public_release_authorized": false,
+    "deal_created": false,
+    "valuation_created": false,
+    "financial_calculation_performed": false,
+    "rating_produced": false,
+    "translation_performed": false,
+    "ai_media_generated": false,
+    "authorization_mutated": false
+  },
+  "next_state": "await_round_04_engineering_fix_and_independent_replay"
+}

@@ -1,0 +1,168 @@
+{
+  "manifest_type": "synthetic_company_round_03_supplement_submission",
+  "data_status": "Synthetic",
+  "synthetic": true,
+  "submission_id": "SYN-DBFA-R03-CYTS-SUP-001",
+  "version": "1.0.0",
+  "submission_date": "2026-08-04",
+  "company": {
+    "legal_name": "澄岳热储科技（上海）有限公司",
+    "data_status": "Synthetic"
+  },
+  "scope": {
+    "question_ids": [
+      "R03-FA-Q01",
+      "R03-FA-Q02",
+      "R03-FA-Q03",
+      "R03-FA-Q04",
+      "R03-FA-Q05",
+      "R03-FA-Q06",
+      "R03-FA-Q07",
+      "R03-FA-Q08"
+    ],
+    "payload_file_count": 12,
+    "manifest_self_hash_included": false,
+    "business_materials_are_synthetic": true,
+    "no_new_authoritative_or_signed_document_fabricated": true
+  },
+  "integrity_policy": {
+    "digest_algorithm": "SHA-256",
+    "byte_count_basis": "Exact on-disk file bytes",
+    "digest_scope": "Twelve payload files only; this manifest is excluded to avoid recursive self-reference",
+    "hashes_recomputed_for_this_submission": true
+  },
+  "files": [
+    {
+      "filename": "07-artifact-provenance-and-duplicates.csv",
+      "media_type": "text/csv",
+      "byte_count": 3411,
+      "sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q01"],
+      "evidence_status": "Resubmitted index metadata only; exact file integrity established but underlying artifacts remain unavailable"
+    },
+    {
+      "filename": "08-p2602-canonical-designation.json",
+      "media_type": "application/json",
+      "byte_count": 1622,
+      "sha256": "89fd11cc155937f9ef25d63ab3e98f1a4cbc1f42772316b5a0339db9dc0b19ca",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q01"],
+      "evidence_status": "Company duplicate-collapse designation; canonical metadata only and not authoritative underlying evidence"
+    },
+    {
+      "filename": "09-p2601-evidence-gap-and-claim-withdrawal.json",
+      "media_type": "application/json",
+      "byte_count": 2193,
+      "sha256": "1d745fd366e8b0934683236e1fb15a1cfbaac6f7ec3926d49cf4c5680e70a0d9",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q02"],
+      "evidence_status": "Enterprise response and claim withdrawal; requested counterparty and test evidence unavailable"
+    },
+    {
+      "filename": "10-order-reconciliation-p2602-p2603.csv",
+      "media_type": "text/csv",
+      "byte_count": 1230,
+      "sha256": "e50cea6709158a2d88821f7a255b8a03d522c32813f7df4c13db78648ef939ca",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q03"],
+      "evidence_status": "Enterprise reconciliation; effective POs and executed schedules unavailable and strong order claims withdrawn"
+    },
+    {
+      "filename": "11-forecast-source-precedence.json",
+      "media_type": "application/json",
+      "byte_count": 1644,
+      "sha256": "773ea8929c5f5ac8d522f3de786784ced0fe6be822c52a2a63aef40b3645bde9",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q04"],
+      "evidence_status": "Company source-precedence declaration; underlying resolution and standalone signature page unavailable"
+    },
+    {
+      "filename": "12-forecast-v1.0-to-v1.1-bridge.csv",
+      "media_type": "text/csv",
+      "byte_count": 1564,
+      "sha256": "8de8ba1e08a91fa37ade668a76326ad81222398eda34939901d787d9503aaa08",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q04"],
+      "evidence_status": "Deterministic row bridge from the two submitted Synthetic forecast CSVs"
+    },
+    {
+      "filename": "13-cash-evidence-gap-and-claim-withdrawal.json",
+      "media_type": "application/json",
+      "byte_count": 1654,
+      "sha256": "5ce91ee05a227bb8342032d4719df26fd54a060433139acff90cca06e7e0cbb7",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q05"],
+      "evidence_status": "Enterprise response and claim withdrawal; no bank-originated or general-ledger evidence"
+    },
+    {
+      "filename": "14-cap-table-version-reconciliation.csv",
+      "media_type": "text/csv",
+      "byte_count": 2640,
+      "sha256": "3724671abecc78e34528b4973889a01b34412dfe8f868159a9ac44e6e6737d2f",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q06"],
+      "evidence_status": "Numerical version bridge only; approved cap table and legal ownership sources unavailable"
+    },
+    {
+      "filename": "15-ip-rights-status-and-evidence-gaps.csv",
+      "media_type": "text/csv",
+      "byte_count": 2305,
+      "sha256": "e5a01e82e06b0c25565ec8e30d6aa851b4dfdf443e08c58a5c3e6a59a0d3e86b",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q07"],
+      "evidence_status": "Enterprise status reconciliation and claim withdrawal; official IP, pledge-release and assignment evidence unavailable"
+    },
+    {
+      "filename": "16-sea-licence-absence-confirmation.json",
+      "media_type": "application/json",
+      "byte_count": 1801,
+      "sha256": "f6196c354a981214d4e27b700c1427cb154d278bf6798838a6f2bc914802ace4",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q08"],
+      "evidence_status": "Written enterprise confirmation of no definitive licence; not a counterparty-signed licence or legal opinion"
+    },
+    {
+      "filename": "response-register.jsonl",
+      "media_type": "application/x-ndjson",
+      "byte_count": 8946,
+      "sha256": "25cbb737a1626344252ab8921aa3dca3dd9355b7e5a30b531d9345f82839fd6b",
+      "data_status": "Synthetic",
+      "question_ids": ["R03-FA-Q01","R03-FA-Q02","R03-FA-Q03","R03-FA-Q04","R03-FA-Q05","R03-FA-Q06","R03-FA-Q07","R03-FA-Q08"],
+      "evidence_status": "Question-by-question enterprise response register; does not elevate company statements to verified facts"
+    },
+    {
+      "filename": "company-action-log.jsonl",
+      "media_type": "application/x-ndjson",
+      "byte_count": 6063,
+      "sha256": "ab5df628da7e410b7d6270b0cbd8f8074448cc05ffe15eb9eab73066ea7ef252",
+      "data_status": "Synthetic business context",
+      "question_ids": ["R03-FA-Q01","R03-FA-Q02","R03-FA-Q03","R03-FA-Q04","R03-FA-Q05","R03-FA-Q06","R03-FA-Q07","R03-FA-Q08"],
+      "evidence_status": "Enterprise-side action log; records permitted reads and supplement actions only"
+    }
+  ],
+  "response_summary": {
+    "questions_answered": 8,
+    "full_authoritative_evidence_packages_provided": 0,
+    "partial_structured_responses": 8,
+    "management_claims_explicitly_withdrawn_or_downgraded": [
+      "SYN-CLM-001 P2601 accepted commercial operation",
+      "SYN-CLM-002 P2602 contracted backlog",
+      "SYN-CLM-003 P2603 confirmed order",
+      "SYN-CLM-005 RMB 4.4 million evidenced available cash",
+      "SYN-CLM-006 two utility models owned free and clear",
+      "SYN-CLM-008 exclusive Southeast Asia product licence signed"
+    ],
+    "open_evidence_gaps": [
+      "P2602 underlying duplicate-group source file",
+      "P2601 acceptance, remediation, test and holdback evidence",
+      "P2602 and P2603 effective purchase orders and schedules",
+      "Forecast approval resolution and standalone signature page",
+      "Bank and general-ledger cash evidence",
+      "Approved cap table, shareholder register, option ledger and registry extract",
+      "Official IP, pledge-release and joint-applicant assignment evidence",
+      "Definitive Southeast Asia licence and signatory-authority evidence"
+    ]
+  },
+  "authority_boundary": "All business content is Synthetic. Company statements, withdrawals, absence confirmations and reconciliations do not create missing counterparty, bank, board, registry, IP-office or signed legal evidence."
+}

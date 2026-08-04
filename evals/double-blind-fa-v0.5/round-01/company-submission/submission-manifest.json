@@ -1,0 +1,160 @@
+{
+  "manifest_type": "synthetic_company_initial_submission",
+  "synthetic": true,
+  "data_status": "Synthetic",
+  "submission_id": "SYN-DBFA-R01-CYTS-001",
+  "version": "0.1.0",
+  "round": "01",
+  "company": {
+    "legal_name": "澄岳热储科技（上海）有限公司",
+    "data_status": "Synthetic",
+    "assertion_status": "Management Statement—Unverified",
+    "reporting_as_of": "2026-06-30"
+  },
+  "assertion_policy": {
+    "default_company_content_class": "management_statement_unverified",
+    "display_label": "Management Statement—Unverified",
+    "may_be_treated_as_verified_fact": false,
+    "fact_upgrade_permitted_from_this_manifest_alone": false,
+    "independent_corroboration_included": false
+  },
+  "files": [
+    {
+      "filename": "01-company-profile.md",
+      "media_type": "text/markdown",
+      "byte_count": 4369,
+      "sha256": "572cc7162434fb659db2d88805fa8fd0d6b4bc2fb0bee2e288ce6ae43e7fb92d",
+      "synthetic": true,
+      "content_assertion_status": "Management Statement—Unverified",
+      "management_statement_fields": {
+        "selector_type": "markdown_sections_and_table_fields",
+        "selectors": [
+          "1. 基本信息/*",
+          "2. 技术与产品/*",
+          "3. 商业模式与市场定位/*",
+          "4. 组织与商业化能力/*",
+          "5. 管理层商业进展摘要/*"
+        ]
+      },
+      "non_management_metadata_fields": [
+        "Data status",
+        "Assertion status",
+        "synthetic-use disclaimer"
+      ]
+    },
+    {
+      "filename": "02-management-pnl-summary.csv",
+      "media_type": "text/csv",
+      "byte_count": 1260,
+      "sha256": "472442de4ca268de3248c972321cb83068d38ab21525136d008090fba7a22d13",
+      "synthetic": true,
+      "content_assertion_status": "Management Statement—Unverified",
+      "management_statement_fields": {
+        "selector_type": "csv_columns",
+        "selectors": [
+          "entity_scope",
+          "currency",
+          "unit",
+          "accounting_basis",
+          "period",
+          "period_start",
+          "period_end",
+          "period_months",
+          "revenue",
+          "cost_of_revenue",
+          "gross_profit",
+          "gross_margin_pct",
+          "research_and_development_expense",
+          "selling_general_and_administrative_expense",
+          "management_adjusted_ebitda",
+          "depreciation_and_amortization",
+          "finance_cost",
+          "net_profit_loss",
+          "basis_note"
+        ]
+      },
+      "non_management_metadata_fields": [
+        "data_status",
+        "assertion_status"
+      ]
+    },
+    {
+      "filename": "03-project-customer-pipeline.csv",
+      "media_type": "text/csv",
+      "byte_count": 2335,
+      "sha256": "326a72346b1d8b67f6b734bc0884fad4e02baed5aadd7ebd30a659d40d614374",
+      "synthetic": true,
+      "content_assertion_status": "Management Statement—Unverified",
+      "management_statement_fields": {
+        "selector_type": "csv_columns",
+        "selectors": [
+          "as_of_date",
+          "opportunity_id",
+          "synthetic_counterparty_code",
+          "customer_sector",
+          "customer_region",
+          "use_case",
+          "nominal_capacity_mwhth",
+          "management_stage_label",
+          "management_stated_total_value_rmb_m",
+          "management_stated_remaining_value_rmb_m",
+          "management_probability_pct",
+          "management_probability_weighted_remaining_value_rmb_m",
+          "management_target_milestone",
+          "management_note"
+        ]
+      },
+      "non_management_metadata_fields": [
+        "data_status",
+        "assertion_status"
+      ]
+    }
+  ],
+  "submission_events": [
+    {
+      "event_id": "SYN-EVT-R01-001",
+      "event_type": "initial_payload_prepared",
+      "event_timestamp": "2026-08-04T09:00:00+08:00",
+      "event_data_status": "Synthetic",
+      "actor_role": "Synthetic company management",
+      "submission_id": "SYN-DBFA-R01-CYTS-001",
+      "version": "0.1.0"
+    },
+    {
+      "event_id": "SYN-EVT-R01-002",
+      "event_type": "payload_integrity_recorded",
+      "event_timestamp": "2026-08-04T09:05:00+08:00",
+      "event_data_status": "Synthetic",
+      "actor_role": "Synthetic company submission administrator",
+      "submission_id": "SYN-DBFA-R01-CYTS-001",
+      "version": "0.1.0",
+      "payload_file_count": 3
+    }
+  ],
+  "manifest_field_classification": {
+    "management_statement_json_pointers": [
+      "/company/legal_name",
+      "/company/reporting_as_of"
+    ],
+    "evaluation_or_integrity_metadata_json_pointers": [
+      "/manifest_type",
+      "/synthetic",
+      "/data_status",
+      "/submission_id",
+      "/version",
+      "/round",
+      "/assertion_policy",
+      "/files/*/filename",
+      "/files/*/media_type",
+      "/files/*/byte_count",
+      "/files/*/sha256",
+      "/submission_events"
+    ]
+  },
+  "integrity_metadata": {
+    "digest_algorithm": "SHA-256",
+    "digest_scope": "payload files only",
+    "manifest_self_digest_included": false,
+    "integrity_values_are_company_business_evidence": false
+  }
+}

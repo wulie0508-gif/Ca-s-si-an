@@ -1,0 +1,112 @@
+{
+  "manifest_version": "1.0",
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "supplement_id": "SYN-R5-COMPANY-SUPPLEMENT-001",
+  "version": "v1.0",
+  "prepared_on": "2026-08-04",
+  "source_as_of": "2026-06-30",
+  "output_directory": "evals/double-blind-fa-v0.5/round-05/company-supplement",
+  "synthetic_notice": "Every file is wholly Synthetic and does not correspond to any real enterprise, person, signature, approval or authorization.",
+  "control_summary": {
+    "business_file_count": 6,
+    "control_file_count_including_manifest": 3,
+    "total_file_count": 9,
+    "response_status_counts": {"answered": 2, "partial": 5, "not_available": 0},
+    "confirm_inputs": false,
+    "fa_confirmation_status": "pending",
+    "agent_approval": false,
+    "external_distribution_authorized": false,
+    "client_circulation_authorized": false,
+    "formal_valuation_opinion_authorized": false,
+    "public_release_authorized": false
+  },
+  "files": [
+    {
+      "path": "01_scope_authorization_evidence.json",
+      "version": "v1.1",
+      "byte_count": 2752,
+      "sha256": "e51ce11dba2c267aea2c4d9d997a2b29ee978cbfa222bab05af9bdae240538f7",
+      "source": "company-submission/01_target_scope_authorization.json and company-submission/06_source_approval_register.csv",
+      "source_as_of": "2026-06-30",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "02_financial_source_ledger.csv",
+      "version": "v1.0",
+      "byte_count": 3585,
+      "sha256": "26db5f6ce7a3ecb112475eeb95263f0afc7d6bc507e89764a5f06c6ceeffee35",
+      "source": "company-submission/02_financial_contract.json and company-submission/06_source_approval_register.csv",
+      "source_as_of": "2026-06-30",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "03_ltm_monthly_rollforward.csv",
+      "version": "v1.0-candidate",
+      "byte_count": 3559,
+      "sha256": "ecfe19db26408c2d5229245a765018a3f8898e923b8f9723ed4816054ccc4c98",
+      "source": "New Synthetic monthly candidate decomposition tied to company-submission/02_financial_contract.json LTM aggregate",
+      "source_as_of": "2026-06-30",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "04_stub_and_dcf_assumptions.json",
+      "version": "v1.0-candidate",
+      "byte_count": 4574,
+      "sha256": "8ea65ef3b47ee827a04b66cff13fbfe8c85ee1222492b315ba0df4d790644308",
+      "source": "company-submission/02_financial_contract.json, company-submission/03_dcf_scenarios.json, company-submission/05_trading_comps.json and new Synthetic candidate derivations",
+      "source_as_of": "2026-06-30",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "05_ev_to_equity_ledger.csv",
+      "version": "v1.0",
+      "byte_count": 3438,
+      "sha256": "d9c74b3ecc92a26ca70f65a505fcfc6ff0bc3fd11f0c5e6beff1aff6ef752402",
+      "source": "company-submission/04_ev_to_equity_bridge.json",
+      "source_as_of": "2026-06-30",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "06_trading_comps_ledger.csv",
+      "version": "v1.0",
+      "byte_count": 4123,
+      "sha256": "5399e1d871fa8a2903466b2cb7abb20ba2edc75a7be8bb471e0116b3a1b10788",
+      "source": "company-submission/05_trading_comps.json and new Synthetic statistical policy calculation",
+      "source_as_of": "2026-06-30",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "response-register.jsonl",
+      "version": "v1.0",
+      "byte_count": 7696,
+      "sha256": "74d931c1eb50885202bc7879f05fcf4e061239956278937aa4df4efec852a4f3",
+      "source": "Seven verbatim questions supplied for Round 5 and the six Synthetic supplement business files",
+      "source_as_of": "2026-06-30",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "company-action-log.jsonl",
+      "version": "v1.0",
+      "byte_count": 2077,
+      "sha256": "feedd408abcb0b7c1e4a0df7870384a1136e6d78a93dba95725e01bc94761021",
+      "source": "Round 5 isolated Synthetic company-response actions",
+      "source_as_of": "2026-08-04",
+      "prepared_on": "2026-08-04",
+      "data_classification": "Synthetic"
+    }
+  ],
+  "integrity": {
+    "hash_algorithm": "SHA-256",
+    "byte_count_basis": "Exact on-disk bytes",
+    "manifest_self_hash_policy": "submission-manifest.json excludes its own byte count and hash to avoid recursive self-reference",
+    "validation_required": ["Parse all JSON", "Parse each non-empty JSONL line", "Parse all CSV", "Recalculate financial, bridge, stub, WACC and comps checks", "Match listed byte counts and SHA-256 hashes"]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "manifest_type": "round_02_postfix_replay_inputs",
+  "business_data_class": "synthetic",
+  "telemetry_data_class": "real_test_telemetry",
+  "initial_case": {
+    "expected_file_count": 6,
+    "observed_artifact_count": 6,
+    "files": [
+      {"name":"01-standalone-finance-export.csv","bytes":3314,"sha256":"3fcca37035d010c3312d6482cf6ca0acff3bd67581e7b5ae6a95d8357782f56f"},
+      {"name":"02-group-sales-ytd-export.csv","bytes":1633,"sha256":"9ef59dd7294acdbd1576bc0b076dc5eaa1bc7fb8cc069609ea4fc2ae5c71ae91"},
+      {"name":"03-r12m-kpi-dashboard.csv","bytes":2063,"sha256":"5f077b1dd9259496a8dc57b525032e6e96d0568361e3f358c9bc0bbaec0659d4"},
+      {"name":"04-group-treasury-snapshot.csv","bytes":1628,"sha256":"cc4b35ad4f8b6ac8834d2f0b6cc385a6050aaf82809d6a6d885f11e5833434d1"},
+      {"name":"05-forecast-version-exports.csv","bytes":1365,"sha256":"08d588a8fda078d60c9ebbb06add8943dcb6c3ffbc7ccfc92672f7f1f1b31d17"},
+      {"name":"submission-manifest.json","bytes":5296,"sha256":"65a603d19a2670fc592c077ccbd3f0fae8a785c65979bef6b40e3e30aebeaefe"}
+    ]
+  },
+  "combined_case": {
+    "expected_file_count": 9,
+    "observed_artifact_count": 9,
+    "composition": "initial_case.files plus supplement_files",
+    "supplement_files": [
+      {"name":"01-R02-Q01-Q08-response-register.csv","bytes":4000,"sha256":"10331c60b089056554122bedbee401b632a6d405ccf80acf24a13fd5563cc5c4"},
+      {"name":"02-R02-normalization-reconciliation.csv","bytes":6931,"sha256":"2a5659cf75e13d7579a12929cfb15b9d8a919dc28f847282fd490e6aebf89f5d"},
+      {"name":"supplement-manifest.json","bytes":5238,"sha256":"8423db903efbe65296aa09299d9262ad5bff97525c94f47edd39390f71c32170"}
+    ]
+  },
+  "reference_question_register": {
+    "path": "round-02/fa-initial/question_register.jsonl",
+    "bytes": 4805,
+    "sha256": "dbe99c37b56da5153ba658da634532e7dd9cb25e3040ac1117248e0fa96bec9c",
+    "question_ids": ["R02-Q01","R02-Q02","R02-Q03","R02-Q04","R02-Q05","R02-Q06","R02-Q07","R02-Q08"]
+  },
+  "classification_note": "All company names, financial values, response registers and manifests are synthetic business data. HTTP status, case IDs, timestamps, artifact counts and server state are real telemetry produced by this replay."
+}

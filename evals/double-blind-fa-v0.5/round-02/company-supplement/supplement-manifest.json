@@ -1,0 +1,111 @@
+{
+  "manifest_type": "synthetic_company_round_02_supplement",
+  "synthetic": true,
+  "data_status": "Synthetic",
+  "submission_id": "SYN-DBFA-R02-SUP-001",
+  "parent_submission_id": "SYN-DBFA-R02-CYTS-001",
+  "version": "0.1.0",
+  "submitted_at": "2026-08-04T12:30:00+08:00",
+  "company": {
+    "legal_name": "澄岳热储科技（上海）有限公司",
+    "data_status": "Synthetic",
+    "assertion_status": "Unverified enterprise-prepared unless otherwise labelled"
+  },
+  "files": [
+    {
+      "filename": "01-R02-Q01-Q08-response-register.csv",
+      "media_type": "text/csv",
+      "byte_count": 4000,
+      "sha256": "10331c60b089056554122bedbee401b632a6d405ccf80acf24a13fd5563cc5c4",
+      "version": "0.1.0",
+      "synthetic": true,
+      "source_class": "Enterprise-prepared question response register with management statements",
+      "assertion_status": "Unverified"
+    },
+    {
+      "filename": "02-R02-normalization-reconciliation.csv",
+      "media_type": "text/csv",
+      "byte_count": 6931,
+      "sha256": "2a5659cf75e13d7579a12929cfb15b9d8a919dc28f847282fd490e6aebf89f5d",
+      "version": "0.1.0",
+      "synthetic": true,
+      "source_class": "Enterprise-prepared normalization and reconciliation bridge",
+      "assertion_status": "Unverified"
+    }
+  ],
+  "question_submission_mapping": [
+    {
+      "question_id": "R02-Q01",
+      "response_state": "partial",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv"],
+      "fields": ["chosen_legal_entity", "chosen_analysis_scope", "management_group_view"],
+      "remaining_gap": "Registry extract and audited consolidation memorandum absent"
+    },
+    {
+      "question_id": "R02-Q02",
+      "response_state": "partial",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv", "02-R02-normalization-reconciliation.csv"],
+      "fields": ["SYN-OPS-01 legal/control/accounting relationship", "SYN-BRIDGE-008", "SYN-BRIDGE-014", "SYN-BRIDGE-015"],
+      "remaining_gap": "Registry ownership control related-party and bank evidence absent"
+    },
+    {
+      "question_id": "R02-Q03",
+      "response_state": "partial",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv", "02-R02-normalization-reconciliation.csv"],
+      "fields": ["selected H1 2026 historical basis", "SYN-BRIDGE-000", "SYN-BRIDGE-001", "SYN-BRIDGE-004", "SYN-BRIDGE-006", "SYN-BRIDGE-007", "SYN-BRIDGE-010"],
+      "remaining_gap": "Complete monthly R12M and H1-to-YTD bridge absent"
+    },
+    {
+      "question_id": "R02-Q04",
+      "response_state": "full",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv", "02-R02-normalization-reconciliation.csv"],
+      "fields": ["RMB million display basis", "yuan / 1000000", "thousand / 1000", "million unchanged"],
+      "remaining_gap": null
+    },
+    {
+      "question_id": "R02-Q05",
+      "response_state": "partial",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv", "02-R02-normalization-reconciliation.csv"],
+      "fields": ["excluding VAT basis", "gross = net * 1.13", "net = gross / 1.13", "SYN-BRIDGE-005", "SYN-BRIDGE-010", "SYN-BRIDGE-016", "SYN-BRIDGE-017"],
+      "remaining_gap": "Invoices tax returns and R12M VAT basis absent"
+    },
+    {
+      "question_id": "R02-Q06",
+      "response_state": "partial",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv", "02-R02-normalization-reconciliation.csv"],
+      "fields": ["2026-07-31 cash evaluation date", "Standalone unrestricted cash 2.1", "SYN-BRIDGE-011", "SYN-BRIDGE-012", "SYN-BRIDGE-013", "SYN-BRIDGE-014", "SYN-BRIDGE-015"],
+      "remaining_gap": "Bank statements confirmations pledge support and transaction-level cash bridge absent"
+    },
+    {
+      "question_id": "R02-Q07",
+      "response_state": "not_available",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv", "02-R02-normalization-reconciliation.csv"],
+      "fields": ["no approved forecast", "SYN-BRIDGE-016", "SYN-BRIDGE-017", "SYN-BRIDGE-018", "SYN-BRIDGE-019"],
+      "remaining_gap": "Approved forecast change log and approval record absent"
+    },
+    {
+      "question_id": "R02-Q08",
+      "response_state": "partial",
+      "submitted_files": ["01-R02-Q01-Q08-response-register.csv", "02-R02-normalization-reconciliation.csv"],
+      "fields": ["source precedence", "SYN-BRIDGE-004", "SYN-BRIDGE-007", "SYN-BRIDGE-009", "SYN-BRIDGE-011 through SYN-BRIDGE-020"],
+      "remaining_gap": "Highest-authority legal bank and audit evidence plus R12M bridge absent"
+    }
+  ],
+  "selected_normalization_basis": {
+    "entity_scope": "Standalone legal entity only",
+    "historical_period": "H1 2026: 2026-01-01 through 2026-06-30",
+    "display_currency": "RMB",
+    "display_unit": "million",
+    "revenue_and_cost_vat_basis": "excluding VAT",
+    "cash_evaluation_date": "2026-07-31",
+    "cash_included": "Standalone unrestricted RMB 2.1m",
+    "related_entity_treatment": "Exclude SYN-OPS-01",
+    "forecast_treatment": "No approved forecast available; neither draft selected"
+  },
+  "integrity_metadata": {
+    "digest_algorithm": "SHA-256",
+    "digest_scope": "two payload files only",
+    "manifest_self_digest_included": false,
+    "integrity_values_are_company_business_evidence": false
+  }
+}

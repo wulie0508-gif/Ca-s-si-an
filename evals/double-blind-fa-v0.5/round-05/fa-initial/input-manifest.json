@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R05-FA-INITIAL-20260804-152630Z",
+  "allowed_input_root": "evals/double-blind-fa-v0.5/round-05/company-submission",
+  "upload_endpoint": "/api/ui/cases",
+  "upload_status": 201,
+  "case_id": "case-20260804-99d9fc5072",
+  "total_file_count": 8,
+  "total_byte_count": 44912,
+  "files": [
+    {"upload_order": 1, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/manifest.json", "file_name": "manifest.json", "mime_type": "application/json", "byte_count": 7965, "sha256": "874f59b68528a790fd6c8a2e4fa2af1a4a6405f0a626afc6b8bc2773316afe8c", "declared_hash_status": "self_hash_intentionally_not_declared", "workspace_artifact_id": "artifact-0001", "workspace_hash_match": true},
+    {"upload_order": 2, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/01_target_scope_authorization.json", "file_name": "01_target_scope_authorization.json", "mime_type": "application/json", "byte_count": 3086, "sha256": "1eb175e90eb7e43723da0394c7dc306593c6c3a0add8af4391e478ed68f850d5", "declared_hash_status": "matched", "workspace_artifact_id": "artifact-0002", "workspace_hash_match": true},
+    {"upload_order": 3, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/02_financial_contract.json", "file_name": "02_financial_contract.json", "mime_type": "application/json", "byte_count": 5277, "sha256": "272489d4dea0813f81840c50670b1068eaa071e9d8cedfbd1928208baba2fb59", "declared_hash_status": "matched", "workspace_artifact_id": "artifact-0003", "workspace_hash_match": true},
+    {"upload_order": 4, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/03_dcf_scenarios.json", "file_name": "03_dcf_scenarios.json", "mime_type": "application/json", "byte_count": 5218, "sha256": "5e644345fc5ee7c98d8691a72e79e28563dc6bcdef7a8c4ad4fb1ec7a0b352e7", "declared_hash_status": "matched", "workspace_artifact_id": "artifact-0004", "workspace_hash_match": true},
+    {"upload_order": 5, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/04_ev_to_equity_bridge.json", "file_name": "04_ev_to_equity_bridge.json", "mime_type": "application/json", "byte_count": 2298, "sha256": "e1c73bff84a999c7a0152621f38788b5a74360f9c1680ef29c2519b676e5a1de", "declared_hash_status": "matched", "workspace_artifact_id": "artifact-0005", "workspace_hash_match": true},
+    {"upload_order": 6, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/05_trading_comps.json", "file_name": "05_trading_comps.json", "mime_type": "application/json", "byte_count": 4455, "sha256": "a9828118eb7839aa736b3b396a3aaef274f69c6b361b35cc9fb4ff29c1673f61", "declared_hash_status": "matched", "workspace_artifact_id": "artifact-0006", "workspace_hash_match": true},
+    {"upload_order": 7, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/06_source_approval_register.csv", "file_name": "06_source_approval_register.csv", "mime_type": "text/csv", "byte_count": 5039, "sha256": "f365b58b6003dd148771949fa2f657fdfc3ae9fb164a6e0e66200c7c6c2dee00", "declared_hash_status": "matched", "workspace_artifact_id": "artifact-0007", "workspace_hash_match": true},
+    {"upload_order": 8, "path": "evals/double-blind-fa-v0.5/round-05/company-submission/07_valuation_workflow_input.json", "file_name": "07_valuation_workflow_input.json", "mime_type": "application/json", "byte_count": 11574, "sha256": "6f04347902fa7a9cffa288bc95cb0755a5e30d9094fd0375a6cf59d3be692570", "declared_hash_status": "matched", "workspace_artifact_id": "artifact-0008", "workspace_hash_match": true}
+  ],
+  "integrity_result": "all seven declared byte counts and SHA-256 values matched; uploaded workspace copies matched all eight local files"
+}

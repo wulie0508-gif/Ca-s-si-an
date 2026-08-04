@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "pack_id": "SYN-R5-XIHENG-2026-0630",
+  "target_legal_entity": "曦衡高效热能装备（苏州）有限公司",
+  "valuation_date": "2026-06-30",
+  "base_currency": "CNY",
+  "amount_unit": "CNYm",
+  "discount_convention": "period_end",
+  "fcff_formula": "EBIT x (1 - tax_rate) + depreciation_amortization - capex - change_in_nwc",
+  "terminal_metric_definition": "EBITDA in the final explicit forecast period",
+  "source": {
+    "source_id": "SYN-R5-DCF-ASSUMPTIONS-V1",
+    "locator": "Synthetic DCF assumption memorandum v1 and scenario schedules",
+    "as_of": "2026-06-30"
+  },
+  "judgmental_assumptions": [
+    {
+      "data_classification": "Synthetic",
+      "assumption_id": "SYN-R5-JUDGMENT-001",
+      "field_path": "scenarios.base.terminal_growth",
+      "value": "0.025",
+      "assumption_type": "Judgmental analyst assumption",
+      "rationale": "Illustrative long-run nominal growth for a mature equipment manufacturer; not supported by external market evidence in this synthetic pack.",
+      "requires_explicit_fa_confirmation": true,
+      "confirmation_status": "pending",
+      "agent_can_confirm": false
+    }
+  ],
+  "scenarios": {
+    "downside": {
+      "data_classification": "Synthetic",
+      "wacc": "0.110",
+      "terminal_growth": "0.015",
+      "terminal_metric": "114.000",
+      "exit_multiple": "7.500",
+      "periods": [
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2027E",
+          "period_end": "2027-12-31",
+          "ebit": "85.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "15.000",
+          "capex": "22.000",
+          "change_in_nwc": "10.000",
+          "fcff_check": "46.750"
+        },
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2028E",
+          "period_end": "2028-12-31",
+          "ebit": "91.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "16.000",
+          "capex": "24.000",
+          "change_in_nwc": "9.000",
+          "fcff_check": "51.250"
+        },
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2029E",
+          "period_end": "2029-12-31",
+          "ebit": "97.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "17.000",
+          "capex": "25.000",
+          "change_in_nwc": "8.000",
+          "fcff_check": "56.750"
+        }
+      ]
+    },
+    "base": {
+      "data_classification": "Synthetic",
+      "wacc": "0.095",
+      "terminal_growth": "0.025",
+      "terminal_metric": "142.000",
+      "exit_multiple": "9.000",
+      "periods": [
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2027E",
+          "period_end": "2027-12-31",
+          "ebit": "97.850",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "15.000",
+          "capex": "21.000",
+          "change_in_nwc": "8.000",
+          "fcff_check": "59.3875"
+        },
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2028E",
+          "period_end": "2028-12-31",
+          "ebit": "109.400",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "16.000",
+          "capex": "23.000",
+          "change_in_nwc": "8.000",
+          "fcff_check": "67.050"
+        },
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2029E",
+          "period_end": "2029-12-31",
+          "ebit": "125.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "17.000",
+          "capex": "25.000",
+          "change_in_nwc": "8.000",
+          "fcff_check": "77.750"
+        }
+      ]
+    },
+    "upside": {
+      "data_classification": "Synthetic",
+      "wacc": "0.085",
+      "terminal_growth": "0.030",
+      "terminal_metric": "157.000",
+      "exit_multiple": "10.500",
+      "periods": [
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2027E",
+          "period_end": "2027-12-31",
+          "ebit": "106.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "15.000",
+          "capex": "20.000",
+          "change_in_nwc": "7.000",
+          "fcff_check": "67.500"
+        },
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2028E",
+          "period_end": "2028-12-31",
+          "ebit": "122.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "16.000",
+          "capex": "22.000",
+          "change_in_nwc": "7.000",
+          "fcff_check": "78.500"
+        },
+        {
+          "data_classification": "Synthetic",
+          "period": "FY2029E",
+          "period_end": "2029-12-31",
+          "ebit": "140.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "17.000",
+          "capex": "24.000",
+          "change_in_nwc": "7.000",
+          "fcff_check": "91.000"
+        }
+      ]
+    }
+  },
+  "control_boundary": {
+    "data_classification": "Synthetic",
+    "candidate_inputs_only": true,
+    "fa_confirmation_required": true,
+    "fa_confirmation_status": "pending",
+    "formal_valuation_opinion": false,
+    "agent_can_approve": false
+  }
+}

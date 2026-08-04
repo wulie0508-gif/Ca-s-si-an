@@ -1,0 +1,31 @@
+{
+  "document_type": "Synthetic company written confirmation of no definitive Southeast Asia licence",
+  "data_status": "Synthetic",
+  "synthetic": true,
+  "confirmation_id": "SYN-R03-SUP-LIC-001",
+  "response_date": "2026-08-04",
+  "counterparty": "Synthetic Southeast Asia distributor",
+  "company_written_confirmation": "As of 2026-07-31, the company has no executed and effective definitive exclusive product licence for Southeast Asia. The only recorded instrument is a non-binding MOU, and exclusivity and product licensing require a later definitive agreement.",
+  "available_instrument": {
+    "artifact_register_id": "SYN-EVD-008",
+    "instrument": "SEA distributor MOU",
+    "stated_execution_date": "2026-04-10",
+    "status": "Non-binding",
+    "stated_expiry_date": "2026-08-31",
+    "underlying_file_provided": false,
+    "evidence_boundary": "Synthetic register metadata only; no definitive licence text is available"
+  },
+  "requested_definitive_licence_items": {
+    "executed_definitive_licence": "Does not exist in the company register as of the stated date",
+    "licence_signatory_authority": "Not applicable to a nonexistent definitive licence; no authority package is provided",
+    "territory_term_exclusivity_termination_clauses": "No binding definitive clauses are available"
+  },
+  "claim_update": {
+    "withdrawn_claim_id": "SYN-CLM-008",
+    "withdrawn_claim": "Exclusive product licence signed",
+    "replacement_status": "Non-binding MOU only; no definitive licence",
+    "commercial_rights_treatment": "Do not treat exclusivity, licensing rights or export readiness as established"
+  },
+  "responsible_owner": "Synthetic commercial legal role",
+  "signature_boundary": "This is an enterprise response statement, not a counterparty-signed licence or legal opinion."
+}

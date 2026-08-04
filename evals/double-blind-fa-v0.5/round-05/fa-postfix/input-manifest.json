@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R05-FA-POSTFIX-20260804-162622Z",
+  "data_classification": "Synthetic",
+  "file_count": 17,
+  "declared_hash_entries": 15,
+  "declared_hashes_matched": 15,
+  "manifest_self_hash_exclusions": 2,
+  "all_uploaded_bytes_preserved": true,
+  "files": [
+    {"order":1,"root":"company-submission","name":"01_target_scope_authorization.json","bytes":3086,"mime":"application/json","sha256":"1eb175e90eb7e43723da0394c7dc306593c6c3a0add8af4391e478ed68f850d5"},
+    {"order":2,"root":"company-submission","name":"02_financial_contract.json","bytes":5277,"mime":"application/json","sha256":"272489d4dea0813f81840c50670b1068eaa071e9d8cedfbd1928208baba2fb59"},
+    {"order":3,"root":"company-submission","name":"03_dcf_scenarios.json","bytes":5218,"mime":"application/json","sha256":"5e644345fc5ee7c98d8691a72e79e28563dc6bcdef7a8c4ad4fb1ec7a0b352e7"},
+    {"order":4,"root":"company-submission","name":"04_ev_to_equity_bridge.json","bytes":2298,"mime":"application/json","sha256":"e1c73bff84a999c7a0152621f38788b5a74360f9c1680ef29c2519b676e5a1de"},
+    {"order":5,"root":"company-submission","name":"05_trading_comps.json","bytes":4455,"mime":"application/json","sha256":"a9828118eb7839aa736b3b396a3aaef274f69c6b361b35cc9fb4ff29c1673f61"},
+    {"order":6,"root":"company-submission","name":"06_source_approval_register.csv","bytes":5039,"mime":"text/csv","sha256":"f365b58b6003dd148771949fa2f657fdfc3ae9fb164a6e0e66200c7c6c2dee00"},
+    {"order":7,"root":"company-submission","name":"07_valuation_workflow_input.json","bytes":11574,"mime":"application/json","sha256":"6f04347902fa7a9cffa288bc95cb0755a5e30d9094fd0375a6cf59d3be692570"},
+    {"order":8,"root":"company-submission","name":"manifest.json","bytes":7965,"mime":"application/json","sha256":"874f59b68528a790fd6c8a2e4fa2af1a4a6405f0a626afc6b8bc2773316afe8c","self_hash_excluded_by_policy":true},
+    {"order":9,"root":"company-supplement","name":"01_scope_authorization_evidence.json","bytes":2752,"mime":"application/json","sha256":"e51ce11dba2c267aea2c4d9d997a2b29ee978cbfa222bab05af9bdae240538f7"},
+    {"order":10,"root":"company-supplement","name":"02_financial_source_ledger.csv","bytes":3585,"mime":"text/csv","sha256":"26db5f6ce7a3ecb112475eeb95263f0afc7d6bc507e89764a5f06c6ceeffee35"},
+    {"order":11,"root":"company-supplement","name":"03_ltm_monthly_rollforward.csv","bytes":3559,"mime":"text/csv","sha256":"ecfe19db26408c2d5229245a765018a3f8898e923b8f9723ed4816054ccc4c98"},
+    {"order":12,"root":"company-supplement","name":"04_stub_and_dcf_assumptions.json","bytes":4574,"mime":"application/json","sha256":"8ea65ef3b47ee827a04b66cff13fbfe8c85ee1222492b315ba0df4d790644308"},
+    {"order":13,"root":"company-supplement","name":"05_ev_to_equity_ledger.csv","bytes":3438,"mime":"text/csv","sha256":"d9c74b3ecc92a26ca70f65a505fcfc6ff0bc3fd11f0c5e6beff1aff6ef752402"},
+    {"order":14,"root":"company-supplement","name":"06_trading_comps_ledger.csv","bytes":4123,"mime":"text/csv","sha256":"5399e1d871fa8a2903466b2cb7abb20ba2edc75a7be8bb471e0116b3a1b10788"},
+    {"order":15,"root":"company-supplement","name":"company-action-log.jsonl","bytes":2077,"mime":"application/x-ndjson","sha256":"feedd408abcb0b7c1e4a0df7870384a1136e6d78a93dba95725e01bc94761021"},
+    {"order":16,"root":"company-supplement","name":"response-register.jsonl","bytes":7696,"mime":"application/x-ndjson","sha256":"74d931c1eb50885202bc7879f05fcf4e061239956278937aa4df4efec852a4f3"},
+    {"order":17,"root":"company-supplement","name":"submission-manifest.json","bytes":4815,"mime":"application/json","sha256":"288c954bdadda4e86bebfcc7828b14cc291dfc8d392be6137613e05aa92e7aed","self_hash_excluded_by_policy":true}
+  ]
+}

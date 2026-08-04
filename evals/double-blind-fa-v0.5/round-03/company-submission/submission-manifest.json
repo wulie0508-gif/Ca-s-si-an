@@ -1,0 +1,152 @@
+{
+  "manifest_type": "synthetic_company_round_03_initial_submission",
+  "synthetic": true,
+  "data_status": "Synthetic",
+  "submission_id": "SYN-DBFA-R03-CYTS-001",
+  "version": "0.1.0",
+  "submitted_at": "2026-08-04T12:00:00+08:00",
+  "company": {
+    "legal_name": "澄岳热储科技（上海）有限公司",
+    "data_status": "Synthetic",
+    "assertion_status": "Management Statement—Unverified unless a row declares another Synthetic source class"
+  },
+  "manifest_policy": {
+    "company_content_verified": false,
+    "source_and_authority_must_be_evaluated_separately": true,
+    "newer_version_automatically_authoritative": false,
+    "signed_status_automatically_proves_claim": false,
+    "duplicate_filenames_automatically_distinct_evidence": false,
+    "declared_hash_semantics": "Submitter-declared SHA-256 value for the payload filename",
+    "manifest_self_hash_included": false
+  },
+  "files": [
+    {
+      "filename": "01-management-claims.csv",
+      "media_type": "text/csv",
+      "byte_count": 2650,
+      "declared_sha256": "fe201f97b5596516df45b4ce9d9f7002c382d457178d90c210fe443e9cf90a3c",
+      "synthetic": true,
+      "source_class": "Management statement",
+      "authority_class": "Management representation only",
+      "effective_date": null,
+      "as_of_date": "2026-07-31",
+      "version": "MGMT-CLAIMS-v1.3",
+      "approval_status": "Management-issued; no board approval stated",
+      "signature_status": "Unsigned management export",
+      "assertion_status": "Management Statement—Unverified"
+    },
+    {
+      "filename": "02-counterparty-evidence-register.csv",
+      "media_type": "text/csv",
+      "byte_count": 3396,
+      "declared_sha256": "45813776294b828ad12c357b01471945f698d45f64b3e7f484ee1168131b4a6b",
+      "synthetic": true,
+      "source_class": "Mixed Synthetic transaction-counterparty copies, drafts and absence register",
+      "authority_class": "Mixed; row-level authority controls",
+      "effective_date": "Mixed; see row-level effective_date",
+      "as_of_date": "Through 2026-07-31",
+      "version": "SYN-EVIDENCE-REGISTER-v1.0",
+      "approval_status": "Enterprise evidence register; not independently approved",
+      "signature_status": "Mixed signed, unsigned and not-applicable; see rows",
+      "assertion_status": "Unverified Synthetic copies and management-reported absences"
+    },
+    {
+      "filename": "03-board-plan-draft-v1.1.csv",
+      "media_type": "text/csv",
+      "byte_count": 1378,
+      "declared_sha256": "1e21951c888ed0f23a9ffc09633c2692d04cef8b8cde171b5baa486c8b83d4c0",
+      "synthetic": true,
+      "source_class": "Enterprise-prepared board draft",
+      "authority_class": "Draft board material",
+      "effective_date": null,
+      "as_of_date": "2026-07-25",
+      "version": "1.1",
+      "approval_status": "Draft not approved",
+      "signature_status": "Unsigned",
+      "assertion_status": "Management Statement—Unverified"
+    },
+    {
+      "filename": "04-board-plan-approved-v1.0.csv",
+      "media_type": "text/csv",
+      "byte_count": 1636,
+      "declared_sha256": "cb2ff3e170f25919f6075b84aa9cbe907c8378099533ef6cf827bc7c0ad9171d",
+      "synthetic": true,
+      "source_class": "Enterprise-held board material",
+      "authority_class": "Approved board material",
+      "effective_date": "2026-07-05",
+      "as_of_date": "2026-06-30",
+      "version": "1.0",
+      "approval_status": "Approved under SYN-BRD-RES-2026-07-05",
+      "signature_status": "Signed by Synthetic chair and secretary roles",
+      "assertion_status": "Unverified Synthetic board copy"
+    },
+    {
+      "filename": "05-corporate-register-v1.2.csv",
+      "media_type": "text/csv",
+      "byte_count": 3212,
+      "declared_sha256": "cfa8b952a857d1543859b86ac2ef23c48b41179cfbbf57c03caaaa1e4349724f",
+      "synthetic": true,
+      "source_class": "Company-secretary working spreadsheet and enterprise working registers",
+      "authority_class": "Unapproved enterprise working record",
+      "effective_date": null,
+      "as_of_date": "2026-03-31",
+      "version": "1.2",
+      "approval_status": "Working final not approved",
+      "signature_status": "Management initials only",
+      "assertion_status": "Management Statement—Unverified"
+    },
+    {
+      "filename": "06-corporate-register-v2.0.csv",
+      "media_type": "text/csv",
+      "byte_count": 4830,
+      "declared_sha256": "04897dca8cf60be4701d7d21f9b569325164a1a284d3597ae99383d76928fe1e",
+      "synthetic": true,
+      "source_class": "Company-secretary issued register and enterprise IP/legal registers",
+      "authority_class": "Current enterprise register",
+      "effective_date": "2026-06-30",
+      "as_of_date": "2026-06-30",
+      "version": "2.0",
+      "approval_status": "Issued not independently verified",
+      "signature_status": "Signed by Synthetic company-secretary role",
+      "assertion_status": "Unverified enterprise record"
+    },
+    {
+      "filename": "07-artifact-provenance-and-duplicates.csv",
+      "media_type": "text/csv",
+      "byte_count": 3411,
+      "declared_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b4",
+      "synthetic": true,
+      "source_class": "Enterprise-prepared provenance index",
+      "authority_class": "Index metadata only",
+      "effective_date": "Mixed; see row-level effective_date",
+      "as_of_date": "2026-07-31",
+      "version": "SYN-PROVENANCE-INDEX-v1.0",
+      "approval_status": "Enterprise index; not independently approved",
+      "signature_status": "Unsigned index; row-level source signature metadata retained",
+      "assertion_status": "Management Statement—Unverified"
+    }
+  ],
+  "submission_events": [
+    {
+      "event_id": "SYN-EVT-R03-001",
+      "event_type": "provenance_and_authority_pack_prepared",
+      "event_timestamp": "2026-08-04T11:55:00+08:00",
+      "event_data_status": "Synthetic",
+      "payload_file_count": 7
+    },
+    {
+      "event_id": "SYN-EVT-R03-002",
+      "event_type": "submitter_declared_integrity_metadata_recorded",
+      "event_timestamp": "2026-08-04T12:00:00+08:00",
+      "event_data_status": "Synthetic",
+      "digest_algorithm": "SHA-256"
+    }
+  ],
+  "integrity_metadata": {
+    "digest_algorithm": "SHA-256",
+    "digest_scope": "seven payload files only",
+    "declared_by": "Synthetic company submission administrator",
+    "verification_result_included": false,
+    "integrity_values_are_company_business_evidence": false
+  }
+}

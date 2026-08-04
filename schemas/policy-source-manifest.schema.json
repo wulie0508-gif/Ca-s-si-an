@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cleantech-finance/policy-source-manifest.schema.json",
+  "title": "CleanTech Finance official policy source manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "allowed_hosts", "sources"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "as_of": {"type": "string", "format": "date"},
+    "scope": {"type": "string", "minLength": 1, "maxLength": 500},
+    "allowed_hosts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "fgw.sh.gov.cn",
+          "kjgl.stcsm.sh.gov.cn",
+          "sheitc.sh.gov.cn",
+          "stcsm.sh.gov.cn",
+          "www.shanghai.gov.cn",
+          "www.sheitc.sh.gov.cn"
+        ]
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "stringList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1, "maxLength": 500}
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "title",
+        "issuer",
+        "source_url",
+        "status_mode",
+        "opportunity_type"
+      ],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1, "maxLength": 120},
+        "title": {"type": "string", "minLength": 1, "maxLength": 500},
+        "issuer": {"type": "string", "minLength": 1, "maxLength": 300},
+        "document_number": {"type": "string", "maxLength": 200},
+        "source_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://(fgw\\.sh\\.gov\\.cn|kjgl\\.stcsm\\.sh\\.gov\\.cn|sheitc\\.sh\\.gov\\.cn|stcsm\\.sh\\.gov\\.cn|www\\.shanghai\\.gov\\.cn|www\\.sheitc\\.sh\\.gov\\.cn)/"
+        },
+        "published_at": {"type": "string", "format": "date"},
+        "effective_from": {"type": "string", "format": "date"},
+        "effective_to": {"type": "string", "format": "date"},
+        "application_open_at": {"type": "string", "format": "date"},
+        "application_close_at": {"type": "string", "format": "date"},
+        "status_mode": {
+          "enum": [
+            "application_window",
+            "ongoing",
+            "framework_only",
+            "closed_historical"
+          ]
+        },
+        "opportunity_type": {"type": "string", "minLength": 1, "maxLength": 120},
+        "eligible_regions": {"$ref": "#/$defs/stringList"},
+        "eligible_entities": {"$ref": "#/$defs/stringList"},
+        "eligible_stages": {"$ref": "#/$defs/stringList"},
+        "sectors": {"$ref": "#/$defs/stringList"},
+        "industry_tags": {"$ref": "#/$defs/stringList"},
+        "stage_tags": {"$ref": "#/$defs/stringList"},
+        "need_tags": {"$ref": "#/$defs/stringList"},
+        "technology_tags": {"$ref": "#/$defs/stringList"},
+        "geography_tags": {"$ref": "#/$defs/stringList"},
+        "market_tags": {"$ref": "#/$defs/stringList"},
+        "must_conditions": {"$ref": "#/$defs/stringList"},
+        "exclusion_conditions": {"$ref": "#/$defs/stringList"},
+        "evidence_required": {"$ref": "#/$defs/stringList"},
+        "related_result_urls": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "format": "uri"}
+        },
+        "benefit_summary": {"type": "string", "maxLength": 2000},
+        "application_channel": {"type": "string", "maxLength": 500},
+        "supersedes": {"type": "string", "maxLength": 200}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status_mode": {"const": "application_window"}}},
+          "then": {"required": ["application_close_at"]}
+        }
+      ]
+    }
+  }
+}

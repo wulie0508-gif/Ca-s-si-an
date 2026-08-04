@@ -22,7 +22,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 QA_SCHEMA_VERSION = "1.0.0"
 QA_RULE_VERSION = "qa-diagnostic-1.0.0"
 QA_RULE_DIGEST = sha256(Path(__file__).read_bytes()).hexdigest()
-QA_CASE_SCHEMA_PATH = Path(__file__).resolve().parents[2] / "schemas" / "qa-case.schema.json"
+QA_CASE_SCHEMA_PATH = Path(__file__).resolve().parent / "schemas" / "qa-case.schema.json"
 
 PROFILE_FIELDS = (
     "product_technology",

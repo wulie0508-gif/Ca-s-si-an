@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R05-FA-INITIAL-20260804-152630Z",
+  "frozen_at_utc": "2026-08-04T15:32:00Z",
+  "questions": [
+    {
+      "question_id": "R05-Q01",
+      "question_verbatim": "请确认本轮估值所对应的法律主体是否仅为“曦衡高效热能装备（苏州）有限公司”，交易范围是否为其 100% 股权，且独立价值口径明确排除买方协同、卖方集团税务属性、卖方交易费用及交割前未结清的集团往来；请提供由有权人员批准的范围备忘录或等效合成证据，并标明版本与生效日。",
+      "requested_evidence": ["经有权角色批准的合成范围备忘录或等效证据", "版本、生效日与批准角色", "法律主体、100% 股权范围、排除项与协同边界"],
+      "reason": "主体、范围和协同边界决定全部估值输入是否属于同一 standalone perimeter。",
+      "impact": "范围变化将重开 Deal scope，并重算全部 DCF、Trading Comps 目标指标与 EV→Equity。",
+      "owner": "Synthetic target data owner",
+      "status": "candidate_answer_received_evidence_open",
+      "recalculation_scope": "full_valuation"
+    },
+    {
+      "question_id": "R05-Q02",
+      "question_verbatim": "请提供 FY2023、FY2024、FY2025、LTM 2026-06-30 及 FY2027E–FY2029E 八项财务序列的底层合成台账或逐项来源表，并说明 LTM 的 12 个月构成、预测批准人、Reported/Management 口径以及 CapEx 与营运资本变动的符号约定；这些材料能否逐项勾稽至 02_financial_contract.json？",
+      "requested_evidence": ["底层合成台账或逐项来源表", "LTM 十二个月构成表", "预测批准记录", "Reported/Management 口径说明", "CapEx 与 change in NWC 符号政策"],
+      "reason": "当前文件内算术勾稽通过，但底层来源材料未随 pack 提供。",
+      "impact": "任何历史、LTM 或预测变动将重算相应 FCFF、DCF 情景、目标 LTM EBITDA 及 Comps 区间。",
+      "owner": "Synthetic finance function and management team",
+      "status": "open",
+      "recalculation_scope": "financial_contract_dcf_and_comps"
+    },
+    {
+      "question_id": "R05-Q03",
+      "question_verbatim": "估值日为 2026-06-30，而首个显式预测期为 FY2027E：请明确 2026-07-01 至 2026-12-31 的 stub period 如何处理，并提供 FY2026E/H2 2026 FCFF 或书面确认的首期折现时点与年化因子。",
+      "requested_evidence": ["FY2026E 或 H2 2026 FCFF", "stub-period 处理备忘录", "首期折现时点与年化因子确认"],
+      "reason": "产品按 1、2、3 的指数折现 FY2027E–FY2029E，但估值日至首个期末的日历间隔并非一年，且没有提示。",
+      "impact": "可能改变全部 DCF 现值、终值现值及 EV/Equity 区间；超出 screen-grade 前必须解决。",
+      "owner": "Synthetic transaction analysis team and FA human",
+      "status": "open_blocking_beyond_screen_grade",
+      "recalculation_scope": "all_dcf_scenarios_and_sensitivities"
+    },
+    {
+      "question_id": "R05-Q04",
+      "question_verbatim": "请提供 downside/base/upside 三种情景 WACC、永续增长率、退出倍数及终值指标的合成假设备忘录与推导；特别请确认 SYN-R5-JUDGMENT-001 的 base 永续增长率 2.5% 仅作为 FA 人工接受的 screen-grade 判断假设，不代表企业事实或外部市场验证。",
+      "requested_evidence": ["三情景 WACC 推导", "永续增长率与退出倍数依据", "终值指标来源", "SYN-R5-JUDGMENT-001 人工确认记录"],
+      "reason": "pack 明示 2.5% 缺少外部市场证据，且 Agent 不得确认。",
+      "impact": "假设变化将重算 DCF 三情景、终值占比和两组敏感性。",
+      "owner": "FA human and Synthetic transaction analysis team",
+      "status": "fa_screen_grade_judgment_confirmed_evidence_open",
+      "recalculation_scope": "all_dcf_scenarios_and_sensitivities"
+    },
+    {
+      "question_id": "R05-Q05",
+      "question_verbatim": "请提供截至 2026-06-30 的 EV→Equity 逐项底表，分别证明 42.0 CNYm unrestricted cash、78.0 CNYm debt-like、6.0 CNYm non-operating assets 和 4.0 CNYm other claims 的余额、所有权、受限状态及分类依据，并确认净调整为 -34.0 CNYm。",
+      "requested_evidence": ["2026-06-30 逐项余额底表", "现金受限状态", "债务、租赁、应计利息分类依据", "非经营土地定金所有权", "遗留税务索赔文件"],
+      "reason": "当前汇总算术为 -34.0 CNYm，但分类依赖底层余额和合同属性。",
+      "impact": "变动将重算所有 DCF equity values；Comps 当前输出为 EV，若需要 equity cross-check 亦需重算。",
+      "owner": "Synthetic finance function",
+      "status": "open",
+      "recalculation_scope": "ev_to_equity_all_scenarios"
+    },
+    {
+      "question_id": "R05-Q06",
+      "question_verbatim": "请为五家全合成可比公司逐家提供截至 2026-06-30 的企业价值和 LTM EBITDA 底表、核心/次级分类标准及纳入理由，并明确此次 Trading Comps 采用全样本还是仅核心样本的统计口径及异常值处理规则。",
+      "requested_evidence": ["五家公司 EV 与 LTM EBITDA 底表", "核心/次级分类规则", "纳入与排除备忘录", "全样本或核心样本选择", "异常值处理规则"],
+      "reason": "产品当前把 core_peer 与 secondary_peer 全部纳入五家公司统计；该判断需人工明确。",
+      "impact": "样本或分类变化将重算倍数统计、P25/P75 和 862.40–931.00 CNYm 的 Comps EV 区间。",
+      "owner": "Synthetic transaction analysis team and FA human",
+      "status": "open",
+      "recalculation_scope": "trading_comps"
+    },
+    {
+      "question_id": "R05-Q07",
+      "question_verbatim": "请确认本轮仅获授权用于内部交易分析和确定性 screen 测试，任何外部分发、客户流转、正式估值意见或公开发布均未授权；请提供授权记录 SYN-R5-AUTH-001 的可核版本。",
+      "requested_evidence": ["SYN-R5-AUTH-001 可核版本", "授权用途、分发范围、有效期与授权角色"],
+      "reason": "内外部使用、正式意见和公开发布必须与估值计算分开授权。",
+      "impact": "不影响算术，但阻断外部流转、正式意见与公开发布。",
+      "owner": "Synthetic target data owner",
+      "status": "candidate_answer_received_internal_only_enforced",
+      "recalculation_scope": "none_authorization_gate_only"
+    }
+  ]
+}

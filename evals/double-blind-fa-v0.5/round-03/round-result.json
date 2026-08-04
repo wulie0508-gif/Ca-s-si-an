@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.0",
+  "round": 3,
+  "theme": "evidence_integrity_authority_duplicates_and_conflicts",
+  "status": "completed",
+  "business_data_status": "Synthetic",
+  "real_telemetry": [
+    "local_HTTP",
+    "Chromium_browser",
+    "file_hashes",
+    "case_and_artifact_identifiers",
+    "diagnostics",
+    "test_and_port_status"
+  ],
+  "initial": {
+    "case_id": "case-20260804-405f4af91c",
+    "native_control_coverage": {
+      "score": 4,
+      "maximum": 10,
+      "metric_type": "diagnostic_coverage_not_rating"
+    },
+    "fa_question_count": 8,
+    "verified_engineering_defects": 5
+  },
+  "company_supplement": {
+    "questions_with_visible_response": 8,
+    "questions_total": 8,
+    "classification": {
+      "answered": 1,
+      "partial": 3,
+      "contradicted": 0,
+      "not_available": 4,
+      "open": 0
+    },
+    "response_coverage_percent": 100.0,
+    "evidence_package_progress_percent": 31.25,
+    "metric_boundary": "workflow_completeness_only_not_a_company_or_risk_score"
+  },
+  "pre_fix_baseline": {
+    "physical_files": 21,
+    "unchanged_single_case_ingestion": false,
+    "file_limit": 20,
+    "native_jsonl_supported": false,
+    "content_hash_deduplication": false,
+    "persistent_R03_supplement_state_machine": false
+  },
+  "post_fix": {
+    "case_id": "case-20260804-aebb5f7120",
+    "scoped_assertions_passed": 17,
+    "scoped_assertions_total": 17,
+    "case_input_integrity_gate": "blocked",
+    "business_evidence_reliance": "not_ready",
+    "physical_files": 21,
+    "artifacts": 21,
+    "manifest_matched": 18,
+    "manifest_mismatch": 1,
+    "actual_duplicate_groups": 1,
+    "structured_conflicts": 25,
+    "candidate_response_receipts": 34,
+    "accepted_response_receipts": 0,
+    "closed_evidence_control_questions": 0,
+    "dashboard_next_action": "review_evidence_control_questions",
+    "financial_detected_artifacts": 2,
+    "cash_candidates": 0,
+    "deal_created": false,
+    "valuation_created": false,
+    "rating_produced": false,
+    "publication_authorized": false
+  },
+  "browser_verification": {
+    "real_Chromium": true,
+    "console_errors": 0,
+    "axe_violations": 0,
+    "axe_incomplete": 0,
+    "evidence_card_scroll_action": "pass",
+    "listeners_released": true
+  },
+  "interpretation": "Round 3 passed only the scoped evidence-control regression. The case correctly remained blocked and no enterprise, investment, credit, aggregate-risk or product-wide rating was produced.",
+  "known_non_blocking_observation": "The legacy top-level case next_action remains confirm_material_scope while dashboard projections use review_evidence_control_questions.",
+  "persistent_submission_center_implemented": false
+}

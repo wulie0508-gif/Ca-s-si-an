@@ -1,0 +1,11 @@
+{"sequence":1,"event":"server_health_checked","http_status":200,"rag_status":"ok","source":"clean_child_telemetry"}
+{"sequence":2,"event":"case_create_attempt_rejected","http_status":400,"error":"ui_origin_required","meaning":"write API correctly required same-origin UI headers","source":"clean_child_telemetry"}
+{"sequence":3,"event":"case_create_retried","origin_and_referer_supplied":true,"source":"clean_child_telemetry"}
+{"sequence":4,"event":"case_created","http_status":201,"case_id":"case-20260804-a437a545de","workflow_type":"company_intake","source":"persisted_workspace_and_clean_child_telemetry"}
+{"sequence":5,"event":"artifacts_observed","submitted":6,"accepted":6,"ready":6,"candidate_ready":6,"stored_hashes_match":true,"source":"persisted_workspace"}
+{"sequence":6,"event":"financial_basis_conflicts_observed_by_fa","dimensions":["entity_scope","reporting_period","unit","vat_basis","as_of_date","forecast_version","cash_restriction"],"system_conflict_diagnostic_present":false,"source":"fa_review_of_authorized_inputs_and_case_output"}
+{"sequence":7,"event":"system_question_inventory","system_question_count":0,"source":"persisted_workspace"}
+{"sequence":8,"event":"workflow_observed","materials":"complete","evidence":"awaiting_human","analysis":"blocked","supplements":"not_available","source":"persisted_workspace"}
+{"sequence":9,"event":"next_actions_observed","case_action":"确认材料识别范围","dashboard_action":"生成参考建议","critical_financial_basis_question_prioritized":false,"source":"clean_child_telemetry"}
+{"sequence":10,"event":"downstream_guard_observed","deal_count":0,"valuation_count":0,"calculation_performed":false,"source":"clean_child_telemetry"}
+{"sequence":11,"event":"server_stopped","verified_pid":20792,"verified_port":8881,"source":"root_coordinator"}

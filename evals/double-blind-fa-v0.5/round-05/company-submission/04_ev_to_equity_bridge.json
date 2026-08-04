@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "pack_id": "SYN-R5-XIHENG-2026-0630",
+  "target_legal_entity": "曦衡高效热能装备（苏州）有限公司",
+  "valuation_date": "2026-06-30",
+  "base_currency": "CNY",
+  "amount_unit": "CNYm",
+  "source": {
+    "source_id": "SYN-R5-BRIDGE-20260630",
+    "locator": "Synthetic closing balance-sheet bridge schedule as of 2026-06-30",
+    "as_of": "2026-06-30"
+  },
+  "bridge_components": {
+    "cash_like": [
+      {
+        "data_classification": "Synthetic",
+        "item": "Unrestricted cash and cash equivalents",
+        "value": "42.000",
+        "treatment": "add to enterprise value to derive equity value"
+      }
+    ],
+    "debt_like": [
+      {
+        "data_classification": "Synthetic",
+        "item": "Bank borrowings",
+        "value": "60.000",
+        "treatment": "subtract from enterprise value"
+      },
+      {
+        "data_classification": "Synthetic",
+        "item": "Lease liabilities",
+        "value": "12.000",
+        "treatment": "subtract from enterprise value"
+      },
+      {
+        "data_classification": "Synthetic",
+        "item": "Accrued financing interest",
+        "value": "6.000",
+        "treatment": "subtract from enterprise value"
+      }
+    ],
+    "non_operating_assets": [
+      {
+        "data_classification": "Synthetic",
+        "item": "Surplus non-operating land deposit",
+        "value": "6.000",
+        "treatment": "add to enterprise value to derive equity value"
+      }
+    ],
+    "other_claims": [
+      {
+        "data_classification": "Synthetic",
+        "item": "Non-operating legacy tax claim",
+        "value": "4.000",
+        "treatment": "subtract from enterprise value"
+      }
+    ]
+  },
+  "workflow_bridge_aggregates": {
+    "cash_like": "42.000",
+    "debt_like": "78.000",
+    "non_operating_assets": "6.000",
+    "other_claims": "4.000"
+  },
+  "bridge_formula": "Equity value = enterprise value + cash_like - debt_like + non_operating_assets - other_claims",
+  "bridge_net_adjustment_check": "-34.000",
+  "control_boundary": {
+    "data_classification": "Synthetic",
+    "bridge_classification_requires_fa_review": true,
+    "fa_confirmation_status": "pending",
+    "formal_valuation_opinion": false,
+    "agent_can_approve": false
+  }
+}

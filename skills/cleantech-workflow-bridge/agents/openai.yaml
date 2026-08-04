@@ -1,0 +1,4 @@
+interface:
+  display_name: "CleanTech Workflow Bridge"
+  short_description: "Consent-gated local case, RAG, and policy tools"
+  default_prompt: "Use $cleantech-workflow-bridge to open a local company case, request scoped consent, and collect candidate evidence."

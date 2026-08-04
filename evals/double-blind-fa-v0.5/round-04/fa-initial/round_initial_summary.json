@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "round": "04",
+  "phase": "fa_initial",
+  "case_id": "case-20260804-bc2e1cf6cc",
+  "revision": 1,
+  "verdict": "not_passed_round_04_focus",
+  "score": {
+    "total": 68,
+    "maximum": 100,
+    "classification": "未通过",
+    "components": {
+      "double_blind_and_authority_boundary": {"score": 10, "maximum": 15},
+      "material_intake_identity_and_provenance": {"score": 20, "maximum": 20},
+      "gap_question_and_supplement_quality": {"score": 5, "maximum": 20},
+      "interview_readiness_explanation_and_actionability": {"score": 6, "maximum": 15},
+      "deal_valuation_isolation_version_and_fail_closed": {"score": 20, "maximum": 20},
+      "replayability_and_operational_efficiency": {"score": 7, "maximum": 10}
+    }
+  },
+  "telemetry": {
+    "business_materials_are_synthetic": true,
+    "http_is_real_local_telemetry": true,
+    "accepted_upload_status": 201,
+    "case_get_status": 200,
+    "dashboard_get_status": 200,
+    "accepted_artifact_count": 8,
+    "manifest_matched_business_file_count": 7,
+    "source_hash_mismatch_count": 0,
+    "case_revision": 1,
+    "port_8901_listener_count_after_stop": 0
+  },
+  "native_product_discoveries": [
+    {
+      "id": "NATIVE-01",
+      "observation": "Recorded SHA-256, byte counts, versions, artifact IDs and exact seven-entry manifest reconciliation for all eight uploaded artifacts.",
+      "authority": "deterministic local telemetry"
+    },
+    {
+      "id": "NATIVE-02",
+      "observation": "Extracted six authorization document-control candidates from 01-authorization-register.csv, including authority class, approval/signature state, effective_at and expires_at.",
+      "authority": "routing and structured document-control candidates only"
+    },
+    {
+      "id": "NATIVE-03",
+      "observation": "Set public_release_authorized=false, evidence_promotion_allowed=false, agent_outputs_are_candidates=true, candidate_response_accepted_automatically=false, and human_review_required=true.",
+      "authority": "native boundary flags"
+    },
+    {
+      "id": "NATIVE-04",
+      "observation": "Kept evidence awaiting human review and analysis blocked; created no Deal or valuation and performed no financial calculation.",
+      "authority": "native workflow state"
+    },
+    {
+      "id": "NATIVE-05",
+      "observation": "Marked the transcript and all other materials candidate_ready rather than verified facts.",
+      "authority": "generic candidate routing only"
+    }
+  ],
+  "fa_manual_discoveries_not_natively_resolved": [
+    {
+      "id": "FA-01",
+      "permission": "Recording",
+      "controlling_status": "Expired for any new capture; historical grant only",
+      "native_resolution": "No expiry computation, action gate, or question"
+    },
+    {
+      "id": "FA-02",
+      "permission": "Internal analysis",
+      "controlling_status": "Active only for named team/workspace through 2026-10-31",
+      "native_resolution": "No named-audience/workspace/exclusion validation"
+    },
+    {
+      "id": "FA-03",
+      "permission": "Public release",
+      "controlling_status": "Explicitly denied",
+      "native_resolution": "High-level false flag present; no content/channel-specific gate or question"
+    },
+    {
+      "id": "FA-04",
+      "permission": "Brand and logo",
+      "controlling_status": "Limited to unmodified internal drafts through 2026-08-31; public use denied",
+      "native_resolution": "No brand gate; dedicated license CSV was not parsed as structured evidence control"
+    },
+    {
+      "id": "FA-05",
+      "permission": "Translation",
+      "controlling_status": "Missing / not authorized",
+      "native_resolution": "Absence record extracted only partially; no translation gate or question"
+    },
+    {
+      "id": "FA-06",
+      "permission": "AI media",
+      "controlling_status": "Explicitly denied",
+      "native_resolution": "No AI-media action gate, conflict, or withdrawal question"
+    },
+    {
+      "id": "FA-07",
+      "permission": "Interview statements",
+      "controlling_status": "Management Statement—Unverified; proves only that statements were made",
+      "native_resolution": "No claim decomposition or primary-evidence questions"
+    },
+    {
+      "id": "FA-08",
+      "permission": "Agent candidate authority",
+      "controlling_status": "None; cannot verify, approve, publish, or override",
+      "native_resolution": "Generic candidate guardrail worked, but override attempt was not identified or surfaced as a conflict/quarantine question"
+    }
+  ],
+  "fail_closed_assessment": {
+    "worked": [
+      "No source content was promoted to verified fact.",
+      "Public release remained unauthorized.",
+      "Evidence promotion remained disallowed.",
+      "Analysis remained blocked pending human review.",
+      "No Deal, valuation, rating, publication, translation, AI media or authorization mutation occurred."
+    ],
+    "missing_or_incomplete": [
+      "No native permission matrix separated recording, internal analysis, public release, brand, translation and AI media.",
+      "Expired, denied, missing and limited states generated zero native authorization questions.",
+      "The integrity gate reported passed, explicitly as input_integrity_gate_only; it must not be presented or consumed as authorization readiness.",
+      "Dashboard showed zero open questions and suggested generate_reference_suggestions despite unresolved permission-specific boundaries.",
+      "The Agent override payload was not natively detected as an authorization-precedence conflict."
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "R04-FA-F01",
+      "severity": "S2",
+      "title": "Permission semantics are extracted only partially and do not produce separate gates",
+      "evidence": "Six document controls were extracted, but permission_type, decision, scope, current_status and explicit exclusions were not carried into the structured controls; native question count remained zero."
+    },
+    {
+      "finding_id": "R04-FA-F02",
+      "severity": "S2",
+      "title": "Dedicated brand license and content-use request registers are not natively resolved",
+      "evidence": "04-brand-logo-license.csv and 07-content-use-requests.csv reported detected=false for structured evidence controls."
+    },
+    {
+      "finding_id": "R04-FA-F03",
+      "severity": "S2",
+      "title": "Interview statements remain generic materials rather than itemized candidate claims",
+      "evidence": "The transcript was candidate_ready and human-review-required, but no claim ledger entries or evidence questions were generated."
+    },
+    {
+      "finding_id": "R04-FA-F04",
+      "severity": "S2",
+      "title": "Agent override attempt is not surfaced as a permission conflict",
+      "evidence": "Generic Agent-candidate guardrails prevented automatic acceptance, but 06-agent-candidate.json was routed as policy_resource and produced no conflict, quarantine item, or question."
+    },
+    {
+      "finding_id": "R04-FA-F05",
+      "severity": "S3",
+      "title": "HTTP case_type enum caused one rejected full multipart attempt",
+      "evidence": "case_type=enterprise_diligence returned 400; case_type=qa then returned 201. No case or revision was created by the rejected attempt."
+    }
+  ],
+  "question_ids": [
+    "R04-FA-Q01",
+    "R04-FA-Q02",
+    "R04-FA-Q03",
+    "R04-FA-Q04",
+    "R04-FA-Q05",
+    "R04-FA-Q06",
+    "R04-FA-Q07",
+    "R04-FA-Q08"
+  ],
+  "s0_observed": false,
+  "business_truth_determination_made": false,
+  "next_state": "await_company_supplement_only_against_exact_question_register"
+}

@@ -390,3 +390,47 @@ it exposed, implements a bounded improvement, and validates that same company.
   local auxiliary-source selection workflow, publish a bilingual ten-loop
   index, and rewrite the Skill so the deterministic core—not an Agent—is the
   only signal authority.
+
+### Candidate new-company Loop 11 — QuantumScape (9/10 gates; not yet counted)
+
+- New subject: QuantumScape Corporation (`QS`, SEC CIK `0001811414`), a
+  pre-commercial solid-state lithium-metal battery technology developer.
+- Primary evidence: the FY2025 and FY2024 Form 10-K PDFs distributed through
+  QuantumScape investor relations. A machine-readable fact pack retains the
+  PDF hashes and the FY2024 capex reclassification difference; the final local
+  manifest uses a small normalized official-source extract for reproducible
+  offline execution.
+- Initial failure: the unmodified product calculated the cash facts but failed
+  validation with two errors: no profitability judgment context and no cash
+  rule for the exact pre-commercial technology scope. Treating the missing
+  revenue, cost-of-revenue, and gross-profit lines as numeric zero would have
+  created a false margin basis.
+- Optimization: introduced a cited `applicability_context` v1.0.0 containing
+  only stage and recognized-operating-revenue evidence inputs; added an exact
+  pre-commercial scope; made the deterministic policy—not the manifest—emit a
+  bilingual `not_yet_applicable` outcome with null signal, reason code, policy
+  digest, and input digest; kept the independent cash rules executable; and
+  migrated the registry contract from nullable signals to explicit per-
+  dimension `{status, signal}` outcomes so a missing card can no longer be
+  mistaken for N/A.
+- Result: the final candidate audit passes with 33 citations and zero model
+  calls. Profitability/unit economics is `not_yet_applicable` with no card and
+  no signal. Cash is `amber` under `cash-loss-making-burn-improving`. Only
+  free-cash-flow, OCF/capex, and cash-only runway metrics are produced; cash is
+  not combined with marketable securities.
+- Automated evidence: 13 focused applicability tests pass; the dedicated
+  public-API blind harness ran 360 independent synthetic seeds and 4,800 large-
+  run audit calls over three rounds with zero failures, plus 108 calls from
+  focused reruns. Rename, period-order, evidence-removal, wrong-role, near-scope,
+  missing-versus-zero, dimension-independence, and zero-model/network oracles
+  are covered.
+- Artifact path: `outputs/company-loops/11-quantumscape/`.
+- Registration boundary: the HTML passed structural checks for bilingual
+  content, status labels, source URL, responsive CSS, and missing-versus-zero
+  wording. The in-app browser refused direct `file://` navigation, so an actual
+  visual inspection is still pending. Under the loop protocol this candidate
+  remains intentionally absent from the final registry and is not counted as
+  Loop 11 until that one gate is completed.
+- Residual insight: the next adversarial real case should test a company moving
+  from pre-commercial to first recognized operating revenue, so stale stage
+  evidence cannot continue suppressing the profitability dimension.

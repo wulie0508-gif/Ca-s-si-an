@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R02-SUPP-BASELINE-20260804T1140Z",
+  "data_status": "Synthetic inputs; real local HTTP/process telemetry",
+  "case_id": "case-20260804-4ec053c985",
+  "workflow_type": "company_intake",
+  "input_result": {
+    "files_uploaded": 9,
+    "files_accepted": 9,
+    "hashes_recorded": 9,
+    "text_extracted": 9,
+    "candidate_ready": 9,
+    "http_status": 201
+  },
+  "fa_reconciliation": {
+    "counts": {
+      "answered": 1,
+      "partial": 6,
+      "contradicted": 0,
+      "not_available": 1,
+      "open": 0
+    },
+    "fully_answered_rate_percent": 12.5,
+    "weighted_progress_percent": 50.0,
+    "weighted_formula": "answered=1.0; partial=0.5; contradicted/not_available/open=0.0",
+    "weighted_points": 4.0,
+    "maximum_points": 8.0,
+    "interpretation": "Supplement evidence-progress measure only; not an investment, credit, valuation, risk, or company score."
+  },
+  "product_native_behavior": {
+    "questions_detected": 0,
+    "questions_closed": 0,
+    "question_register_generated": false,
+    "request_tracking_state": "not_implemented",
+    "open_requests": null,
+    "workflow_stage": "evidence",
+    "workflow_state": "awaiting_human",
+    "supplements_stage": "not_available",
+    "observed_authority": "routing hints and workflow projection only",
+    "important_distinction": "The eight after-states are FA manual reconciliation, not product-native detection or closure."
+  },
+  "calculation_boundaries": {
+    "mechanical_unit_conversion_allowed_after_human_acceptance": true,
+    "cross_entity_aggregation_allowed": false,
+    "r12m_or_growth_comparison_allowed": false,
+    "cash_runway_or_funding_gap_allowed": false,
+    "forecast_based_valuation_allowed": false,
+    "deal_or_acquisition_workflow_used": false
+  },
+  "baseline_verdict": "The product reliably ingested and preserved nine synthetic files, but this baseline does not demonstrate a native supplement-center state machine. FA reconciliation found one answered item, six partial items, and one genuinely unavailable item; all material financial conclusions remain gated."
+}

@@ -1,0 +1,7 @@
+{"at":"2026-08-04T10:48:00Z","event":"skill_boundary_loaded","details":{"audit_skill":true,"spreadsheet_skill":true}}
+{"at":"2026-08-04T10:48:20Z","event":"input_inventory","details":{"submission_count":4,"supplement_count":9,"total_count":13}}
+{"at":"2026-08-04T10:48:40Z","event":"bridge_started","details":{"origin":"http://127.0.0.1:8873","workspace":"runtime-postfix/workspace"}}
+{"at":"2026-08-04T10:49:00Z","event":"case_created","details":{"case_id":"case-20260804-a4c809de2e","workflow_type":"company_intake","artifact_count":13,"transport":"same-origin HTTP"}}
+{"at":"2026-08-04T10:49:23Z","event":"case_created","details":{"case_id":"case-20260804-e1d0b3efab","workflow_type":"acquisition","artifact_count":13,"transport":"same-origin HTTP"}}
+{"at":"2026-08-04T10:49:24Z","event":"acquisition_fail_closed_observed","details":{"completeness_percent":0.0,"readiness":"insufficient","critical_gap_count":22,"question_count":8,"requirement_candidate_count":0}}
+{"at":"2026-08-04T10:49:40Z","event":"deal_gate_checked","details":{"deal_count":0,"valuation_run":false}}

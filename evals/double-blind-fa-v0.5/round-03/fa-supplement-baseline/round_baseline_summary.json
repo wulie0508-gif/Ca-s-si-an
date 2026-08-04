@@ -1,0 +1,239 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R03-FA-SUPPLEMENT-BASELINE-20260804",
+  "status": "completed",
+  "baseline_type": "pre_fix_supplement_baseline",
+  "overall_result": {
+    "supplement_responses_received_for_all_eight_FA_questions": true,
+    "supplement_package_ingestible_unchanged_in_one_case": false,
+    "authoritative_evidence_package_complete": false,
+    "product_preserved_core_no_auto_fact_and_no_rating_boundaries": true,
+    "product_has_persistent_R03_supplement_state_machine": false
+  },
+  "real_http_execution": {
+    "base_url": "http://127.0.0.1:8892",
+    "origin": "http://127.0.0.1:8892",
+    "referer": "http://127.0.0.1:8892/",
+    "workflow_type": "company_intake",
+    "primary_case": {
+      "case_id": "case-20260804-cb065319bc",
+      "created_at": "2026-08-04T13:12:00.054322Z",
+      "revision": 1,
+      "artifact_count": 20,
+      "source_byte_count": 66235,
+      "recognition_status": "candidate_ready_for_all_20_artifacts"
+    },
+    "duplicate_control_case": {
+      "case_id": "case-20260804-b122748436",
+      "created_at": "2026-08-04T13:12:55.601253Z",
+      "revision": 1,
+      "artifact_count": 2
+    },
+    "listener": {
+      "port": 8892,
+      "pid": 24808,
+      "stopped_exact_pid": true,
+      "released": true,
+      "remaining_listener_count": 0
+    }
+  },
+  "ingestion_findings": {
+    "physical_source_file_count": 21,
+    "full_probe_result": {
+      "http_status": 400,
+      "message": "Select between 1 and 20 material files"
+    },
+    "jsonl_probe_result": {
+      "http_status": 400,
+      "message": "Unsupported material format '.jsonl'; allowed: .csv, .docx, .htm, .html, .json, .md, .pdf, .pptx, .txt, .xlsx"
+    },
+    "successful_primary_case_normalization": {
+      "exact_byte_duplicate_folded_by_evaluator": "company-supplement/07-artifact-provenance-and-duplicates.csv",
+      "fold_basis_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "jsonl_transport_names": [
+        "company-action-log.jsonl.txt",
+        "response-register.jsonl.txt"
+      ],
+      "source_bytes_changed": false,
+      "structured_JSONL_semantics_preserved_by_product": false
+    }
+  },
+  "hash_and_deduplication_findings": {
+    "pack_file_hash_mismatch": {
+      "file_name": "07-artifact-provenance-and-duplicates.csv",
+      "initial_manifest_declared_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b4",
+      "actual_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "supplement_manifest_corrected_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "product_stored_actual_sha256": true,
+      "product_compared_declared_to_actual": false,
+      "product_warning_emitted": false
+    },
+    "pack_level_content_deduplication": {
+      "control_artifact_count": 2,
+      "control_artifact_ids": [
+        "artifact-0001",
+        "artifact-0002"
+      ],
+      "identical_sha256": "ac19fdbb06dee9cad677bb45288588f3fe395efbedee0ee71a5d1e6a0913d0b3",
+      "product_deduplicated": false
+    },
+    "declared_underlying_artifact_group": {
+      "artifact_ids": [
+        "SYN-ART-P2602-A",
+        "SYN-ART-P2602-B"
+      ],
+      "declared_underlying_sha256": "8c0f7a231c8d0449a4d622f24f0e37d1ebbd5cc3b2f96997d1dd65df5d1e930a",
+      "underlying_files_present": false,
+      "independently_recomputed": false,
+      "product_parsed_or_used_underlying_hash": false,
+      "FA_disposition": "one_unverified_metadata_duplicate_group_only"
+    }
+  },
+  "authority_and_conflict_findings": {
+    "product_recorded": [
+      "uploaded byte size",
+      "actual pack-file SHA-256",
+      "source file name or transport file name",
+      "candidate routing roles",
+      "limited structured financial-basis candidates"
+    ],
+    "product_did_not_separate_as_structured_evidence_controls": [
+      "authority_class",
+      "version",
+      "approval_status",
+      "signature_status",
+      "effective_date",
+      "as_of_date versus effective_date"
+    ],
+    "forecast_observation": {
+      "source_material_contains_v1_0_and_v1_1_and_approval_metadata": true,
+      "product_forecast_status": "not_present",
+      "product_forecast_candidate_count": 0,
+      "product_selected_version": null
+    },
+    "source_precedence_observation": {
+      "supplement_contains_precedence_declaration": true,
+      "product_source_precedence_status": "not_declared",
+      "product_selected_precedence": null
+    },
+    "cross_table_conflicts_detected_by_product": [],
+    "material_conflicts_requiring_human_handling": [
+      "P2601 management acceptance claim versus defect/holdback and missing acceptance evidence",
+      "P2602 and P2603 backlog/order claims versus framework, non-binding email and unsigned draft",
+      "forecast draft v1.1 versus older company-declared approved baseline v1.0",
+      "RMB 4.4 million cash headline versus missing bank and GL evidence",
+      "cap-table v1.2 versus v2.0 founder and ESOP percentages",
+      "free-and-clear IP claim versus pledge/joint-applicant metadata and missing releases",
+      "exclusive SEA licence claim versus non-binding MOU and no definitive licence"
+    ]
+  },
+  "generic_as_of_date_preflight_behavior": {
+    "observed": true,
+    "product_applicability_status": "applicable",
+    "product_reason_code": "explicit_structured_financial_metadata_detected",
+    "detected_artifact_ids": [
+      "artifact-0001",
+      "artifact-0002",
+      "artifact-0003",
+      "artifact-0004",
+      "artifact-0005",
+      "artifact-0006",
+      "artifact-0007",
+      "artifact-0013"
+    ],
+    "observation": "Generic as_of_date rows in management claims, counterparty evidence, corporate registers and provenance metadata were treated as financial basis records even when their subject was not a financial basis.",
+    "product_generated_question_ids": [
+      "R02-Q01",
+      "R02-Q03",
+      "R02-Q06",
+      "R02-Q08"
+    ],
+    "R03_FA_question_ids_generated_or_ingested_by_product": [],
+    "calculation_status": "blocked",
+    "financial_calculation_performed": false
+  },
+  "automatic_acceptance_and_workflow_behavior": {
+    "fact_accepted_automatically": false,
+    "candidate_selected_automatically": false,
+    "question_closed_automatically": false,
+    "deal_or_valuation_created": false,
+    "financial_calculation_performed": false,
+    "aggregate_rating_produced": false,
+    "public_release_authorized": false,
+    "workflow_states": {
+      "materials": "complete",
+      "evidence": "awaiting_human",
+      "analysis": "blocked",
+      "supplements": "not_available",
+      "review": "not_available",
+      "outputs": "not_available"
+    },
+    "interpretation": "The safety boundary held, but the product did not persist the supplied supplement as a supplement-state transition or bind it to R03-FA-Q01 through Q08."
+  },
+  "question_classification": {
+    "allowed_values": [
+      "answered",
+      "partial",
+      "contradicted",
+      "not_available",
+      "open"
+    ],
+    "counts": {
+      "answered": 1,
+      "partial": 3,
+      "contradicted": 0,
+      "not_available": 4,
+      "open": 0
+    },
+    "by_question": {
+      "R03-FA-Q01": "partial",
+      "R03-FA-Q02": "not_available",
+      "R03-FA-Q03": "not_available",
+      "R03-FA-Q04": "partial",
+      "R03-FA-Q05": "not_available",
+      "R03-FA-Q06": "partial",
+      "R03-FA-Q07": "not_available",
+      "R03-FA-Q08": "answered"
+    }
+  },
+  "evidence_progress": {
+    "response_coverage": {
+      "formula": "questions_with_visible_company_response / total_questions",
+      "numerator": 8,
+      "denominator": 8,
+      "percent": 100.0
+    },
+    "evidence_package_progress": {
+      "formula": "(1.0 * answered + 0.5 * partial + 0.0 * contradicted + 0.0 * not_available + 0.0 * open) / total_questions",
+      "weights": {
+        "answered": 1.0,
+        "partial": 0.5,
+        "contradicted": 0.0,
+        "not_available": 0.0,
+        "open": 0.0
+      },
+      "weighted_points": 2.5,
+      "maximum_points": 8.0,
+      "percent": 31.25
+    },
+    "boundary": "These are transparent FA workflow-completeness measures only. They are not a company score, investment rating, credit rating, aggregate risk rating or recommendation."
+  },
+  "question_outcome_notes": {
+    "R03-FA-Q01": "Corrected pack hash and canonical metadata group received; underlying artifact absent.",
+    "R03-FA-Q02": "Requested acceptance evidence unavailable; management claim withdrawn.",
+    "R03-FA-Q03": "Executed order evidence unavailable; backlog/order claims withdrawn.",
+    "R03-FA-Q04": "Baseline declaration and version bridge received; approval resolution/signature evidence absent.",
+    "R03-FA-Q05": "Bank and GL evidence unavailable; available-cash claim withdrawn.",
+    "R03-FA-Q06": "Numerical cap-table bridge received; authoritative legal records absent.",
+    "R03-FA-Q07": "Official IP/release/assignment evidence unavailable; free-and-clear claim withdrawn.",
+    "R03-FA-Q08": "Requested written no-definitive-licence confirmation received; licence claim withdrawn and no right established."
+  },
+  "scope_boundaries": {
+    "all_business_data_synthetic": true,
+    "company_statements_are_candidate_evidence_only": true,
+    "interview_or_company_statement_proves_only_what_was_said": true,
+    "no_investment_credit_or_aggregate_risk_rating": true,
+    "no_red_yellow_green_aggregation": true,
+    "no_publication": true
+  }
+}

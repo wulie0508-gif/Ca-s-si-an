@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0.0",
+  "round": "01",
+  "test_type": "supplement_after_baseline_before_engineering_fix",
+  "tested_at": "2026-08-04T10:25:00Z",
+  "case_id": "case-20260804-9e753d0f65",
+  "company_name": "澄岳热储科技（上海）有限公司",
+  "data_status": "Synthetic",
+  "input_file_count": 13,
+  "http_base_url": "http://127.0.0.1:8872",
+  "question_status_counts": {
+    "answered": 2,
+    "partial": 3,
+    "contradicted": 3,
+    "open": 0
+  },
+  "question_statuses": {
+    "SYS-Q03": "partial",
+    "SYS-Q05": "answered",
+    "SYS-Q06": "contradicted",
+    "FA-Q01": "partial",
+    "FA-Q02": "contradicted",
+    "FA-Q03": "contradicted",
+    "FA-Q04": "answered",
+    "FA-Q05": "partial"
+  },
+  "product_observation": {
+    "material_count": 13,
+    "candidate_ready_count": 13,
+    "candidate_material_coverage_percent": 71.25,
+    "candidate_material_coverage_is_not_readiness": true,
+    "critical_gap_count": 7,
+    "interview_readiness": "insufficient",
+    "workflow_evidence_state": "awaiting_human",
+    "workflow_analysis_state": "blocked",
+    "supplement_tracking_state": "not_implemented",
+    "open_requests": null,
+    "deals_count": 0,
+    "valuation_run": false,
+    "aggregate_rating_available": false
+  },
+  "engineering_baseline_failures": [
+    "补件已按文件名直接回应 industry_map、target_business_profile、commercial_model_baseline，但系统仍将这三项列为 missing，8 个系统访谈问题原样重生。",
+    "没有买方、委托或 Deal context，系统仍以收购战略与委托确认为当前焦点，并重新提出 acquisition_thesis、transaction_parameters、longlist、contact 与 meeting-pack 问题。",
+    "FA-Q03 技术验证包没有路由到 technology_arl，反而路由到 market_export 与 governance_legal。",
+    "manifest 和财务/收入文件被关键词宽泛路由到政策、治理或市场候选，候选覆盖与实际问题关闭不一致。",
+    "补件中心和 open_requests 状态机未实现，无法在产品内把原 8 个问题逐项更新为 answered/partial/contradicted。"
+  ],
+  "guardrail_results": {
+    "deal_created": false,
+    "reason_no_deal": "无买方、收购委托、交易授权或交易参数。",
+    "valuation_performed": false,
+    "reason_no_valuation": "无合格估值门槛；预测未经批准，2027-2029 无已签订单覆盖，且财务证据未审计。",
+    "readiness_increase_assumed_from_file_count": false
+  },
+  "recalculation_summary": {
+    "FY2025": {
+      "management_revenue_rmb_m": 15.8,
+      "adjusted_revenue_rmb_m": 12.3,
+      "adjusted_gross_profit_rmb_m": 0.7,
+      "adjusted_gross_margin_pct": 5.7,
+      "adjusted_ebitda_rmb_m": -11.1
+    },
+    "H1_2026": {
+      "management_revenue_rmb_m": 14.6,
+      "adjusted_revenue_rmb_m": 8.8,
+      "revenue_adjustment_pct": -39.7,
+      "adjusted_gross_profit_rmb_m": 0.3,
+      "adjusted_gross_margin_pct": 3.4,
+      "adjusted_ebitda_rmb_m": -6.5,
+      "adjusted_net_loss_rmb_m": -8.0,
+      "operating_cash_flow_rmb_m": -8.7,
+      "capex_rmb_m": -2.4,
+      "unrestricted_cash_rmb_m": 2.5,
+      "restricted_cash_rmb_m": 1.7,
+      "ocf_burn_monthly_rmb_m": 1.45,
+      "unrestricted_cash_runway_months_ocf_only": 1.72,
+      "unrestricted_cash_runway_months_ocf_plus_capex": 1.35
+    },
+    "technology": {
+      "field_cycle_efficiency_range_pct": [74.0, 79.1],
+      "cycles_below_82_pct_acceptance_threshold": 9,
+      "cycles_tested": 9,
+      "valid_operating_hours": 312,
+      "required_acceptance_hours": 1000,
+      "availability_pct": 76.1,
+      "remediation_budget_rmb_m": 1.3
+    },
+    "forecast": {
+      "H2_2026_funding_gap_to_rmb_2m_minimum_cash_rmb_m": 17.3,
+      "H2_2026_gap_if_P2602_refund_rmb_m": 19.7,
+      "cumulative_2026_2028_management_baseline_gap_rmb_m": 43.1,
+      "nonbinding_equity_term_sheet_rmb_m": 12.0,
+      "remaining_gap_if_term_sheet_closes_rmb_m": 31.1
+    }
+  },
+  "test_score": {
+    "type": "FA workflow/product baseline score; not a company, investment, credit, or risk rating",
+    "total": 53,
+    "out_of": 100,
+    "components": {
+      "upload_and_traceability": 18,
+      "out_of_upload_and_traceability": 20,
+      "evidence_extraction_and_routing": 8,
+      "out_of_evidence_extraction_and_routing": 25,
+      "question_closure_fidelity": 5,
+      "out_of_question_closure_fidelity": 25,
+      "authority_and_gate_boundaries": 20,
+      "out_of_authority_and_gate_boundaries": 20,
+      "operational_follow_up": 2,
+      "out_of_operational_follow_up": 10
+    }
+  }
+}

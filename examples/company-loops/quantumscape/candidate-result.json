@@ -1,0 +1,24 @@
+{
+  "case_id": "quantumscape",
+  "entity_id": "sec-cik-0001811414",
+  "manifest": "examples/company-loops/quantumscape/manifest.json",
+  "candidate_status": "automated_gates_passed_visual_review_pending",
+  "countable_company_loop": false,
+  "outcomes": {
+    "profitability-unit-economics": {
+      "status": "not_yet_applicable",
+      "signal": null,
+      "reason_code": "pre_commercial_no_recognized_operating_revenue"
+    },
+    "cash-runway": {
+      "status": "evaluated",
+      "signal": "amber",
+      "rule_id": "cash-loss-making-burn-improving"
+    }
+  },
+  "citation_count": 33,
+  "model_calls": 0,
+  "network_calls": 0,
+  "output_dir": "outputs/company-loops/11-quantumscape",
+  "remaining_gate": "Open and visually inspect report.html for bilingual legibility, layout, source links, dimension independence, and auxiliary-state presentation before registry promotion."
+}

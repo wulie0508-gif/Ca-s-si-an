@@ -1,0 +1,49 @@
+{
+  "document_type": "Synthetic P2601 status response and management-claim withdrawal",
+  "data_status": "Synthetic",
+  "synthetic": true,
+  "response_id": "SYN-R03-SUP-P2601-001",
+  "response_date": "2026-08-04",
+  "project_id": "SYN-P2601",
+  "source_basis": [
+    "SYN-EVD-001 agreement-register row",
+    "SYN-EVD-002 defect-notice-register row",
+    "SYN-EVD-003 explicit-absence-register row",
+    "SYN-CLM-001 withdrawn management statement"
+  ],
+  "requested_evidence_availability": [
+    {
+      "item": "Counterparty-signed final acceptance certificate",
+      "status": "Not available; enterprise register states none exists as of 2026-07-31",
+      "provided": false
+    },
+    {
+      "item": "Remediation closure record",
+      "status": "Not available in the permitted enterprise materials",
+      "provided": false
+    },
+    {
+      "item": "1000 valid operating-hour test log",
+      "status": "Not available in the permitted enterprise materials",
+      "provided": false
+    },
+    {
+      "item": "Efficiency threshold test log at or above 82 percent",
+      "status": "Not available in the permitted enterprise materials",
+      "provided": false
+    },
+    {
+      "item": "RMB 1.1 million holdback settlement or current counterparty confirmation",
+      "status": "No settlement evidence or later confirmation is available; the last available Synthetic counterparty-notice metadata dated 2026-06-12 states the holdback remained withheld",
+      "provided": false
+    }
+  ],
+  "company_response": "The company cannot substantiate final acceptance, remediation closure, operating-hour completion, efficiency-threshold achievement or settlement of the RMB 1.1 million holdback.",
+  "claim_update": {
+    "withdrawn_claim_id": "SYN-CLM-001",
+    "withdrawn_claim": "Customer has accepted commercial operation",
+    "replacement_status": "Final acceptance not evidenced; holdback settlement not evidenced",
+    "revenue_receivable_cash_treatment": "Do not treat final acceptance, the holdback, related revenue, receivable collection or cash availability as established facts from this response"
+  },
+  "responsible_owner": "Synthetic project operations and finance roles"
+}

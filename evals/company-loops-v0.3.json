@@ -6,9 +6,9 @@
     "company": "First Solar, Inc.",
     "manifest": "examples/company-loops/first-solar/manifest.json",
     "scope_id": "solar-module-manufacturing",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "green"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "green"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/01-first-solar",
@@ -22,9 +22,9 @@
     "company": "Plug Power Inc.",
     "manifest": "examples/company-loops/plug-power/manifest.json",
     "scope_id": "hydrogen-fuel-cell-electrolyzer-integrated",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "amber"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "amber"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/02-plug-power",
@@ -38,9 +38,9 @@
     "company": "ChargePoint Holdings, Inc.",
     "manifest": "examples/company-loops/chargepoint/manifest.json",
     "scope_id": "ev-charging-network-hardware-saas",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "amber"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "amber"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/03-chargepoint",
@@ -54,9 +54,9 @@
     "company": "Bloom Energy Corporation",
     "manifest": "examples/company-loops/bloom-energy/manifest.json",
     "scope_id": "onsite-solid-oxide-fuel-cell-systems",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "amber"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "amber"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/04-bloom-energy",
@@ -70,9 +70,9 @@
     "company": "Fluence Energy, Inc.",
     "manifest": "examples/company-loops/fluence/manifest.json",
     "scope_id": "grid-scale-energy-storage-system-integration",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "amber"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "amber"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/05-fluence",
@@ -86,9 +86,9 @@
     "company": "Albemarle Corporation",
     "manifest": "examples/company-loops/albemarle/manifest.json",
     "scope_id": "lithium-materials-diversified-chemicals",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "amber"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "amber"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/06-albemarle",
@@ -102,9 +102,9 @@
     "company": "TPI Composites, Inc.",
     "manifest": "examples/company-loops/tpi-composites/manifest.json",
     "scope_id": "wind-blade-contract-manufacturing",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "red"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "red"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/07-tpi-composites",
@@ -118,9 +118,9 @@
     "company": "Clearway Energy, Inc.",
     "manifest": "examples/company-loops/clearway-energy/manifest.json",
     "scope_id": "contracted-renewable-generation-and-storage-asset-owner",
-    "expected_signals": {
-      "profitability-unit-economics": null,
-      "cash-runway": "amber"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "not_applicable", "signal": null},
+      "cash-runway": {"status": "evaluated", "signal": "amber"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/08-clearway-energy",
@@ -134,9 +134,9 @@
     "company": "Nextpower Inc. (formerly Nextracker Inc.)",
     "manifest": "examples/company-loops/nextpower/manifest.json",
     "scope_id": "solar-tracker-and-power-systems-manufacturing",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "amber"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "amber"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/09-nextpower",
@@ -150,9 +150,9 @@
     "company": "Shoals Technologies Group, Inc.",
     "manifest": "examples/company-loops/shoals/manifest.json",
     "scope_id": "solar-ebos-electrical-infrastructure-manufacturing",
-    "expected_signals": {
-      "profitability-unit-economics": "amber",
-      "cash-runway": "red"
+    "expected_outcomes": {
+      "profitability-unit-economics": {"status": "evaluated", "signal": "amber"},
+      "cash-runway": {"status": "evaluated", "signal": "red"}
     },
     "expected_auxiliary_status": "passed",
     "output_dir": "outputs/company-loops/10-shoals",

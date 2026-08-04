@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R04-FA-SUPPLEMENT-BASELINE-20260804",
+  "hash_algorithm": "SHA-256",
+  "all_product_hashes_matched_local_bytes": true,
+  "total_file_count": 16,
+  "files": [
+    {"order":1,"source":"company-submission/01-authorization-register.csv","bytes":3854,"sha256":"1dbdebcc69fe922c20185577423a4f1308ff8129a5cd704d264cf7191aa848ef","artifact_id":"artifact-0001"},
+    {"order":2,"source":"company-submission/02-recording-analysis-consent.md","bytes":1945,"sha256":"e293efadfd8c2323b7cf8c56e088562e75a68faaa815e25244e9fbf45a202230","artifact_id":"artifact-0002"},
+    {"order":3,"source":"company-submission/03-interview-transcript.md","bytes":2185,"sha256":"b7b3db8594d3890950232e1e34a8b0711169fe51369a83f0e5179d76c7b637eb","artifact_id":"artifact-0003"},
+    {"order":4,"source":"company-submission/04-brand-logo-license.csv","bytes":1761,"sha256":"3997a937feff8e22922c69fabe52a402fb8bc9b020ecbadff3addda19fee82b8","artifact_id":"artifact-0004"},
+    {"order":5,"source":"company-submission/05-marketing-draft.md","bytes":1700,"sha256":"12b01bdca5159855c2049affde15a11ff575d1c5eacbb01aaf96298920ecac3d","artifact_id":"artifact-0005"},
+    {"order":6,"source":"company-submission/06-agent-candidate.json","bytes":1594,"sha256":"a2eb11a6774ea3a9ca1e466121dd8f014881584c02c9b1c6bb6616cb415f1704","artifact_id":"artifact-0006"},
+    {"order":7,"source":"company-submission/07-content-use-requests.csv","bytes":2870,"sha256":"41103d478633f91fdcc5a3ff19c6222e876e1a47764ad96f71807bbf34a75e3c","artifact_id":"artifact-0007"},
+    {"order":8,"source":"company-submission/submission-manifest.json","bytes":10450,"sha256":"7cbacbe3e1f9f73a2bb02345ca536b025f87210501dc84847a175f8242bef440","artifact_id":"artifact-0008"},
+    {"order":9,"source":"company-supplement/01-authorization-scope-confirmation.csv","bytes":5138,"sha256":"7ae9ea0cc1a4effd459859ddd1023d5efbbb03f23cb9af837c530cc525fda15f","artifact_id":"artifact-0009"},
+    {"order":10,"source":"company-supplement/02-internal-team-workspace-register.csv","bytes":4916,"sha256":"f8057e2bd67e60920b497cf9b183f50d9e3a32b108bfc454b0a36a7133e3da7e","artifact_id":"artifact-0010"},
+    {"order":11,"source":"company-supplement/03-content-request-withdrawals.json","bytes":3640,"sha256":"3be9cc6b1cf72aa5d18329dfefc827f887f1a727d9c02fd52028dcbfd5fe899c","artifact_id":"artifact-0011"},
+    {"order":12,"source":"company-supplement/04-interview-claim-evidence-gap.csv","bytes":3455,"sha256":"a0c31361d6a0b12d816c120e9cd5de5a6e33cc52b1a51e998e7ba4e762c8e43e","artifact_id":"artifact-0012"},
+    {"order":13,"source":"company-supplement/05-agent-candidate-quarantine.json","bytes":3108,"sha256":"278090e94dcbbccd8fb59fc1c914c953534692ab46defcd1b6d6c5f0ae903e24","artifact_id":"artifact-0013"},
+    {"order":14,"source":"company-supplement/company-action-log.jsonl","bytes":7555,"sha256":"bf3a12bd82f9d3b3b4fa89ade5e0dae07a949e7ca880b731bba45a0375f261e9","artifact_id":"artifact-0014"},
+    {"order":15,"source":"company-supplement/response-register.jsonl","bytes":11476,"sha256":"ecd59879e3dd463a869109b19ebc92f8d2d1e4b41e50d6da414daf5dc4c6dba0","artifact_id":"artifact-0015"},
+    {"order":16,"source":"company-supplement/submission-manifest.json","bytes":4293,"sha256":"67b028e88ae1655ba255cb64babaf0ac48d6a73e1a48fb48a2202af554fcd30b","artifact_id":"artifact-0016"}
+  ]
+}

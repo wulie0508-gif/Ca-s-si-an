@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "evaluation_id": "DBFA-v0.5-five-round-20260804",
+  "completed_on": "2026-08-04",
+  "rounds_completed": 5,
+  "business_data_status": "Synthetic",
+  "real_execution_evidence": [
+    "local_loopback_HTTP",
+    "Chromium_browser",
+    "file_bytes_and_SHA256",
+    "case_deal_valuation_identifiers",
+    "immutable_versions_and_hashes",
+    "Python_Ruff_Node_test_gates"
+  ],
+  "real_company_validation_claimed": false,
+  "aggregate_activity": {
+    "company_submission_and_supplement_files": 76,
+    "initial_question_register_entries": 44,
+    "company_facing_supplement_questions": 39,
+    "engineering_cycles": 5,
+    "final_python_tests_collected_and_passed": 403,
+    "final_node_valuation_tests_passed": 6
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "focus": "sparse_materials_gaps_interview_and_acquisition_applicability",
+      "initial_metric": {"value": 73, "type": "round_QA_score"},
+      "postfix_metric": {"value": 88, "type": "round_QA_score"},
+      "combined_company_files": 13,
+      "company_facing_questions": 8,
+      "python_tests": 366,
+      "calculation_performed": false
+    },
+    {
+      "round": 2,
+      "focus": "financial_period_currency_unit_and_basis_conflicts",
+      "initial_metric": {"value": 48, "type": "round_control_coverage"},
+      "postfix_metric": {"value": 100, "maximum": 100, "type": "scoped_gate"},
+      "combined_company_files": 9,
+      "company_facing_questions": 8,
+      "python_tests": 370,
+      "calculation_performed": false
+    },
+    {
+      "round": 3,
+      "focus": "evidence_hash_authority_version_duplicates_and_conflicts",
+      "initial_metric": {"value": 4, "maximum": 10, "type": "native_control_coverage"},
+      "postfix_metric": {"value": 17, "maximum": 17, "type": "scoped_assertions"},
+      "combined_company_files": 21,
+      "company_facing_questions": 8,
+      "calculation_performed": false,
+      "final_case_gate": "blocked"
+    },
+    {
+      "round": 4,
+      "focus": "content_authorization_interview_and_agent_authority",
+      "initial_metric": {"value": 68, "type": "round_QA_rubric"},
+      "postfix_metric": {"value": 20, "maximum": 20, "type": "scoped_assertions"},
+      "combined_company_files": 16,
+      "company_facing_questions": 8,
+      "python_tests": 389,
+      "calculation_performed": false,
+      "final_authorization_gate": "blocked"
+    },
+    {
+      "round": 5,
+      "focus": "controlled_valuation_human_confirmation_and_full_replay",
+      "initial_metric": {"value": 84, "type": "round_QA_score"},
+      "combined_company_files": 17,
+      "company_facing_questions": 7,
+      "company_response_status": {"answered": 2, "partial": 5},
+      "candidate_responses_accepted_as_fact": 0,
+      "questions_automatically_closed": 0,
+      "python_tests": 403,
+      "postfix_ids": {
+        "case_id": "case-20260805-9dbb8c4a4e",
+        "deal_id": "deal-20260805-c26ceb6c3711",
+        "valuation_id": "valuation-cf48a22919308733"
+      },
+      "postfix_timing": {
+        "basis": "explicit_per_period",
+        "discount_exponents_years": ["0.5", "1.5", "2.5", "3.5"]
+      },
+      "postfix_screen_outputs_CNYm": {
+        "dcf_enterprise_value": {"downside": "561.47", "base": "1017.23", "upside": "1503.27"},
+        "dcf_equity_value": {"downside": "527.47", "base": "983.23", "upside": "1469.27"},
+        "trading_comps_enterprise_value": {"low": "862.40", "high": "931.00"}
+      }
+    }
+  ],
+  "readiness": {
+    "internal_demo_and_synthetic_QA": "ready",
+    "controlled_real_company_pilot": "conditionally_ready_with_human_authorization_and_review",
+    "multi_user_production": "not_ready",
+    "public_real_data_hosting": "not_ready"
+  },
+  "priority_remaining_gaps": [
+    "real_company_authorized_pilot",
+    "persistent_supplement_center_state_machine",
+    "request_submission_evidence_linkage",
+    "partial_recalculation_dependency_graph",
+    "real_identity_RBAC_and_separation_of_duties",
+    "cloud_storage_tenant_isolation_and_operations",
+    "licensed_market_data_and_formal_FA_model_tie_out"
+  ],
+  "authority_boundaries": {
+    "formal_valuation_opinion_produced": false,
+    "investment_credit_or_aggregate_risk_rating_produced": false,
+    "agent_approved": false,
+    "public_release_authorized": false,
+    "red_amber_green_aggregated": false
+  },
+  "interpretation": "The five rounds validate scoped software controls against synthetic company cases and real local execution. They do not validate a real enterprise, a formal valuation opinion, or production readiness."
+}

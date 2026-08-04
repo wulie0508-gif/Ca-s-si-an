@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cleantech-finance"
-version = "0.4.0"
+version = "0.5.0"
 description = "Evidence-first financial and bankability research for clean energy companies"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,17 +28,32 @@ classifiers = [
   "Programming Language :: Python :: 3 :: Only",
   "Topic :: Scientific/Engineering",
 ]
-dependencies = []
+dependencies = ["jsonschema>=4.23,<5"]
 
 [project.optional-dependencies]
 pdf = ["pypdf>=5,<7"]
-dev = ["pytest>=8,<9", "ruff>=0.9,<1", "jsonschema>=4.23,<5"]
+policy = [
+  "beautifulsoup4>=4.13,<5",
+  "httpx>=0.28,<1",
+]
+docs = ["Pillow>=10,<13"]
+dev = ["pytest>=8,<9", "ruff>=0.9,<1"]
 
 [project.scripts]
 cleantech-finance = "cleantech_finance.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+cleantech_finance = [
+  "config/*.json",
+  "schemas/*.json",
+  "web/*.html",
+  "web/*.css",
+  "web/*.js",
+  "templates/*.csv",
+]
 
 [tool.ruff]
 line-length = 100

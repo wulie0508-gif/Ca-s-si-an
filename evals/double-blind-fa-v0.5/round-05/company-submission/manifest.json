@@ -1,0 +1,194 @@
+{
+  "manifest_version": "1.0",
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "pack_id": "SYN-R5-XIHENG-2026-0630",
+  "skill": "dcf-model-builder",
+  "artifact_mode": "generated_package",
+  "output_dir": "evals/double-blind-fa-v0.5/round-05/company-submission",
+  "first_read": {
+    "path": "01_target_scope_authorization.json",
+    "role": "primary human deliverable",
+    "why": "Open this first to confirm the Synthetic legal entity, 100% acquisition perimeter, valuation date, internal-use authorization and human-only approval gate."
+  },
+  "primary_human_deliverable": "01_target_scope_authorization.json",
+  "human_deliverables": [
+    {
+      "path": "01_target_scope_authorization.json",
+      "role": "human_deliverable",
+      "artifact_type": "json",
+      "description": "Synthetic target, transaction scope, valuation case, authorization and reliance boundaries.",
+      "user_visible_default": true,
+      "contains_new_analysis": true,
+      "user_requested_machine_readable": true
+    }
+  ],
+  "companion_deliverables": [
+    {
+      "path": "02_financial_contract.json",
+      "role": "companion_deliverable",
+      "artifact_type": "json",
+      "description": "Source-bearing three-year history, one LTM period and three-year base forecast.",
+      "user_visible_default": true,
+      "contains_new_analysis": true,
+      "user_requested_machine_readable": true
+    },
+    {
+      "path": "03_dcf_scenarios.json",
+      "role": "companion_deliverable",
+      "artifact_type": "json",
+      "description": "Downside, base and upside DCF inputs with an explicit judgmental terminal-growth assumption pending FA confirmation.",
+      "user_visible_default": true,
+      "contains_new_analysis": true,
+      "user_requested_machine_readable": true
+    },
+    {
+      "path": "04_ev_to_equity_bridge.json",
+      "role": "companion_deliverable",
+      "artifact_type": "json",
+      "description": "Synthetic EV-to-equity component schedule and workflow aggregates.",
+      "user_visible_default": true,
+      "contains_new_analysis": true,
+      "user_requested_machine_readable": true
+    },
+    {
+      "path": "05_trading_comps.json",
+      "role": "companion_deliverable",
+      "artifact_type": "json",
+      "description": "Five wholly Synthetic trading peers with classifications, rationales and aligned EV/LTM periods.",
+      "user_visible_default": true,
+      "contains_new_analysis": true,
+      "user_requested_machine_readable": true
+    },
+    {
+      "path": "06_source_approval_register.csv",
+      "role": "companion_deliverable",
+      "artifact_type": "csv",
+      "description": "Combined Synthetic source and authorization register with internal-only use and pending FA confirmation status.",
+      "user_visible_default": true,
+      "contains_new_analysis": false,
+      "user_requested_machine_readable": true
+    }
+  ],
+  "support_artifacts": [
+    {
+      "path": "07_valuation_workflow_input.json",
+      "role": "support_artifact",
+      "artifact_type": "json",
+      "description": "Current deterministic P0 compact input contract assembled from the six business-control files; confirm_inputs remains false.",
+      "user_visible_default": false,
+      "contains_new_analysis": false,
+      "support_reason": "Direct product-import candidate after an FA human reviews and explicitly confirms inputs in the trusted workflow.",
+      "user_requested_machine_readable": true
+    }
+  ],
+  "agent_artifacts": [],
+  "support_artifacts_user_visible_default": false,
+  "blocked_or_partial_status": {
+    "status": "complete",
+    "reason": "The Synthetic candidate-input pack is complete; calculation activation remains intentionally gated pending explicit FA human confirmation.",
+    "missing_inputs": []
+  },
+  "transaction_workflow": "sponsor_buy_side",
+  "process_status": "internal_draft_only",
+  "marketing_posture": "internal_only",
+  "lead_skill": "dcf-model-builder",
+  "supporting_skills": [
+    "financials-normalizer",
+    "comps-valuation",
+    "scenario-sensitivity-generator"
+  ],
+  "routing_confidence": "high",
+  "handoff_contracts_used": [],
+  "routing_reason": "The requested acquisition input pack is centered on DCF scenarios and an EV-to-equity bridge, with normalized financials, five-company trading comps and scenario controls as supporting workstreams.",
+  "pack_controls": {
+    "business_file_count": "7",
+    "json_business_file_count": "6",
+    "csv_business_file_count": "1",
+    "base_currency": "CNY",
+    "amount_unit": "CNYm",
+    "valuation_date": "2026-06-30",
+    "all_business_data_classification": "Synthetic",
+    "candidate_inputs_only": true,
+    "fa_confirmation_required": true,
+    "fa_confirmation_status": "pending",
+    "agent_can_approve": false,
+    "public_release_authorized": false,
+    "formal_valuation_opinion_produced": false
+  },
+  "files": [
+    {
+      "path": "01_target_scope_authorization.json",
+      "byte_count": "3086",
+      "sha256": "1eb175e90eb7e43723da0394c7dc306593c6c3a0add8af4391e478ed68f850d5",
+      "source_authority": "Synthetic target data owner",
+      "source_version": "v1.0",
+      "source_as_of": "2026-06-30",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "02_financial_contract.json",
+      "byte_count": "5277",
+      "sha256": "272489d4dea0813f81840c50670b1068eaa071e9d8cedfbd1928208baba2fb59",
+      "source_authority": "Synthetic finance function and management team",
+      "source_version": "v1.0",
+      "source_as_of": "2026-06-30",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "03_dcf_scenarios.json",
+      "byte_count": "5218",
+      "sha256": "5e644345fc5ee7c98d8691a72e79e28563dc6bcdef7a8c4ad4fb1ec7a0b352e7",
+      "source_authority": "Synthetic transaction analysis team; FA confirmation pending",
+      "source_version": "v1.0",
+      "source_as_of": "2026-06-30",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "04_ev_to_equity_bridge.json",
+      "byte_count": "2298",
+      "sha256": "e1c73bff84a999c7a0152621f38788b5a74360f9c1680ef29c2519b676e5a1de",
+      "source_authority": "Synthetic finance function",
+      "source_version": "v1.0",
+      "source_as_of": "2026-06-30",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "05_trading_comps.json",
+      "byte_count": "4455",
+      "sha256": "a9828118eb7839aa736b3b396a3aaef274f69c6b361b35cc9fb4ff29c1673f61",
+      "source_authority": "Synthetic transaction analysis team; FA confirmation pending",
+      "source_version": "v1.0",
+      "source_as_of": "2026-06-30",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "06_source_approval_register.csv",
+      "byte_count": "5039",
+      "sha256": "f365b58b6003dd148771949fa2f657fdfc3ae9fb164a6e0e66200c7c6c2dee00",
+      "source_authority": "Synthetic target data owner and source owners",
+      "source_version": "v1.0",
+      "source_as_of": "2026-06-30",
+      "data_classification": "Synthetic"
+    },
+    {
+      "path": "07_valuation_workflow_input.json",
+      "byte_count": "11574",
+      "sha256": "6f04347902fa7a9cffa288bc95cb0755a5e30d9094fd0375a6cf59d3be692570",
+      "source_authority": "Assembled from Synthetic Round 5 control files; FA confirmation pending",
+      "source_version": "v1.0",
+      "source_as_of": "2026-06-30",
+      "data_classification": "Synthetic"
+    }
+  ],
+  "manifest_integrity": {
+    "hash_algorithm": "SHA-256",
+    "byte_count_basis": "Exact file size in bytes on disk",
+    "self_hash_policy": "This manifest intentionally excludes its own hash and byte count to avoid recursive self-reference."
+  },
+  "final_response_guidance": {
+    "lead_with": "primary_human_deliverable",
+    "mention_support_artifacts": "only_briefly_unless_requested"
+  },
+  "discipline_note": "This generated package contains only Synthetic candidate inputs. It is not a formal valuation opinion, is not approved by the Agent and is not authorized for public release."
+}

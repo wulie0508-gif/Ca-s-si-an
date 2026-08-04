@@ -1,0 +1,149 @@
+{
+  "manifest_type": "synthetic_company_round_02_initial_submission",
+  "synthetic": true,
+  "data_status": "Synthetic",
+  "submission_id": "SYN-DBFA-R02-CYTS-001",
+  "version": "0.1.0",
+  "submitted_at": "2026-08-04T11:00:00+08:00",
+  "company": {
+    "legal_name": "澄岳热储科技（上海）有限公司",
+    "data_status": "Synthetic",
+    "assertion_status": "Unverified"
+  },
+  "submission_policy": {
+    "all_company_content_synthetic": true,
+    "all_company_content_verified": false,
+    "cross_file_normalization_bridge_included": false,
+    "cross_file_source_priority_declared": false,
+    "automatic_unit_period_scope_or_tax_inference_authorized": false,
+    "purpose": "Synthetic multi-export initial pack preserving source-declared metadata without resolving cross-file differences"
+  },
+  "files": [
+    {
+      "filename": "01-standalone-finance-export.csv",
+      "media_type": "text/csv",
+      "byte_count": 3314,
+      "sha256": "3fcca37035d010c3312d6482cf6ca0acff3bd67581e7b5ae6a95d8357782f56f",
+      "synthetic": true,
+      "source_class": "Enterprise-prepared finance export",
+      "assertion_status": "Unverified enterprise-prepared",
+      "declared_entity_scope": "Standalone",
+      "declared_period_label": "H1 2026",
+      "declared_currency": "RMB",
+      "declared_unit": "yuan",
+      "declared_tax_basis": "Revenue and cost excluding VAT",
+      "declared_as_of": "2026-06-30"
+    },
+    {
+      "filename": "02-group-sales-ytd-export.csv",
+      "media_type": "text/csv",
+      "byte_count": 1633,
+      "sha256": "9ef59dd7294acdbd1576bc0b076dc5eaa1bc7fb8cc069609ea4fc2ae5c71ae91",
+      "synthetic": true,
+      "source_class": "Enterprise-prepared sales ledger export",
+      "assertion_status": "Unverified enterprise-prepared",
+      "declared_entity_scope": "Management group view: CYTS + SYN-OPS-01",
+      "declared_period_label": "2026 YTD",
+      "declared_currency": "RMB",
+      "declared_unit": "thousand",
+      "declared_tax_basis": "Dual columns include both excluding and including VAT",
+      "declared_as_of": "2026-07-31"
+    },
+    {
+      "filename": "03-r12m-kpi-dashboard.csv",
+      "media_type": "text/csv",
+      "byte_count": 2063,
+      "sha256": "5f077b1dd9259496a8dc57b525032e6e96d0568361e3f358c9bc0bbaec0659d4",
+      "synthetic": true,
+      "source_class": "Management dashboard export",
+      "assertion_status": "Management Statement—Unverified",
+      "declared_entity_scope": "Management group view",
+      "declared_period_label": "Rolling 12 months",
+      "declared_currency": "RMB",
+      "declared_units": [
+        "million",
+        "percent"
+      ],
+      "declared_tax_basis": "Not specified in dashboard export",
+      "declared_as_of": "2026-07-08"
+    },
+    {
+      "filename": "04-group-treasury-snapshot.csv",
+      "media_type": "text/csv",
+      "byte_count": 1628,
+      "sha256": "cc4b35ad4f8b6ac8834d2f0b6cc385a6050aaf82809d6a6d885f11e5833434d1",
+      "synthetic": true,
+      "source_class": "Enterprise-prepared treasury snapshot",
+      "assertion_status": "Unverified enterprise-prepared",
+      "declared_entity_scope": "Management group view: CYTS + SYN-OPS-01",
+      "declared_period_label": "Point-in-time snapshot",
+      "declared_currency": "RMB",
+      "declared_unit": "thousand",
+      "declared_restriction_classes": [
+        "Unrestricted",
+        "Pledged restricted",
+        "Mixed"
+      ],
+      "declared_as_of": "2026-07-31"
+    },
+    {
+      "filename": "05-forecast-version-exports.csv",
+      "media_type": "text/csv",
+      "byte_count": 1365,
+      "sha256": "08d588a8fda078d60c9ebbb06add8943dcb6c3ffbc7ccfc92672f7f1f1b31d17",
+      "synthetic": true,
+      "source_class": "Mixed management and enterprise-prepared forecast exports",
+      "assertion_status": "Unverified; both versions draft not approved",
+      "declared_versions": [
+        {
+          "forecast_version": "SYN-FCST-V1",
+          "as_of": "2026-05-31",
+          "entity_scope": "Management group view",
+          "unit": "million",
+          "tax_basis": "Revenue and cost including 13% VAT"
+        },
+        {
+          "forecast_version": "SYN-FCST-V2",
+          "as_of": "2026-07-15",
+          "entity_scope": "Standalone",
+          "unit": "thousand",
+          "tax_basis": "Revenue and cost excluding VAT"
+        }
+      ]
+    }
+  ],
+  "observable_metadata_axes": [
+    "currency",
+    "unit",
+    "period_label",
+    "period_start",
+    "period_end",
+    "as_of_date",
+    "entity_scope",
+    "tax_basis",
+    "forecast_version",
+    "cash_restriction_class"
+  ],
+  "submission_events": [
+    {
+      "event_id": "SYN-EVT-R02-001",
+      "event_type": "multi_export_initial_pack_prepared",
+      "event_timestamp": "2026-08-04T10:55:00+08:00",
+      "event_data_status": "Synthetic",
+      "payload_file_count": 5
+    },
+    {
+      "event_id": "SYN-EVT-R02-002",
+      "event_type": "payload_integrity_recorded",
+      "event_timestamp": "2026-08-04T11:00:00+08:00",
+      "event_data_status": "Synthetic",
+      "digest_algorithm": "SHA-256"
+    }
+  ],
+  "integrity_metadata": {
+    "digest_algorithm": "SHA-256",
+    "digest_scope": "five payload files only",
+    "manifest_self_digest_included": false,
+    "integrity_values_are_company_business_evidence": false
+  }
+}

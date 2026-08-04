@@ -1,0 +1,4 @@
+interface:
+  display_name: "CleanTech Policy Bridge"
+  short_description: "Consent-gated local policy matching for Codex"
+  default_prompt: "Use $cleantech-policy-bridge to inspect and safely match the local reviewed policy catalog."

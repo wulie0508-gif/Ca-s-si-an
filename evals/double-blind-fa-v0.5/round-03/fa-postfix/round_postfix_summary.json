@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R03-FA-POSTFIX-20260804",
+  "case_id": "case-20260804-aebb5f7120",
+  "overall_result": {
+    "scoped_replay_gate": "pass",
+    "assertions_passed": 17,
+    "assertions_total": 17,
+    "case_input_integrity_gate": "blocked",
+    "business_evidence_reliance": "not_ready",
+    "interpretation": "The fix replay passed because the product preserved and blocked on unresolved evidence controls; it did not make the company case pass."
+  },
+  "fixed_behavior_verified": {
+    "twenty_one_original_files_ingested": true,
+    "native_jsonl_supported": true,
+    "initial_hash_mismatch_preserved": true,
+    "corrected_declaration_does_not_erase_original_mismatch": true,
+    "both_07_artifacts_quarantined": true,
+    "actual_payload_aliases_retained_and_deduplicated": true,
+    "missing_P2602_underlying_payload_gets_zero_evidence_credit": true,
+    "document_control_axes_independent": true,
+    "automatic_authority_selection_absent": true,
+    "forecast_and_cap_table_conflicts_explicit_and_unresolved": true,
+    "stable_R03_Q01_to_Q04": true,
+    "candidate_receipts_never_accepted_or_closed": true,
+    "financial_preflight_routes_only_board_plans": true,
+    "forecast_versions_visible_but_unselected": true,
+    "management_cash_claim_not_promoted_to_treasury_candidate": true,
+    "dashboard_routes_to_evidence_control_review": true,
+    "no_calculation_deal_valuation_rating_or_publication": true
+  },
+  "key_counts": {
+    "physical_files": 21,
+    "artifacts": 21,
+    "manifest_entries": 19,
+    "manifest_matched": 18,
+    "manifest_mismatch": 1,
+    "quarantined_artifacts": 2,
+    "actual_duplicate_groups": 1,
+    "declared_underlying_groups": 1,
+    "structured_conflicts": 25,
+    "forecast_metric_conflicts": 20,
+    "evidence_control_questions": 4,
+    "candidate_response_receipts": 34
+  },
+  "dashboard": {
+    "next_action": "review_evidence_control_questions",
+    "operational_status": "evidence_control_review_required",
+    "responsible_actor_type": "human"
+  },
+  "non_blocking_observation": "The case endpoint's top-level next_action remains confirm_material_scope, while its nested dashboard projection and /api/ui/dashboard correctly use review_evidence_control_questions. This replay gate tests the dashboard contract; no state was mutated.",
+  "scope_note": "This is a scoped evidence-control regression gate, not a company score, product-wide quality score, investment/credit/risk rating, valuation opinion, or recommendation.",
+  "telemetry_boundary": {"business_materials":"Synthetic","HTTP status, case ID, artifact hashes, diagnostics and dashboard":"Real local product telemetry"}
+}

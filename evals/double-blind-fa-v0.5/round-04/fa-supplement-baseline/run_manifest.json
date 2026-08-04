@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R04-FA-SUPPLEMENT-BASELINE-20260804",
+  "round": "round-04",
+  "role": "coordinator_pre_fix_supplement_replayer",
+  "baseline_code_commit": "7befde2",
+  "baseline_freeze": "The Bridge process was started before the Round 4 engineering actor modified product source and retained the imported pre-fix code until this replay ended.",
+  "scope": {
+    "inputs": [
+      "round-04/company-submission/",
+      "round-04/company-supplement/"
+    ],
+    "business_data": "Synthetic",
+    "telemetry": "Real local process, HTTP, hash, case and dashboard telemetry"
+  },
+  "runtime": {
+    "base_url": "http://127.0.0.1:8902",
+    "workspace_root": "C:/Users/huawei/AppData/Local/Temp/ctf-r04-baseline-pre-fix-20260804/workspace",
+    "listener_pid": 40604,
+    "case_id": "case-20260804-d9b768b723",
+    "created_at_utc": "2026-08-04T14:41:37.771845Z",
+    "listener_stopped_exact_pid": true,
+    "listener_alive_after_stop": false,
+    "port_8902_listener_count_after_stop": 0
+  },
+  "http": {
+    "post_case": 201,
+    "get_case": 200,
+    "get_dashboard": 200,
+    "uploaded_file_count": 16,
+    "artifact_count": 16
+  },
+  "prohibited_actions": {
+    "deal_created": false,
+    "valuation_created": false,
+    "financial_calculation_performed": false,
+    "rating_produced": false,
+    "publication_performed": false,
+    "translation_performed": false,
+    "ai_media_generated": false,
+    "authorization_mutated": false
+  }
+}

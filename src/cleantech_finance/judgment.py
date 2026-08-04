@@ -333,6 +333,8 @@ def build_judgment_layer(
     financials: dict[str, Any] | None,
     sources: list[Source],
     selected_dimensions: set[str],
+    *,
+    applicability_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     context = manifest.get("judgment_context")
     if not context:
@@ -386,18 +388,36 @@ def build_judgment_layer(
     enabled = [item for item in SUPPORTED_CARD_DIMENSIONS if item in selected_dimensions]
     for dimension_id in enabled:
         applicability = dimension_applicability(
-            dimension_id, str(subindustry.get("scope_id") or "")
+            dimension_id,
+            str(subindustry.get("scope_id") or ""),
+            applicability_context,
         )
-        if applicability["status"] == "not_applicable":
+        if applicability["status"] in {"not_applicable", "not_yet_applicable"}:
+            applicability_basis = _citations(
+                applicability.get("basis"), source_lookup, errors
+            )
+            outcome_basis = _unique_citations(
+                subindustry_basis + applicability_basis
+            )
             outcome = {
                 "dimension_id": dimension_id,
-                "status": "not_applicable",
+                "status": applicability["status"],
                 "signal": None,
                 "scope_id": subindustry.get("scope_id"),
                 "reason": applicability["reason"],
                 "reason_zh": applicability["reason_zh"],
-                "basis": subindustry_basis,
+                "basis": outcome_basis,
             }
+            for key in (
+                "reason_code",
+                "policy_id",
+                "policy_version",
+                "policy_digest",
+                "inputs_digest",
+                "inputs",
+            ):
+                if key in applicability:
+                    outcome[key] = applicability[key]
             outcomes.append(outcome)
             traces.append(
                 {
@@ -405,9 +425,20 @@ def build_judgment_layer(
                     "stage": "applicability_gate",
                     "actor": "deterministic_rule_engine",
                     "output": applicability["reason"],
-                    "citation_count": len(subindustry_basis),
-                    "sources": subindustry_basis,
-                    "status": "not_applicable",
+                    "citation_count": len(outcome_basis),
+                    "sources": outcome_basis,
+                    "status": applicability["status"],
+                    **(
+                        {
+                            "reason_code": applicability["reason_code"],
+                            "policy_id": applicability["policy_id"],
+                            "policy_version": applicability["policy_version"],
+                            "policy_digest": applicability["policy_digest"],
+                            "inputs_digest": applicability["inputs_digest"],
+                        }
+                        if applicability["status"] == "not_yet_applicable"
+                        else {}
+                    ),
                 }
             )
             continue
@@ -481,13 +512,19 @@ def build_judgment_layer(
         if any(not item.get("text_zh") for item in gaps):
             errors.append(f"'{dimension_id}' gap items require Chinese text in 'text_zh'")
 
-        facts = _financial_fact_items(dimension_id, financials, source_lookup)
         try:
+            facts = _financial_fact_items(dimension_id, financials, source_lookup)
             application = evaluate_rule(
-                dimension_id, str(subindustry.get("scope_id") or ""), financials
+                dimension_id,
+                str(subindustry.get("scope_id") or ""),
+                financials,
+                applicability_context,
             )
-        except ValueError as exc:
-            errors.append(str(exc))
+        except (KeyError, ValueError, ZeroDivisionError) as exc:
+            missing = exc.args[0] if isinstance(exc, KeyError) and exc.args else str(exc)
+            errors.append(
+                f"'{dimension_id}' financial facts or rule inputs are incomplete: {missing}"
+            )
             continue
         signal = application["signal"]
         basis_fact_ids = set(application["basis_fact_ids"])
@@ -630,7 +667,10 @@ def build_judgment_layer(
 
     locked = sum(card["cells"]["3_judgment_framework"]["locked"] is True for card in cards)
     implemented = len(cards)
-    not_applicable = sum(item["status"] == "not_applicable" for item in outcomes)
+    not_applicable = sum(
+        item["status"] in {"not_applicable", "not_yet_applicable"}
+        for item in outcomes
+    )
     return {
         "version": JUDGMENT_LAYER_VERSION,
         "status": "generated" if (cards or outcomes) and not errors else "invalid",

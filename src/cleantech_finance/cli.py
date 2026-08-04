@@ -6,8 +6,10 @@ import argparse
 import json
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
+from .agent_bridge import serve_agent_bridge
 from .audit import run_audit, validate_audit
 from .enterprise_assessment import (
     EnterpriseAssessmentEngine,
@@ -20,7 +22,12 @@ from .enterprise_evidence import (
     evidence_from_owner_statement,
 )
 from .enterprise_interview import transcribe_media
-from .enterprise_matching import load_matching_config
+from .enterprise_matching import (
+    catalog_summary,
+    load_matching_config,
+    match_catalog,
+    suggest_policy_references,
+)
 from .enterprise_reporting import write_enterprise_report
 from .enterprise_store import AssessmentStore
 from .finance_framework import FINANCE_DIMENSIONS
@@ -76,25 +83,12 @@ def _init_manifest(path: Path) -> None:
                 "role": "subject",
             }
         ],
-        "financials": {
+        "financial_extraction": {
+            "enabled": True,
+            "source_id": "annual-report",
             "currency": "USD",
-            "periods": [
-                {
-                    "period": "FY2025",
-                    "fiscal_year": 2025,
-                    "period_type": "annual",
-                    "start_date": "2025-01-01",
-                    "end_date": "2025-12-31",
-                    "duration_days": 365,
-                    "facts": {
-                        "revenue": {
-                            "value": 0,
-                            "source_id": "annual-report",
-                            "locator": "page or line",
-                        }
-                    },
-                }
-            ],
+            "years": [2024, 2025],
+            "fiscal_year_end": "12-31",
         },
         "auxiliary_validation": {
             "enabled": False,
@@ -134,6 +128,27 @@ def _load_json_object(path: str) -> dict[str, object]:
 
 def _load_json_value(path: str) -> object:
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def _extract_profile_tags(payload: dict[str, object]) -> dict[str, object]:
+    direct = payload.get("profile_tags")
+    if isinstance(direct, dict):
+        return direct
+    case = payload.get("case")
+    profile = case.get("profile") if isinstance(case, dict) else payload.get("profile")
+    if not isinstance(profile, dict):
+        profile = payload
+    nested = profile.get("tags")
+    if isinstance(nested, dict):
+        return nested
+    return {
+        "industry": profile.get("industry", []),
+        "stage": profile.get("stage", []),
+        "need": profile.get("need", profile.get("needs", [])),
+        "technology": profile.get("technology", []),
+        "geography": profile.get("geography", []),
+        "market": profile.get("market", profile.get("target_market", [])),
+    }
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -339,6 +354,94 @@ def build_parser() -> argparse.ArgumentParser:
     enterprise_asset_candidates.add_argument("case_id")
     enterprise_asset_candidates.add_argument("query")
     enterprise_asset_candidates.add_argument("--limit", type=int, default=10)
+
+    policy_parser = subparsers.add_parser(
+        "policy",
+        help="Inspect or match a traceable policy catalog without bypassing review gates",
+    )
+    policy_subparsers = policy_parser.add_subparsers(
+        dest="policy_command",
+        required=True,
+    )
+    policy_inspect = policy_subparsers.add_parser(
+        "inspect",
+        help="Print catalog provenance and hard-filter counts",
+    )
+    policy_inspect.add_argument("catalog")
+    policy_inspect.add_argument("--as-of")
+    policy_inspect.add_argument("--attestation")
+    policy_match = policy_subparsers.add_parser(
+        "match",
+        help="Run candidate-only matching against a JSON enterprise profile",
+    )
+    policy_match.add_argument("catalog")
+    policy_match.add_argument("profile_json")
+    policy_match.add_argument("--as-of")
+    policy_references = policy_subparsers.add_parser(
+        "references",
+        help="Generate reference-only suggestions from a hash-confirmed catalog",
+    )
+    policy_references.add_argument("catalog")
+    policy_references.add_argument("profile_json")
+    policy_references.add_argument("--attestation", required=True)
+    policy_references.add_argument("--as-of")
+    policy_sync = policy_subparsers.add_parser(
+        "sync",
+        help=(
+            "Refresh allowlisted official policy pages into a separate "
+            "candidate-review feed"
+        ),
+    )
+    policy_sync.add_argument("manifest")
+    policy_sync.add_argument(
+        "--out",
+        default="local-data/policy-updates/shanghai",
+        help="Local output directory for snapshots, state, feed and receipt",
+    )
+    policy_sync.add_argument("--as-of")
+    policy_sync.add_argument("--timeout", type=float, default=20.0)
+    policy_sync.add_argument("--min-interval", type=float, default=2.0)
+
+    bridge_parser = subparsers.add_parser(
+        "bridge",
+        help="Serve the loopback-only case workspace and consent-gated Agent tools",
+    )
+    bridge_parser.add_argument("catalog")
+    bridge_parser.add_argument("--host", default="127.0.0.1")
+    bridge_parser.add_argument("--port", type=int, default=8765)
+    bridge_parser.add_argument(
+        "--audit-log",
+        default="outputs/agent-bridge/consent-events.jsonl",
+    )
+    bridge_parser.add_argument(
+        "--workspace-root",
+        default="local-data/agent-workspace",
+        help="Ignored local directory for case materials and recognition manifests",
+    )
+    bridge_parser.add_argument(
+        "--rag-url",
+        default="http://127.0.0.1:8000",
+        help="Loopback-only NEX knowledge gateway URL",
+    )
+    bridge_parser.add_argument(
+        "--policy-attestation",
+        help="Hash-bound JSON confirmation for reference-only policy suggestions",
+    )
+    bridge_parser.add_argument(
+        "--policy-update-feed",
+        help=(
+            "Optional quarantined CSV generated by policy sync; exposed as "
+            "review candidates and never matched automatically"
+        ),
+    )
+    bridge_parser.add_argument(
+        "--course-catalog",
+        help="Optional CSV/XLSX course catalog exposed read-only in the resource directory",
+    )
+    bridge_parser.add_argument(
+        "--mentor-catalog",
+        help="Optional consent-screened CSV/XLSX mentor catalog exposed read-only",
+    )
     return parser
 
 
@@ -440,6 +543,57 @@ def main(argv: list[str] | None = None) -> int:
                     )
                 )
                 return 0 if result["passed"] else 2
+        if args.command == "policy":
+            as_of = args.as_of or date.today().isoformat()
+            if args.policy_command == "sync":
+                from .policy_update import sync_policy_sources
+
+                result = sync_policy_sources(
+                    args.manifest,
+                    args.out,
+                    as_of=as_of,
+                    timeout_seconds=args.timeout,
+                    min_interval_seconds=args.min_interval,
+                )
+            elif args.policy_command == "inspect":
+                result = catalog_summary(
+                    args.catalog,
+                    category="policy",
+                    as_of=as_of,
+                    attestation_path=args.attestation,
+                )
+            elif args.policy_command == "match":
+                profile = _load_json_object(args.profile_json)
+                result = match_catalog(
+                    args.catalog,
+                    category="policy",
+                    profile_tags=_extract_profile_tags(profile),
+                    as_of=as_of,
+                )
+            else:
+                profile = _load_json_object(args.profile_json)
+                result = suggest_policy_references(
+                    args.catalog,
+                    profile_tags=_extract_profile_tags(profile),
+                    as_of=as_of,
+                    attestation_path=args.attestation,
+                )
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0
+        if args.command == "bridge":
+            serve_agent_bridge(
+                args.catalog,
+                host=args.host,
+                port=args.port,
+                audit_log=args.audit_log,
+                workspace_root=args.workspace_root,
+                rag_url=args.rag_url,
+                policy_attestation=args.policy_attestation,
+                policy_update_feed=args.policy_update_feed,
+                course_catalog=args.course_catalog,
+                mentor_catalog=args.mentor_catalog,
+            )
+            return 0
         if args.command == "enterprise":
             if args.enterprise_command == "init-store":
                 store = AssessmentStore(args.database)

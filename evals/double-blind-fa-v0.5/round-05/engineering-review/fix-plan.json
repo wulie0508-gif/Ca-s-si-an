@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "round": "05",
+  "created_on": "2026-08-04",
+  "objective": "Repair only evidenced Round 05 valuation timing, package identity, and confidentiality vocabulary failures without expanding valuation or approval authority.",
+  "evidence": [
+    "round-05/fa-initial/initial-test-report.md",
+    "round-05/fa-initial/round-initial-summary.json",
+    "round-05/company-submission/03_dcf_scenarios.json",
+    "round-05/company-submission/07_valuation_workflow_input.json",
+    "round-05/company-supplement/04_stub_and_dcf_assumptions.json",
+    "round-05/company-supplement/response-register.jsonl"
+  ],
+  "changes": [
+    {
+      "finding_id": "R05-F01",
+      "priority": "S1",
+      "design": "Add source-bearing, human-confirmed per-period discount_exponent inputs. Use them directly for explicit FCFF and terminal-value discounting and disclose their basis and values in calculation output and UI.",
+      "fail_closed": "A confirmed DCF without complete explicit exponents may calculate only under the narrow legacy compatibility rule; all other missing, partial, non-positive, non-increasing, or scenario-conflicting timing sets hard fail.",
+      "candidate_boundary": "Candidate timing inputs remain candidate_input and cannot calculate or confirm themselves."
+    },
+    {
+      "finding_id": "R05-F02",
+      "priority": "S2",
+      "design": "Refresh the local editable installation from already-correct 0.5.0 source metadata and add a regression that detects installed/source version drift when distribution metadata is present."
+    },
+    {
+      "finding_id": "R05-F03",
+      "priority": "S3",
+      "design": "Accept internal_only as an input alias and persist the existing canonical confidentiality value internal."
+    }
+  ],
+  "compatibility_rule": {
+    "explicit_path": "A complete, source-bearing exponent for every period in every DCF scenario is accepted for any valuation date; exponent sequences must be identical across scenarios, positive, and strictly increasing.",
+    "legacy_path": "Positional period-end exponents 1..N remain available only when the valuation date is December 31 and every scenario supplies confirmed structured period_end dates equal to consecutive December 31 year ends starting one year later.",
+    "forbidden_inference": "Period labels such as FY2027E are never parsed or guessed as dates.",
+    "candidate_path": "Incomplete company candidate timing may be stored for review but cannot be calculated or converted to confirmed input without satisfying the explicit or legacy rule."
+  },
+  "negative_regressions": [
+    "confirmed non-year-end DCF without exponents is rejected",
+    "old confirmed stored inputs cannot bypass the calculation-time timing gate",
+    "partial, non-positive, non-increasing, and cross-scenario-conflicting exponents fail closed",
+    "free-text period labels cannot activate legacy compatibility",
+    "candidate exponents remain non-calculable until human confirmation"
+  ],
+  "positive_regressions": [
+    "explicit 1.5/2.5/3.5 exponents are used and disclosed deterministically",
+    "validated December-31 annual sequence retains positional 1/2/3 compatibility",
+    "internal_only is canonicalized to internal",
+    "runtime package metadata matches source version after environment refresh"
+  ],
+  "verification": [
+    "focused pytest",
+    "full relevant valuation/Deal/API pytest",
+    "Ruff",
+    "existing Node UI tests"
+  ],
+  "non_goals": [
+    "formal valuation opinion",
+    "method weighting",
+    "investment, credit, or aggregate risk rating",
+    "Agent approval",
+    "external publication",
+    "automatic import or confirmation of company supplement assumptions"
+  ]
+}

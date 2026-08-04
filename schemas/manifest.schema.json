@@ -142,6 +142,51 @@
         }
       }
     },
+    "applicability_context": {
+      "type": "object",
+      "required": [
+        "contract_version",
+        "commercialization_stage",
+        "recognized_operating_revenue"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {"const": "1.0.0"},
+        "commercialization_stage": {
+          "type": "object",
+          "required": ["state", "as_of", "basis"],
+          "additionalProperties": false,
+          "properties": {
+            "state": {"const": "pre_commercial"},
+            "as_of": {"type": "string", "format": "date"},
+            "basis": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"$ref": "#/$defs/citation"}
+            }
+          }
+        },
+        "recognized_operating_revenue": {
+          "type": "object",
+          "required": ["state", "periods", "basis"],
+          "additionalProperties": false,
+          "properties": {
+            "state": {"const": "none_recognized"},
+            "periods": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {"type": "string", "pattern": "^FY[0-9]{4}$"}
+            },
+            "basis": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"$ref": "#/$defs/citation"}
+            }
+          }
+        }
+      }
+    },
     "judgment_context": {
       "type": "object",
       "required": ["contract_version", "prepared_by", "prepared_at", "subindustry", "dimensions"],

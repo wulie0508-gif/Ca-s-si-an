@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "round": 1,
+  "replay": "postfix_blind",
+  "independent_score": {
+    "score": 88,
+    "scale": 100,
+    "verdict": "pass_with_material_product_gaps",
+    "basis": "Strong workflow applicability and valuation fail-closed behavior; incomplete company-intake readiness semantics, empty profile hints, and no explicit bridge from routed artifacts to requirement candidates."
+  },
+  "company_intake": {
+    "case_id": "case-20260804-a4c809de2e",
+    "workflow_type": "company_intake",
+    "uploaded_artifact_count": 13,
+    "acquisition_applicability": {
+      "status": "not_applicable",
+      "reason_code": "explicit_acquisition_workflow_not_selected",
+      "percent": null,
+      "readiness_status": "not_applicable"
+    },
+    "observed_question_count": 0,
+    "profile_hints": {"authority": "routing_hint_only", "tags": {}},
+    "next_action": {"id": "confirm_material_scope", "actor": "human", "label_zh": "确认材料识别范围"},
+    "workflow": {"materials": "complete", "evidence": "awaiting_human", "analysis": "blocked", "supplements": "not_available", "review": "not_available", "outputs": "not_available"},
+    "assessment": "Correctly does not treat 13 uploaded files as acquisition readiness or create transaction facts. Company-intake itself exposes no separate readiness percentage or intake questions."
+  },
+  "acquisition": {
+    "case_id": "case-20260804-e1d0b3efab",
+    "workflow_type": "acquisition",
+    "applicability": {"status": "applicable", "reason_code": "explicit_acquisition_workflow_selected"},
+    "completeness": {"percent": 0.0, "ratio": 0.0, "earned_weight": 0.0, "total_weight": 80.0, "critical_candidate_covered_count": 0, "critical_required_count": 22, "authority": "candidate_material_coverage_only"},
+    "business_model_interview_readiness": {"status": "insufficient", "label_zh": "尚不足", "minimum_completeness_ratio": 0.3, "missing_entry_requirement_ids": ["acquisition_thesis", "transaction_parameters", "industry_map", "target_business_profile", "commercial_model_baseline"]},
+    "input_summary": {"artifact_count": 13, "accepted_artifact_count": 13, "ignored_artifact_count": 0, "requirement_candidates": [], "profile_hints": {}, "candidate_roles": ["company_identity", "esg_impact", "financial_core", "generic_supporting", "governance_legal", "market_export", "policy_resource", "technology_arl"]},
+    "critical_gap_count": 22,
+    "critical_gap_ids": ["acquisition_thesis", "transaction_parameters", "industry_map", "longlist_universe", "target_business_profile", "commercial_model_baseline", "preliminary_valuation", "contact_and_interest_record", "nda_record", "ioi_loi_terms", "commercial_diligence", "financial_tax_diligence", "legal_regulatory_diligence", "technology_ip_quality_ehs_diligence", "transaction_model_and_structure", "spa_and_disclosure", "financing_commitments", "regulatory_approvals", "closing_checklist", "hundred_day_plan", "operating_integration", "synergy_tracking"],
+    "observed_question_count": 8,
+    "next_action": {"id": "confirm_material_scope", "actor": "human", "label_zh": "确认材料识别范围"},
+    "workflow": {"materials": "complete", "evidence": "awaiting_human", "analysis": "blocked", "supplements": "not_available", "review": "not_available", "outputs": "not_available"}
+  },
+  "artifact_role_routing": {
+    "01-company-profile.md": ["financial_core", "technology_arl", "market_export", "company_identity"],
+    "02-management-pnl-summary.csv": ["financial_core"],
+    "03-project-customer-pipeline.csv": ["market_export", "technology_arl"],
+    "submission-manifest.json": ["generic_supporting"],
+    "FA-Q01-financial-pack.csv": ["financial_core", "policy_resource"],
+    "FA-Q02-project-revenue-pack.csv": ["policy_resource"],
+    "FA-Q03-technical-validation-pack.md": ["market_export", "governance_legal", "technology_arl"],
+    "FA-Q04-Q05-governance-ip-forecast.md": ["financial_core", "governance_legal", "market_export", "technology_arl"],
+    "supplement-manifest.json": ["generic_supporting"],
+    "SYS-Q03-industry-technology-market.md": ["market_export", "technology_arl"],
+    "SYS-Q05-entity-product-scope.md": ["market_export", "technology_arl"],
+    "SYS-Q06-commercial-model.md": ["financial_core", "market_export", "esg_impact", "technology_arl"],
+    "SYS-Q06-unit-economics.csv": ["financial_core"]
+  },
+  "deal_and_valuation_gate": {
+    "deal_count": 0,
+    "deal_created": false,
+    "valuation_run": false,
+    "reason": "No buyer, deal scope, transaction parameters, contact/authority record, or qualified preliminary valuation requirement candidate was present. The explicit acquisition Case remained fail-closed."
+  },
+  "remaining_capability_gaps": [
+    "No company-intake-specific readiness percentage or question set is surfaced; only acquisition applicability is not_applicable.",
+    "All profile-hint tags remained empty despite declared fields in uploaded materials, limiting downstream routing specificity.",
+    "Artifact role recognition does not itself produce explicit requirement candidates, so 13 accepted artifacts still earn 0.0% coverage; the UI needs a reviewable mapping/promotion step.",
+    "The generic next action 'confirm material scope' does not prioritize the five acquisition entry requirements or expose the Deal creation gate.",
+    "No buyer/Deal bootstrap capability was exercised because transaction context was absent; valuation correctly remained unavailable, but its qualification threshold should be visible before model entry."
+  ]
+}

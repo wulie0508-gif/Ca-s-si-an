@@ -152,6 +152,7 @@ def derive_financial_metrics(
     financials: dict[str, Any] | None,
     source_ids: set[str],
     inapplicable_dimensions: set[str] | None = None,
+    applicability_outcomes: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     if not financials:
         return {
@@ -170,8 +171,9 @@ def derive_financial_metrics(
     prior = periods[-2] if len(periods) > 1 else None
     currency = financials.get("currency", "USD")
     metrics: list[dict[str, Any]] = []
-    screening_notes: list[dict[str, str]] = []
+    screening_notes: list[dict[str, Any]] = []
     inapplicable_dimensions = inapplicable_dimensions or set()
+    applicability_outcomes = applicability_outcomes or {}
     profitability_applicable = (
         "profitability-unit-economics" not in inapplicable_dimensions
     )
@@ -198,8 +200,12 @@ def derive_financial_metrics(
             }
         )
 
-    revenue = _fact(latest, "revenue", source_ids)
-    prior_revenue = _fact(prior, "revenue", source_ids) if prior else None
+    revenue = _fact(latest, "revenue", source_ids) if profitability_applicable else None
+    prior_revenue = (
+        _fact(prior, "revenue", source_ids)
+        if profitability_applicable and prior
+        else None
+    )
     if revenue and prior_revenue and prior_revenue["value"]:
         value = (revenue["value"] - prior_revenue["value"]) / abs(prior_revenue["value"])
         add(
@@ -243,7 +249,9 @@ def derive_financial_metrics(
             "attention" if value < 0 else "observed",
         )
 
-    operating_income = _fact(latest, "operating_income", source_ids)
+    operating_income = (
+        _fact(latest, "operating_income", source_ids) if profitability_applicable else None
+    )
     if revenue and operating_income and revenue["value"]:
         value = operating_income["value"] / revenue["value"]
         add(
@@ -283,14 +291,18 @@ def derive_financial_metrics(
             "attention" if value < 0 else "observed",
         )
     if not profitability_applicable:
+        applicability = applicability_outcomes.get("profitability-unit-economics", {})
         screening_notes.append(
             {
                 "id": "profitability-unit-economics-not-applicable",
-                "status": "not_applicable",
-                "text": (
-                    "Manufacturing gross-margin and net-margin calculations were suppressed "
-                    "because the classified business-model scope is not applicable."
+                "status": applicability.get("status", "not_applicable"),
+                "reason_code": applicability.get("reason_code"),
+                "text": applicability.get("reason")
+                or (
+                    "Revenue and margin calculations were suppressed because the classified "
+                    "business-model scope is not applicable."
                 ),
+                "text_zh": applicability.get("reason_zh"),
             }
         )
 

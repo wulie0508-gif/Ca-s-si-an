@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "round": 2,
+  "phase": "fa_initial",
+  "status": "engineering_fix_required",
+  "score": 48,
+  "score_scale": 100,
+  "rubric": {
+    "authority_and_fail_closed": {"score": 25, "maximum": 25},
+    "intake_traceability": {"score": 18, "maximum": 20},
+    "financial_basis_conflict_detection": {"score": 0, "maximum": 25},
+    "actionable_question_generation": {"score": 0, "maximum": 20},
+    "interaction_and_next_action_quality": {"score": 5, "maximum": 10}
+  },
+  "observed": {
+    "submitted_files": 6,
+    "accepted_files": 6,
+    "system_questions": 0,
+    "fa_questions": 8,
+    "profile_hint_dimensions": 0,
+    "workflow_materials": "complete",
+    "workflow_evidence": "awaiting_human",
+    "workflow_analysis": "blocked",
+    "deal_count": 0,
+    "valuation_count": 0,
+    "calculation_performed": false
+  },
+  "conflict_dimensions_visible_in_inputs": [
+    "entity_scope",
+    "related_entity",
+    "reporting_period",
+    "currency_and_unit",
+    "vat_basis",
+    "cash_as_of_and_restrictions",
+    "forecast_version",
+    "source_precedence"
+  ],
+  "critical_findings": [
+    "The product accepted and hashed all files but did not expose a structured financial-basis preflight.",
+    "No system question addressed scope, period, unit, VAT, as-of, restriction or forecast-version conflicts.",
+    "The generic next action did not prioritize the calculation-blocking conflicts.",
+    "Fail-closed boundaries held: no Deal, valuation or financial calculation was produced."
+  ],
+  "data_classification": {
+    "company_materials": "synthetic",
+    "execution_and_telemetry": "real_local_execution",
+    "real_company_validation_claimed": false
+  }
+}

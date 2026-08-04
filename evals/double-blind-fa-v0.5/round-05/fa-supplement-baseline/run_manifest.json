@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R05-FA-SUPPLEMENT-BASELINE-20260804-154500Z",
+  "round": "05",
+  "phase": "supplement_pre_fix_baseline",
+  "data_classification": "Synthetic",
+  "execution_authority": "coordinator_frozen_pre_fix_process",
+  "visible_inputs": [
+    "evals/double-blind-fa-v0.5/round-05/company-submission/**",
+    "evals/double-blind-fa-v0.5/round-05/company-supplement/**",
+    "evals/double-blind-fa-v0.5/round-05/fa-initial/question-register.json"
+  ],
+  "forbidden_inputs": [
+    "round-05/engineering-review/**",
+    "round-05/fa-postfix/**",
+    "other-round hidden role context"
+  ],
+  "software": {
+    "git_commit": "b64c66e",
+    "branch": "agent/valuation-workstation-v0.5",
+    "source_version": "0.5.0",
+    "installed_distribution_metadata": "0.4.0",
+    "version_mismatch_recorded_as": "R05-F02"
+  },
+  "transport": {
+    "protocol": "real loopback HTTP",
+    "host": "127.0.0.1",
+    "port": 18766,
+    "server_pid": 44568,
+    "workspace": "system Temp/ctf-r05-baseline-0c05e19671f14eeb8646928ecc569222/workspace"
+  },
+  "started_at_utc": "2026-08-04T15:45:00Z",
+  "ended_at_utc": "2026-08-04T15:49:52Z",
+  "cleanup": {
+    "server_stopped": true,
+    "port_released": true,
+    "temporary_workspace_removed": true,
+    "temporary_workspace_note": "The exact generated Temp directory was resolved, verified under the system Temp root and removed after the Bridge stopped."
+  },
+  "boundaries": {
+    "real_company_validation_claimed": false,
+    "company_supplement_accepted_as_fact": false,
+    "agent_approved": false,
+    "formal_valuation_opinion": false,
+    "public_release_performed": false,
+    "investment_credit_or_aggregate_risk_rating_produced": false
+  }
+}

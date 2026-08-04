@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "input_policy": "Only company-submission, company-supplement, and fa-initial/question_register.jsonl were read.",
+  "uploaded_file_count": 13,
+  "reference_register_file_count": 1,
+  "files": [
+    {"scope":"initial","filename":"submission-manifest.json","bytes":5080,"sha256":"a9969a3ab68497444ff1851210f8c3a241bf58e4a19c7cd676d1e1785457cc3f","uploaded":true},
+    {"scope":"initial","filename":"01-company-profile.md","bytes":4369,"sha256":"572cc7162434fb659db2d88805fa8fd0d6b4bc2fb0bee2e288ce6ae43e7fb92d","uploaded":true},
+    {"scope":"initial","filename":"02-management-pnl-summary.csv","bytes":1260,"sha256":"472442de4ca268de3248c972321cb83068d38ab21525136d008090fba7a22d13","uploaded":true},
+    {"scope":"initial","filename":"03-project-customer-pipeline.csv","bytes":2335,"sha256":"326a72346b1d8b67f6b734bc0884fad4e02baed5aadd7ebd30a659d40d614374","uploaded":true},
+    {"scope":"supplement","filename":"supplement-manifest.json","bytes":12890,"sha256":"67532da74e5607a9bcaee38ebef84fac4e6c1aeff133aace293122b8a449ea2e","uploaded":true},
+    {"scope":"supplement","filename":"SYS-Q03-industry-technology-market.md","bytes":3503,"sha256":"094bc9a0ffac6dc62bf4c3eeb701351994f4b39a7f313856baa10f71c2175469","uploaded":true},
+    {"scope":"supplement","filename":"SYS-Q05-entity-product-scope.md","bytes":3920,"sha256":"912ad0cd892cd8bb243ffc368ad13d1f637a5b89ab146446d3b4851f656bc670","uploaded":true},
+    {"scope":"supplement","filename":"SYS-Q06-commercial-model.md","bytes":2686,"sha256":"3ab2066bdf7847d721ef9ac0278df7d5cd9d8e47ccca448b97559fe5f652bf1c","uploaded":true},
+    {"scope":"supplement","filename":"SYS-Q06-unit-economics.csv","bytes":2085,"sha256":"abc5dce2ca6a486fe6d59a07054105ab8a2de7fd6236fcd7d96034147aa19ea0","uploaded":true},
+    {"scope":"supplement","filename":"FA-Q01-financial-pack.csv","bytes":11749,"sha256":"8d5a3a3fde4626dd810ec63bc76874b8e62133c22fe57af875ea5b6faa8715b4","uploaded":true},
+    {"scope":"supplement","filename":"FA-Q02-project-revenue-pack.csv","bytes":5280,"sha256":"f5e1cd2fc50a21af4681d7a297832cc0e350bc4567cb6185c1e0880fc56dfa3b","uploaded":true},
+    {"scope":"supplement","filename":"FA-Q03-technical-validation-pack.md","bytes":5567,"sha256":"7cc96988bb122a63b6123ad690640814d4d5d6876285841928cada5acc3b79cc","uploaded":true},
+    {"scope":"supplement","filename":"FA-Q04-Q05-governance-ip-forecast.md","bytes":9136,"sha256":"c148e3876efe57d00cb440c7a6f880d36ce175f1315d4bf258a88bd4fa15c0ed","uploaded":true},
+    {"scope":"question_register","filename":"question_register.jsonl","bytes":12598,"uploaded":false,"purpose":"baseline question mapping only"}
+  ],
+  "integrity_note": "The two manifest files are not self-listed in their embedded payload manifests; their actual upload hashes are recorded here. All 11 manifest-listed payload hashes matched uploaded artifacts."
+}

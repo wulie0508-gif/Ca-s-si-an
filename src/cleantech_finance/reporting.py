@@ -247,18 +247,44 @@ def markdown_report(audit: dict[str, Any]) -> str:
     not_applicable = [
         item
         for item in audit.get("judgment_layer", {}).get("dimension_outcomes", [])
-        if item.get("status") == "not_applicable"
+        if item.get("status") in {"not_applicable", "not_yet_applicable"}
     ]
     for item in not_applicable:
+        status_label = (
+            "not yet applicable / 暂不适用"
+            if item.get("status") == "not_yet_applicable"
+            else "not applicable / 不适用"
+        )
         lines.extend(
             [
-                f"### {item['dimension_id']} — not applicable / 不适用",
+                f"### {item['dimension_id']} — {status_label}",
                 "",
                 item["reason"],
                 item["reason_zh"],
                 "",
             ]
         )
+        if item.get("reason_code"):
+            lines.extend(
+                [
+                    f"**Reason code:** `{item['reason_code']}`  ",
+                    f"**Policy:** `{item['policy_id']}` / `{item['policy_version']}`  ",
+                    f"**Policy digest:** `{item['policy_digest']}`  ",
+                    f"**Inputs digest:** `{item['inputs_digest']}`",
+                    "",
+                ]
+            )
+        if item.get("basis"):
+            lines.extend(
+                [
+                    "**Evidence basis / 证据依据：**",
+                    *[
+                        f"- {_citation_markdown(citation)}"
+                        for citation in item["basis"]
+                    ],
+                    "",
+                ]
+            )
     if cards:
         for card in cards:
             lines.append(card_markdown(card))
@@ -545,17 +571,47 @@ def html_report(audit: dict[str, Any], only_card: dict[str, Any] | None = None) 
         else [
             item
             for item in audit.get("judgment_layer", {}).get("dimension_outcomes", [])
-            if item.get("status") == "not_applicable"
+            if item.get("status") in {"not_applicable", "not_yet_applicable"}
         ]
     )
     not_applicable_markup = "".join(
         "<article class='not-applicable'><h3>"
         + html.escape(item["dimension_id"])
-        + " · Not applicable / 不适用</h3><p>"
+        + (
+            " · Not yet applicable / 暂不适用</h3><p>"
+            if item.get("status") == "not_yet_applicable"
+            else " · Not applicable / 不适用</h3><p>"
+        )
         + html.escape(item["reason"])
         + "<span class='zh'>"
         + html.escape(item["reason_zh"])
-        + "</span></p></article>"
+        + "</span></p>"
+        + (
+            "<p class='meta'><strong>Reason code:</strong> "
+            + html.escape(str(item["reason_code"]))
+            + " · <strong>Policy:</strong> "
+            + html.escape(str(item["policy_id"]))
+            + " / "
+            + html.escape(str(item["policy_version"]))
+            + "<br><strong>Policy digest:</strong> "
+            + html.escape(str(item["policy_digest"]))
+            + "<br><strong>Inputs digest:</strong> "
+            + html.escape(str(item["inputs_digest"]))
+            + "</p>"
+            if item.get("reason_code")
+            else ""
+        )
+        + (
+            "<h4>Evidence basis / 证据依据</h4><ul>"
+            + "".join(
+                "<li>" + _citation_html(citation) + "</li>"
+                for citation in item["basis"]
+            )
+            + "</ul>"
+            if item.get("basis")
+            else ""
+        )
+        + "</article>"
         for item in not_applicable
     )
     card_markup = (

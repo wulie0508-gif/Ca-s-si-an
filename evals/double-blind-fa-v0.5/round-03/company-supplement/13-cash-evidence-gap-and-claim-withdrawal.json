@@ -1,0 +1,44 @@
+{
+  "document_type": "Synthetic cash evidence-gap response and management-claim withdrawal",
+  "data_status": "Synthetic",
+  "synthetic": true,
+  "response_id": "SYN-R03-SUP-CASH-001",
+  "response_date": "2026-08-04",
+  "management_claim": {
+    "claim_id": "SYN-CLM-005",
+    "claim_value": "4.4",
+    "currency": "RMB",
+    "unit": "million",
+    "claimed_status": "Available cash",
+    "source": "Treasury headline balance"
+  },
+  "requested_evidence_availability": [
+    {
+      "item": "Account-level bank statements or bank confirmations at one assessment date",
+      "status": "Not available",
+      "provided": false
+    },
+    {
+      "item": "Legal-entity and account scope",
+      "status": "Not available",
+      "provided": false
+    },
+    {
+      "item": "Account currency and available, restricted or pledged classification",
+      "status": "Not available; the management headline is denominated in RMB but no account-level currency evidence exists",
+      "provided": false
+    },
+    {
+      "item": "General-ledger cash reconciliation",
+      "status": "Not available",
+      "provided": false
+    }
+  ],
+  "claim_update": {
+    "status": "Withdrawn as an evidenced available-cash fact",
+    "replacement_status": "Unverified management headline only",
+    "cash_basis_treatment": "Do not use 4.4 as available, unrestricted or entity-scoped cash; cash and funding-gap readiness remain blocked"
+  },
+  "unavailable_reason": "No bank-originated statement or confirmation and no general-ledger reconciliation are present in the permitted Synthetic enterprise materials.",
+  "responsible_owner": "Synthetic treasury and finance roles"
+}

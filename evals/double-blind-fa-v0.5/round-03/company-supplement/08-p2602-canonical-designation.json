@@ -1,0 +1,31 @@
+{
+  "document_type": "Synthetic duplicate-collapse designation and evidence-gap statement",
+  "data_status": "Synthetic",
+  "synthetic": true,
+  "designation_id": "SYN-R03-SUP-CANON-001",
+  "response_date": "2026-08-04",
+  "duplicate_group": "SYN-DUP-01",
+  "related_subject": "SYN-P2602",
+  "canonical_metadata_record": {
+    "index_id": "SYN-IDX-001",
+    "artifact_id": "SYN-ART-P2602-A",
+    "filename": "P2602_框架协议_签署版.pdf",
+    "declared_artifact_content_sha256": "8c0f7a231c8d0449a4d622f24f0e37d1ebbd5cc3b2f96997d1dd65df5d1e930a",
+    "designation_scope": "Canonical metadata row for duplicate collapse only"
+  },
+  "duplicate_alias_record": {
+    "index_id": "SYN-IDX-002",
+    "artifact_id": "SYN-ART-P2602-B",
+    "filename": "P2602_contract_final_v3.pdf",
+    "treatment": "Duplicate alias; do not count as separate evidence"
+  },
+  "underlying_file_availability": {
+    "canonical_underlying_file_provided": false,
+    "duplicate_underlying_file_provided": false,
+    "reason": "The enterprise supplement workspace does not contain either underlying simulated PDF. Only the previously submitted metadata index is available.",
+    "declared_content_hash_independently_verified": false
+  },
+  "authority_boundary": "This designation does not make the metadata row or absent PDF authoritative evidence and does not prove execution, signatures or document content.",
+  "evidence_count_treatment": "Count the duplicate group as zero underlying-file evidence items until the canonical source file is actually provided and hashed.",
+  "responsible_owner": "Synthetic company submission administrator"
+}
