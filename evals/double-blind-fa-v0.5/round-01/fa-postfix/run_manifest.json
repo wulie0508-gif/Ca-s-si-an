@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "round-01-postfix-blind-20260804",
+  "started_at": "2026-08-04T10:48:00Z",
+  "completed_at": "2026-08-04T10:50:00Z",
+  "repository_root": "D:\\找回的文件_20260715\\项目与资料\\Nexus\\cleantech-finance",
+  "server": {"host": "127.0.0.1", "port": 8873, "origin": "http://127.0.0.1:8873", "workspace_root": "evals/double-blind-fa-v0.5/round-01/runtime-postfix/workspace", "audit_log": "evals/double-blind-fa-v0.5/round-01/runtime-postfix/bridge-audit.jsonl"},
+  "transport": {"method": "same-origin HTTP multipart/form-data", "origin_header": "http://127.0.0.1:8873", "referer_header": "http://127.0.0.1:8873/", "cumulative_upload_count_per_case": 13},
+  "cases": [{"case_id": "case-20260804-a4c809de2e", "workflow_type": "company_intake"}, {"case_id": "case-20260804-e1d0b3efab", "workflow_type": "acquisition"}],
+  "blind_boundaries": {"allowed_enterprise_input_sets": ["round-01/company-submission", "round-01/company-supplement"], "forbidden_materials_read": false, "product_diff_read": false, "git_used": false, "code_modified": false, "deal_created": false, "valuation_run": false}
+}

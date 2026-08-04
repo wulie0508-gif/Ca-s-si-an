@@ -687,7 +687,7 @@ class AgentBridgeHandler(BaseHTTPRequestHandler):
 
     def _read_multipart_case(
         self,
-    ) -> tuple[str, str, str, str, list[tuple[str, bytes, str]]] | None:
+    ) -> tuple[str, str, str, str, str, list[tuple[str, bytes, str]]] | None:
         content_type = self.headers.get("Content-Type", "")
         if not content_type.lower().startswith("multipart/form-data"):
             self._send_error_json(
@@ -732,6 +732,7 @@ class AgentBridgeHandler(BaseHTTPRequestHandler):
         declared_need = ""
         owner = ""
         case_type = "unclassified"
+        workflow_type = "company_intake"
         files: list[tuple[str, bytes, str]] = []
         for part in message.iter_parts():
             field_name = part.get_param(
@@ -747,6 +748,7 @@ class AgentBridgeHandler(BaseHTTPRequestHandler):
                     "declared_need",
                     "owner",
                     "case_type",
+                    "workflow_type",
                 }
                 and file_name is None
             ):
@@ -764,11 +766,13 @@ class AgentBridgeHandler(BaseHTTPRequestHandler):
                     declared_need = value
                 elif field_name == "owner":
                     owner = value
-                else:
+                elif field_name == "case_type":
                     case_type = value
+                else:
+                    workflow_type = value
             elif field_name in {"materials", "files"} and file_name:
                 files.append((file_name, payload, part.get_content_type()))
-        return case_name, declared_need, owner, case_type, files
+        return case_name, declared_need, owner, case_type, workflow_type, files
 
     def _bearer_token(self) -> str:
         authorization = self.headers.get("Authorization", "")
@@ -2078,7 +2082,7 @@ class AgentBridgeHandler(BaseHTTPRequestHandler):
             parsed = self._read_multipart_case()
             if parsed is None:
                 return
-            case_name, declared_need, owner, case_type, files = parsed
+            case_name, declared_need, owner, case_type, workflow_type, files = parsed
             try:
                 result = self.server.workspace.create_case(
                     case_name=case_name,
@@ -2086,6 +2090,7 @@ class AgentBridgeHandler(BaseHTTPRequestHandler):
                     declared_need=declared_need,
                     owner=owner,
                     case_type=case_type.strip() or "unclassified",
+                    workflow_type=workflow_type.strip() or "company_intake",
                 )
             except (MaterialValidationError, OSError, ValueError) as exc:
                 self._send_error_json(

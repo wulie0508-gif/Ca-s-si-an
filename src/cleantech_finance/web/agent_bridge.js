@@ -156,6 +156,7 @@ const elements = {
   declaredNeed: document.querySelector("#declared-need"),
   caseOwner: document.querySelector("#case-owner"),
   caseType: document.querySelector("#case-type"),
+  workflowType: document.querySelector("#workflow-type"),
   materialFiles: document.querySelector("#material-files"),
   dropZone: document.querySelector("#drop-zone"),
   uploadQueue: document.querySelector("#upload-queue"),
@@ -2149,6 +2150,7 @@ async function createCase(event) {
   formData.append("declared_need", elements.declaredNeed.value.trim());
   formData.append("owner", elements.caseOwner.value.trim());
   formData.append("case_type", elements.caseType.value);
+  formData.append("workflow_type", elements.workflowType.value);
   appState.selectedFiles.forEach((file) => {
     formData.append("materials", file, file.name);
   });
@@ -2907,19 +2909,25 @@ function renderCompanyRow(caseItem) {
       : null;
   const coveragePercent = optionalNumber(acquisition?.material_readiness_percent);
   const criticalGapCount = optionalNumber(acquisition?.critical_gap_count);
+  const acquisitionNotApplicable =
+    acquisition?.applicability?.status === "not_applicable";
   materialSummary.append(
     node("strong", "", `${formatCount(caseItem.material_count || 0)} 份`),
     node(
       "small",
       "",
-      coveragePercent !== null
+      acquisitionNotApplicable
+        ? "收购工作流不适用"
+        : coveragePercent !== null
         ? `材料覆盖 ${formatCount(coveragePercent)}%`
         : "材料覆盖尚未生成",
     ),
     node(
       "small",
       "",
-      criticalGapCount !== null
+      acquisitionNotApplicable
+        ? "不生成收购缺口"
+        : criticalGapCount !== null
         ? `关键缺口 ${formatCount(criticalGapCount)}`
         : "关键缺口尚未生成",
     ),
@@ -3402,6 +3410,17 @@ function renderCompanyResourceCandidates(target, value, kind) {
 }
 
 function renderAcquisitionStages(diagnostic) {
+  if (diagnostic?.applicability?.status === "not_applicable") {
+    elements.acquisitionStageTrack.replaceChildren();
+    const item = node("li", "acquisition-stage");
+    item.dataset.state = "unavailable";
+    item.append(
+      node("span", "stage-index", "—"),
+      node("strong", "", "未启用跨境收购八阶段"),
+    );
+    elements.acquisitionStageTrack.append(item);
+    return;
+  }
   const stageSources = [
     diagnostic?.stages,
     diagnostic?.stage_progress,
@@ -3455,6 +3474,12 @@ function renderKeyQuestions(diagnostic) {
   const questions = Array.isArray(rawQuestions) ? rawQuestions.slice(0, 8) : [];
   elements.keyQuestionList.replaceChildren();
   elements.keyQuestionCount.textContent = `${questions.length} / 8`;
+  if (diagnostic?.applicability?.status === "not_applicable") {
+    elements.keyQuestionList.append(
+      node("li", "question-empty", "企业首包整理不生成买方或交易问题。"),
+    );
+    return;
+  }
   if (!diagnostic || !Array.isArray(rawQuestions)) {
     const empty = node("li", "question-empty", "准备度诊断尚未生成关键问题。");
     elements.keyQuestionList.append(empty);
@@ -3480,13 +3505,21 @@ function renderAcquisitionDiagnostic(casePayload) {
       ? casePayload.acquisition_diagnostic
       : null;
   const completenessPercent = optionalNumber(diagnostic?.completeness?.percent);
+  const acquisitionNotApplicable =
+    diagnostic?.applicability?.status === "not_applicable";
   elements.acquisitionState.textContent =
-    diagnostic && completenessPercent !== null
+    acquisitionNotApplicable
+      ? "跨境收购工作流不适用"
+      : diagnostic && completenessPercent !== null
       ? `候选材料覆盖 ${formatCount(completenessPercent)}%`
       : diagnostic
         ? "候选材料覆盖已生成"
         : "尚未生成";
-  elements.acquisitionState.dataset.state = diagnostic ? "available" : "unavailable";
+  elements.acquisitionState.dataset.state = acquisitionNotApplicable
+    ? "unavailable"
+    : diagnostic
+      ? "available"
+      : "unavailable";
   renderAcquisitionStages(diagnostic);
 
   const currentStage = displayLabel(
@@ -3499,7 +3532,9 @@ function renderAcquisitionDiagnostic(casePayload) {
           ) || diagnostic.stage_diagnostics.at(-1)
         : null),
   );
-  elements.acquisitionCurrentStage.textContent = currentStage || "尚未生成";
+  elements.acquisitionCurrentStage.textContent = acquisitionNotApplicable
+    ? "不适用"
+    : currentStage || "尚未生成";
 
   const rawGaps =
     diagnostic?.material_gaps ??
@@ -3507,10 +3542,14 @@ function renderAcquisitionDiagnostic(casePayload) {
     diagnostic?.critical_gaps ??
     null;
   const gaps = Array.isArray(rawGaps) ? rawGaps : null;
-  elements.acquisitionGapCount.textContent = gaps
+  elements.acquisitionGapCount.textContent = acquisitionNotApplicable
+    ? "不适用"
+    : gaps
     ? `${gaps.length} 项`
     : "尚未生成";
-  elements.acquisitionGapSummary.textContent = gaps
+  elements.acquisitionGapSummary.textContent = acquisitionNotApplicable
+    ? "未显式选择跨境收购工作流，不生成伪缺口。"
+    : gaps
     ? gaps
         .slice(0, 2)
         .map((gap) => displayLabel(gap))

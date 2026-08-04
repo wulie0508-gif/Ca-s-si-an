@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "round_id": "round-01",
+  "phase": "fa-initial",
+  "actor": "independent_financial_advisor_tester",
+  "execution_date": "2026-08-04",
+  "timezone": "Asia/Shanghai",
+  "blind_scope": {
+    "permitted_read_root": "evals/double-blind-fa-v0.5/round-01/company-submission",
+    "excluded": [
+      "company-private material",
+      "hidden truth",
+      "other rounds",
+      "other agents' outputs",
+      "engineering audit conclusions"
+    ],
+    "product_code_modified": false,
+    "git_used": false
+  },
+  "runtime": {
+    "package_version": "0.5.0",
+    "python_version": "3.12.13",
+    "host": "127.0.0.1",
+    "port": 8871,
+    "process_id": 20680,
+    "started_at": "2026-08-04T17:46:03.5764505+08:00",
+    "stopped_at": "2026-08-04T17:51:13.4359379+08:00",
+    "workspace_root": "evals/double-blind-fa-v0.5/round-01/runtime/workspace",
+    "requested_audit_log": "evals/double-blind-fa-v0.5/round-01/runtime/bridge-audit.jsonl",
+    "requested_audit_log_created": false,
+    "stdout": {
+      "path": "evals/double-blind-fa-v0.5/round-01/runtime/bridge.stdout.log",
+      "bytes": 518,
+      "sha256": "3178029dff2e9a3bf2ab231d08cd72ed4d70873a9ae5ed46a89e7298230ce7e2"
+    },
+    "stderr": {
+      "path": "evals/double-blind-fa-v0.5/round-01/runtime/bridge.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "health_observation": {
+    "first_request": "timed_out_after_5_seconds",
+    "successful_request_elapsed_seconds_approx": 8.3,
+    "status": "ok",
+    "binding": "loopback",
+    "catalog": {
+      "status": "quarantined",
+      "record_count": 73,
+      "eligible_count": 0,
+      "confirmed": false,
+      "sha256": "157a9cd12d7e27559af6d57cfc3c5332ecb6d61960b3f170ac1ea21fe7cae6db"
+    },
+    "rag": "unavailable_or_timed_out",
+    "initial_case_count": 0,
+    "initial_deal_count": 0
+  },
+  "ui_session": {
+    "transport": "real_loopback_http",
+    "browser_runtime": "unavailable_no_browser_instance",
+    "visual_render_and_click_test_completed": false,
+    "case_create_request": {
+      "method": "POST",
+      "path": "/api/ui/cases",
+      "origin": "http://127.0.0.1:8871",
+      "multipart_file_count": 4,
+      "elapsed_seconds": 0.014577,
+      "status_code": 201
+    },
+    "case_id": "case-20260804-b72e9fcae8",
+    "case_revision": 1,
+    "case_created_at": "2026-08-04T09:47:56.298265Z",
+    "case_name": "澄岳热储科技（上海）有限公司",
+    "case_type": "qa",
+    "declared_need": "评估初始材料是否足以安排商业模式验证访谈，并识别补件清单",
+    "owner": "Round 1 FA tester",
+    "read_requests": [
+      {"method": "GET", "path": "/api/ui/cases/case-20260804-b72e9fcae8", "status_code": 200},
+      {"method": "GET", "path": "/api/ui/dashboard", "status_code": 200},
+      {"method": "GET", "path": "/api/ui/cases", "status_code": 200},
+      {"method": "GET", "path": "/api/ui/deals", "status_code": 200, "observed_deal_count": 0},
+      {"method": "GET", "path": "/?view=case&case_id=case-20260804-b72e9fcae8#overview", "status_code": 200}
+    ]
+  },
+  "decision": {
+    "interview": "do_not_schedule_materials_first",
+    "deal_created": false,
+    "valuation_created": false,
+    "active_question_count": 8,
+    "reason": "访谈入口要求全部缺失，且企业业务内容仅为未核验管理层陈述；缺少身份、现金流/资产负债、合同验收、技术验证、IP 和预测依据。"
+  },
+  "output_files": [
+    "run_manifest.json",
+    "input_manifest.json",
+    "events.jsonl",
+    "question_register.jsonl",
+    "round_initial_summary.json",
+    "initial-test-report.md"
+  ]
+}

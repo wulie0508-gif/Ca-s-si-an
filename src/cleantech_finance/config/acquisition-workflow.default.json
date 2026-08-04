@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "rule_version": "acquisition-workflow-1.1.0",
+  "rule_version": "acquisition-workflow-1.2.0",
   "criticality_weights": {
     "critical": 3,
     "important": 2,

@@ -1,0 +1,342 @@
+{
+  "manifest_type": "synthetic_company_round_01_supplement",
+  "synthetic": true,
+  "data_status": "Synthetic",
+  "submission_id": "SYN-DBFA-R01-SUP-001",
+  "parent_submission_id": "SYN-DBFA-R01-CYTS-001",
+  "version": "0.2.0",
+  "submitted_at": "2026-08-04T10:00:00+08:00",
+  "company": {
+    "legal_name": "澄岳热储科技（上海）有限公司",
+    "data_status": "Synthetic",
+    "assertion_status": "Mixed synthetic-origin supplemental material; see per-file source_class"
+  },
+  "source_class_policy": {
+    "enterprise_prepared": {
+      "label": "Enterprise-prepared",
+      "synthetic": true,
+      "real_world_independent_evidence": false
+    },
+    "management_statement": {
+      "label": "Management statement",
+      "synthetic": true,
+      "verified_fact": false
+    },
+    "transaction_counterparty_copy": {
+      "label": "Transaction counterparty document copy",
+      "synthetic": true,
+      "real_world_independent_evidence": false,
+      "meaning": "A simulated source category inside the fictional evaluation scenario only"
+    },
+    "third_party_test_excerpt": {
+      "label": "Third-party test excerpt",
+      "synthetic": true,
+      "real_world_independent_evidence": false,
+      "meaning": "A simulated source category inside the fictional evaluation scenario only; not certification"
+    },
+    "simulated_registry_copy": {
+      "label": "Enterprise-held simulated registry copy",
+      "synthetic": true,
+      "real_world_independent_evidence": false
+    }
+  },
+  "request_submission_mapping": [
+    {
+      "request_id": "SYS-Q03",
+      "response_status": "partial",
+      "submitted_files": [
+        "SYS-Q03-industry-technology-market.md"
+      ],
+      "covered_fields": [
+        "value_chain_segment",
+        "technology_route",
+        "market_size_basis"
+      ],
+      "source_classes": [
+        "enterprise_prepared",
+        "management_statement"
+      ],
+      "alternative_explanation": "No independent market study or third-party technology-route comparison exists; the supplement provides the Synthetic enterprise-prepared industry map and management bottom-up model instead.",
+      "known_absences": [
+        "independent market research",
+        "third-party technology-route total-cost study"
+      ]
+    },
+    {
+      "request_id": "SYS-Q05",
+      "response_status": "full",
+      "submitted_files": [
+        "SYS-Q05-entity-product-scope.md",
+        "FA-Q04-Q05-governance-ip-forecast.md"
+      ],
+      "covered_fields": [
+        "legal_entity",
+        "core_product",
+        "technology_route",
+        "operating_geography",
+        "actual_business_boundary",
+        "product_ownership"
+      ],
+      "source_classes": [
+        "simulated_registry_copy",
+        "enterprise_prepared",
+        "management_statement",
+        "transaction_counterparty_copy"
+      ],
+      "alternative_explanation": "Because the entity is fully fictional, a clearly non-official Synthetic registry excerpt is supplied instead of a real business-license image; incomplete trademark and patent assignments are stated rather than backfilled.",
+      "known_absences": [
+        "registered CY-Block 450 trademark",
+        "completed assignment for three jointly filed patent applications",
+        "foreign subsidiary or overseas certification"
+      ]
+    },
+    {
+      "request_id": "SYS-Q06",
+      "response_status": "partial",
+      "submitted_files": [
+        "SYS-Q06-commercial-model.md",
+        "SYS-Q06-unit-economics.csv",
+        "FA-Q02-project-revenue-pack.csv"
+      ],
+      "covered_fields": [
+        "customer_structure",
+        "pricing_model",
+        "sales_cycle",
+        "revenue_basis",
+        "unit_economics_basis"
+      ],
+      "source_classes": [
+        "enterprise_prepared",
+        "management_statement",
+        "transaction_counterparty_copy"
+      ],
+      "alternative_explanation": "High-information contract and cost-register extracts are supplied instead of full contract PDFs and invoice populations; P2602 and P2603 are explicitly identified as not having executable orders.",
+      "known_absences": [
+        "signed long-term post-warranty service contracts",
+        "audited project-cost allocation",
+        "P2602 executable purchase order",
+        "P2603 signed purchase order and technical agreement"
+      ]
+    },
+    {
+      "request_id": "FA-Q01",
+      "response_status": "partial",
+      "submitted_files": [
+        "FA-Q01-financial-pack.csv"
+      ],
+      "covered_fields": [
+        "2026-06-30 adjusted balance sheet",
+        "H1 2026 cash flow",
+        "bank balance and restricted cash",
+        "debt and obligation register",
+        "FY2024 FY2025 H1-2026 P&L reconciliation"
+      ],
+      "source_classes": [
+        "enterprise_prepared",
+        "management_statement",
+        "transaction_counterparty_copy"
+      ],
+      "alternative_explanation": "The supplement provides a line-level adjusted statement and TB/source-reference register; complete general-ledger exports, full bank statements and confirmations are not supplied in this compact round.",
+      "known_absences": [
+        "audited financial statements",
+        "complete general-ledger dump",
+        "full bank statement population",
+        "external bank confirmation"
+      ]
+    },
+    {
+      "request_id": "FA-Q02",
+      "response_status": "partial",
+      "submitted_files": [
+        "FA-Q02-project-revenue-pack.csv"
+      ],
+      "covered_fields": [
+        "P2601-P2603 contract PO and technical-agreement status",
+        "acceptance cancellation and refund terms",
+        "invoice and collection status",
+        "H1 2026 item-level revenue reconciliation"
+      ],
+      "source_classes": [
+        "enterprise_prepared",
+        "management_statement",
+        "transaction_counterparty_copy"
+      ],
+      "alternative_explanation": "A compact document register with material terms is supplied instead of lengthy document images. Nonexistent or unsigned P2602/P2603 documents are reported as absent and are not fabricated.",
+      "known_absences": [
+        "P2602 executable purchase order",
+        "P2603 signed purchase order",
+        "P2603 signed technical agreement",
+        "P2601 final acceptance certificate"
+      ]
+    },
+    {
+      "request_id": "FA-Q03",
+      "response_status": "partial",
+      "submitted_files": [
+        "FA-Q03-technical-validation-pack.md"
+      ],
+      "covered_fields": [
+        "efficiency boundary and cycle excerpt",
+        "operating hours and availability",
+        "customer and third-party acceptance status",
+        "fault warranty and maintenance register",
+        "EHS and certification status"
+      ],
+      "source_classes": [
+        "enterprise_prepared",
+        "management_statement",
+        "transaction_counterparty_copy",
+        "third_party_test_excerpt"
+      ],
+      "alternative_explanation": "Cycle-level summaries and explicit boundaries are supplied; minute-level raw series and certifications cannot be substituted because they were not completed or were not included.",
+      "known_absences": [
+        "minute-level raw test series",
+        "customer final acceptance certificate",
+        "third-party full-system performance certification",
+        "overseas CE or local certification"
+      ]
+    },
+    {
+      "request_id": "FA-Q04",
+      "response_status": "full",
+      "submitted_files": [
+        "SYS-Q05-entity-product-scope.md",
+        "FA-Q04-Q05-governance-ip-forecast.md"
+      ],
+      "covered_fields": [
+        "registry excerpt",
+        "cap table",
+        "UBO and related parties",
+        "seven patent applications",
+        "two granted utility models",
+        "ownership licensing and pledge status",
+        "employee and contractor IP assignment"
+      ],
+      "source_classes": [
+        "simulated_registry_copy",
+        "enterprise_prepared",
+        "management_statement",
+        "transaction_counterparty_copy"
+      ],
+      "alternative_explanation": "All requested Synthetic categories are answered, including incomplete assignments, pledges and missing contractor clauses; non-official Synthetic identifiers are used so no real person or entity is implied.",
+      "known_absences": [
+        "written investor consent for the RMB 6.0m bank debt",
+        "completed transfer for three jointly filed patent applications",
+        "IP assignment clauses for two contractor agreements"
+      ]
+    },
+    {
+      "request_id": "FA-Q05",
+      "response_status": "partial",
+      "submitted_files": [
+        "FA-Q04-Q05-governance-ip-forecast.md"
+      ],
+      "covered_fields": [
+        "FY2026 and FY2027-2029 revenue forecast by mode",
+        "gross profit expense and EBITDA",
+        "CapEx and working capital",
+        "cash consumption and financing gap",
+        "contract status assumptions owner and as-of"
+      ],
+      "source_classes": [
+        "enterprise_prepared",
+        "management_statement"
+      ],
+      "alternative_explanation": "An unapproved management forecast is supplied with contract coverage and financing shortfall explicitly shown; no board-approved or independently reviewed forecast exists.",
+      "known_absences": [
+        "board-approved forecast",
+        "independent forecast review",
+        "signed 2027-2029 order coverage",
+        "binding equity-financing commitment"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "filename": "SYS-Q03-industry-technology-market.md",
+      "media_type": "text/markdown",
+      "byte_count": 3503,
+      "sha256": "094bc9a0ffac6dc62bf4c3eeb701351994f4b39a7f313856baa10f71c2175469",
+      "synthetic": true,
+      "source_classes": ["enterprise_prepared", "management_statement"]
+    },
+    {
+      "filename": "SYS-Q05-entity-product-scope.md",
+      "media_type": "text/markdown",
+      "byte_count": 3920,
+      "sha256": "912ad0cd892cd8bb243ffc368ad13d1f637a5b89ab146446d3b4851f656bc670",
+      "synthetic": true,
+      "source_classes": ["simulated_registry_copy", "enterprise_prepared", "management_statement", "transaction_counterparty_copy"]
+    },
+    {
+      "filename": "SYS-Q06-commercial-model.md",
+      "media_type": "text/markdown",
+      "byte_count": 2686,
+      "sha256": "3ab2066bdf7847d721ef9ac0278df7d5cd9d8e47ccca448b97559fe5f652bf1c",
+      "synthetic": true,
+      "source_classes": ["enterprise_prepared", "management_statement", "transaction_counterparty_copy"]
+    },
+    {
+      "filename": "SYS-Q06-unit-economics.csv",
+      "media_type": "text/csv",
+      "byte_count": 2085,
+      "sha256": "abc5dce2ca6a486fe6d59a07054105ab8a2de7fd6236fcd7d96034147aa19ea0",
+      "synthetic": true,
+      "source_classes": ["enterprise_prepared", "management_statement"]
+    },
+    {
+      "filename": "FA-Q01-financial-pack.csv",
+      "media_type": "text/csv",
+      "byte_count": 11749,
+      "sha256": "8d5a3a3fde4626dd810ec63bc76874b8e62133c22fe57af875ea5b6faa8715b4",
+      "synthetic": true,
+      "source_classes": ["enterprise_prepared", "management_statement", "transaction_counterparty_copy"]
+    },
+    {
+      "filename": "FA-Q02-project-revenue-pack.csv",
+      "media_type": "text/csv",
+      "byte_count": 5280,
+      "sha256": "f5e1cd2fc50a21af4681d7a297832cc0e350bc4567cb6185c1e0880fc56dfa3b",
+      "synthetic": true,
+      "source_classes": ["enterprise_prepared", "management_statement", "transaction_counterparty_copy"]
+    },
+    {
+      "filename": "FA-Q03-technical-validation-pack.md",
+      "media_type": "text/markdown",
+      "byte_count": 5567,
+      "sha256": "7cc96988bb122a63b6123ad690640814d4d5d6876285841928cada5acc3b79cc",
+      "synthetic": true,
+      "source_classes": ["enterprise_prepared", "management_statement", "transaction_counterparty_copy", "third_party_test_excerpt"]
+    },
+    {
+      "filename": "FA-Q04-Q05-governance-ip-forecast.md",
+      "media_type": "text/markdown",
+      "byte_count": 9136,
+      "sha256": "c148e3876efe57d00cb440c7a6f880d36ce175f1315d4bf258a88bd4fa15c0ed",
+      "synthetic": true,
+      "source_classes": ["simulated_registry_copy", "enterprise_prepared", "management_statement", "transaction_counterparty_copy"]
+    }
+  ],
+  "submission_events": [
+    {
+      "event_id": "SYN-EVT-R01-SUP-001",
+      "event_type": "supplement_prepared_for_exact_requests",
+      "event_timestamp": "2026-08-04T09:50:00+08:00",
+      "event_data_status": "Synthetic",
+      "request_count": 8
+    },
+    {
+      "event_id": "SYN-EVT-R01-SUP-002",
+      "event_type": "supplement_integrity_recorded",
+      "event_timestamp": "2026-08-04T10:00:00+08:00",
+      "event_data_status": "Synthetic",
+      "payload_file_count": 8
+    }
+  ],
+  "integrity_metadata": {
+    "digest_algorithm": "SHA-256",
+    "digest_scope": "eight payload files only",
+    "manifest_self_digest_included": false,
+    "integrity_values_are_company_business_evidence": false
+  }
+}

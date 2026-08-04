@@ -8,6 +8,8 @@ import pytest
 
 from cleantech_finance.acquisition_workflow import (
     DEFAULT_CONFIG_PATH,
+    REQUIREMENT_CANDIDATE_SCHEMA_VERSION,
+    RULE_VERSION,
     acquisition_workflow_definition,
     diagnose_acquisition_readiness,
     load_acquisition_workflow_config,
@@ -32,6 +34,7 @@ def _artifact(
     *roles: str,
     profile_hints: dict[str, list[str]] | None = None,
     recognition_status: str = "candidate_ready",
+    requirement_ids: tuple[str, ...] = (),
 ) -> dict[str, object]:
     return {
         "id": artifact_id,
@@ -39,6 +42,11 @@ def _artifact(
         "recognition": {
             "status": recognition_status,
             "candidate_roles": list(roles),
+            "requirement_candidates": {
+                "schema_version": REQUIREMENT_CANDIDATE_SCHEMA_VERSION,
+                "rule_version": RULE_VERSION,
+                "requirement_ids": list(requirement_ids),
+            },
             "profile_hints": profile_hints or {},
             "authority": "routing_hint_only",
             "human_review_required": True,
@@ -120,6 +128,7 @@ def test_partial_input_is_deterministic_and_questions_cite_missing_requirements(
             "company-pack",
             "company_identity",
             profile_hints={"industry": ["氢能"], "geography": ["中国"]},
+            requirement_ids=("target_business_profile",),
         )
     ]
     profile_hints = {"tags": {"technology": ["电解槽"]}}
@@ -135,7 +144,7 @@ def test_partial_input_is_deterministic_and_questions_cite_missing_requirements(
         requirement["id"]
         for stage in first["stage_diagnostics"]
         for requirement in stage["requirements"]
-        if requirement["status"] == "missing"
+        if requirement["status"] != "candidate_covered"
     }
     assert all(
         question["gap_requirement_id"] in missing_ids
@@ -144,8 +153,17 @@ def test_partial_input_is_deterministic_and_questions_cite_missing_requirements(
 
 
 def test_key_material_candidates_can_make_interview_schedulable_without_fact_claim() -> None:
+    entry_and_coverage_ids = tuple(
+        requirement["id"]
+        for stage in acquisition_workflow_definition()["stages"][:4]
+        for requirement in stage["requirements"]
+    )
     materials = [
-        _artifact("identity", "company_identity"),
+        _artifact(
+            "identity",
+            "company_identity",
+            requirement_ids=entry_and_coverage_ids,
+        ),
         _artifact("financial", "financial_core"),
         _artifact("commercial", "market_export"),
         _artifact("technology", "technology_arl"),
@@ -173,7 +191,7 @@ def test_key_material_candidates_can_make_interview_schedulable_without_fact_cla
     assert result["boundaries"]["agent_can_upgrade_fact"] is False
 
 
-def test_duplicate_and_complete_candidate_inputs_never_exceed_one() -> None:
+def test_all_coarse_roles_cannot_cover_concrete_requirements() -> None:
     roles = (
         "company_identity",
         "financial_core",
@@ -193,6 +211,38 @@ def test_duplicate_and_complete_candidate_inputs_never_exceed_one() -> None:
         "need": ["并购"],
     }
     materials = [_artifact(f"all-{index}", *roles, profile_hints=hints) for index in range(20)]
+
+    result = diagnose_acquisition_readiness(materials)
+
+    assert result["completeness"]["ratio"] == 0
+    assert result["completeness"]["percent"] == 0
+    assert result["critical_gaps"]
+    late_stage_ids = {
+        "ioi_loi_and_exclusivity",
+        "diligence_and_transaction_structure",
+        "signing_approval_and_closing",
+        "post_merger_integration",
+    }
+    late_stages = [
+        stage for stage in result["stage_diagnostics"] if stage["id"] in late_stage_ids
+    ]
+    assert len(late_stages) == 4
+    assert all(stage["completeness_ratio"] == 0 for stage in late_stages)
+    assert all(
+        stage["coverage_status"] != "candidate_coverage_complete"
+        for stage in late_stages
+    )
+
+
+def test_versioned_requirement_candidates_can_cover_without_exceeding_one() -> None:
+    requirement_ids = tuple(
+        requirement["id"]
+        for stage in acquisition_workflow_definition()["stages"]
+        for requirement in stage["requirements"]
+    )
+    materials = [
+        _artifact("explicit-candidates", requirement_ids=requirement_ids),
+    ]
 
     result = diagnose_acquisition_readiness(materials)
 
@@ -308,6 +358,44 @@ def test_generic_supporting_material_never_covers_a_specific_requirement() -> No
         for stage in result["stage_diagnostics"]
         for requirement in stage["requirements"]
     )
+
+
+def test_specific_nda_candidate_covers_only_nda_requirement() -> None:
+    result = diagnose_acquisition_readiness(
+        [
+            _artifact(
+                "nda-only",
+                "governance_legal",
+                requirement_ids=("nda_record",),
+            )
+        ]
+    )
+    statuses = {
+        requirement["id"]: requirement["status"]
+        for stage in result["stage_diagnostics"]
+        for requirement in stage["requirements"]
+    }
+
+    assert statuses["nda_record"] == "candidate_covered"
+    assert statuses["spa_and_disclosure"] != "candidate_covered"
+    assert statuses["closing_checklist"] != "candidate_covered"
+    assert statuses["hundred_day_plan"] != "candidate_covered"
+
+
+def test_unversioned_requirement_candidates_fail_closed() -> None:
+    material = _artifact("stale-candidate", "governance_legal")
+    material["recognition"]["requirement_candidates"] = {
+        "schema_version": REQUIREMENT_CANDIDATE_SCHEMA_VERSION,
+        "rule_version": "acquisition-workflow-stale",
+        "requirement_ids": ["nda_record"],
+    }
+
+    result = diagnose_acquisition_readiness([material])
+
+    assert result["completeness"]["ratio"] == 0
+    assert result["input_summary"][
+        "ignored_requirement_candidate_contract_count"
+    ] == 1
 
 
 def test_config_rejects_more_than_eight_interview_questions() -> None:

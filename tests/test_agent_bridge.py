@@ -176,13 +176,21 @@ def _request_multipart(
     file_name: str,
     file_payload: bytes,
     origin: str | None = None,
+    workflow_type: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
     boundary = "cleantech-finance-test-boundary"
+    workflow_part = (
+        f'Content-Disposition: form-data; name="workflow_type"\r\n\r\n'
+        f"{workflow_type}\r\n--{boundary}\r\n"
+        if workflow_type is not None
+        else ""
+    )
     body = (
         f"--{boundary}\r\n"
         'Content-Disposition: form-data; name="case_name"\r\n\r\n'
         f"{case_name}\r\n"
         f"--{boundary}\r\n"
+        f"{workflow_part}"
         'Content-Disposition: form-data; name="materials"; '
         f'filename="{file_name}"\r\n'
         "Content-Type: text/plain\r\n\r\n"
@@ -476,6 +484,7 @@ def test_case_workspace_hashes_materials_and_keeps_roles_candidate_only(
 
     assert result["revision"] == 1
     assert result["case_type"] == "unclassified"
+    assert result["workflow_type"] == "company_intake"
     assert result["workflow"][0] == {
         "id": "materials",
         "label": "材料",
@@ -491,6 +500,11 @@ def test_case_workspace_hashes_materials_and_keeps_roles_candidate_only(
 
     loaded = store.get_case(result["case_id"])
     assert loaded["artifacts"][0]["sha256"] == artifact["sha256"]
+    assert loaded["acquisition_diagnostic"]["applicability"]["status"] == (
+        "not_applicable"
+    )
+    assert loaded["acquisition_diagnostic"]["completeness"]["percent"] is None
+    assert loaded["acquisition_diagnostic"]["interview_questions"] == []
     assert loaded["acquisition_diagnostic"]["boundaries"] == {
         "agent_outputs_are_candidates": True,
         "agent_can_complete_decision_gate": False,
@@ -502,6 +516,7 @@ def test_case_workspace_hashes_materials_and_keeps_roles_candidate_only(
         "regulatory_trigger_is_legal_conclusion": False,
     }
     assert loaded["dashboard"]["acquisition"]["deal_stage_is_human_confirmed"] is False
+    assert loaded["dashboard"]["acquisition"]["material_readiness_percent"] is None
     dashboard = store.dashboard()
     assert dashboard["metrics"]["enterprise_count"] == 0
     assert dashboard["metrics"]["unclassified_count"] == 1
@@ -560,11 +575,10 @@ def test_dashboard_projects_case_workflow_without_promoting_nested_claims(
     assert summary["current_need"]["source"] == "declared_by_user"
     assert summary["open_requests"] is None
     assert summary["request_tracking_state"] == "not_implemented"
-    assert summary["acquisition"]["critical_gap_count"] > 0
-    assert 0 <= summary["acquisition"]["material_readiness_percent"] <= 100
-    assert summary["acquisition"]["authority"] == (
-        "candidate_material_coverage_only"
-    )
+    assert summary["acquisition"]["critical_gap_count"] is None
+    assert summary["acquisition"]["material_readiness_percent"] is None
+    assert summary["acquisition"]["authority"] == "not_applicable"
+    assert summary["acquisition"]["applicability"]["status"] == "not_applicable"
     assert all(
         topic["authority"] == "routing_hint_only"
         for topic in summary["focus_topics"]
@@ -597,6 +611,84 @@ def test_dashboard_counts_only_explicit_enterprise_cases(tmp_path: Path) -> None
     assert metrics["enterprise_count"] == 1
     assert metrics["demo_count"] == 2
     assert metrics["unclassified_count"] == 1
+
+
+def test_role_routing_ignores_controls_and_requires_strong_or_multiple_weak_signals(
+    tmp_path: Path,
+) -> None:
+    store = CaseWorkspaceStore(tmp_path / "workspace")
+    control = store.create_case(
+        files=[
+            (
+                "submission-manifest.json",
+                b'{"notes":"customer market revenue legal policy"}',
+                "application/json",
+            )
+        ]
+    )
+    weak = store.create_case(
+        files=[
+            (
+                "operating-notes.txt",
+                b"Standalone legal entity with revenue reported.",
+                "text/plain",
+            )
+        ]
+    )
+    strong_financial = store.create_case(
+        files=[("liquidity.txt", b"cash flow bridge", "text/plain")]
+    )
+    technical = store.create_case(
+        files=[
+            (
+                "technical-validation-pack.md",
+                b"field performance observations",
+                "text/markdown",
+            )
+        ]
+    )
+
+    assert control["artifacts"][0]["recognition"]["candidate_roles"] == [
+        "generic_supporting"
+    ]
+    assert weak["artifacts"][0]["recognition"]["candidate_roles"] == [
+        "generic_supporting"
+    ]
+    assert "financial_core" in strong_financial["artifacts"][0]["recognition"][
+        "candidate_roles"
+    ]
+    assert "technology_arl" in technical["artifacts"][0]["recognition"][
+        "candidate_roles"
+    ]
+
+
+def test_explicit_acquisition_prioritizes_evidence_gaps_over_references(
+    tmp_path: Path,
+) -> None:
+    store = CaseWorkspaceStore(tmp_path / "workspace")
+    created = store.create_case(
+        case_name="Explicit acquisition",
+        workflow_type="acquisition",
+        files=[("cash-flow.txt", b"cash flow", "text/plain")],
+    )
+
+    loaded = store.get_case(created["case_id"])
+    assert loaded["workflow_type"] == "acquisition"
+    assert loaded["acquisition_diagnostic"]["applicability"]["status"] == "applicable"
+    assert loaded["acquisition_diagnostic"]["completeness"]["percent"] == 0
+    assert loaded["dashboard"]["next_action"]["id"] == (
+        "review_critical_evidence_gaps"
+    )
+
+    store.record_reference_activity(
+        created["case_id"],
+        result_count=3,
+        query_status="ok",
+    )
+    refreshed = store.get_case(created["case_id"])
+    assert refreshed["dashboard"]["next_action"]["id"] == (
+        "review_critical_evidence_gaps"
+    )
 
 
 def test_loopback_bridge_requires_server_enforced_consent(tmp_path: Path) -> None:
@@ -806,8 +898,13 @@ def test_bridge_upload_and_rag_query_are_case_scoped(tmp_path: Path) -> None:
             file_name="finance.txt",
             file_payload="现金流证据候选".encode(),
             origin=base_url,
+            workflow_type="acquisition",
         )
         assert status == 201
+        assert created["workflow_type"] == "acquisition"
+        assert created["acquisition_diagnostic"]["applicability"]["status"] == (
+            "applicable"
+        )
         assert created["artifacts"][0]["recognition"]["authority"] == (
             "routing_hint_only"
         )

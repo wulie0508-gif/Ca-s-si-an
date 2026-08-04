@@ -16,6 +16,8 @@ from pathlib import Path
 from typing import Any
 
 from cleantech_finance.acquisition_workflow import (
+    REQUIREMENT_CANDIDATE_SCHEMA_VERSION,
+    RULE_VERSION,
     acquisition_workflow_definition,
     diagnose_acquisition_readiness,
 )
@@ -39,6 +41,11 @@ PROFILE_FIELDS = (
     "geography",
     "market",
     "need",
+)
+REQUIREMENT_IDS = tuple(
+    requirement["id"]
+    for stage in acquisition_workflow_definition()["stages"]
+    for requirement in stage["requirements"]
 )
 INVALID_RECOGNITION_STATUSES: tuple[Any, ...] = (
     "awaiting_human",
@@ -82,6 +89,7 @@ def _artifact(
     recognition_status: Any = "candidate_ready",
     artifact_status: Any = "ready",
     profile_hints: dict[str, list[str]] | None = None,
+    requirement_ids: list[str] | None = None,
 ) -> dict[str, Any]:
     return {
         "id": artifact_id,
@@ -93,6 +101,11 @@ def _artifact(
         "recognition": {
             "status": recognition_status,
             "candidate_roles": roles,
+            "requirement_candidates": {
+                "schema_version": REQUIREMENT_CANDIDATE_SCHEMA_VERSION,
+                "rule_version": RULE_VERSION,
+                "requirement_ids": list(requirement_ids or []),
+            },
             "profile_hints": copy.deepcopy(profile_hints or {}),
             "authority": "routing_hint_only",
             "human_review_required": True,
@@ -146,6 +159,7 @@ def _random_materials(rng: random.Random, seed: int) -> list[dict[str, Any]]:
                 f"synthetic-{seed}-{index}",
                 roles,
                 profile_hints=_random_profile(rng, seed * 100 + index),
+                requirement_ids=rng.sample(REQUIREMENT_IDS, rng.randint(1, 3)),
             )
         )
     return materials
@@ -195,12 +209,12 @@ def _global_failures(result: dict[str, Any]) -> list[str]:
     missing_ids = {
         requirement["id"]
         for requirement in requirements
-        if requirement.get("status") == "missing"
+        if requirement.get("status") != "candidate_covered"
     }
     missing_critical_ids = {
         requirement["id"]
         for requirement in requirements
-        if requirement.get("status") == "missing"
+        if requirement.get("status") != "candidate_covered"
         and requirement.get("criticality") == "critical"
     }
     if {gap.get("requirement_id") for gap in result.get("critical_gaps", [])} != (
@@ -308,14 +322,21 @@ def _evaluate_seed(seed: int, repeats: int) -> tuple[dict[str, Any], int]:
         failures.append("M08_unknown_role_invariance")
     api_calls += 1
 
+    uncovered_ids = [
+        requirement["id"]
+        for stage in baseline["stage_diagnostics"]
+        for requirement in stage["requirements"]
+        if requirement["status"] != "candidate_covered"
+    ]
     addition = _artifact(
         f"synthetic-valid-addition-{seed}",
         [rng.choice(ROLES)],
         profile_hints=_random_profile(rng, seed + 70_000),
+        requirement_ids=uncovered_ids[:1],
     )
     added = _run([*materials, addition])
     api_calls += 1
-    if added["completeness"]["ratio"] < baseline["completeness"]["ratio"]:
+    if uncovered_ids and added["completeness"]["ratio"] <= baseline["completeness"]["ratio"]:
         failures.append("M09_valid_addition_monotonic")
 
     if materials:

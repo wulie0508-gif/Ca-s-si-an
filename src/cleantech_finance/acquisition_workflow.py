@@ -15,7 +15,8 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_VERSION = "1.0.0"
-RULE_VERSION = "acquisition-workflow-1.1.0"
+RULE_VERSION = "acquisition-workflow-1.2.0"
+REQUIREMENT_CANDIDATE_SCHEMA_VERSION = "1.0.0"
 DEFAULT_CONFIG_PATH = (
     Path(__file__).resolve().parent / "config" / "acquisition-workflow.default.json"
 )
@@ -941,6 +942,15 @@ def _normalize_inputs(
     roles: set[str] = set()
     ignored_roles: set[str] = set()
     role_sources: dict[str, set[str]] = {}
+    requirement_candidates: set[str] = set()
+    requirement_candidate_sources: dict[str, set[str]] = {}
+    ignored_requirement_candidate_ids: set[str] = set()
+    ignored_requirement_candidate_contract_count = 0
+    known_requirement_ids = {
+        requirement["id"]
+        for stage in STAGES
+        for requirement in stage["requirements"]
+    }
     profile_field_sources: dict[str, set[str]] = {}
     merged_hints: dict[str, set[str]] = {
         field: set(values) for field, values in _profile_tags(profile_hints, allowed_fields).items()
@@ -1018,6 +1028,26 @@ def _normalize_inputs(
                 continue
             roles.add(role)
             role_sources.setdefault(role, set()).add(source_id)
+        requirement_contract = recognition.get("requirement_candidates")
+        if requirement_contract is not None:
+            if (
+                not isinstance(requirement_contract, Mapping)
+                or requirement_contract.get("schema_version")
+                != REQUIREMENT_CANDIDATE_SCHEMA_VERSION
+                or requirement_contract.get("rule_version") != RULE_VERSION
+            ):
+                ignored_requirement_candidate_contract_count += 1
+            else:
+                for requirement_id in _string_values(
+                    requirement_contract.get("requirement_ids")
+                ):
+                    if requirement_id not in known_requirement_ids:
+                        ignored_requirement_candidate_ids.add(requirement_id)
+                        continue
+                    requirement_candidates.add(requirement_id)
+                    requirement_candidate_sources.setdefault(
+                        requirement_id, set()
+                    ).add(source_id)
         for field, values in _profile_tags(
             recognition.get("profile_hints"), allowed_fields
         ).items():
@@ -1029,6 +1059,13 @@ def _normalize_inputs(
         "candidate_roles": sorted(roles),
         "profile_hints": normalized_hints,
         "role_sources": {role: sorted(values) for role, values in sorted(role_sources.items())},
+        "requirement_candidates": sorted(requirement_candidates),
+        "requirement_candidate_sources": {
+            requirement_id: sorted(values)
+            for requirement_id, values in sorted(
+                requirement_candidate_sources.items()
+            )
+        },
         "profile_field_sources": {
             field: sorted(values)
             for field, values in sorted(profile_field_sources.items())
@@ -1041,30 +1078,31 @@ def _normalize_inputs(
         "ignored_recognition_statuses": sorted(ignored_recognition_statuses),
         "ignored_artifact_statuses": sorted(ignored_artifact_statuses),
         "ignored_candidate_roles": sorted(ignored_roles),
+        "ignored_requirement_candidate_ids": sorted(
+            ignored_requirement_candidate_ids
+        ),
+        "ignored_requirement_candidate_contract_count": (
+            ignored_requirement_candidate_contract_count
+        ),
     }
 
 
 def _requirement_match(
     requirement: Mapping[str, Any],
+    requirement_candidates: set[str],
     candidate_roles: set[str],
     artifact_profile_fields: set[str],
+    requirement_candidate_sources: Mapping[str, Sequence[str]],
     role_sources: Mapping[str, Sequence[str]],
     profile_field_sources: Mapping[str, Sequence[str]],
-) -> tuple[bool, list[str], list[str], list[str]]:
+) -> tuple[bool, list[str], list[str], list[str], list[str]]:
     matched_roles = sorted(candidate_roles.intersection(requirement["candidate_roles"]))
     matched_fields = sorted(
         artifact_profile_fields.intersection(requirement["profile_hint_fields"])
     )
-    policy = requirement["match_policy"]
-    if policy == "role_and_profile":
-        satisfied = bool(matched_roles and matched_fields)
-    elif policy == "roles_only":
-        satisfied = bool(matched_roles)
-    elif policy == "profile_only":
-        satisfied = bool(matched_fields)
-    else:
-        satisfied = bool(matched_roles or matched_fields)
-    source_ids = sorted(
+    satisfied = requirement["id"] in requirement_candidates
+    source_ids = list(requirement_candidate_sources.get(requirement["id"], []))
+    routing_source_ids = sorted(
         {
             source_id
             for role in matched_roles
@@ -1076,7 +1114,7 @@ def _requirement_match(
             for source_id in profile_field_sources.get(field, [])
         }
     )
-    return satisfied, matched_roles, matched_fields, source_ids
+    return satisfied, matched_roles, matched_fields, source_ids, routing_source_ids
 
 
 def _trigger_diagnostic(
@@ -1108,6 +1146,7 @@ def _diagnose_stages(
     weights: Mapping[str, float],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], float, float]:
     candidate_roles = set(normalized["candidate_roles"])
+    requirement_candidates = set(normalized["requirement_candidates"])
     artifact_profile_fields = set(normalized["profile_field_sources"])
     all_hint_values = {
         value for values in normalized["profile_hints"].values() for value in values
@@ -1122,20 +1161,34 @@ def _diagnose_stages(
         stage_total = 0.0
         for index, requirement in enumerate(stage["requirements"]):
             weight = float(weights[requirement["criticality"]])
-            satisfied, matched_roles, matched_fields, source_ids = _requirement_match(
+            (
+                satisfied,
+                matched_roles,
+                matched_fields,
+                source_ids,
+                routing_source_ids,
+            ) = _requirement_match(
                 requirement,
+                requirement_candidates,
                 candidate_roles,
                 artifact_profile_fields,
+                normalized["requirement_candidate_sources"],
                 normalized["role_sources"],
                 normalized["profile_field_sources"],
             )
+            if satisfied:
+                status = "candidate_covered"
+            elif matched_roles or matched_fields:
+                status = "candidate_topic_match"
+            else:
+                status = "missing"
             diagnostic = {
                 "id": requirement["id"],
                 "label_zh": requirement["label_zh"],
                 "stage_id": stage["id"],
                 "stage_order": stage["order"],
                 "requirement_order": index + 1,
-                "status": "candidate_covered" if satisfied else "missing",
+                "status": status,
                 "criticality": requirement["criticality"],
                 "weight": weight,
                 "accepted_materials": list(requirement["accepted_materials"]),
@@ -1144,6 +1197,7 @@ def _diagnose_stages(
                 "matched_candidate_roles": matched_roles,
                 "matched_profile_fields": matched_fields,
                 "source_artifact_ids": source_ids,
+                "routing_signal_artifact_ids": routing_source_ids,
                 "interview_question_zh": requirement["interview_question_zh"],
                 "authority": "candidate_coverage_only",
             }
@@ -1194,7 +1248,10 @@ def _gap_item(requirement: Mapping[str, Any]) -> dict[str, Any]:
         "accepted_materials": list(requirement["accepted_materials"]),
         "required_fields": list(requirement["fields"]),
         "responsible_roles": list(requirement["responsible_roles"]),
-        "reason": "当前候选角色与 profile hints 未满足该项材料覆盖规则。",
+        "reason": (
+            "未提供匹配当前规则版本的显式 requirement candidate；"
+            "候选角色与 profile hints 仅作路由提示。"
+        ),
         "authority": "candidate_gap_only",
     }
 
@@ -1209,7 +1266,7 @@ def _suggested_supplement(requirement: Mapping[str, Any]) -> dict[str, Any]:
         "requested_fields": list(requirement["fields"]),
         "criticality": requirement["criticality"],
         "responsible_roles": list(requirement["responsible_roles"]),
-        "basis": "由未满足的候选材料覆盖规则生成；提交后仍需人工核验。",
+        "basis": "由缺少显式 requirement candidate 生成；提交后仍需人工核验。",
         "authority": "draft_request_only",
     }
 
@@ -1244,12 +1301,78 @@ def _interview_questions(
                     "accepted_materials": list(requirement["accepted_materials"]),
                     "required_fields": list(requirement["fields"]),
                     "current_candidate_roles": list(normalized["candidate_roles"]),
+                    "current_requirement_candidates": list(
+                        normalized["requirement_candidates"]
+                    ),
                     "current_profile_fields": sorted(normalized["profile_hints"]),
                     "authority": "candidate_gap_only",
                 },
             }
         )
     return questions
+
+
+def acquisition_workflow_not_applicable(
+    workflow_type: str = "company_intake",
+) -> dict[str, Any]:
+    """Return a stable fail-closed projection when acquisition was not selected."""
+
+    loaded_config = load_acquisition_workflow_config()
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "rule_version": RULE_VERSION,
+        "definition_digest": WORKFLOW_DEFINITION_DIGEST,
+        "config_digest": _canonical_digest(loaded_config),
+        "applicability": {
+            "status": "not_applicable",
+            "workflow_type": workflow_type,
+            "reason_code": "explicit_acquisition_workflow_not_selected",
+            "reason_zh": "未显式选择跨境收购工作流；不计算八阶段覆盖率或生成买方问题。",
+            "authority": "workflow_applicability_only",
+        },
+        "input_summary": {
+            "artifact_count": None,
+            "accepted_artifact_count": None,
+            "ignored_artifact_count": None,
+            "candidate_roles": [],
+            "profile_hints": {},
+            "requirement_candidates": [],
+            "authority": "not_evaluated",
+        },
+        "completeness": {
+            "status": "not_applicable",
+            "earned_weight": None,
+            "total_weight": None,
+            "ratio": None,
+            "percent": None,
+            "critical_required_count": None,
+            "critical_candidate_covered_count": None,
+            "authority": "not_applicable",
+        },
+        "business_model_interview_readiness": {
+            "status": "not_applicable",
+            "label_zh": "不适用",
+            "minimum_completeness_ratio": None,
+            "required_entry_requirement_ids": [],
+            "missing_entry_requirement_ids": [],
+            "basis_zh": "跨境收购工作流未启用，因此不生成买方或交易访谈问题。",
+            "authority": "not_applicable",
+        },
+        "stage_diagnostics": [],
+        "critical_gaps": [],
+        "suggested_supplements": [],
+        "interview_questions": [],
+        "boundaries": {
+            "agent_outputs_are_candidates": True,
+            "agent_can_complete_decision_gate": False,
+            "agent_can_upgrade_fact": False,
+            "commercial_model_status_is_fact_determination": False,
+            "investment_rating_produced": False,
+            "credit_rating_produced": False,
+            "aggregate_risk_score_produced": False,
+            "regulatory_trigger_is_legal_conclusion": False,
+        },
+    }
 
 
 def diagnose_acquisition_readiness(
@@ -1274,7 +1397,9 @@ def diagnose_acquisition_readiness(
         normalized, weights
     )
     ratio = min(1.0, earned_weight / total_weight) if total_weight else 0.0
-    missing = [item for item in all_requirements if item["status"] == "missing"]
+    missing = [
+        item for item in all_requirements if item["status"] != "candidate_covered"
+    ]
     critical_gaps = [_gap_item(item) for item in missing if item["criticality"] == "critical"]
     supplements = [_suggested_supplement(item) for item in missing]
 
@@ -1294,6 +1419,12 @@ def diagnose_acquisition_readiness(
         "rule_version": RULE_VERSION,
         "definition_digest": WORKFLOW_DEFINITION_DIGEST,
         "config_digest": _canonical_digest(loaded_config),
+        "applicability": {
+            "status": "applicable",
+            "workflow_type": "acquisition",
+            "reason_code": "explicit_acquisition_workflow_selected",
+            "authority": "workflow_applicability_only",
+        },
         "input_summary": {
             "artifact_count": normalized["artifact_count"],
             "accepted_artifact_count": normalized["accepted_artifact_count"],
@@ -1301,10 +1432,17 @@ def diagnose_acquisition_readiness(
             "duplicate_artifact_count": normalized["duplicate_artifact_count"],
             "missing_identity_artifact_count": normalized["missing_identity_artifact_count"],
             "candidate_roles": list(normalized["candidate_roles"]),
+            "requirement_candidates": list(normalized["requirement_candidates"]),
             "profile_hints": copy.deepcopy(normalized["profile_hints"]),
             "ignored_recognition_statuses": list(normalized["ignored_recognition_statuses"]),
             "ignored_artifact_statuses": list(normalized["ignored_artifact_statuses"]),
             "ignored_candidate_roles": list(normalized["ignored_candidate_roles"]),
+            "ignored_requirement_candidate_ids": list(
+                normalized["ignored_requirement_candidate_ids"]
+            ),
+            "ignored_requirement_candidate_contract_count": normalized[
+                "ignored_requirement_candidate_contract_count"
+            ],
             "authority": "routing_candidates_only",
         },
         "completeness": {

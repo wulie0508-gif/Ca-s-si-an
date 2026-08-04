@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0.0",
+  "round": 1,
+  "status": "passed_with_material_product_gaps",
+  "data_classification": {
+    "company_materials": "synthetic",
+    "software_outputs": "real_local_execution",
+    "interaction_telemetry": "real_test_interactions",
+    "real_company_validation_claimed": false
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "input_files": 4,
+      "score": 73,
+      "outcome": "conditional_pass",
+      "deal_created": false,
+      "valuation_run": false
+    },
+    {
+      "id": "supplement_baseline",
+      "input_files": 13,
+      "score": 53,
+      "outcome": "engineering_fix_required",
+      "question_status_counts": {
+        "answered": 2,
+        "partial": 3,
+        "contradicted": 3,
+        "open": 0
+      },
+      "deal_created": false,
+      "valuation_run": false
+    },
+    {
+      "id": "postfix_replay",
+      "input_files": 13,
+      "score": 88,
+      "outcome": "pass_with_material_product_gaps",
+      "company_intake_acquisition_applicability": "not_applicable",
+      "company_intake_acquisition_percent": null,
+      "explicit_acquisition_percent": 0.0,
+      "deal_created": false,
+      "valuation_run": false
+    }
+  ],
+  "score_change": {
+    "postfix_minus_supplement_baseline": 35,
+    "postfix_minus_initial": 15
+  },
+  "fixed_issue_ids": [
+    "R01-01",
+    "R01-02",
+    "R01-04",
+    "R01-05"
+  ],
+  "recorded_not_fixed_issue_ids": [
+    "R01-03",
+    "R01-08",
+    "R01-09"
+  ],
+  "verification": {
+    "python_tests_collected_and_passed": 366,
+    "node_tests_passed": 6,
+    "ruff": "passed",
+    "git_diff_check": "passed",
+    "browser": {
+      "page_loaded": true,
+      "blank_page": false,
+      "error_overlay": false,
+      "captured_console_errors": 0,
+      "workflow_default": "company_intake",
+      "workflow_acquisition_selectable": true,
+      "companies_navigation_rendered": true
+    }
+  },
+  "authority_boundaries": {
+    "management_statements_upgraded_to_fact": false,
+    "agent_approved": false,
+    "external_release_performed": false,
+    "investment_or_credit_rating_produced": false,
+    "aggregate_risk_score_produced": false
+  }
+}

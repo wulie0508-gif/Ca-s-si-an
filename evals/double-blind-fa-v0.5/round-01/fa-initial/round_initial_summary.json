@@ -1,0 +1,75 @@
+{
+  "round_id": "round-01",
+  "phase": "fa-initial",
+  "case_id": "case-20260804-b72e9fcae8",
+  "company_name": "澄岳热储科技（上海）有限公司",
+  "data_status": "Synthetic",
+  "evidence_authority": "Management Statement—Unverified",
+  "fa_disposition": {
+    "interview": "do_not_schedule_materials_first",
+    "deal_created": false,
+    "valuation_created": false,
+    "reason": "系统显示访谈尚不足，五个访谈 entry requirements 全部缺失；所有企业业务内容均为未核验管理层陈述，且没有交易委托、现金流/资产负债、合同验收或预测依据。"
+  },
+  "system_observation": {
+    "uploaded_file_count": 4,
+    "accepted_artifact_count": 4,
+    "ignored_artifact_count": 0,
+    "candidate_roles": ["financial_core", "governance_legal", "market_export", "policy_resource", "technology_arl"],
+    "profile_hints": {},
+    "candidate_material_readiness_percent": 71.25,
+    "critical_gap_count": 7,
+    "suggested_supplement_count": 8,
+    "interview_status": "insufficient",
+    "interview_label_zh": "尚不足",
+    "minimum_completeness_ratio": 0.3,
+    "missing_entry_requirement_ids": ["acquisition_thesis", "transaction_parameters", "industry_map", "target_business_profile", "commercial_model_baseline"],
+    "deal_count": 0,
+    "open_requests": null,
+    "request_tracking_state": "not_implemented",
+    "workflow": {"materials":"complete","evidence":"awaiting_human","analysis":"blocked","supplements":"not_available","review":"not_available","outputs":"not_available"}
+  },
+  "visible_material_assessment": {
+    "business_claim_class": "E1 management statement only",
+    "verified_business_fact_count": 0,
+    "independent_corroboration_included": false,
+    "integrity_hashes_match": true,
+    "calculations": {
+      "pnl_gross_profit_and_margin_rows_recompute": true,
+      "pnl_adjusted_ebitda_less_da_and_finance_cost_ties_to_net_loss": true,
+      "pipeline_capacity_total_mwhth": 71.0,
+      "pipeline_total_value_rmb_m": 74.5,
+      "pipeline_remaining_value_rmb_m": 67.6,
+      "pipeline_probability_weighted_exact_rmb_m": 36.865,
+      "calculation_authority": "arithmetic consistency only; does not verify business claims"
+    },
+    "material_gaps": ["independent legal-entity evidence","balance sheet and cash-flow evidence","cash/debt/funding position","contracts/PO/acceptance/invoice/collection evidence","technology performance and reliability evidence","IP ownership evidence","auditable forecast and valuation assumptions"]
+  },
+  "active_question_count": 8,
+  "active_question_ids": ["SYS-Q03","SYS-Q05","SYS-Q06","FA-Q01","FA-Q02","FA-Q03","FA-Q04","FA-Q05"],
+  "system_questions_recorded": 8,
+  "fa_questions_added": 5,
+  "issues": [
+    {"issue_id":"ISSUE-R01-01","severity":"S1 Critical","title":"后期交易阶段被初始企业材料错误显示为100%候选覆盖","evidence":"IOI/LOI、尽调、签约交割、并购后整合四阶段均显示 candidate_coverage_complete=1.0，尽管首包没有IOI/LOI、NDA、尽调、SPA、融资承诺、审批、Closing Checklist或整合计划。","impact":"71.25%材料准备度被显著抬高，并隐藏关键补件。","recompute_scope":"artifact role classification and all eight acquisition stage diagnostics"},
+    {"issue_id":"ISSUE-R01-02","severity":"S1 Critical","title":"完整性元数据和普通财务字段触发错误业务角色","evidence":"submission-manifest.json因customer/市场/revenue/legal/policy被赋予四类业务角色；P&L因Standalone legal entity中的legal被赋予governance_legal，并用于覆盖NDA、授权、SPA、审批和整合要求。","impact":"角色级关键词污染候选材料覆盖和监管触发。","recompute_scope":"recognition exclusions, semantic role rules, acquisition diagnostic"},
+    {"issue_id":"ISSUE-R01-03","severity":"S2 Major","title":"结构化公司简介未形成profile hints","evidence":"四份材料均candidate_ready，但profile_hints为空；法律主体、技术、地区、阶段和市场均未进入结构化提示，导致target_business_profile等重新询问。","impact":"重复提问且entry requirements无法满足。","recompute_scope":"profile extraction and interview readiness"},
+    {"issue_id":"ISSUE-R01-04","severity":"S2 Major","title":"8个系统问题中5个与企业首包场景错配","evidence":"收购命题、买方预算/持股、Longlist、双方接触授权和管理层会议流程问题在没有买方或Deal时占用了问题槽位。","impact":"挤占现金流、合同、技术、IP和预测等企业补件问题。","recompute_scope":"workflow routing and question selection"},
+    {"issue_id":"ISSUE-R01-05","severity":"S2 Major","title":"Dashboard下一步优先生成参考建议而非关键补件","evidence":"interview_status=insufficient且critical_gap_count=7，但dashboard next_action=generate_reference_suggestions。","impact":"可能把FA引向政策/RAG参考而非先补齐企业核心材料。","recompute_scope":"next-action prioritization"},
+    {"issue_id":"ISSUE-R01-06","severity":"OBS Expected boundary","title":"补件状态机未实现","evidence":"open_requests=null、request_tracking_state=not_implemented，UI静态文案明确补件中心尚未启用。","impact":"本轮必须使用外部question_register，不能在产品内追踪责任人、截止日和版本。","recompute_scope":"none for Round 1"},
+    {"issue_id":"ISSUE-R01-07","severity":"S2 Test-environment","title":"无可用受控浏览器实例","evidence":"浏览器运行时返回No browser is available；真实HTTP/API与静态HTML完成，但未完成渲染和点击视觉验证。","impact":"本轮UI视觉和交互可用性未验证。","recompute_scope":"visual UI replay in later round"},
+    {"issue_id":"ISSUE-R01-08","severity":"S2 Major","title":"指定bridge audit日志未生成","evidence":"使用--audit-log指向runtime/bridge-audit.jsonl并完成UI case写入后，该文件仍不存在。","impact":"服务端没有为本轮人工UI写操作提供预期的独立audit文件，只能依靠workspace记录和FA events日志。","recompute_scope":"UI mutation audit logging"},
+    {"issue_id":"ISSUE-R01-09","severity":"S3 Minor","title":"健康检查受不可用RAG拖慢","evidence":"首个5秒请求超时，随后成功请求约8.3秒；health明确RAG unavailable/timed out。","impact":"本地工作台首次状态检查延迟，但未阻断材料上传。","recompute_scope":"health/RAG timeout behavior"}
+  ],
+  "score": {
+    "blindness_and_authority": 15,
+    "intake_identity_and_provenance": 15,
+    "gap_question_and_supplement_quality": 8,
+    "interview_readiness_explanation": 10,
+    "deal_valuation_fail_closed": 20,
+    "replayability_and_efficiency": 5,
+    "total": 73,
+    "rating": "conditional_pass_initial",
+    "condition": "企业补件前必须由FA人工过滤错误覆盖和错配问题；不得使用71.25%或后期阶段100%作为真实准备度。"
+  },
+  "stop_condition": "Round 1 initial stopped after material intake, actual HTTP/API diagnosis, question curation and interview disposition; material threshold was insufficient, so no Deal or valuation was created."
+}

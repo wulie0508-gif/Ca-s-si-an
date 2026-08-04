@@ -13,3 +13,4 @@ def test_reproducible_acquisition_blind_evaluation_has_no_failed_oracles() -> No
     assert first["failed_seed_count"] == 0
     assert first["passed_seed_count"] == 5
     assert first["api_call_count"] >= 45
+    assert all(0 < record["completeness_ratio"] < 1 for record in first["records"])

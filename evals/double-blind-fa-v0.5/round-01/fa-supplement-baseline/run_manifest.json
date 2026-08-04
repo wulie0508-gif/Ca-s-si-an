@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "round-01-supplement-baseline-20260804",
+  "round": "01",
+  "role": "independent_FA_tester",
+  "purpose": "工程修复前补件后基线复测",
+  "started_at": "2026-08-04T10:18:00Z",
+  "completed_at": "2026-08-04T10:28:00Z",
+  "port": 8872,
+  "base_url": "http://127.0.0.1:8872",
+  "case_id": "case-20260804-9e753d0f65",
+  "workspace": "D:\\找回的文件_20260715\\项目与资料\\Nexus\\cleantech-finance\\evals\\double-blind-fa-v0.5\\round-01\\runtime-supplement-baseline\\workspace",
+  "audit_log": "D:\\找回的文件_20260715\\项目与资料\\Nexus\\cleantech-finance\\evals\\double-blind-fa-v0.5\\round-01\\runtime-supplement-baseline\\bridge-audit.jsonl",
+  "output_dir": "D:\\找回的文件_20260715\\项目与资料\\Nexus\\cleantech-finance\\evals\\double-blind-fa-v0.5\\round-01\\fa-supplement-baseline",
+  "transport": {
+    "root_html_get_status": 200,
+    "case_create_method": "same-origin multipart/form-data POST",
+    "case_create_endpoint": "/api/ui/cases",
+    "upload_mode": "single cumulative request containing initial and supplement files",
+    "uploaded_file_count": 13,
+    "case_get_endpoint": "/api/ui/cases/case-20260804-9e753d0f65",
+    "dashboard_get_endpoint": "/api/ui/dashboard",
+    "deals_get_endpoint": "/api/ui/deals"
+  },
+  "controlled_browser_used": false,
+  "browser_note": "真实 HTTP 与产品静态 HTML 足以完成创建、上传和状态复核；未依赖浏览器实例。",
+  "constraints": {
+    "product_code_modified": false,
+    "git_used": false,
+    "deal_created": false,
+    "valuation_run": false,
+    "hidden_truth_read": false,
+    "out_of_scope_rounds_read": false
+  },
+  "skills_followed": ["audit-cleantech-finance","spreadsheets"],
+  "validation": {"json_files_parse":true,"jsonl_files_parse_line_by_line":true,"required_output_count":6}
+}

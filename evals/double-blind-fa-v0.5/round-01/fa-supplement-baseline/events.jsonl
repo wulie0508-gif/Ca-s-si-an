@@ -1,0 +1,10 @@
+{"timestamp":"2026-08-04T10:18:00Z","event":"bridge_start_attempt","port":8872,"result":"failed","reason":"catalog path was required"}
+{"timestamp":"2026-08-04T10:18:30Z","event":"bridge_started","port":8872,"base_url":"http://127.0.0.1:8872","workspace":"runtime-supplement-baseline/workspace","audit_log":"runtime-supplement-baseline/bridge-audit.jsonl","catalog_state":"quarantined"}
+{"timestamp":"2026-08-04T10:19:00Z","event":"root_ui_fetched","method":"GET","endpoint":"/","status":200}
+{"timestamp":"2026-08-04T10:19:20Z","event":"case_create_attempt","method":"POST","endpoint":"/api/ui/cases","result":"rejected","error":"ui_origin_required"}
+{"timestamp":"2026-08-04T10:19:35Z","event":"case_created","method":"POST","endpoint":"/api/ui/cases","same_origin":true,"multipart":true,"case_id":"case-20260804-9e753d0f65","uploaded_file_count":13,"candidate_ready_count":13}
+{"timestamp":"2026-08-04T10:19:48Z","event":"case_state_fetched","method":"GET","endpoint":"/api/ui/cases/case-20260804-9e753d0f65","critical_gap_count":7,"interview_readiness":"insufficient","material_coverage_percent":71.25}
+{"timestamp":"2026-08-04T10:19:48Z","event":"dashboard_fetched","method":"GET","endpoint":"/api/ui/dashboard","case_count":1,"material_count":13}
+{"timestamp":"2026-08-04T10:19:48Z","event":"deals_fetched","method":"GET","endpoint":"/api/ui/deals","deal_count":0}
+{"timestamp":"2026-08-04T10:24:00Z","event":"questions_reassessed","active_question_count":8,"answered":2,"partial":3,"contradicted":3,"open":0}
+{"timestamp":"2026-08-04T10:25:00Z","event":"guardrails_confirmed","deal_created":false,"valuation_run":false,"readiness_increase_assumed":false}

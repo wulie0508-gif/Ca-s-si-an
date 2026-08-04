@@ -24,7 +24,10 @@ from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree
 
-from .acquisition_workflow import diagnose_acquisition_readiness
+from .acquisition_workflow import (
+    acquisition_workflow_not_applicable,
+    diagnose_acquisition_readiness,
+)
 
 MAX_CASE_FILES = 20
 MAX_FILE_BYTES = 20 * 1024 * 1024
@@ -87,10 +90,16 @@ ROLE_SIGNALS: dict[str, tuple[str, ...]] = {
     ),
     "technology_arl": (
         "技术",
+        "技术验证",
+        "性能验证",
+        "现场验证",
         "专利",
         "中试",
         "试点",
         "示范",
+        "technical validation",
+        "technology validation",
+        "performance validation",
         "trl",
         "arl",
         "patent",
@@ -128,6 +137,10 @@ ROLE_SIGNALS: dict[str, tuple[str, ...]] = {
         "governance",
     ),
 }
+
+WEAK_ROLE_SIGNALS = frozenset({"legal", "policy", "customer", "market", "revenue"})
+CONTROL_ARTIFACT_TOKENS = frozenset({"manifest", "index", "readme"})
+WORKFLOW_TYPES = frozenset({"company_intake", "acquisition"})
 
 ROLE_TOPIC_LABELS = {
     "company_identity": "企业画像",
@@ -299,12 +312,39 @@ def _extract_text(file_name: str, payload: bytes) -> tuple[str, list[str]]:
     return "", ["unsupported_text_extraction"]
 
 
+def _is_control_artifact(file_name: str) -> bool:
+    stem = unicodedata.normalize("NFKC", Path(file_name).stem).casefold()
+    tokens = {
+        token for token in re.split(r"[^a-z0-9\u4e00-\u9fff]+", stem) if token
+    }
+    return bool(tokens.intersection(CONTROL_ARTIFACT_TOKENS)) or any(
+        marker in stem for marker in ("清单", "目录")
+    )
+
+
+def _signal_present(corpus: str, signal: str) -> bool:
+    normalized_signal = signal.casefold()
+    if normalized_signal.isascii():
+        normalized_corpus = re.sub(r"[_/\\-]+", " ", corpus)
+        return bool(
+            re.search(
+                rf"(?<![a-z0-9]){re.escape(normalized_signal)}(?![a-z0-9])",
+                normalized_corpus,
+            )
+        )
+    return normalized_signal in corpus
+
+
 def _candidate_roles(file_name: str, text: str) -> tuple[list[str], list[str]]:
+    if _is_control_artifact(file_name):
+        return ["generic_supporting"], ["control_artifact_name"]
     corpus = f"{file_name}\n{text[:MAX_TEXT_SCAN_CHARS]}".casefold()
     matches: list[tuple[str, list[str]]] = []
     for role, signals in ROLE_SIGNALS.items():
-        found = sorted({signal for signal in signals if signal.casefold() in corpus})
-        if found:
+        found = sorted({signal for signal in signals if _signal_present(corpus, signal)})
+        strong = [signal for signal in found if signal.casefold() not in WEAK_ROLE_SIGNALS]
+        weak = [signal for signal in found if signal.casefold() in WEAK_ROLE_SIGNALS]
+        if strong or len(weak) >= 2:
             matches.append((role, found))
     matches.sort(key=lambda item: (-len(item[1]), item[0]))
     roles = [role for role, _ in matches[:4]]
@@ -491,6 +531,24 @@ def _workflow_projection(artifacts: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _normalized_workflow_type(value: Any) -> str:
+    normalized = value.strip() if isinstance(value, str) else ""
+    return normalized if normalized in WORKFLOW_TYPES else "company_intake"
+
+
+def _workflow_diagnostic(
+    workflow_type: str,
+    artifacts: list[dict[str, Any]],
+    profile_hints: Any,
+) -> dict[str, Any]:
+    if workflow_type != "acquisition":
+        return acquisition_workflow_not_applicable(workflow_type)
+    return diagnose_acquisition_readiness(
+        artifacts,
+        profile_hints=profile_hints,
+    )
+
+
 def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]:
     enriched = dict(payload)
     artifacts: list[dict[str, Any]] = []
@@ -522,9 +580,12 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
             "authority": "routing_hint_only",
             "source": "declared_fields_in_uploaded_materials",
         }
-    enriched["acquisition_diagnostic"] = diagnose_acquisition_readiness(
+    workflow_type = _normalized_workflow_type(payload.get("workflow_type"))
+    enriched["workflow_type"] = workflow_type
+    enriched["acquisition_diagnostic"] = _workflow_diagnostic(
+        workflow_type,
         artifacts,
-        profile_hints=enriched["profile_hints"],
+        enriched["profile_hints"],
     )
     normalized_workflow: list[dict[str, Any]] = []
     for raw_step in payload.get("workflow") or []:
@@ -647,6 +708,26 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
     reference_activity = payload.get("reference_activity")
     if not isinstance(reference_activity, dict):
         reference_activity = None
+    workflow_type = _normalized_workflow_type(payload.get("workflow_type"))
+    acquisition = payload.get("acquisition_diagnostic")
+    if not isinstance(acquisition, dict):
+        acquisition = _workflow_diagnostic(
+            workflow_type,
+            artifacts,
+            payload.get("profile_hints"),
+        )
+    applicability = acquisition.get("applicability")
+    if not isinstance(applicability, dict):
+        applicability = {"status": "applicable"}
+    acquisition_is_applicable = applicability.get("status") == "applicable"
+    critical_gaps = [
+        item
+        for item in acquisition.get("critical_gaps") or []
+        if isinstance(item, dict)
+    ]
+    interview_readiness = acquisition.get("business_model_interview_readiness")
+    if not isinstance(interview_readiness, dict):
+        interview_readiness = {}
     if needs_processing:
         operational_status = {
             "id": "materials_need_processing",
@@ -655,6 +736,27 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         next_action = {
             "id": "resolve_material_extraction",
             "label_zh": "处理无法抽取的材料",
+        }
+    elif acquisition_is_applicable and critical_gaps:
+        operational_status = {
+            "id": "critical_evidence_review_required",
+            "label_zh": "关键证据待复核",
+        }
+        next_action = {
+            "id": "review_critical_evidence_gaps",
+            "label_zh": "复核关键证据缺口",
+        }
+    elif (
+        acquisition_is_applicable
+        and interview_readiness.get("status") == "insufficient"
+    ):
+        operational_status = {
+            "id": "interview_evidence_insufficient",
+            "label_zh": "访谈证据尚不足",
+        }
+        next_action = {
+            "id": "prepare_supplement_draft",
+            "label_zh": "准备补件草稿",
         }
     elif reference_activity and int(reference_activity.get("last_result_count") or 0) > 0:
         operational_status = {
@@ -674,12 +776,6 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
             "id": "generate_reference_suggestions",
             "label_zh": "生成参考建议",
         }
-    acquisition = payload.get("acquisition_diagnostic")
-    if not isinstance(acquisition, dict):
-        acquisition = diagnose_acquisition_readiness(
-            artifacts,
-            profile_hints=payload.get("profile_hints"),
-        )
     completeness = acquisition.get("completeness")
     if not isinstance(completeness, dict):
         completeness = {}
@@ -696,19 +792,12 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         ),
         stage_diagnostics[-1] if stage_diagnostics else None,
     )
-    critical_gaps = [
-        item
-        for item in acquisition.get("critical_gaps") or []
-        if isinstance(item, dict)
-    ]
-    interview_readiness = acquisition.get("business_model_interview_readiness")
-    if not isinstance(interview_readiness, dict):
-        interview_readiness = {}
     return {
         "summary_version": "1.0",
         "case_id": payload.get("case_id"),
         "case_name": payload.get("case_name"),
         "case_type": payload.get("case_type"),
+        "workflow_type": workflow_type,
         "revision": payload.get("revision"),
         "created_at": payload.get("created_at"),
         "updated_at": payload.get("updated_at"),
@@ -734,10 +823,20 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         "next_action": next_action,
         "reference_activity": reference_activity,
         "acquisition": {
-            "material_readiness_percent": float(completeness.get("percent") or 0),
-            "critical_gap_count": len(critical_gaps),
-            "suggested_supplement_count": len(
-                acquisition.get("suggested_supplements") or []
+            "applicability": dict(applicability),
+            "material_readiness_percent": (
+                float(completeness["percent"])
+                if acquisition_is_applicable
+                and isinstance(completeness.get("percent"), (int, float))
+                else None
+            ),
+            "critical_gap_count": (
+                len(critical_gaps) if acquisition_is_applicable else None
+            ),
+            "suggested_supplement_count": (
+                len(acquisition.get("suggested_supplements") or [])
+                if acquisition_is_applicable
+                else None
             ),
             "current_focus_stage": (
                 {
@@ -750,10 +849,20 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
                 else None
             ),
             "interview_readiness": {
-                "status": interview_readiness.get("status", "insufficient"),
-                "label_zh": interview_readiness.get("label_zh", "尚不足"),
+                "status": interview_readiness.get(
+                    "status",
+                    "insufficient" if acquisition_is_applicable else "not_applicable",
+                ),
+                "label_zh": interview_readiness.get(
+                    "label_zh",
+                    "尚不足" if acquisition_is_applicable else "不适用",
+                ),
             },
-            "authority": "candidate_material_coverage_only",
+            "authority": (
+                "candidate_material_coverage_only"
+                if acquisition_is_applicable
+                else "not_applicable"
+            ),
             "deal_stage_is_human_confirmed": False,
         },
     }
@@ -792,6 +901,7 @@ class CaseWorkspaceStore:
         declared_need: str = "",
         owner: str = "",
         case_type: str = "unclassified",
+        workflow_type: str = "company_intake",
     ) -> dict[str, Any]:
         normalized_need = re.sub(r"\s+", " ", declared_need).strip()
         normalized_owner = re.sub(r"\s+", " ", owner).strip()
@@ -804,6 +914,11 @@ class CaseWorkspaceStore:
         if case_type not in {"enterprise", "demo", "qa", "unclassified"}:
             raise MaterialValidationError(
                 "Case type must be enterprise, demo, qa or unclassified"
+            )
+        normalized_workflow_type = str(workflow_type or "").strip()
+        if normalized_workflow_type not in WORKFLOW_TYPES:
+            raise MaterialValidationError(
+                "Workflow type must be company_intake or acquisition"
             )
         if not files or len(files) > MAX_CASE_FILES:
             raise MaterialValidationError(
@@ -906,6 +1021,7 @@ class CaseWorkspaceStore:
                 "revision": 1,
                 "case_name": normalized_name,
                 "case_type": case_type,
+                "workflow_type": normalized_workflow_type,
                 "declared_need": normalized_need or None,
                 "owner": normalized_owner or None,
                 "created_at": _utc_now(),
@@ -916,6 +1032,15 @@ class CaseWorkspaceStore:
                     "authority": "routing_hint_only",
                     "source": "declared_fields_in_uploaded_materials",
                 },
+                "acquisition_diagnostic": _workflow_diagnostic(
+                    normalized_workflow_type,
+                    artifacts,
+                    {
+                        "tags": _merge_profile_hints(artifacts),
+                        "authority": "routing_hint_only",
+                        "source": "declared_fields_in_uploaded_materials",
+                    },
+                ),
                 "modules": _module_registry(),
                 **projection,
                 "boundaries": {
