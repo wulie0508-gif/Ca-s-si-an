@@ -1150,6 +1150,9 @@ def test_workbench_is_local_accessible_and_defaults_to_no_consent() -> None:
     assert "pending?.fingerprint === fingerprint" in javascript
     assert "clearIdempotencyKey(idempotencyScope, body)" in javascript
     assert "/api/ui/cases" in javascript
+    assert 'window.scrollTo({ top: 0, left: 0, behavior: "auto" });' in javascript
+    assert "title.focus({ preventScroll: true })" in javascript
+    assert 'h1[tabindex="-1"]:focus' in css
     assert "/rag-query" in javascript
     assert "/api/agent/policy-match" in javascript
     assert "/api/revoke" in javascript

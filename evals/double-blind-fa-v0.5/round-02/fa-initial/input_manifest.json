@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "DBFA-R02-FA-INITIAL-001",
+  "input_directory": "../company-submission",
+  "file_count": 6,
+  "all_files_accepted": true,
+  "all_stored_hashes_match_observed_input_hashes": true,
+  "files": [
+    {
+      "filename": "01-standalone-finance-export.csv",
+      "byte_count": 3314,
+      "sha256": "3fcca37035d010c3312d6482cf6ca0acff3bd67581e7b5ae6a95d8357782f56f",
+      "system_artifact_id": "artifact-0001",
+      "system_status": "candidate_ready"
+    },
+    {
+      "filename": "02-group-sales-ytd-export.csv",
+      "byte_count": 1633,
+      "sha256": "9ef59dd7294acdbd1576bc0b076dc5eaa1bc7fb8cc069609ea4fc2ae5c71ae91",
+      "system_artifact_id": "artifact-0002",
+      "system_status": "candidate_ready"
+    },
+    {
+      "filename": "03-r12m-kpi-dashboard.csv",
+      "byte_count": 2063,
+      "sha256": "5f077b1dd9259496a8dc57b525032e6e96d0568361e3f358c9bc0bbaec0659d4",
+      "system_artifact_id": "artifact-0003",
+      "system_status": "candidate_ready"
+    },
+    {
+      "filename": "04-group-treasury-snapshot.csv",
+      "byte_count": 1628,
+      "sha256": "cc4b35ad4f8b6ac8834d2f0b6cc385a6050aaf82809d6a6d885f11e5833434d1",
+      "system_artifact_id": "artifact-0004",
+      "system_status": "candidate_ready"
+    },
+    {
+      "filename": "05-forecast-version-exports.csv",
+      "byte_count": 1365,
+      "sha256": "08d588a8fda078d60c9ebbb06add8943dcb6c3ffbc7ccfc92672f7f1f1b31d17",
+      "system_artifact_id": "artifact-0005",
+      "system_status": "candidate_ready"
+    },
+    {
+      "filename": "submission-manifest.json",
+      "byte_count": 5296,
+      "sha256": "65a603d19a2670fc592c077ccbd3f0fae8a785c65979bef6b40e3e30aebeaefe",
+      "system_artifact_id": "artifact-0006",
+      "system_status": "candidate_ready"
+    }
+  ]
+}

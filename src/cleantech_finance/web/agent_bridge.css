@@ -80,6 +80,10 @@ summary:focus-visible {
   outline-offset: 3px;
 }
 
+h1[tabindex="-1"]:focus {
+  outline: none;
+}
+
 [hidden] {
   display: none !important;
 }

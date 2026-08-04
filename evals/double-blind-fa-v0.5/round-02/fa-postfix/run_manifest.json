@@ -1,0 +1,74 @@
+{
+  "run_id": "R02-FA-POSTFIX-20260804-8883",
+  "run_type": "independent_post_fix_replay",
+  "round": "round-02",
+  "result": "PASS",
+  "score": 100,
+  "score_scale": 100,
+  "tester_context": {
+    "thread_context": "reused_specialist_thread",
+    "fresh_context_claimed": false,
+    "disclosure": "Global thread capacity required reuse of an existing specialist thread; the replay did not claim brand-new context and did not reuse prior-round conclusions.",
+    "role": "FA and deterministic gate tester"
+  },
+  "read_scope": {
+    "allowed_and_read": [
+      "round-02/company-submission/*",
+      "round-02/company-supplement/*",
+      "round-02/fa-initial/question_register.jsonl",
+      "src/cleantech_finance/company_intake_preflight.py",
+      "src/cleantech_finance/workspace_service.py (runtime-relevant sections)",
+      "src/cleantech_finance/agent_bridge.py (runtime-relevant sections)",
+      "src/cleantech_finance/cli.py (bridge arguments)",
+      "audit-cleantech-finance/SKILL.md",
+      "own HTTP responses and temporary runtime"
+    ],
+    "explicitly_not_read": [
+      "Round 2 reports, summaries, events or engineering review",
+      "other rounds",
+      "hidden truth",
+      "git messages",
+      "other agent messages as test evidence"
+    ]
+  },
+  "transport": {
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 8883,
+    "origin": "http://127.0.0.1:8883",
+    "referer": "http://127.0.0.1:8883/",
+    "mutation_endpoint": "/api/ui/cases",
+    "workflow_type_field_sent": false,
+    "observed_default_workflow_type": "company_intake"
+  },
+  "runtime": {
+    "workspace_class": "fresh_system_temporary_directory",
+    "workspace_leaf": "cleantech-r02-postfix-0e21866434904b69b6fd84a059a15693",
+    "catalog_state": "quarantined",
+    "catalog_record_count": 73,
+    "catalog_eligible_count": 0,
+    "policy_reference_state": "unconfirmed",
+    "server_stopped": true,
+    "port_8883_listening_after_stop": false,
+    "requested_pid_8616_present_after_stop": false
+  },
+  "product_contract": {
+    "preflight_schema_version": "1.0.0",
+    "preflight_rule_version": "company-intake-financial-basis-1.0.0",
+    "financial_authority": "preflight_gate_only",
+    "business_data_class": "synthetic",
+    "telemetry_data_class": "real_test_telemetry"
+  },
+  "case_ids": {
+    "initial_6_files": "case-20260804-00814b4a0b",
+    "combined_9_files": "case-20260804-9a6d5fdd05"
+  },
+  "output_files": [
+    "run_manifest.json",
+    "input_manifest.json",
+    "events.jsonl",
+    "observed_questions.jsonl",
+    "round_postfix_summary.json",
+    "postfix-test-report.md"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "DBFA-R02-FA-INITIAL-001",
+  "round": 2,
+  "phase": "fa_initial",
+  "role": "fa_blind_tester",
+  "product_commit": "85798d0",
+  "case_id": "case-20260804-a437a545de",
+  "workflow_type": "company_intake",
+  "execution": {
+    "mode": "real_local_http",
+    "host": "127.0.0.1",
+    "port": 8881,
+    "server_stopped_after_run": true,
+    "runtime_is_gitignored": true
+  },
+  "provenance": {
+    "test_actions_performed_by": "fresh_child_agent_with_no_conversation_history",
+    "artifact_transcription_by": "root_coordinator_after_child_report_writer_stalled",
+    "transcription_scope": "observed telemetry and FA questions only",
+    "child_report_writer_interrupted": true,
+    "baseline_replayed_after_transcription": false
+  },
+  "isolation": {
+    "round_01_read": false,
+    "hidden_truth_read": false,
+    "engineering_outputs_read": false,
+    "round_03_read": false,
+    "list_agents_called_by_blind_tester": false
+  },
+  "data_classification": {
+    "company_materials": "synthetic",
+    "software_execution": "real_local_execution",
+    "interaction_telemetry": "real_test_interactions",
+    "real_company_validation_claimed": false
+  }
+}

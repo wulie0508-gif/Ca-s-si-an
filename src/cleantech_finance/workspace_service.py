@@ -28,6 +28,10 @@ from .acquisition_workflow import (
     acquisition_workflow_not_applicable,
     diagnose_acquisition_readiness,
 )
+from .company_intake_preflight import (
+    diagnose_company_intake_financial_basis,
+    parse_structured_financial_metadata,
+)
 
 MAX_CASE_FILES = 20
 MAX_FILE_BYTES = 20 * 1024 * 1024
@@ -560,17 +564,23 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
         recognition = (
             dict(raw_recognition) if isinstance(raw_recognition, dict) else {}
         )
-        if "profile_hints" not in recognition:
+        if (
+            "profile_hints" not in recognition
+            or "structured_financial_metadata" not in recognition
+        ):
             artifact_id = str(artifact.get("id") or "")
             extract_path = case_path / "extracts" / f"{artifact_id}.txt"
             try:
                 extract = extract_path.read_text(encoding="utf-8")
             except (OSError, UnicodeDecodeError):
                 extract = ""
-            recognition["profile_hints"] = _profile_hints(
-                str(artifact.get("file_name") or ""),
-                extract,
-            )
+            file_name = str(artifact.get("file_name") or "")
+            if "profile_hints" not in recognition:
+                recognition["profile_hints"] = _profile_hints(file_name, extract)
+            if "structured_financial_metadata" not in recognition:
+                recognition["structured_financial_metadata"] = (
+                    parse_structured_financial_metadata(file_name, extract)
+                )
         artifact["recognition"] = recognition
         artifacts.append(artifact)
     enriched["artifacts"] = artifacts
@@ -587,6 +597,12 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
         artifacts,
         enriched["profile_hints"],
     )
+    if workflow_type == "company_intake":
+        enriched["financial_basis_preflight"] = (
+            diagnose_company_intake_financial_basis(artifacts)
+        )
+    else:
+        enriched.pop("financial_basis_preflight", None)
     normalized_workflow: list[dict[str, Any]] = []
     for raw_step in payload.get("workflow") or []:
         if not isinstance(raw_step, dict):
@@ -728,6 +744,26 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
     interview_readiness = acquisition.get("business_model_interview_readiness")
     if not isinstance(interview_readiness, dict):
         interview_readiness = {}
+    financial_preflight = payload.get("financial_basis_preflight")
+    if workflow_type == "company_intake" and not isinstance(
+        financial_preflight, dict
+    ):
+        financial_preflight = diagnose_company_intake_financial_basis(artifacts)
+    if not isinstance(financial_preflight, dict):
+        financial_preflight = {}
+    financial_questions = [
+        item
+        for item in financial_preflight.get("questions") or []
+        if isinstance(item, dict)
+    ]
+    financial_calculation = financial_preflight.get("calculation_status")
+    if not isinstance(financial_calculation, dict):
+        financial_calculation = {}
+    financial_basis_blocked = (
+        workflow_type == "company_intake"
+        and financial_calculation.get("status") == "blocked"
+        and bool(financial_questions)
+    )
     if needs_processing:
         operational_status = {
             "id": "materials_need_processing",
@@ -736,6 +772,15 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         next_action = {
             "id": "resolve_material_extraction",
             "label_zh": "处理无法抽取的材料",
+        }
+    elif financial_basis_blocked:
+        operational_status = {
+            "id": "financial_basis_blocked",
+            "label_zh": "财务口径待确认",
+        }
+        next_action = {
+            "id": "review_financial_basis_questions",
+            "label_zh": "复核财务口径问题",
         }
     elif acquisition_is_applicable and critical_gaps:
         operational_status = {
@@ -822,6 +867,19 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         "request_tracking_state": "not_implemented",
         "next_action": next_action,
         "reference_activity": reference_activity,
+        "financial_basis": {
+            "applicability": financial_preflight.get("applicability"),
+            "calculation_status": financial_calculation.get("status"),
+            "blocking_question_ids": list(
+                financial_calculation.get("blocking_question_ids") or []
+            ),
+            "open_question_count": len(financial_questions),
+            "question_ids": [item.get("id") for item in financial_questions],
+            "candidate_response_receipt_count": len(
+                financial_preflight.get("candidate_response_receipts") or []
+            ),
+            "authority": "preflight_projection_only",
+        },
         "acquisition": {
             "applicability": dict(applicability),
             "material_readiness_percent": (
@@ -973,6 +1031,9 @@ class CaseWorkspaceStore:
                 extracted_text, warnings = _extract_text(name, payload)
                 roles, signals = _candidate_roles(name, extracted_text)
                 profile_hints = _profile_hints(name, extracted_text)
+                structured_financial_metadata = parse_structured_financial_metadata(
+                    name, extracted_text
+                )
                 if extracted_text.strip():
                     (extracts_path / f"{artifact_id}.txt").write_text(
                         extracted_text,
@@ -1005,6 +1066,9 @@ class CaseWorkspaceStore:
                             "candidate_roles": roles,
                             "matched_signals": signals,
                             "profile_hints": profile_hints,
+                            "structured_financial_metadata": (
+                                structured_financial_metadata
+                            ),
                             "text_extracted": bool(extracted_text.strip()),
                             "extracted_character_count": len(extracted_text),
                             "warnings": warnings,
@@ -1040,6 +1104,11 @@ class CaseWorkspaceStore:
                         "authority": "routing_hint_only",
                         "source": "declared_fields_in_uploaded_materials",
                     },
+                ),
+                "financial_basis_preflight": (
+                    diagnose_company_intake_financial_basis(artifacts)
+                    if normalized_workflow_type == "company_intake"
+                    else None
                 ),
                 "modules": _module_registry(),
                 **projection,

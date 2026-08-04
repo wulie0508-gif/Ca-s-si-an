@@ -313,6 +313,12 @@ const elements = {
   nextActionTitle: document.querySelector("#next-action-title"),
   nextActionReason: document.querySelector("#next-action-reason"),
   nextActionButton: document.querySelector("#next-action-button"),
+  financialBasisState: document.querySelector("#financial-basis-state"),
+  financialBasisSummary: document.querySelector("#financial-basis-summary"),
+  financialBasisDimensions: document.querySelector(
+    "#financial-basis-dimensions",
+  ),
+  financialBasisResponses: document.querySelector("#financial-basis-responses"),
   acquisitionState: document.querySelector("#acquisition-state"),
   acquisitionStageTrack: document.querySelector("#acquisition-stage-track"),
   acquisitionCurrentStage: document.querySelector(
@@ -610,6 +616,7 @@ async function navigate(view, options = {}) {
     window.history.pushState({}, "", target);
   }
   await renderRoute({ focus: true });
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 function showView(viewName) {
@@ -629,7 +636,7 @@ function showView(viewName) {
 function focusViewTitle(view) {
   const title = document.querySelector(`#${view}-title`);
   if (title) {
-    window.requestAnimationFrame(() => title.focus());
+    window.requestAnimationFrame(() => title.focus({ preventScroll: true }));
   }
 }
 
@@ -3498,6 +3505,82 @@ function renderKeyQuestions(diagnostic) {
   });
 }
 
+function financialBasisValue(value) {
+  if (value && typeof value === "object") {
+    return [value.label, value.start, value.end].filter(Boolean).join(" / ") ||
+      "结构化候选";
+  }
+  return String(value || "未说明");
+}
+
+function renderFinancialBasisPreflight(casePayload) {
+  const diagnostic =
+    casePayload?.financial_basis_preflight &&
+    typeof casePayload.financial_basis_preflight === "object"
+      ? casePayload.financial_basis_preflight
+      : null;
+  const applicable = diagnostic?.applicability?.status === "applicable";
+  elements.financialBasisDimensions.replaceChildren();
+  if (!applicable) {
+    elements.financialBasisState.textContent = diagnostic ? "不适用" : "尚未生成";
+    elements.financialBasisState.dataset.state = "unavailable";
+    elements.financialBasisSummary.textContent = diagnostic
+      ? "未检测到 CSV/JSON 明示的财务口径元数据。"
+      : "正在读取结构化财务口径。";
+    elements.financialBasisDimensions.append(
+      node("li", "question-empty", "没有从自由正文或文件名推断财务口径。"),
+    );
+    elements.financialBasisResponses.textContent = "";
+    return diagnostic;
+  }
+
+  const calculationStatus = diagnostic?.calculation_status?.status;
+  const questions = Array.isArray(diagnostic?.questions)
+    ? diagnostic.questions
+    : [];
+  elements.financialBasisState.textContent =
+    calculationStatus === "blocked" ? "计算已阻断" : "待人工复核";
+  elements.financialBasisState.dataset.state =
+    calculationStatus === "blocked" ? "unavailable" : "available";
+  elements.financialBasisSummary.textContent =
+    `${questions.length} 个口径问题；系统未选择最新、最大或名称相近的候选值。`;
+
+  const dimensionLabels = {
+    entity_scope: "主体范围",
+    component_entity: "组成主体",
+    reporting_period: "报告期间",
+    currency: "币种",
+    unit: "单位",
+    vat_basis: "VAT 口径",
+    cash_as_of: "现金时点",
+    cash_restriction: "现金限制",
+    cash_availability: "现金可用性",
+  };
+  Object.entries(diagnostic?.dimensions || {}).forEach(([key, dimension]) => {
+    const candidates = Array.isArray(dimension?.candidates)
+      ? dimension.candidates.map((item) => financialBasisValue(item?.value))
+      : [];
+    const item = node("li");
+    item.append(
+      node("strong", "", dimensionLabels[key] || key),
+      node(
+        "span",
+        "",
+        `${dimension?.status || "unknown"}：${candidates.join("；") || "未说明"}`,
+      ),
+    );
+    elements.financialBasisDimensions.append(item);
+  });
+  const receipts = Array.isArray(diagnostic?.candidate_response_receipts)
+    ? diagnostic.candidate_response_receipts
+    : [];
+  elements.financialBasisResponses.textContent = receipts.length
+    ? `已收到 ${receipts.length} 个候选回复映射；均未自动接受或关闭问题。`
+    : "尚未收到显式 question_id 补件映射。";
+  renderKeyQuestions(diagnostic);
+  return diagnostic;
+}
+
 function renderAcquisitionDiagnostic(casePayload) {
   const diagnostic =
     casePayload?.acquisition_diagnostic &&
@@ -3634,6 +3717,7 @@ function renderCaseLoadingState() {
     node("div", "result-empty", "正在读取能力边界"),
   );
   renderAcquisitionDiagnostic({});
+  renderFinancialBasisPreflight({});
 }
 
 function renderCase(casePayload) {
@@ -3665,6 +3749,7 @@ function renderCase(casePayload) {
   elements.caseMaterialCount.textContent = `${artifacts.length} 份`;
   elements.caseUpdatedAt.textContent = formatDate(casePayload.updated_at);
   const diagnostic = renderAcquisitionDiagnostic(casePayload);
+  renderFinancialBasisPreflight(casePayload);
   const diagnosticNextAction =
     displayLabel(diagnostic?.next_action) || diagnostic?.next_action_label;
   elements.nextActionTitle.textContent =
@@ -3672,9 +3757,13 @@ function renderCase(casePayload) {
   elements.nextActionReason.textContent =
     summary.operational_status?.id === "materials_need_processing"
       ? "至少一份材料无法提取文本，需要 OCR 或确认。"
-      : "材料已归档，可以查看知识库与政策参考。";
+      : summary.next_action?.id === "review_financial_basis_questions"
+        ? "主体、期间、单位、税基、现金或预测口径需要人工确认。"
+        : "材料已归档，可以查看知识库与政策参考。";
   elements.nextActionButton.textContent =
-    summary.operational_status?.id === "reference_search_run"
+    summary.next_action?.id === "review_financial_basis_questions"
+      ? "查看口径问题"
+      : summary.operational_status?.id === "reference_search_run"
       ? "更新资源建议"
       : "查看资源建议";
   renderTopics(summary.focus_topics || []);
@@ -4053,6 +4142,21 @@ async function openSuggestionsAndRun() {
   });
   appState.automaticReferenceCase = null;
   runAutomaticReferences(appState.currentCase.case_id);
+}
+
+async function handleNextAction() {
+  if (
+    appState.currentCase?.dashboard?.next_action?.id ===
+    "review_financial_basis_questions"
+  ) {
+    setCaseTab("overview");
+    elements.financialBasisState.closest("section")?.scrollIntoView({
+      block: "start",
+      behavior: "smooth",
+    });
+    return;
+  }
+  await openSuggestionsAndRun();
 }
 
 function activeCompanyWorkspaceCaseId() {
@@ -4458,7 +4562,7 @@ function wireEvents() {
   elements.uploadForm.addEventListener("submit", createCase);
   elements.ragQueryForm.addEventListener("submit", runRagQuery);
   elements.policyForm.addEventListener("submit", runPolicyReference);
-  elements.nextActionButton.addEventListener("click", openSuggestionsAndRun);
+  elements.nextActionButton.addEventListener("click", handleNextAction);
   elements.dashboardSearch.addEventListener("input", filterDashboard);
   elements.dashboardTypeFilter.addEventListener("change", filterDashboard);
   elements.dashboardStatusFilter.addEventListener("change", filterDashboard);

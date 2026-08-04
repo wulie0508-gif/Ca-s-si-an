@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R02-SUPP-BASELINE-20260804T1140Z",
+  "business_data_status": "Synthetic",
+  "uploaded_file_count": 9,
+  "uploaded_files": [
+    {
+      "source_group": "company-submission",
+      "relative_path": "company-submission/01-standalone-finance-export.csv",
+      "bytes": 3314,
+      "sha256": "3fcca37035d010c3312d6482cf6ca0acff3bd67581e7b5ae6a95d8357782f56f",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-submission",
+      "relative_path": "company-submission/02-group-sales-ytd-export.csv",
+      "bytes": 1633,
+      "sha256": "9ef59dd7294acdbd1576bc0b076dc5eaa1bc7fb8cc069609ea4fc2ae5c71ae91",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-submission",
+      "relative_path": "company-submission/03-r12m-kpi-dashboard.csv",
+      "bytes": 2063,
+      "sha256": "5f077b1dd9259496a8dc57b525032e6e96d0568361e3f358c9bc0bbaec0659d4",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-submission",
+      "relative_path": "company-submission/04-group-treasury-snapshot.csv",
+      "bytes": 1628,
+      "sha256": "cc4b35ad4f8b6ac8834d2f0b6cc385a6050aaf82809d6a6d885f11e5833434d1",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-submission",
+      "relative_path": "company-submission/05-forecast-version-exports.csv",
+      "bytes": 1365,
+      "sha256": "08d588a8fda078d60c9ebbb06add8943dcb6c3ffbc7ccfc92672f7f1f1b31d17",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-submission",
+      "relative_path": "company-submission/submission-manifest.json",
+      "bytes": 5296,
+      "sha256": "65a603d19a2670fc592c077ccbd3f0fae8a785c65979bef6b40e3e30aebeaefe",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-supplement",
+      "relative_path": "company-supplement/01-R02-Q01-Q08-response-register.csv",
+      "bytes": 4000,
+      "sha256": "10331c60b089056554122bedbee401b632a6d405ccf80acf24a13fd5563cc5c4",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-supplement",
+      "relative_path": "company-supplement/02-R02-normalization-reconciliation.csv",
+      "bytes": 6931,
+      "sha256": "2a5659cf75e13d7579a12929cfb15b9d8a919dc28f847282fd490e6aebf89f5d",
+      "synthetic": true
+    },
+    {
+      "source_group": "company-supplement",
+      "relative_path": "company-supplement/supplement-manifest.json",
+      "bytes": 5238,
+      "sha256": "8423db903efbe65296aa09299d9262ad5bff97525c94f47edd39390f71c32170",
+      "synthetic": true
+    }
+  ],
+  "comparison_input": {
+    "relative_path": "fa-initial/question_register.jsonl",
+    "bytes": 4805,
+    "sha256": "dbe99c37b56da5153ba658da634532e7dd9cb25e3040ac1117248e0fa96bec9c",
+    "uploaded_to_product": false,
+    "purpose": "FA-side initial question register for independent after-state reconciliation"
+  }
+}

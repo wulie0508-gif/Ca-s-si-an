@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R02-SUPP-BASELINE-20260804T1140Z",
+  "run_type": "round_02_supplement_baseline",
+  "repository_version_observed": "0.5.0",
+  "tester_context": {
+    "thread_context": "reused_specialist_thread",
+    "new_thread_created": false,
+    "reason": "Agent thread creation capacity was already reached; this run therefore reused the existing specialist thread and does not claim a newly created blind-test thread.",
+    "blind_scope": "Only the two permitted Round 2 company input directories, fa-initial/question_register.jsonl, code required to run the local bridge, relevant skill instructions, and fresh runtime/output were read."
+  },
+  "method": {
+    "lead_skill": "investment-banking:cim-teardown",
+    "boundary_skill": "audit-cleantech-finance",
+    "workflow_type": "company_intake",
+    "uploaded_file_count": 9,
+    "deal_workflow_invoked": false,
+    "valuation_performed": false,
+    "financial_metric_calculation_performed": false,
+    "hidden_truth_or_other_rounds_read": false
+  },
+  "data_classification": {
+    "company_business_inputs": "Synthetic",
+    "initial_question_register": "Synthetic evaluation fixture",
+    "http_and_process_observations": "Real local runtime telemetry",
+    "fa_question_states": "Analyst judgment from visible synthetic materials; not product telemetry"
+  },
+  "runtime": {
+    "base_url": "http://127.0.0.1:8882",
+    "origin_header": "http://127.0.0.1:8882",
+    "referer_header": "http://127.0.0.1:8882/",
+    "launcher_pid": 37692,
+    "verified_listener_pid": 17300,
+    "started_at_utc": "2026-08-04T11:39:46.7455040Z",
+    "stop_requested_at_utc": "2026-08-04T11:41:04.8910658Z",
+    "listener_command_verified_before_stop": true,
+    "listener_stopped": true,
+    "launcher_stopped": true,
+    "port_free_after_stop": true
+  },
+  "http_run": {
+    "dashboard_before": {
+      "status": 200,
+      "elapsed_seconds": 0.002901,
+      "case_count": 0
+    },
+    "case_upload": {
+      "status": 201,
+      "elapsed_seconds": 0.043733,
+      "wire_upload_bytes": 33743,
+      "case_id": "case-20260804-4ec053c985"
+    },
+    "dashboard_after": {
+      "status": 200,
+      "elapsed_seconds": 0.020662,
+      "case_count": 1,
+      "material_count": 9
+    }
+  },
+  "product_observation": {
+    "artifacts_created": 9,
+    "hashes_recorded": 9,
+    "candidate_ready": 9,
+    "awaiting_manual_or_ocr": 0,
+    "workflow_stage": "evidence",
+    "workflow_state": "awaiting_human",
+    "supplements_stage": "not_available",
+    "request_tracking_state": "not_implemented",
+    "open_requests": null,
+    "product_native_questions_detected": 0,
+    "product_native_questions_closed": 0,
+    "authority": "routing_hint_only_and_workflow_projection"
+  },
+  "fa_reconciliation": {
+    "question_count": 8,
+    "counts": {
+      "answered": 1,
+      "partial": 6,
+      "contradicted": 0,
+      "not_available": 1,
+      "open": 0
+    },
+    "weighted_progress_points": 4.0,
+    "weighted_progress_denominator": 8.0,
+    "weighted_progress_percent": 50.0,
+    "formula": "answered=1.0; partial=0.5; contradicted/not_available/open=0.0",
+    "not_a_rating": true
+  },
+  "generated_artifacts": [
+    "run_manifest.json",
+    "input_manifest.json",
+    "events.jsonl",
+    "question_register_after.jsonl",
+    "round_baseline_summary.json",
+    "supplement-test-report.md"
+  ]
+}
