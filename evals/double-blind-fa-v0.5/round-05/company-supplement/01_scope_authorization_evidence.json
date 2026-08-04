@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "supplement_id": "SYN-R5-SUPP-SCOPE-AUTH-001",
+  "version": "v1.1",
+  "effective_date": "2026-06-30",
+  "supplement_prepared_on": "2026-08-04",
+  "synthetic_notice": "This is a wholly Synthetic, role-based restatement for evaluation. It does not correspond to any real entity, person, signature, approval or authorization.",
+  "source_basis": [
+    "company-submission/01_target_scope_authorization.json",
+    "company-submission/06_source_approval_register.csv"
+  ],
+  "scope_memorandum": {
+    "data_classification": "Synthetic",
+    "memo_id": "SYN-R5-SCOPE-001",
+    "version": "v1.1-supplemental-restatement",
+    "effective_date": "2026-06-30",
+    "approval_status": "Approved for Synthetic internal analysis only",
+    "approved_by_role": "Synthetic target data owner",
+    "named_natural_person": null,
+    "signature_or_seal": null,
+    "target_legal_entity": "曦衡高效热能装备（苏州）有限公司",
+    "transaction_scope": "100% equity acquisition",
+    "equity_interest_acquired_ratio": "1.000",
+    "standalone_value_only": true,
+    "included_perimeter": "Standalone target legal entity including manufacturing operations, operating assets, working capital, employees, core intellectual property, customer contracts and ordinary-course liabilities.",
+    "excluded_from_standalone_value": [
+      "Buyer-specific synergies",
+      "Seller-group tax attributes",
+      "Seller transaction expenses",
+      "Intercompany balances not settled at completion"
+    ]
+  },
+  "authorization_record": {
+    "data_classification": "Synthetic",
+    "authorization_record_id": "SYN-R5-AUTH-001",
+    "version": "v1.1-verifiable-restatement",
+    "effective_date": "2026-06-30",
+    "authorized_by_role": "Synthetic target data owner",
+    "approval_status": "Approved for Synthetic internal analysis only",
+    "authorized_use": [
+      "Internal transaction analysis",
+      "Deterministic screen testing"
+    ],
+    "external_distribution_authorized": false,
+    "client_circulation_authorized": false,
+    "formal_valuation_opinion_authorized": false,
+    "public_release_authorized": false,
+    "agent_can_approve": false,
+    "confirm_inputs": false,
+    "fa_input_confirmation_status": "pending",
+    "verification_method": "Verify exact file byte count and SHA-256 in submission-manifest.json and cross-check the source locators above."
+  },
+  "evidence_boundary": {
+    "data_classification": "Synthetic",
+    "synthetic_role_approval_supported": true,
+    "real_authorized_person_evidence_available": false,
+    "real_signature_or_seal_available": false,
+    "real_corporate_authorization_claimed": false,
+    "formal_valuation_opinion_produced": false
+  }
+}

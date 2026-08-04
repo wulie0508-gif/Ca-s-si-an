@@ -1324,6 +1324,8 @@ class FCFFPeriod:
     depreciation_amortization: ValuationInput
     capex: ValuationInput
     change_in_nwc: ValuationInput
+    discount_exponent: ValuationInput | None = None
+    period_end: date | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "period", _required_text(self.period, label="period"))
@@ -1332,8 +1334,10 @@ class FCFFPeriod:
 @dataclass(frozen=True)
 class FCFFProjection:
     period: str
+    period_end: date | None
     fcff: Decimal
     discount_exponent: Decimal
+    discount_exponent_input_id: str | None
     present_value: Decimal
     formula: str
     input_ids: tuple[str, ...]
@@ -1395,6 +1399,7 @@ class DCFScenario:
 class DCFResult:
     scenario: ScenarioName
     discount_convention: DiscountConvention
+    discount_timing_basis: str
     wacc: Decimal
     terminal_growth_rate: Decimal
     projections: tuple[FCFFProjection, ...]
@@ -1415,12 +1420,17 @@ def _discount_denominator(
     rate: Decimal,
     period_index: int,
     convention: DiscountConvention,
+    *,
+    explicit_exponent: Decimal | None = None,
 ) -> tuple[Decimal, Decimal]:
     base = Decimal(1) + rate
     with localcontext() as context:
         context.prec = 40
         context.rounding = ROUND_HALF_UP
-        if convention is DiscountConvention.PERIOD_END:
+        if explicit_exponent is not None:
+            exponent = explicit_exponent
+            denominator = base**exponent
+        elif convention is DiscountConvention.PERIOD_END:
             exponent = Decimal(period_index)
             denominator = base**period_index
         else:
@@ -1477,39 +1487,93 @@ def calculate_dcf_scenario(
     projections: list[FCFFProjection] = []
     present_value_explicit_raw = Decimal(0)
     final_fcff = Decimal(0)
+    terminal_denominator = Decimal(1)
+    explicit_timing_flags = tuple(
+        period.discount_exponent is not None for period in scenario.periods
+    )
+    if any(explicit_timing_flags) and not all(explicit_timing_flags):
+        raise ValuationHardFailure(
+            "discount_timing_inputs_incomplete",
+            "Every DCF period must provide a discount exponent when explicit timing is used",
+        )
+    discount_timing_basis = (
+        "explicit_per_period"
+        if all(explicit_timing_flags)
+        else f"positional_{scenario.discount_convention.value}"
+    )
+    period_end_flags = tuple(period.period_end is not None for period in scenario.periods)
+    if any(period_end_flags) and not all(period_end_flags):
+        raise ValuationHardFailure(
+            "discount_period_ends_incomplete",
+            "Every DCF period must provide period_end when structured dates are used",
+        )
+    prior_period_end: date | None = None
+    prior_exponent: Decimal | None = None
     for index, period in enumerate(scenario.periods, start=1):
         fcff = calculate_fcff(period, currency=scenario.currency, unit=scenario.unit)
+        explicit_exponent: Decimal | None = None
+        exponent_input_id: str | None = None
+        if period.discount_exponent is not None:
+            if period.discount_exponent.unit != "years":
+                raise ValuationHardFailure(
+                    "discount_exponent_unit_conflict",
+                    f"{period.discount_exponent.input_id} must use unit='years'",
+                )
+            explicit_exponent = _confirmed_value(period.discount_exponent)
+            exponent_input_id = period.discount_exponent.input_id
+            if explicit_exponent <= 0 or explicit_exponent > Decimal("100"):
+                raise ValuationHardFailure(
+                    "invalid_discount_exponent",
+                    "Discount exponents must be greater than zero and no more than 100 years",
+                )
+            if prior_exponent is not None and explicit_exponent <= prior_exponent:
+                raise ValuationHardFailure(
+                    "discount_exponents_not_increasing",
+                    "Discount exponents must be strictly increasing in forecast order",
+                )
+        if period.period_end is not None:
+            if prior_period_end is not None and period.period_end <= prior_period_end:
+                raise ValuationHardFailure(
+                    "discount_period_ends_not_increasing",
+                    "Structured DCF period ends must be strictly increasing",
+                )
+            prior_period_end = period.period_end
         denominator, exponent = _discount_denominator(
             wacc,
             index,
             scenario.discount_convention,
+            explicit_exponent=explicit_exponent,
         )
+        prior_exponent = exponent
+        terminal_denominator = denominator
         present_value_raw = fcff / denominator
         present_value_explicit_raw += present_value_raw
         final_fcff = fcff
         projections.append(
             FCFFProjection(
                 period=period.period,
+                period_end=period.period_end,
                 fcff=fcff,
                 discount_exponent=exponent,
+                discount_exponent_input_id=exponent_input_id,
                 present_value=round_decimal(present_value_raw),
                 formula="EBIT*(1-tax rate)+D&A-CapEx-Change in NWC",
-                input_ids=(
+                input_ids=tuple(
+                    item
+                    for item in (
                     period.ebit.input_id,
                     period.tax_rate.input_id,
                     period.depreciation_amortization.input_id,
                     period.capex.input_id,
                     period.change_in_nwc.input_id,
+                        exponent_input_id,
+                    )
+                    if item is not None
                 ),
             )
         )
     terminal_fcff = final_fcff * (Decimal(1) + terminal_growth)
     terminal_value_raw = terminal_fcff / (wacc - terminal_growth)
-    terminal_denominator, _ = _discount_denominator(
-        wacc,
-        len(scenario.periods),
-        scenario.discount_convention,
-    )
     present_value_terminal_raw = terminal_value_raw / terminal_denominator
     enterprise_value_raw = present_value_explicit_raw + present_value_terminal_raw
     enterprise_value = round_decimal(enterprise_value_raw)
@@ -1552,6 +1616,12 @@ def calculate_dcf_scenario(
             CheckScope.CALCULATION,
             CheckStatus.PASSED,
             "Every forecast FCFF uses the disclosed deterministic formula.",
+        ),
+        ModelCheck(
+            "discount_timing_applied",
+            CheckScope.CALCULATION,
+            CheckStatus.PASSED,
+            f"DCF discount timing uses {discount_timing_basis}.",
         ),
     ]
     input_ids = {
@@ -1619,6 +1689,7 @@ def calculate_dcf_scenario(
     return DCFResult(
         scenario=scenario.name,
         discount_convention=scenario.discount_convention,
+        discount_timing_basis=discount_timing_basis,
         wacc=round_decimal(wacc, RATE_QUANTUM),
         terminal_growth_rate=round_decimal(terminal_growth, RATE_QUANTUM),
         projections=tuple(projections),
@@ -1632,6 +1703,7 @@ def calculate_dcf_scenario(
         exit_cross_check_difference=exit_difference,
         formulas=(
             "FCFF=EBIT*(1-tax rate)+D&A-CapEx-Change in NWC",
+            "PV=FCFF/(1+WACC)^discount exponent",
             "Terminal value=FCFF(n+1)/(WACC-terminal growth)",
             "Enterprise value=PV(explicit FCFF)+PV(terminal value)",
         ),
@@ -1674,6 +1746,23 @@ def calculate_dcf_suite(
             "dcf_scenarios_missing",
             "DCF suite requires Base, Downside, and Upside; missing "
             + ", ".join(sorted(item.value for item in missing)),
+        )
+    timing_signatures = {
+        name: tuple(
+            (
+                period.period_end,
+                None
+                if period.discount_exponent is None
+                else _confirmed_value(period.discount_exponent),
+            )
+            for period in by_name[name].periods
+        )
+        for name in required
+    }
+    if len(set(timing_signatures.values())) != 1:
+        raise ValuationHardFailure(
+            "discount_timing_scenario_conflict",
+            "Base, Downside, and Upside must use the same ordered discount exponents",
         )
     results = {
         name: calculate_dcf_scenario(by_name[name])

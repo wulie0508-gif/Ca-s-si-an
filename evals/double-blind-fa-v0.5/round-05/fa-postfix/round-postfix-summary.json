@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R05-FA-POSTFIX-20260804-162622Z",
+  "round": "05",
+  "phase": "independent_postfix_replay",
+  "data_classification": "Synthetic",
+  "result": "pass_with_explicit_product_boundaries",
+  "coordinator_QA_score": 96,
+  "coordinator_QA_score_maximum": 100,
+  "metric_boundary": "round_focus_QA_only_not_company_product_investment_or_risk_rating",
+  "scoped_assertions": {"passed":48,"total":48},
+  "deduplicated_audit_events": 25,
+  "raw_operations_including_diagnostic_retries": 34,
+  "identifiers": {
+    "case_id": "case-20260805-9dbb8c4a4e",
+    "deal_id": "deal-20260805-c26ceb6c3711",
+    "valuation_id": "valuation-cf48a22919308733"
+  },
+  "materials": {
+    "files": 17,
+    "artifacts": 17,
+    "all_uploaded_hashes_match": true,
+    "company_response_status": {"answered":2,"partial":5,"not_available":0},
+    "responses_accepted_as_fact": 0,
+    "questions_closed": 0,
+    "supplement_automatically_imported": false
+  },
+  "request_and_calculation_gates": {
+    "original_candidate_calculate_http_status": 400,
+    "confirmed_original_without_timing_http_status": 400,
+    "confirmed_original_without_timing_version_advanced": false,
+    "corrected_candidate_calculate_http_status": 400,
+    "trusted_calculation_http_status": 201,
+    "calculated_version_number": 5,
+    "calculated_status": "calculated_screen_grade",
+    "calculation_integrity": "passed",
+    "decision_readiness": "screen_grade",
+    "fa_review_recorded": false,
+    "internal_approval_recorded": false
+  },
+  "discount_timing": {
+    "basis": "explicit_per_period",
+    "period_ends": ["2026-12-31","2027-12-31","2028-12-31","2029-12-31"],
+    "discount_exponents_years": ["0.5","1.5","2.5","3.5"],
+    "source_input_ids_disclosed": true,
+    "terminal_value_uses_last_period_exponent": true,
+    "scenario_consistent": true
+  },
+  "screen_outputs_CNYm": {
+    "dcf_enterprise_value": {"downside":"561.47","base":"1017.23","upside":"1503.27"},
+    "dcf_equity_value": {"downside":"527.47","base":"983.23","upside":"1469.27"},
+    "trading_comps_enterprise_value": {"low":"862.40","high":"931.00"}
+  },
+  "security_and_concurrency": {
+    "calculation_injection_http_status": 403,
+    "stale_version_http_status": 409,
+    "wrong_hash_http_status": 409,
+    "idempotent_replay_identical": true,
+    "agent_approval_route_http_status": 404,
+    "agent_can_approve": false,
+    "internal_only_persisted_as": "internal"
+  },
+  "xlsx": {
+    "http_status": 200,
+    "visible_sheets": 9,
+    "DCF_formula_cells": 69,
+    "timing_exponents_and_sources_disclosed": true,
+    "formulas_verified": true
+  },
+  "cleanup": {"port":55418,"port_listeners_after_run":0,"temporary_directory_removed":true},
+  "authority_boundaries": {
+    "real_human_identity_proved": false,
+    "formal_valuation_opinion": false,
+    "investment_credit_or_aggregate_risk_rating_produced": false,
+    "public_release_authorized": false
+  },
+  "remaining_product_gaps": [
+    "persistent_supplement_center_state_machine",
+    "request_submission_evidence_linkage",
+    "partial_recalculation_dependency_graph",
+    "real_identity_and_RBAC",
+    "real_company_and_market_data_validation"
+  ]
+}

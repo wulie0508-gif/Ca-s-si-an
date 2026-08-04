@@ -33,6 +33,8 @@ def _scenario(
         "periods": [
             {
                 "period": f"FY{2026 + index}",
+                "period_end": f"{2026 + index}-12-31",
+                "discount_exponent": str(index),
                 "ebit": value,
                 "tax_rate": "0.25",
                 "depreciation_amortization": "10",
@@ -153,11 +155,22 @@ def _screen(
     }
 
 
+def _remove_discount_timing(request: dict, *, keep_period_ends: bool = False) -> dict:
+    request = deepcopy(request)
+    for scenario in request["scenarios"].values():
+        for period in scenario["periods"]:
+            period.pop("discount_exponent", None)
+            if not keep_period_ends:
+                period.pop("period_end", None)
+    return request
+
+
 def _valuation(
     tmp_path: Path,
     screen: dict,
     *,
     methods: tuple[str, ...] = ("trading_comps", "dcf_fcff"),
+    valuation_date: str = "2026-08-03",
 ) -> tuple[DealStore, dict, dict]:
     store = DealStore(tmp_path / "deals")
     deal = store.create_deal(
@@ -166,7 +179,7 @@ def _valuation(
         target="Target CleanTech",
         transaction_scope="100% equity acquisition",
         currency="USD",
-        valuation_date="2026-08-03",
+        valuation_date=valuation_date,
         owner="FA Team",
         confidentiality_level="confidential",
         actor=FA,
@@ -177,7 +190,7 @@ def _valuation(
         deal["deal_id"],
         target_legal_entity="Target CleanTech Co., Ltd.",
         transaction_scope="100% equity acquisition",
-        valuation_date="2026-08-03",
+        valuation_date=valuation_date,
         base_currency="USD",
         methods=methods,
         actor=FA,
@@ -374,8 +387,184 @@ def test_peer_capitalization_rejects_partial_or_ambiguous_numerator_inputs() -> 
 def test_candidate_inputs_cannot_activate_a_method_or_calculate(tmp_path: Path) -> None:
     _, valuation, version = _valuation(tmp_path, _screen(confirm=False))
 
+    exponent = next(
+        item
+        for item in version["inputs"]
+        if item["input_id"] == "base-y1-discount-exponent"
+    )
+    assert exponent["status"] == "candidate_input"
+    assert exponent["human_confirmed"] is False
     with pytest.raises(InputGateError, match="human-confirmed"):
         calculate_screen_from_version(valuation, version)
+
+
+def test_non_year_end_confirmed_dcf_without_explicit_timing_is_rejected() -> None:
+    request = _remove_discount_timing(_screen())
+
+    with pytest.raises(ValuationWorkflowError, match="source-bearing discount_exponent"):
+        prepare_screen_inputs(
+            request,
+            {"valuation_date": "2026-06-30", "base_currency": "USD"},
+        )
+
+
+def test_candidate_missing_timing_can_be_stored_but_old_confirmed_inputs_fail_closed(
+    tmp_path: Path,
+) -> None:
+    request = _remove_discount_timing(_screen(confirm=False))
+    _, valuation, candidate = _valuation(
+        tmp_path,
+        request,
+        valuation_date="2026-06-30",
+    )
+    assert not any(item.get("input_group") == "dcf_timing" for item in candidate["inputs"])
+
+    bypass_attempt = deepcopy(candidate)
+    for item in bypass_attempt["inputs"]:
+        item["status"] = "confirmed_input"
+        item["human_confirmed"] = True
+        item["reviewed_by"] = FA
+
+    with pytest.raises(ValuationHardFailure) as captured:
+        calculate_screen_from_version(valuation, bypass_attempt)
+    assert captured.value.code == "discount_timing_inputs_missing"
+
+
+def test_explicit_four_period_stub_timing_is_used_disclosed_and_reused(
+    tmp_path: Path,
+) -> None:
+    request = _screen()
+    for scenario in request["scenarios"].values():
+        first = deepcopy(scenario["periods"][0])
+        first.update(
+            {
+                "period": "H2 2026E",
+                "period_end": "2026-12-31",
+                "discount_exponent": "0.5",
+            }
+        )
+        scenario["periods"].insert(0, first)
+        for exponent, period in zip(
+            ("1.5", "2.5", "3.5"),
+            scenario["periods"][1:],
+            strict=True,
+        ):
+            period["discount_exponent"] = exponent
+    _, valuation, version = _valuation(
+        tmp_path,
+        request,
+        valuation_date="2026-06-30",
+    )
+
+    result = calculate_screen_from_version(valuation, version)
+
+    assert result["screen_schema_version"] == "1.2"
+    timing = result["methods"]["dcf"]["discount_timing"]
+    assert timing["basis"] == "explicit_per_period"
+    assert timing["scenario_consistent"] is True
+    assert [row["period_end"] for row in timing["scenarios"]["base"]] == [
+        "2026-12-31",
+        "2027-12-31",
+        "2028-12-31",
+        "2029-12-31",
+    ]
+    assert [row["discount_exponent"] for row in timing["scenarios"]["base"]] == [
+        "0.5",
+        "1.5",
+        "2.5",
+        "3.5",
+    ]
+    base = next(
+        item
+        for item in result["methods"]["dcf"]["suite"]["scenario_results"]
+        if item["scenario"] == "base"
+    )
+    assert [item["period_end"] for item in base["projections"]] == [
+        "2026-12-31",
+        "2027-12-31",
+        "2028-12-31",
+        "2029-12-31",
+    ]
+    assert [item["discount_exponent"] for item in base["projections"]] == [
+        "0.5",
+        "1.5",
+        "2.5",
+        "3.5",
+    ]
+    growth_sensitivity = result["methods"]["dcf"]["sensitivities"][
+        "wacc_x_terminal_growth"
+    ]
+    base_row = next(row for row in growth_sensitivity["rows"] if row["row_value"] == "0.100000")
+    growth_index = growth_sensitivity["column_values"].index("0.030000")
+    assert base_row["cells"][growth_index]["enterprise_value"] == base[
+        "enterprise_value_perpetuity"
+    ]
+    exit_sensitivity = result["methods"]["dcf"]["sensitivities"][
+        "wacc_x_exit_multiple"
+    ]
+    exit_row = next(row for row in exit_sensitivity["rows"] if row["row_value"] == "0.100000")
+    multiple_index = exit_sensitivity["column_values"].index("8")
+    assert exit_row["cells"][multiple_index]["enterprise_value"] == base[
+        "enterprise_value_exit_multiple"
+    ]
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    (
+        (lambda request: request["scenarios"]["base"]["periods"][1].pop("discount_exponent"), "every period"),
+        (lambda request: request["scenarios"]["base"]["periods"][0].__setitem__("discount_exponent", "0"), "greater than zero"),
+        (lambda request: request["scenarios"]["base"]["periods"][1].__setitem__("discount_exponent", "1"), "strictly increasing"),
+        (lambda request: request["scenarios"]["upside"]["periods"][0].__setitem__("discount_exponent", "0.75"), "must align"),
+        (lambda request: request["scenarios"]["upside"]["periods"][0].__setitem__("period_end", "2027-06-30"), "must align"),
+    ),
+)
+def test_invalid_or_conflicting_discount_timing_is_rejected(
+    mutation: object,
+    message: str,
+) -> None:
+    request = _screen()
+    mutation(request)  # type: ignore[operator]
+
+    with pytest.raises(ValuationWorkflowError, match=message):
+        prepare_screen_inputs(
+            request,
+            {"valuation_date": "2026-06-30", "base_currency": "USD"},
+        )
+
+
+def test_legacy_positional_timing_requires_confirmed_structured_year_ends(
+    tmp_path: Path,
+) -> None:
+    request = _remove_discount_timing(_screen(), keep_period_ends=True)
+    _, valuation, version = _valuation(
+        tmp_path,
+        request,
+        valuation_date="2026-12-31",
+    )
+
+    result = calculate_screen_from_version(valuation, version)
+
+    assert result["methods"]["dcf"]["discount_timing"]["basis"] == (
+        "validated_annual_period_end"
+    )
+    base = next(
+        item
+        for item in result["methods"]["dcf"]["suite"]["scenario_results"]
+        if item["scenario"] == "base"
+    )
+    assert [item["discount_exponent"] for item in base["projections"]] == [
+        "1",
+        "2",
+        "3",
+    ]
+
+    free_text_only = _remove_discount_timing(_screen())
+    with pytest.raises(ValuationWorkflowError, match="source-bearing discount_exponent"):
+        prepare_screen_inputs(
+            free_text_only,
+            {"valuation_date": "2026-12-31", "base_currency": "USD"},
+        )
 
 
 def test_wacc_not_above_growth_materializes_a_hard_failure_snapshot(

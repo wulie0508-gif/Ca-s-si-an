@@ -459,6 +459,37 @@ def _normalize_financials(
     version: Mapping[str, Any],
     calculation: Mapping[str, Any],
 ) -> list[dict[str, Any]]:
+    version_inputs = _record_list(version.get("inputs"))
+    timing_by_key: dict[tuple[str, str], dict[str, Any]] = defaultdict(dict)
+    timing_by_period: dict[tuple[str, str], dict[str, Any]] = {}
+    timing_by_input_id: dict[str, dict[str, Any]] = {}
+    for item in version_inputs:
+        if str(item.get("input_group") or "").strip().casefold() != "dcf_timing":
+            continue
+        scenario = str(item.get("scenario") or "base").strip().casefold()
+        period_index = str(item.get("period_index") or "").strip()
+        period = str(item.get("period") or "").strip()
+        field_name = str(item.get("field") or "").strip().casefold()
+        if not period_index or field_name not in {"period_end", "discount_exponent"}:
+            continue
+        target = timing_by_key[(scenario, period_index)]
+        target[field_name] = item.get("value")
+        target["timing_basis"] = item.get("timing_basis")
+        input_id = str(item.get("input_id") or "").strip()
+        source_parts = [
+            input_id,
+            str(item.get("source_id") or "").strip(),
+            str(item.get("locator") or "").strip(),
+            str(item.get("as_of") or "").strip(),
+        ]
+        source_reference = " | ".join(part for part in source_parts if part)
+        if source_reference:
+            target.setdefault("source_references", []).append(source_reference)
+        if period:
+            timing_by_period[(scenario, period)] = target
+        if input_id:
+            timing_by_input_id[input_id] = target
+
     raw = _section_record("financials", valuation, calculation)
     records = _record_list(raw)
     dcf = _section_record("dcf", valuation, calculation)
@@ -470,10 +501,11 @@ def _normalize_financials(
                 forecast = _record_list(scenario.get("projections"))
             for item in forecast:
                 item.setdefault("scenario", scenario.get("name") or scenario.get("scenario"))
+                item.setdefault("discount_timing_basis", scenario.get("discount_timing_basis"))
                 records.append(item)
     if not records:
         grouped: dict[tuple[str, str, str, str, str, str, str], dict[str, Any]] = {}
-        for item in _record_list(version.get("inputs")):
+        for item in version_inputs:
             name = (
                 str(item.get("field") or item.get("name") or "")
                 .strip()
@@ -504,6 +536,7 @@ def _normalize_financials(
                 {
                     "scenario": scenario,
                     "period": period,
+                    "period_index": period_index,
                     "input_group": input_group,
                     "period_type": period_type,
                     "financial_basis": financial_basis,
@@ -517,6 +550,20 @@ def _normalize_financials(
                 target["source_ids"].append(str(item["source_id"]))
             if item.get("status"):
                 target["input_statuses"].append(str(item["status"]))
+        for target in grouped.values():
+            if target.get("input_group") != "dcf":
+                continue
+            timing = timing_by_key.get(
+                (str(target.get("scenario") or "base"), str(target.get("period_index") or "")),
+                {},
+            )
+            if timing.get("period_end"):
+                target["period_end"] = timing["period_end"]
+            target["discount_exponent"] = timing.get("discount_exponent")
+            target["discount_timing_basis"] = timing.get("timing_basis")
+            target["timing_source_id"] = "; ".join(
+                sorted(set(timing.get("source_references") or []))
+            )
         records = list(grouped.values())
     normalized: list[dict[str, Any]] = []
     for index, record in enumerate(records, start=1):
@@ -526,6 +573,24 @@ def _normalize_financials(
         period = str(
             record.get("period") or record.get("fiscal_period") or f"Period {index}"
         ).strip()
+        exponent_input_id = str(record.get("discount_exponent_input_id") or "").strip()
+        period_index = str(record.get("period_index") or "").strip()
+        timing = timing_by_input_id.get(exponent_input_id, {})
+        if not timing and period_index:
+            timing = timing_by_key.get((scenario, period_index), {})
+        if not timing:
+            timing = timing_by_period.get((scenario, period), {})
+        period_end = _first_supplied(record.get("period_end"), timing.get("period_end"))
+        discount_exponent = _first_supplied(
+            record.get("discount_exponent"), timing.get("discount_exponent")
+        )
+        timing_basis = _first_supplied(
+            record.get("discount_timing_basis"), timing.get("timing_basis")
+        )
+        timing_source_id = _first_supplied(
+            record.get("timing_source_id"),
+            "; ".join(sorted(set(timing.get("source_references") or []))),
+        )
         source_ids = record.get("source_ids")
         if not isinstance(source_ids, list):
             source_ids = [record.get("source_id")] if record.get("source_id") else []
@@ -553,7 +618,10 @@ def _normalize_financials(
                 "input_group": _text(record.get("input_group")),
                 "period_type": _text(record.get("period_type")),
                 "financial_basis": _text(record.get("financial_basis")),
-                "period_end": _text(record.get("period_end")),
+                "period_end": _text(period_end),
+                "discount_exponent": _decimal(discount_exponent),
+                "discount_timing_basis": _text(timing_basis),
+                "timing_source_id": _text(timing_source_id),
             }
         )
     return normalized
@@ -978,12 +1046,21 @@ def _normalize_dcf_scenarios(
     return normalized, dcf
 
 
-def _discount_denominator(rate: Decimal, index: int, convention: str) -> tuple[Decimal, Decimal]:
+def _discount_denominator(
+    rate: Decimal,
+    index: int,
+    convention: str,
+    *,
+    explicit_exponent: Decimal | None = None,
+) -> tuple[Decimal, Decimal]:
     base = Decimal(1) + rate
     with localcontext() as context:
         context.prec = 40
         context.rounding = ROUND_HALF_UP
-        if convention == "mid_year":
+        if explicit_exponent is not None:
+            exponent = explicit_exponent
+            denominator = base**exponent
+        elif convention == "mid_year":
             exponent = Decimal(index) - Decimal("0.5")
             denominator = (base ** (index - 1)) * base.sqrt(context)
         else:
@@ -1026,7 +1103,7 @@ def _build_dcf_sheet(
     sheet.set(
         2,
         1,
-        "Formula outputs are recalculated from visible forecast and assumption cells. Invalid WACC / growth combinations remain unavailable.",
+        "Formula outputs are recalculated from visible forecast, explicit timing, and assumption cells. Invalid WACC / growth combinations remain unavailable.",
         style=11,
     )
     sheet.merge(2, 1, 2, 11)
@@ -1100,6 +1177,9 @@ def _build_dcf_sheet(
                 "Discount Factor",
                 "PV FCFF",
                 "Financials Source Cell",
+                "Period End",
+                "Timing Basis",
+                "Timing Source ID",
             ),
             start=1,
         ):
@@ -1138,8 +1218,22 @@ def _build_dcf_sheet(
                 else:
                     sheet.set(row, 2, "N/A", style=12)
                     sheet.set(row, 6, "Financials FCFF unavailable", style=12)
+                explicit_exponent = forecast.get("discount_exponent")
+                timing_basis = forecast.get("discount_timing_basis") or (
+                    "explicit_per_period"
+                    if explicit_exponent is not None
+                    else f"positional_{convention}"
+                )
+                sheet.set(row, 7, forecast.get("period_end") or "Not disclosed")
+                sheet.set(row, 8, timing_basis)
+                sheet.set(row, 9, forecast.get("timing_source_id") or "Not disclosed", style=18)
                 if wacc is not None and wacc > Decimal("-1"):
-                    denominator, exponent = _discount_denominator(wacc, index, convention)
+                    denominator, exponent = _discount_denominator(
+                        wacc,
+                        index,
+                        convention,
+                        explicit_exponent=explicit_exponent,
+                    )
                     discount_factor = Decimal(1) / denominator
                     last_discount_factor = discount_factor
                     sheet.set(row, 3, exponent)

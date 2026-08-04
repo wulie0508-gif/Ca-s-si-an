@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R05-FA-SUPPLEMENT-BASELINE-20260804-154500Z",
+  "data_classification": "Synthetic",
+  "file_count": 17,
+  "total_byte_count": 81531,
+  "combined_input_digest": "26c6a784af3ddab21b3d5b1d530dbed60c09150f1dc4eb9caf06036e3af9dd80",
+  "files": [
+    {"path":"company-submission/01_target_scope_authorization.json","byte_count":3086,"sha256":"1eb175e90eb7e43723da0394c7dc306593c6c3a0add8af4391e478ed68f850d5"},
+    {"path":"company-submission/02_financial_contract.json","byte_count":5277,"sha256":"272489d4dea0813f81840c50670b1068eaa071e9d8cedfbd1928208baba2fb59"},
+    {"path":"company-submission/03_dcf_scenarios.json","byte_count":5218,"sha256":"5e644345fc5ee7c98d8691a72e79e28563dc6bcdef7a8c4ad4fb1ec7a0b352e7"},
+    {"path":"company-submission/04_ev_to_equity_bridge.json","byte_count":2298,"sha256":"e1c73bff84a999c7a0152621f38788b5a74360f9c1680ef29c2519b676e5a1de"},
+    {"path":"company-submission/05_trading_comps.json","byte_count":4455,"sha256":"a9828118eb7839aa736b3b396a3aaef274f69c6b361b35cc9fb4ff29c1673f61"},
+    {"path":"company-submission/06_source_approval_register.csv","byte_count":5039,"sha256":"f365b58b6003dd148771949fa2f657fdfc3ae9fb164a6e0e66200c7c6c2dee00"},
+    {"path":"company-submission/07_valuation_workflow_input.json","byte_count":11574,"sha256":"6f04347902fa7a9cffa288bc95cb0755a5e30d9094fd0375a6cf59d3be692570"},
+    {"path":"company-submission/manifest.json","byte_count":7965,"sha256":"874f59b68528a790fd6c8a2e4fa2af1a4a6405f0a626afc6b8bc2773316afe8c"},
+    {"path":"company-supplement/01_scope_authorization_evidence.json","byte_count":2752,"sha256":"e51ce11dba2c267aea2c4d9d997a2b29ee978cbfa222bab05af9bdae240538f7"},
+    {"path":"company-supplement/02_financial_source_ledger.csv","byte_count":3585,"sha256":"26db5f6ce7a3ecb112475eeb95263f0afc7d6bc507e89764a5f06c6ceeffee35"},
+    {"path":"company-supplement/03_ltm_monthly_rollforward.csv","byte_count":3559,"sha256":"ecfe19db26408c2d5229245a765018a3f8898e923b8f9723ed4816054ccc4c98"},
+    {"path":"company-supplement/04_stub_and_dcf_assumptions.json","byte_count":4574,"sha256":"8ea65ef3b47ee827a04b66cff13fbfe8c85ee1222492b315ba0df4d790644308"},
+    {"path":"company-supplement/05_ev_to_equity_ledger.csv","byte_count":3438,"sha256":"d9c74b3ecc92a26ca70f65a505fcfc6ff0bc3fd11f0c5e6beff1aff6ef752402"},
+    {"path":"company-supplement/06_trading_comps_ledger.csv","byte_count":4123,"sha256":"5399e1d871fa8a2903466b2cb7abb20ba2edc75a7be8bb471e0116b3a1b10788"},
+    {"path":"company-supplement/company-action-log.jsonl","byte_count":2077,"sha256":"feedd408abcb0b7c1e4a0df7870384a1136e6d78a93dba95725e01bc94761021"},
+    {"path":"company-supplement/response-register.jsonl","byte_count":7696,"sha256":"74d931c1eb50885202bc7879f05fcf4e061239956278937aa4df4efec852a4f3"},
+    {"path":"company-supplement/submission-manifest.json","byte_count":4815,"sha256":"288c954bdadda4e86bebfcc7828b14cc291dfc8d392be6137613e05aa92e7aed"}
+  ],
+  "integrity": {
+    "company_submission_manifest_payloads_match": true,
+    "company_supplement_manifest_payloads_match": true,
+    "workspace_artifact_count": 17,
+    "all_workspace_hashes_match": true
+  }
+}

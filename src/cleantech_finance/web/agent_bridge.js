@@ -247,6 +247,7 @@ const elements = {
   valuationUnit: document.querySelector("#valuation-unit"),
   valuationBusinessModel: document.querySelector("#valuation-business-model"),
   valuationDiscountConvention: document.querySelector("#valuation-discount-convention"),
+  valuationPeriodCount: document.querySelector("#valuation-period-count"),
   scenarioInputs: document.querySelector("#scenario-inputs"),
   bridgeCash: document.querySelector("#bridge-cash"),
   bridgeDebt: document.querySelector("#bridge-debt"),
@@ -818,18 +819,19 @@ function buildScenarioInputs() {
 
     const tableWrap = node("div", "forecast-table-wrap");
     const table = node("table", "forecast-table");
-    const caption = node("caption", "sr-only", `${scenario.label} 三年 FCFF 输入`);
+    const caption = node("caption", "sr-only", `${scenario.label} 3 至 5 期 FCFF 输入`);
     const head = document.createElement("thead");
     const headRow = document.createElement("tr");
-    ["期间", ...FORECAST_FIELDS.map((field) => field.label)].forEach((label) => {
+    ["期间", "结构化期末日", "折现指数（年）", ...FORECAST_FIELDS.map((field) => field.label)].forEach((label) => {
       const cell = node("th", null, label);
       cell.scope = "col";
       headRow.append(cell);
     });
     head.append(headRow);
     const body = document.createElement("tbody");
-    for (let year = 1; year <= 3; year += 1) {
+    for (let year = 1; year <= 5; year += 1) {
       const row = document.createElement("tr");
+      row.dataset.periodIndex = String(year);
       const periodCell = document.createElement("th");
       periodCell.scope = "row";
       const periodInput = document.createElement("input");
@@ -841,6 +843,21 @@ function buildScenarioInputs() {
       periodInput.setAttribute("aria-label", `${scenario.label} 第 ${year} 期名称`);
       periodCell.append(periodInput);
       row.append(periodCell);
+      const periodEndCell = document.createElement("td");
+      const periodEndInput = document.createElement("input");
+      periodEndInput.id = `${scenario.id}-y${year}-period-end`;
+      periodEndInput.type = "date";
+      periodEndInput.setAttribute("aria-label", `${scenario.label} 第 ${year} 期结构化期末日`);
+      periodEndCell.append(periodEndInput);
+      const exponentCell = document.createElement("td");
+      const exponentInput = document.createElement("input");
+      exponentInput.id = `${scenario.id}-y${year}-discount-exponent`;
+      exponentInput.type = "text";
+      exponentInput.inputMode = "decimal";
+      exponentInput.autocomplete = "off";
+      exponentInput.setAttribute("aria-label", `${scenario.label} 第 ${year} 期折现指数（年）`);
+      exponentCell.append(exponentInput);
+      row.append(periodEndCell, exponentCell);
       FORECAST_FIELDS.forEach((field) => {
         const cell = document.createElement("td");
         const input = document.createElement("input");
@@ -862,6 +879,23 @@ function buildScenarioInputs() {
     tableWrap.append(table);
     details.append(summary, assumptions, tableWrap);
     elements.scenarioInputs.append(details);
+  });
+  updateValuationPeriodCount();
+}
+
+function activeValuationPeriodCount() {
+  const count = Number(elements.valuationPeriodCount.value);
+  return [3, 4, 5].includes(count) ? count : 3;
+}
+
+function updateValuationPeriodCount() {
+  const count = activeValuationPeriodCount();
+  elements.scenarioInputs.querySelectorAll("tbody tr[data-period-index]").forEach((row) => {
+    const active = Number(row.dataset.periodIndex) <= count;
+    row.hidden = !active;
+    row.querySelectorAll("input").forEach((input) => {
+      input.required = active;
+    });
   });
 }
 
@@ -1016,9 +1050,13 @@ function tradingCompsPayload() {
 
 function scenarioPayload(scenarioId) {
   const periods = [];
-  for (let year = 1; year <= 3; year += 1) {
+  for (let year = 1; year <= activeValuationPeriodCount(); year += 1) {
     const period = {
       period: document.querySelector(`#${scenarioId}-y${year}-period`).value.trim(),
+      period_end: document.querySelector(`#${scenarioId}-y${year}-period-end`).value,
+      discount_exponent: document
+        .querySelector(`#${scenarioId}-y${year}-discount-exponent`)
+        .value.trim(),
     };
     FORECAST_FIELDS.forEach((field) => {
       period[field.id] = document
@@ -1374,6 +1412,14 @@ function populateValuationInputForm(valuation, version) {
     byId.get("config-business-model")?.value || "mature_equipment_manufacturing";
   elements.valuationDiscountConvention.value =
     byId.get("config-discount-convention")?.value || "period_end";
+  const storedPeriodCount = Math.max(
+    3,
+    ...inputs
+      .filter((item) => item.input_group === "dcf" && Number.isInteger(item.period_index))
+      .map((item) => Number(item.period_index)),
+  );
+  elements.valuationPeriodCount.value = String(Math.min(5, storedPeriodCount));
+  updateValuationPeriodCount();
   VALUATION_SCENARIOS.forEach((scenario) => {
     setInputValue(
       `#${scenario.id}-wacc`,
@@ -1391,12 +1437,20 @@ function populateValuationInputForm(valuation, version) {
       `#${scenario.id}-exit-multiple`,
       byId.get(`${scenario.id}-exit-multiple`)?.value,
     );
-    for (let year = 1; year <= 3; year += 1) {
+    for (let year = 1; year <= 5; year += 1) {
       const firstFieldId = `${scenario.id}-y${year}-${FORECAST_FIELDS[0].id}`;
       const storedFirstId = firstFieldId.replaceAll("_", "-");
       setInputValue(
         `#${scenario.id}-y${year}-period`,
         byId.get(storedFirstId)?.period || `Year ${year}`,
+      );
+      setInputValue(
+        `#${scenario.id}-y${year}-period-end`,
+        byId.get(`${scenario.id}-y${year}-period-end`)?.value,
+      );
+      setInputValue(
+        `#${scenario.id}-y${year}-discount-exponent`,
+        byId.get(`${scenario.id}-y${year}-discount-exponent`)?.value,
       );
       FORECAST_FIELDS.forEach((field) => {
         const storedId = `${scenario.id}-y${year}-${field.id}`.replaceAll("_", "-");
@@ -1520,6 +1574,23 @@ function renderMethodResults(valuation, version) {
   if (Array.isArray(dcfResults) && dcfResults.length) {
     const group = node("section", "method-result-group");
     group.append(node("h6", null, "Corporate FCFF DCF"));
+    const discountTiming = calculation?.methods?.dcf?.discount_timing;
+    if (discountTiming) {
+      const baseTiming = Array.isArray(discountTiming.scenarios?.base)
+        ? discountTiming.scenarios.base
+        : [];
+      const timingSummary = baseTiming
+        .map((item) => [item.period_end, item.discount_exponent].filter(Boolean).join(" / "))
+        .filter(Boolean)
+        .join(" · ");
+      group.append(
+        node(
+          "p",
+          "valuation-method-note",
+          `折现时点 ${valueLabel(discountTiming.basis)}${timingSummary ? `：${timingSummary}` : ""}`,
+        ),
+      );
+    }
     const grid = node("div", "scenario-results-grid");
     dcfResults.forEach((result) => {
       const article = node("article", "scenario-result");
@@ -4810,6 +4881,7 @@ function wireEvents() {
   });
   elements.valuationCreateForm.addEventListener("submit", createValuation);
   elements.valuationInputForm.addEventListener("submit", saveValuationInputs);
+  elements.valuationPeriodCount.addEventListener("change", updateValuationPeriodCount);
   elements.valuationCompsMode.addEventListener("change", updateCompsControls);
   elements.valuationCompsMetric.addEventListener("change", () => {
     const previous = elements.valuationCompsMetric.dataset.previousValue;

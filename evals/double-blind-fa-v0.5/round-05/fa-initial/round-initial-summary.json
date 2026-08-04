@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R05-FA-INITIAL-20260804-152630Z",
+  "round": "05",
+  "data_classification": "Synthetic",
+  "overall_result": "conditional_pass",
+  "score": 84,
+  "blocked": false,
+  "formal_valuation_opinion": false,
+  "public_release_authorized": false,
+  "core_results": {
+    "candidate_gate": {"passed": true, "input_count": 146, "candidate_count": 146, "calculate_http_status": 400, "calculation_created": false},
+    "human_confirmation": {"passed": true, "confirmed_count": 146, "actor_id": "local-fa-ui", "company_pack_modified_on_disk": false, "candidate_and_confirmed_domain_payload_equal": true, "domain_payload_sha256": "9ab976336b94635f2cd3ae7df120c3c28727e3533fea8ba3db69c7f3420fb544"},
+    "trusted_calculation": {"passed": true, "http_status": 201, "status": "calculated_screen_grade", "version_number": 4, "version_hash": "f4185f030dbdfbdfd00849940f009aeef95ddc972c9316826cb0ccfe81f7ad6d", "calculation_hash": "9baf4552b4798b649de15424d1dd690264f6eebc198b82f9726e748813e854ba", "calculation_integrity": "passed", "decision_readiness": "screen_grade", "fa_review_recorded": false},
+    "security_controls": {"agent_can_approve": false, "agent_approval_route_http_status": 404, "calculation_injection_http_status": 403, "stale_version_http_status": 409, "wrong_hash_http_status": 409, "idempotent_replay_identical": true}
+  },
+  "screen_outputs_cnym": {
+    "dcf_enterprise_value": {"downside": "568.55", "base": "1036.51", "upside": "1534.36"},
+    "dcf_equity_value": {"downside": "534.55", "base": "1002.51", "upside": "1500.36"},
+    "trading_comps_enterprise_value": {"low": "862.40", "high": "931.00"}
+  },
+  "score_breakdown": {
+    "blind_and_authority_boundaries": 15,
+    "material_identity_and_source_traceability": 15,
+    "gaps_questions_and_supplements": 19,
+    "interview_readiness_explanation": 13,
+    "deal_valuation_isolation_versioning_and_fail_closed": 14,
+    "replayability_and_operational_efficiency": 8
+  },
+  "findings": [
+    {"finding_id": "R05-F01", "severity": "S1", "title": "DCF 首期日历时点缺失且未进入 readiness 警告", "evidence": "估值日为 2026-06-30，首个显式期为 FY2027E；结果按折现指数 1/2/3 计算，没有 H2-2026/FY2026 stub 或时点因子，也没有 blocker/warning。", "impact": "可能实质改变全部 DCF 现值和终值现值；当前结果只能保留为带明确缺口的 screen-grade。"},
+    {"finding_id": "R05-F02", "severity": "S2", "title": "运行时包版本标识与 README 不一致", "evidence": "README 标示 0.5.0，而 importlib.metadata 返回 0.4.0。", "impact": "降低重放时的软件版本可辨识度，但本轮 v0.5 HTTP 能力实际可用。"},
+    {"finding_id": "R05-F03", "severity": "S3", "title": "confidentiality_level 枚举不可从授权文案直接推断", "evidence": "internal_only 被 HTTP 400 拒绝，改用测试合同中的 confidential 后成功。", "impact": "增加一次可恢复的 FA 操作摩擦。"}
+  ],
+  "open_question_ids": ["R05-Q01", "R05-Q02", "R05-Q03", "R05-Q04", "R05-Q05", "R05-Q06", "R05-Q07"],
+  "cleanup_complete": true
+}

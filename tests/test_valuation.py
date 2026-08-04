@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+from datetime import date
 from decimal import Decimal
 
 import pytest
@@ -719,6 +720,96 @@ def test_mid_year_discounting_is_explicit_and_increases_value() -> None:
     assert mid_year.discount_convention is DiscountConvention.MID_YEAR
     assert mid_year.projections[0].discount_exponent == Decimal("0.5")
     assert mid_year.enterprise_value_perpetuity > period_end.enterprise_value_perpetuity
+
+
+def test_source_bearing_fractional_discount_exponents_control_fcff_and_terminal_pv() -> None:
+    scenario = _scenario(ScenarioName.BASE)
+    timed_periods = tuple(
+        replace(
+            period,
+            period_end=date(2026 + index, 12, 31),
+            discount_exponent=_input(
+                f"timing:{index}",
+                exponent,
+                unit="years",
+                currency="N/A",
+                period=period.period,
+            ),
+        )
+        for index, (period, exponent) in enumerate(
+            zip(scenario.periods, ("1.5", "2.5", "3.5"), strict=True),
+            start=1,
+        )
+    )
+
+    result = calculate_dcf_scenario(replace(scenario, periods=timed_periods))
+
+    assert result.discount_timing_basis == "explicit_per_period"
+    assert [projection.period_end for projection in result.projections] == [
+        date(2027, 12, 31),
+        date(2028, 12, 31),
+        date(2029, 12, 31),
+    ]
+    assert [projection.discount_exponent for projection in result.projections] == [
+        Decimal("1.5"),
+        Decimal("2.5"),
+        Decimal("3.5"),
+    ]
+    assert result.enterprise_value_perpetuity < calculate_dcf_scenario(scenario).enterprise_value_perpetuity
+    assert "timing:3" in result.input_ids
+
+
+def test_explicit_discount_timing_rejects_partial_non_increasing_and_scenario_conflicts() -> None:
+    scenario = _scenario(ScenarioName.BASE)
+    partial = replace(
+        scenario,
+        periods=(
+            replace(
+                scenario.periods[0],
+                discount_exponent=_input(
+                    "timing:1", "1", unit="years", currency="N/A"
+                ),
+            ),
+            *scenario.periods[1:],
+        ),
+    )
+    with pytest.raises(ValuationHardFailure) as partial_error:
+        calculate_dcf_scenario(partial)
+    assert partial_error.value.code == "discount_timing_inputs_incomplete"
+
+    repeated_periods = tuple(
+        replace(
+            period,
+            discount_exponent=_input(
+                f"timing:{index}",
+                "1",
+                unit="years",
+                currency="N/A",
+            ),
+        )
+        for index, period in enumerate(scenario.periods, start=1)
+    )
+    with pytest.raises(ValuationHardFailure) as repeated_error:
+        calculate_dcf_scenario(replace(scenario, periods=repeated_periods))
+    assert repeated_error.value.code == "discount_exponents_not_increasing"
+
+    downside = replace(_scenario(ScenarioName.DOWNSIDE), periods=repeated_periods)
+    base = replace(scenario, periods=tuple(
+        replace(
+            period,
+            discount_exponent=_input(
+                f"base-timing:{index}",
+                str(index),
+                unit="years",
+                currency="N/A",
+            ),
+        )
+        for index, period in enumerate(scenario.periods, start=1)
+    ))
+    upside = replace(_scenario(ScenarioName.UPSIDE), periods=base.periods)
+    with pytest.raises(ValuationHardFailure) as conflict_error:
+        calculate_dcf_suite((downside, base, upside))
+    assert conflict_error.value.code == "discount_timing_scenario_conflict"
 
 
 def test_dcf_hard_fails_when_wacc_is_not_above_growth() -> None:

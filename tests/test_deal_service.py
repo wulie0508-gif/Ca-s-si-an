@@ -171,6 +171,27 @@ def test_create_deal_idempotency_replays_and_rejects_key_reuse(tmp_path: Path) -
         )
 
 
+def test_internal_only_confidentiality_alias_persists_canonical_internal(tmp_path: Path) -> None:
+    store = DealStore(tmp_path / "deals")
+
+    deal = store.create_deal(
+        company_id="company-internal-only",
+        buyer="Buyer Holdings",
+        target="Target CleanTech",
+        transaction_scope="Internal synthetic screen",
+        currency="CNY",
+        valuation_date="2026-06-30",
+        owner="FA Team",
+        confidentiality_level="internal_only",
+        actor=HUMAN,
+        reason="Accept the documented internal-only vocabulary",
+        idempotency_key="internal-only-alias",
+    )
+
+    assert deal["deal_header"]["confidentiality_level"] == "internal"
+    assert deal["audit_trail"][0]["new"]["confidentiality_level"] == "internal"
+
+
 def test_create_valuation_idempotency_binds_deal_concurrency_preconditions(
     tmp_path: Path,
 ) -> None:
@@ -740,25 +761,17 @@ def test_internal_approval_is_blocked_by_hard_failures(
         expected_version_number=input_version["version_number"],
         expected_version_hash=input_version["version_hash"],
     )
-    reviewed = store.review_valuation(
-        valuation["valuation_id"],
-        review={"decision": "reviewed_with_failure"},
-        actor=REVIEWER,
-        reason="Review the failure for internal discussion",
-        idempotency_key="failed-review",
-        expected_version_number=calculated["version_number"],
-        expected_version_hash=calculated["version_hash"],
-    )
-    assert reviewed["calculation"]["decision_readiness"]["status"] == "not_ready"
-    with pytest.raises(DealConflictError, match="Internal approval is blocked"):
-        store.approve_valuation(
+    assert calculated["status"] == "inputs_incomplete"
+    assert calculated["calculation"]["decision_readiness"]["status"] == "not_ready"
+    with pytest.raises(DealConflictError, match="calculated screen-grade"):
+        store.review_valuation(
             valuation["valuation_id"],
-            use="internal",
+            review={"decision": "reviewed_with_failure"},
             actor=REVIEWER,
-            reason="Hard failures cannot enter an approved internal version",
-            idempotency_key="failed-internal",
-            expected_version_number=reviewed["version_number"],
-            expected_version_hash=reviewed["version_hash"],
+            reason="A failed calculation must not enter the review lifecycle",
+            idempotency_key="failed-review",
+            expected_version_number=calculated["version_number"],
+            expected_version_hash=calculated["version_hash"],
         )
 
 

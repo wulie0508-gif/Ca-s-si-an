@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "supplement_id": "SYN-R5-SUPP-STUB-DCF-001",
+  "version": "v1.0-candidate",
+  "as_of_date": "2026-06-30",
+  "synthetic_notice": "All components are Synthetic. New component derivations are management/analysis candidates, not external market validation, a formal valuation opinion, FA confirmation or Agent approval.",
+  "source_basis": [
+    "company-submission/02_financial_contract.json",
+    "company-submission/03_dcf_scenarios.json",
+    "company-submission/05_trading_comps.json"
+  ],
+  "stub_period": {
+    "data_classification": "Synthetic",
+    "period": "H2 2026E",
+    "period_start": "2026-07-01",
+    "period_end": "2026-12-31",
+    "year_fraction": "0.500",
+    "treatment": "Candidate explicit stub FCFF discounted separately at a 0.5-year period-end exponent.",
+    "status": "New Synthetic management candidate; absent from original workflow input and not approved by an FA human",
+    "scenario_fcff": {
+      "downside": {"data_classification": "Synthetic", "ebit": "42.000", "tax_rate": "0.250", "depreciation_amortization": "7.500", "capex": "11.000", "change_in_nwc": "5.000", "fcff": "23.000"},
+      "base": {"data_classification": "Synthetic", "ebit": "46.600", "tax_rate": "0.250", "depreciation_amortization": "7.500", "capex": "10.500", "change_in_nwc": "4.000", "fcff": "27.950"},
+      "upside": {"data_classification": "Synthetic", "ebit": "50.000", "tax_rate": "0.250", "depreciation_amortization": "7.500", "capex": "10.000", "change_in_nwc": "3.500", "fcff": "31.500"}
+    },
+    "fcff_formula": "EBIT x (1 - tax_rate) + depreciation_amortization - capex - change_in_nwc"
+  },
+  "discount_timing_candidate": [
+    {"data_classification": "Synthetic", "cash_flow_period": "H2 2026E", "period_end": "2026-12-31", "discount_exponent_years": "0.500"},
+    {"data_classification": "Synthetic", "cash_flow_period": "FY2027E", "period_end": "2027-12-31", "discount_exponent_years": "1.500"},
+    {"data_classification": "Synthetic", "cash_flow_period": "FY2028E", "period_end": "2028-12-31", "discount_exponent_years": "2.500"},
+    {"data_classification": "Synthetic", "cash_flow_period": "FY2029E and terminal value", "period_end": "2029-12-31", "discount_exponent_years": "3.500"}
+  ],
+  "scenario_assumptions": {
+    "downside": {
+      "data_classification": "Synthetic",
+      "wacc": "0.110",
+      "wacc_derivation": {"equity_weight": "0.750", "cost_of_equity": "0.130", "debt_weight": "0.250", "pre_tax_cost_of_debt": "0.0666666667", "tax_rate": "0.250", "recalculated_wacc": "0.110"},
+      "terminal_growth": "0.015",
+      "exit_multiple": "7.500",
+      "terminal_metric_ebitda": "114.000",
+      "terminal_metric_tie": "FY2029E EBIT 97.000 + D&A 17.000"
+    },
+    "base": {
+      "data_classification": "Synthetic",
+      "wacc": "0.095",
+      "wacc_derivation": {"equity_weight": "0.800", "cost_of_equity": "0.110", "debt_weight": "0.200", "pre_tax_cost_of_debt": "0.0466666667", "tax_rate": "0.250", "recalculated_wacc": "0.095"},
+      "terminal_growth": "0.025",
+      "exit_multiple": "9.000",
+      "terminal_metric_ebitda": "142.000",
+      "terminal_metric_tie": "FY2029E EBIT 125.000 + D&A 17.000"
+    },
+    "upside": {
+      "data_classification": "Synthetic",
+      "wacc": "0.085",
+      "wacc_derivation": {"equity_weight": "0.800", "cost_of_equity": "0.100", "debt_weight": "0.200", "pre_tax_cost_of_debt": "0.0333333333", "tax_rate": "0.250", "recalculated_wacc": "0.085"},
+      "terminal_growth": "0.030",
+      "exit_multiple": "10.500",
+      "terminal_metric_ebitda": "157.000",
+      "terminal_metric_tie": "FY2029E EBIT 140.000 + D&A 17.000"
+    }
+  },
+  "exit_multiple_derivation": {
+    "data_classification": "Synthetic",
+    "base_anchor": "9.0x, equal to the Synthetic core-peer median and full-sample median as recalculated in 06_trading_comps_ledger.csv",
+    "downside_band": "Base less 1.5x = 7.5x",
+    "upside_band": "Base plus 1.5x = 10.5x",
+    "external_market_validation": false,
+    "status": "Screen-grade Synthetic arithmetic only"
+  },
+  "judgment_control": {
+    "data_classification": "Synthetic",
+    "assumption_id": "SYN-R5-JUDGMENT-001",
+    "field": "base terminal growth",
+    "value": "0.025",
+    "statement": "The 2.5% base terminal growth rate may only be used as a screen-grade judgment assumption after explicit FA human acceptance; it is not an enterprise fact or external market validation.",
+    "fa_human_acceptance_status": "pending",
+    "agent_can_confirm": false,
+    "confirm_inputs": false
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "pack_id": "SYN-R5-XIHENG-2026-0630",
+  "target_legal_entity": "曦衡高效热能装备（苏州）有限公司",
+  "valuation_date": "2026-06-30",
+  "base_currency": "CNY",
+  "amount_unit": "CNYm",
+  "metric": "ev_ltm_ebitda",
+  "target_metric": "98.000",
+  "target_metric_period": "LTM 2026-06-30",
+  "peer_set_status": "candidate_pending_fa_confirmation",
+  "peer_selection_principles": "Product adjacency, mature equipment manufacturing economics, recurring aftermarket exposure and comparable commercial maturity; every peer is wholly Synthetic.",
+  "peers": [
+    {
+      "data_classification": "Synthetic",
+      "peer_id": "syn-thermoforge",
+      "name": "ThermoForge Industrial Systems plc (Synthetic)",
+      "classification": "core_peer",
+      "rationale": "Synthetic direct industrial heat-pump and thermal-skid OEM with similar project size, manufacturing intensity and aftermarket service mix.",
+      "enterprise_value": "864.000",
+      "enterprise_value_period": "2026-06-30",
+      "ltm_ebitda": "96.000",
+      "ltm_ebitda_period": "LTM 2026-06-30",
+      "source": {
+        "source_id": "SYN-R5-PEER-THERMOFORGE",
+        "locator": "Synthetic peer capitalization and LTM operating schedule; record 1",
+        "as_of": "2026-06-30"
+      }
+    },
+    {
+      "data_classification": "Synthetic",
+      "peer_id": "syn-heatloop",
+      "name": "HeatLoop Process Equipment SE (Synthetic)",
+      "classification": "core_peer",
+      "rationale": "Synthetic waste-heat recovery module manufacturer with comparable end markets, order cadence and mature positive EBITDA profile.",
+      "enterprise_value": "1045.000",
+      "enterprise_value_period": "2026-06-30",
+      "ltm_ebitda": "110.000",
+      "ltm_ebitda_period": "LTM 2026-06-30",
+      "source": {
+        "source_id": "SYN-R5-PEER-HEATLOOP",
+        "locator": "Synthetic peer capitalization and LTM operating schedule; record 2",
+        "as_of": "2026-06-30"
+      }
+    },
+    {
+      "data_classification": "Synthetic",
+      "peer_id": "syn-vaporgrid",
+      "name": "VaporGrid Efficiency Equipment Ltd. (Synthetic)",
+      "classification": "core_peer",
+      "rationale": "Synthetic industrial steam electrification and control-equipment supplier with similar customer concentration and fabrication footprint.",
+      "enterprise_value": "880.000",
+      "enterprise_value_period": "2026-06-30",
+      "ltm_ebitda": "100.000",
+      "ltm_ebitda_period": "LTM 2026-06-30",
+      "source": {
+        "source_id": "SYN-R5-PEER-VAPORGRID",
+        "locator": "Synthetic peer capitalization and LTM operating schedule; record 3",
+        "as_of": "2026-06-30"
+      }
+    },
+    {
+      "data_classification": "Synthetic",
+      "peer_id": "syn-thermastack",
+      "name": "ThermaStack Storage Technologies Corp. (Synthetic)",
+      "classification": "secondary_peer",
+      "rationale": "Synthetic adjacent thermal-storage equipment company with comparable manufacturing complexity but a higher software and controls contribution.",
+      "enterprise_value": "1260.000",
+      "enterprise_value_period": "2026-06-30",
+      "ltm_ebitda": "120.000",
+      "ltm_ebitda_period": "LTM 2026-06-30",
+      "source": {
+        "source_id": "SYN-R5-PEER-THERMASTACK",
+        "locator": "Synthetic peer capitalization and LTM operating schedule; record 4",
+        "as_of": "2026-06-30"
+      }
+    },
+    {
+      "data_classification": "Synthetic",
+      "peer_id": "syn-ecoflowworks",
+      "name": "EcoFlowWorks Energy Machinery AG (Synthetic)",
+      "classification": "secondary_peer",
+      "rationale": "Synthetic broader industrial energy-efficiency machinery producer with similar scale and service exposure but less direct heat-pump concentration.",
+      "enterprise_value": "765.000",
+      "enterprise_value_period": "2026-06-30",
+      "ltm_ebitda": "90.000",
+      "ltm_ebitda_period": "LTM 2026-06-30",
+      "source": {
+        "source_id": "SYN-R5-PEER-ECOFLOWWORKS",
+        "locator": "Synthetic peer capitalization and LTM operating schedule; record 5",
+        "as_of": "2026-06-30"
+      }
+    }
+  ],
+  "control_boundary": {
+    "data_classification": "Synthetic",
+    "peer_count": "5",
+    "peer_set_requires_fa_review": true,
+    "fa_confirmation_status": "pending",
+    "public_release_authorized": false,
+    "formal_valuation_opinion": false,
+    "agent_can_approve": false
+  }
+}

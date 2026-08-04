@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R05-FA-INITIAL-20260804-152630Z",
+  "round": "05",
+  "role": "independent_human_fa",
+  "data_classification": "Synthetic",
+  "started_at_utc": "2026-08-04T15:26:30.8134399Z",
+  "ended_at_utc": "2026-08-04T15:37:34.8070772Z",
+  "timezone": "Asia/Shanghai",
+  "repository_root": "D:\\找回的文件_20260715\\项目与资料\\Nexus\\cleantech-finance",
+  "git_commit": "b64c66ef430a408a7079f5926fc670323601d14d",
+  "product_code_tests_protocol_company_submission_or_git_history_modified": false,
+  "requested_output_artifacts_written": 6,
+  "runtime": {
+    "command": ".\\.venv-new\\Scripts\\python.exe -m cleantech_finance bridge local-data\\policies\\NEXBridge_policy_catalog_pending_review_20260730.xlsx --host 127.0.0.1 --port 18765 --workspace-root <temporary-workspace>",
+    "package_metadata_version": "0.4.0",
+    "readme_claimed_release": "0.5.0",
+    "python": "3.12.13",
+    "host": "127.0.0.1",
+    "port": 18765,
+    "base_url": "http://127.0.0.1:18765",
+    "listener_pid": 43348
+  },
+  "temporary_workspace": {
+    "path": "C:\\Users\\huawei\\AppData\\Local\\Temp\\ctf-r05-fa-d22a6c37e91a41a9a65b980c08b84ec3",
+    "file_count_before_cleanup": 18,
+    "process_stopped": true,
+    "listener_present_after_stop": false,
+    "workspace_present_after_cleanup": false
+  },
+  "product_ids": {
+    "case_id": "case-20260804-99d9fc5072",
+    "deal_id": "deal-20260804-6d3051b880f4",
+    "valuation_id": "valuation-47603e4eba278a0e"
+  },
+  "allowed_inputs": [
+    "evals/double-blind-fa-v0.5/protocol.md",
+    "evals/double-blind-fa-v0.5/round-05/company-submission/**",
+    "README.md",
+    "README.zh-CN.md",
+    "delivery/colleague-kit/README_同事运行说明.md",
+    "tests/test_agent_bridge_valuation.py",
+    "targeted excerpts of tests/test_agent_bridge.py, src/cleantech_finance/valuation_workflow.py and src/cleantech_finance/agent_bridge.py needed to operate the HTTP contract"
+  ],
+  "forbidden_inputs_not_read": [
+    "round-01 through round-04 reports",
+    "company-supplement",
+    "engineering-review",
+    "hidden truth",
+    "parent-agent conclusions"
+  ],
+  "skills": {
+    "audit_cleantech_finance": "read_and_applied",
+    "investment_banking_router": "read_and_applied",
+    "valuation_route": "dcf-model-builder",
+    "route_fallback": null
+  },
+  "boundaries": {
+    "synthetic_only": true,
+    "formal_valuation_opinion": false,
+    "investment_rating": false,
+    "credit_rating": false,
+    "aggregate_risk_rating": false,
+    "public_release": false,
+    "agent_can_approve": false
+  },
+  "cleanup": {
+    "bridge_process": "stopped",
+    "port": "released",
+    "temporary_workspace": "deleted",
+    "recoverability": "temporary runtime files intentionally removed after identifiers and observable results were recorded"
+  }
+}

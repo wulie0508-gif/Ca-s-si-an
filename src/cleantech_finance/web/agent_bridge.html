@@ -570,7 +570,17 @@
                               <option value="mid_year">年中折现</option>
                             </select>
                           </div>
+                          <div class="field">
+                            <label for="valuation-period-count">显式预测期数</label>
+                            <select id="valuation-period-count">
+                              <option value="3">3 期</option>
+                              <option value="4">4 期</option>
+                              <option value="5">5 期</option>
+                            </select>
+                          </div>
                         </div>
+
+                        <p class="valuation-method-note"><strong>折现时点：</strong>每期结构化期末日与折现指数由 FA 独立核对；企业候选补件不会自动带入或确认。显式指数直接控制 FCFF 与终值折现，不从 FY 名称猜测日期。</p>
 
                         <div class="scenario-inputs" id="scenario-inputs"></div>
 

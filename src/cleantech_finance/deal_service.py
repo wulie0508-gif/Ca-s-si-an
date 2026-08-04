@@ -53,6 +53,7 @@ HUMAN_ROLES = frozenset(
 )
 AGENT_ROLES = frozenset({"agent", "ai_agent", "codex_agent"})
 CONFIDENTIALITY_LEVELS = frozenset({"public", "internal", "confidential", "highly_confidential"})
+CONFIDENTIALITY_ALIASES = {"internal_only": "internal"}
 ROLE_CAPABILITIES: dict[str, frozenset[str]] = {
     "human": frozenset({"valuation_input"}),
     "fa": frozenset(
@@ -573,6 +574,7 @@ class DealStore:
         normalized_reason = _reason(reason)
         key = _idempotency_key(idempotency_key)
         confidentiality = _text(confidentiality_level, "confidentiality_level", limit=40).casefold()
+        confidentiality = CONFIDENTIALITY_ALIASES.get(confidentiality, confidentiality)
         if confidentiality not in CONFIDENTIALITY_LEVELS:
             raise DealServiceError("Unsupported confidentiality_level")
         normalized_currency = _text(currency, "currency", limit=3).upper()
@@ -1448,9 +1450,15 @@ class DealStore:
                 raise DealPermissionError(
                     f"Candidate inputs cannot enter the model: {sorted(unconfirmed)}"
                 )
+            integrity = normalized_calculation.get("calculation_integrity")
+            calculation_passed = (
+                isinstance(integrity, Mapping)
+                and integrity.get("status") == "passed"
+                and not normalized_calculation.get("hard_failures")
+            )
             return self._append_version(
                 valuation,
-                status="calculated_screen_grade",
+                status=("calculated_screen_grade" if calculation_passed else "inputs_incomplete"),
                 operation="calculate_valuation",
                 inputs=current["inputs"],
                 calculation=normalized_calculation,

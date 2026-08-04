@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R05-FA-SUPPLEMENT-BASELINE-20260804-154500Z",
+  "round": "05",
+  "phase": "supplement_pre_fix_baseline",
+  "data_classification": "Synthetic",
+  "result": "engineering_fix_required",
+  "case_id": "case-20260804-d2dabeb8c4",
+  "deal_id": "deal-20260804-59505701df12",
+  "valuation_id": "valuation-ea028e418defe4f1",
+  "materials": {
+    "files": 17,
+    "artifacts": 17,
+    "all_hashes_match": true,
+    "company_supplement_status_counts": {"answered": 2, "partial": 5, "not_available": 0},
+    "responses_accepted_as_fact": 0,
+    "questions_closed": 0
+  },
+  "candidate_gate": {
+    "input_count": 146,
+    "candidate_count": 146,
+    "calculate_http_status": 400,
+    "calculation_created": false
+  },
+  "pre_fix_reproduction": {
+    "human_confirmed_original_input_count": 146,
+    "supplement_stub_automatically_imported": false,
+    "calculation_http_status": 201,
+    "status": "calculated_screen_grade",
+    "calculation_integrity": "passed",
+    "decision_readiness": "screen_grade",
+    "discount_exponents_used": ["1", "2", "3"],
+    "timing_blocker_or_warning_present": false,
+    "supplement_candidate_exponents": ["0.5", "1.5", "2.5", "3.5"],
+    "supplement_candidate_stub_period": "H2 2026E"
+  },
+  "confirmed_defects": [
+    {"finding_id":"R05-F01","severity":"S1","status":"reproduced_after_supplement","required_action":"fail closed without explicit human-confirmed discount timing, or calculate only from such timing inputs"},
+    {"finding_id":"R05-F02","severity":"S2","status":"reproduced_environment_metadata_mismatch"},
+    {"finding_id":"R05-F03","severity":"S3","status":"recorded_in_initial_run"}
+  ],
+  "unimplemented_boundaries": {
+    "persistent_supplement_state_machine": false,
+    "request_submission_linkage": false,
+    "automatic_partial_recalculation_dependency_graph": false
+  },
+  "authority_boundaries": {
+    "agent_approved": false,
+    "formal_valuation_opinion": false,
+    "public_release_authorized": false,
+    "investment_credit_or_aggregate_risk_rating_produced": false
+  }
+}

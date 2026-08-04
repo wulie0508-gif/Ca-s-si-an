@@ -1,0 +1,357 @@
+{
+  "schema_version": "1.1",
+  "data_classification": "Synthetic",
+  "pack_id": "SYN-R5-XIHENG-2026-0630",
+  "target_legal_entity": "曦衡高效热能装备（苏州）有限公司",
+  "valuation_date": "2026-06-30",
+  "base_currency": "CNY",
+  "confirm_inputs": false,
+  "business_model": "mature_equipment_manufacturing",
+  "discount_convention": "period_end",
+  "unit": "CNYm",
+  "source": {
+    "source_id": "SYN-R5-CONTROL-PACK-V1",
+    "locator": "Round 5 synthetic company pack files 01 through 06; internal-analysis authorization only",
+    "as_of": "2026-06-30"
+  },
+  "financials": {
+    "historical": [
+      {
+        "data_classification": "Synthetic",
+        "period": "FY2023",
+        "period_end": "2023-12-31",
+        "basis": "Reported",
+        "revenue": "420.000",
+        "ebitda": "63.000",
+        "ebit": "52.000",
+        "tax_rate": "0.250",
+        "depreciation_amortization": "11.000",
+        "capex": "14.000",
+        "change_in_nwc": "6.000",
+        "fcff": "30.000",
+        "source": {
+          "source_id": "SYN-R5-FIN-FY2023",
+          "locator": "02_financial_contract.json > financials.historical[0]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "period": "FY2024",
+        "period_end": "2024-12-31",
+        "basis": "Reported",
+        "revenue": "470.000",
+        "ebitda": "75.200",
+        "ebit": "63.200",
+        "tax_rate": "0.250",
+        "depreciation_amortization": "12.000",
+        "capex": "16.000",
+        "change_in_nwc": "7.000",
+        "fcff": "36.400",
+        "source": {
+          "source_id": "SYN-R5-FIN-FY2024",
+          "locator": "02_financial_contract.json > financials.historical[1]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "period": "FY2025",
+        "period_end": "2025-12-31",
+        "basis": "Reported",
+        "revenue": "530.000",
+        "ebitda": "90.100",
+        "ebit": "77.100",
+        "tax_rate": "0.250",
+        "depreciation_amortization": "13.000",
+        "capex": "18.000",
+        "change_in_nwc": "8.000",
+        "fcff": "44.825",
+        "source": {
+          "source_id": "SYN-R5-FIN-FY2025",
+          "locator": "02_financial_contract.json > financials.historical[2]",
+          "as_of": "2026-06-30"
+        }
+      }
+    ],
+    "ltm": {
+      "data_classification": "Synthetic",
+      "period": "LTM 2026-06-30",
+      "period_end": "2026-06-30",
+      "basis": "Reported",
+      "revenue": "560.000",
+      "ebitda": "98.000",
+      "ebit": "84.000",
+      "tax_rate": "0.250",
+      "depreciation_amortization": "14.000",
+      "capex": "19.000",
+      "change_in_nwc": "8.000",
+      "fcff": "50.000",
+      "source": {
+        "source_id": "SYN-R5-FIN-LTM-20260630",
+        "locator": "02_financial_contract.json > financials.ltm",
+        "as_of": "2026-06-30"
+      }
+    },
+    "forecast": [
+      {
+        "data_classification": "Synthetic",
+        "period": "FY2027E",
+        "period_end": "2027-12-31",
+        "basis": "Management",
+        "revenue": "610.000",
+        "ebitda": "112.850",
+        "ebit": "97.850",
+        "tax_rate": "0.250",
+        "depreciation_amortization": "15.000",
+        "capex": "21.000",
+        "change_in_nwc": "8.000",
+        "fcff": "59.3875",
+        "source": {
+          "source_id": "SYN-R5-FIN-FORECAST-V1",
+          "locator": "02_financial_contract.json > financials.forecast[0]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "period": "FY2028E",
+        "period_end": "2028-12-31",
+        "basis": "Management",
+        "revenue": "660.000",
+        "ebitda": "125.400",
+        "ebit": "109.400",
+        "tax_rate": "0.250",
+        "depreciation_amortization": "16.000",
+        "capex": "23.000",
+        "change_in_nwc": "8.000",
+        "fcff": "67.050",
+        "source": {
+          "source_id": "SYN-R5-FIN-FORECAST-V1",
+          "locator": "02_financial_contract.json > financials.forecast[1]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "period": "FY2029E",
+        "period_end": "2029-12-31",
+        "basis": "Management",
+        "revenue": "710.000",
+        "ebitda": "142.000",
+        "ebit": "125.000",
+        "tax_rate": "0.250",
+        "depreciation_amortization": "17.000",
+        "capex": "25.000",
+        "change_in_nwc": "8.000",
+        "fcff": "77.750",
+        "source": {
+          "source_id": "SYN-R5-FIN-FORECAST-V1",
+          "locator": "02_financial_contract.json > financials.forecast[2]",
+          "as_of": "2026-06-30"
+        }
+      }
+    ]
+  },
+  "scenarios": {
+    "downside": {
+      "wacc": "0.110",
+      "terminal_growth": "0.015",
+      "terminal_metric": "114.000",
+      "exit_multiple": "7.500",
+      "periods": [
+        {
+          "period": "FY2027E",
+          "ebit": "85.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "15.000",
+          "capex": "22.000",
+          "change_in_nwc": "10.000"
+        },
+        {
+          "period": "FY2028E",
+          "ebit": "91.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "16.000",
+          "capex": "24.000",
+          "change_in_nwc": "9.000"
+        },
+        {
+          "period": "FY2029E",
+          "ebit": "97.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "17.000",
+          "capex": "25.000",
+          "change_in_nwc": "8.000"
+        }
+      ]
+    },
+    "base": {
+      "wacc": "0.095",
+      "terminal_growth": "0.025",
+      "terminal_metric": "142.000",
+      "exit_multiple": "9.000",
+      "periods": [
+        {
+          "period": "FY2027E",
+          "ebit": "97.850",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "15.000",
+          "capex": "21.000",
+          "change_in_nwc": "8.000"
+        },
+        {
+          "period": "FY2028E",
+          "ebit": "109.400",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "16.000",
+          "capex": "23.000",
+          "change_in_nwc": "8.000"
+        },
+        {
+          "period": "FY2029E",
+          "ebit": "125.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "17.000",
+          "capex": "25.000",
+          "change_in_nwc": "8.000"
+        }
+      ]
+    },
+    "upside": {
+      "wacc": "0.085",
+      "terminal_growth": "0.030",
+      "terminal_metric": "157.000",
+      "exit_multiple": "10.500",
+      "periods": [
+        {
+          "period": "FY2027E",
+          "ebit": "106.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "15.000",
+          "capex": "20.000",
+          "change_in_nwc": "7.000"
+        },
+        {
+          "period": "FY2028E",
+          "ebit": "122.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "16.000",
+          "capex": "22.000",
+          "change_in_nwc": "7.000"
+        },
+        {
+          "period": "FY2029E",
+          "ebit": "140.000",
+          "tax_rate": "0.250",
+          "depreciation_amortization": "17.000",
+          "capex": "24.000",
+          "change_in_nwc": "7.000"
+        }
+      ]
+    }
+  },
+  "bridge": {
+    "cash_like": "42.000",
+    "debt_like": "78.000",
+    "non_operating_assets": "6.000",
+    "other_claims": "4.000"
+  },
+  "trading_comps": {
+    "metric": "ev_ltm_ebitda",
+    "target_metric": "98.000",
+    "target_metric_period": "LTM 2026-06-30",
+    "peers": [
+      {
+        "data_classification": "Synthetic",
+        "peer_id": "syn-thermoforge",
+        "name": "ThermoForge Industrial Systems plc (Synthetic)",
+        "classification": "core_peer",
+        "rationale": "Synthetic direct industrial heat-pump and thermal-skid OEM with similar project size, manufacturing intensity and aftermarket service mix.",
+        "enterprise_value": "864.000",
+        "enterprise_value_period": "2026-06-30",
+        "ltm_ebitda": "96.000",
+        "ltm_ebitda_period": "LTM 2026-06-30",
+        "source": {
+          "source_id": "SYN-R5-PEER-THERMOFORGE",
+          "locator": "05_trading_comps.json > peers[0]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "peer_id": "syn-heatloop",
+        "name": "HeatLoop Process Equipment SE (Synthetic)",
+        "classification": "core_peer",
+        "rationale": "Synthetic waste-heat recovery module manufacturer with comparable end markets, order cadence and mature positive EBITDA profile.",
+        "enterprise_value": "1045.000",
+        "enterprise_value_period": "2026-06-30",
+        "ltm_ebitda": "110.000",
+        "ltm_ebitda_period": "LTM 2026-06-30",
+        "source": {
+          "source_id": "SYN-R5-PEER-HEATLOOP",
+          "locator": "05_trading_comps.json > peers[1]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "peer_id": "syn-vaporgrid",
+        "name": "VaporGrid Efficiency Equipment Ltd. (Synthetic)",
+        "classification": "core_peer",
+        "rationale": "Synthetic industrial steam electrification and control-equipment supplier with similar customer concentration and fabrication footprint.",
+        "enterprise_value": "880.000",
+        "enterprise_value_period": "2026-06-30",
+        "ltm_ebitda": "100.000",
+        "ltm_ebitda_period": "LTM 2026-06-30",
+        "source": {
+          "source_id": "SYN-R5-PEER-VAPORGRID",
+          "locator": "05_trading_comps.json > peers[2]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "peer_id": "syn-thermastack",
+        "name": "ThermaStack Storage Technologies Corp. (Synthetic)",
+        "classification": "secondary_peer",
+        "rationale": "Synthetic adjacent thermal-storage equipment company with comparable manufacturing complexity but a higher software and controls contribution.",
+        "enterprise_value": "1260.000",
+        "enterprise_value_period": "2026-06-30",
+        "ltm_ebitda": "120.000",
+        "ltm_ebitda_period": "LTM 2026-06-30",
+        "source": {
+          "source_id": "SYN-R5-PEER-THERMASTACK",
+          "locator": "05_trading_comps.json > peers[3]",
+          "as_of": "2026-06-30"
+        }
+      },
+      {
+        "data_classification": "Synthetic",
+        "peer_id": "syn-ecoflowworks",
+        "name": "EcoFlowWorks Energy Machinery AG (Synthetic)",
+        "classification": "secondary_peer",
+        "rationale": "Synthetic broader industrial energy-efficiency machinery producer with similar scale and service exposure but less direct heat-pump concentration.",
+        "enterprise_value": "765.000",
+        "enterprise_value_period": "2026-06-30",
+        "ltm_ebitda": "90.000",
+        "ltm_ebitda_period": "LTM 2026-06-30",
+        "source": {
+          "source_id": "SYN-R5-PEER-ECOFLOWWORKS",
+          "locator": "05_trading_comps.json > peers[4]",
+          "as_of": "2026-06-30"
+        }
+      }
+    ]
+  },
+  "human_confirmation_gate": {
+    "data_classification": "Synthetic",
+    "status": "pending",
+    "responsible_role": "FA human",
+    "required_judgmental_assumption_id": "SYN-R5-JUDGMENT-001",
+    "required_action": "FA human must review and explicitly confirm all candidate inputs in the trusted product workflow before calculation.",
+    "agent_can_approve": false,
+    "formal_valuation_opinion": false,
+    "public_release_authorized": false
+  }
+}

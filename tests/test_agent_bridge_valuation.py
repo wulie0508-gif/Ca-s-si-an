@@ -34,6 +34,15 @@ def test_valuation_ui_defaults_to_dcf_and_enforces_planned_comps() -> None:
     assert 'elements.valuationCompsMode.value = planned ? "on" : "off";' in javascript
     assert "elements.valuationCompsMode.disabled = true;" in javascript
     assert "const enabled = planned;" in javascript
+    assert 'id="valuation-period-count"' in html
+    assert 'for (let year = 1; year <= 5; year += 1)' in javascript
+    assert "function updateValuationPeriodCount()" in javascript
+    assert "input.required = active;" in javascript
+    assert "row.hidden = !active;" in javascript
+    assert "period_end:" in javascript
+    assert "discount_exponent:" in javascript
+    assert "企业候选补件不会自动带入或确认" in html
+    assert "3 至 5 期 FCFF 输入" in javascript
 
 
 def _request(
@@ -149,7 +158,7 @@ def test_ui_deal_valuation_flow_uses_server_identity_and_trusted_calculation(
         "currency": "USD",
         "valuation_date": "2026-08-03",
         "owner": "FA Team",
-        "confidentiality_level": "confidential",
+        "confidentiality_level": "internal_only",
         "reason": "Open a live transaction workstream",
     }
     status, denied = _json(
@@ -175,6 +184,7 @@ def test_ui_deal_valuation_flow_uses_server_identity_and_trusted_calculation(
     )
     assert status == 201
     assert deal["company_id"] == case_id
+    assert deal["deal_header"]["confidentiality_level"] == "internal"
     assert deal["audit_trail"][0]["actor"] == {
         "id": "local-fa-ui",
         "role": "deal_lead",

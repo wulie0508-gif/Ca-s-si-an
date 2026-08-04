@@ -51,8 +51,9 @@ from .valuation import (
     wacc_growth_sensitivity,
 )
 
-SCREEN_SCHEMA_VERSION = "1.1"
+SCREEN_SCHEMA_VERSION = "1.2"
 TARGET_METRIC_NEAR_ZERO = Decimal("0.000001")
+MAX_DISCOUNT_EXPONENT = Decimal("100")
 P0_METHODS = frozenset({"dcf_fcff", "trading_comps"})
 MAX_INPUT_SIGNIFICANT_DIGITS = 28
 MAX_INPUT_ADJUSTED_EXPONENT = 24
@@ -360,6 +361,116 @@ def _prepare_financial_inputs(
     return inputs
 
 
+def _request_discount_timing(
+    scenarios: Mapping[str, Any],
+    *,
+    valuation_date: str,
+    confirm_inputs: bool,
+) -> dict[str, Any]:
+    """Validate structured DCF timing without inferring dates from period labels."""
+
+    valuation_day = date.fromisoformat(valuation_date)
+    normalized: dict[str, dict[str, tuple[str | None, ...]]] = {}
+    explicit_scenarios: list[str] = []
+    for scenario_name in SCENARIO_ORDER:
+        scenario = _mapping(scenarios.get(scenario_name), f"scenarios.{scenario_name}")
+        periods = _sequence(scenario.get("periods"), f"scenarios.{scenario_name}.periods")
+        if len(periods) < 3 or len(periods) > 5:
+            raise ValuationWorkflowError(
+                f"scenarios.{scenario_name}.periods must contain 3 to 5 forecast years"
+            )
+        exponent_values: list[str | None] = []
+        period_end_values: list[str | None] = []
+        for index, raw_period in enumerate(periods, start=1):
+            path = f"scenarios.{scenario_name}.periods[{index - 1}]"
+            period = _mapping(raw_period, path)
+            raw_exponent = period.get("discount_exponent")
+            exponent_values.append(
+                None
+                if raw_exponent in (None, "")
+                else _decimal_text(raw_exponent, f"{path}.discount_exponent")
+            )
+            raw_period_end = period.get("period_end")
+            period_end_values.append(
+                None
+                if raw_period_end in (None, "")
+                else _iso_date(raw_period_end, f"{path}.period_end")
+            )
+        exponent_flags = tuple(value is not None for value in exponent_values)
+        if any(exponent_flags) and not all(exponent_flags):
+            raise ValuationWorkflowError(
+                f"scenarios.{scenario_name} must provide discount_exponent for every period"
+            )
+        period_end_flags = tuple(value is not None for value in period_end_values)
+        if any(period_end_flags) and not all(period_end_flags):
+            raise ValuationWorkflowError(
+                f"scenarios.{scenario_name} must provide period_end for every period when structured dates are used"
+            )
+        if all(exponent_flags):
+            exponents = tuple(Decimal(str(value)) for value in exponent_values)
+            if any(value <= 0 or value > MAX_DISCOUNT_EXPONENT for value in exponents):
+                raise ValuationWorkflowError(
+                    f"scenarios.{scenario_name} discount_exponent values must be greater than zero and no more than 100"
+                )
+            if any(
+                current <= prior
+                for prior, current in zip(exponents, exponents[1:], strict=False)
+            ):
+                raise ValuationWorkflowError(
+                    f"scenarios.{scenario_name} discount_exponent values must be strictly increasing"
+                )
+            explicit_scenarios.append(scenario_name)
+        if all(period_end_flags):
+            period_dates = tuple(date.fromisoformat(str(value)) for value in period_end_values)
+            if any(
+                current <= prior
+                for prior, current in zip(period_dates, period_dates[1:], strict=False)
+            ):
+                raise ValuationWorkflowError(
+                    f"scenarios.{scenario_name} period_end values must be strictly increasing"
+                )
+        normalized[scenario_name] = {
+            "discount_exponents": tuple(exponent_values),
+            "period_ends": tuple(period_end_values),
+        }
+
+    if explicit_scenarios and len(explicit_scenarios) != len(SCENARIO_ORDER):
+        raise ValuationWorkflowError(
+            "All DCF scenarios must use the same complete discount timing contract"
+        )
+    signatures = {
+        (
+            normalized[name]["discount_exponents"],
+            normalized[name]["period_ends"],
+        )
+        for name in SCENARIO_ORDER
+    }
+    if len(signatures) != 1:
+        raise ValuationWorkflowError(
+            "Base, Downside, and Upside period_end and discount_exponent values must align"
+        )
+    if explicit_scenarios:
+        basis = "explicit_per_period"
+    elif not confirm_inputs:
+        basis = "candidate_timing_incomplete"
+    else:
+        period_ends = normalized[SCENARIO_ORDER[0]]["period_ends"]
+        expected = tuple(
+            date(valuation_day.year + index, 12, 31).isoformat()
+            for index in range(1, len(period_ends) + 1)
+        )
+        if (
+            (valuation_day.month, valuation_day.day) != (12, 31)
+            or any(value is None for value in period_ends)
+            or period_ends != expected
+        ):
+            raise ValuationWorkflowError(
+                "Confirmed DCF timing requires a source-bearing discount_exponent for every period; positional 1..N compatibility is limited to a December 31 valuation date with consecutive structured December 31 period_end values"
+            )
+        basis = "validated_annual_period_end"
+    return {"basis": basis, "scenarios": normalized}
+
+
 def prepare_screen_inputs(
     request: Mapping[str, Any],
     valuation_case: Mapping[str, Any],
@@ -440,6 +551,11 @@ def prepare_screen_inputs(
         return inputs
 
     scenarios = _mapping(request.get("scenarios"), "scenarios")
+    discount_timing = _request_discount_timing(
+        scenarios,
+        valuation_date=valuation_date,
+        confirm_inputs=confirm_inputs,
+    )
     for scenario_name in SCENARIO_ORDER:
         scenario = _mapping(scenarios.get(scenario_name), f"scenarios.{scenario_name}")
         periods = _sequence(scenario.get("periods"), f"scenarios.{scenario_name}.periods")
@@ -528,6 +644,58 @@ def prepare_screen_inputs(
                 f"scenarios.{scenario_name}.periods[{index - 1}].period",
                 limit=40,
             )
+            timing = discount_timing["scenarios"][scenario_name]
+            period_end = timing["period_ends"][index - 1]
+            discount_exponent = timing["discount_exponents"][index - 1]
+            if period_end is not None:
+                period_end_source = (
+                    _source(period.get("period_end_source"), fallback_as_of=source["as_of"])
+                    if period.get("period_end_source") is not None
+                    else source
+                )
+                inputs.append(
+                    _base_record(
+                        input_id=f"{scenario_name}-y{index}-period-end",
+                        name=f"{scenario_name.title()} {period_label} period end",
+                        value=period_end,
+                        source=period_end_source,
+                        period=period_label,
+                        currency=currency,
+                        unit="text",
+                        confirm_inputs=confirm_inputs,
+                        input_group="dcf_timing",
+                        scenario=scenario_name,
+                        period_index=index,
+                        field="period_end",
+                        timing_basis=discount_timing["basis"],
+                    )
+                )
+            if discount_exponent is not None:
+                exponent_source = (
+                    _source(
+                        period.get("discount_exponent_source"),
+                        fallback_as_of=source["as_of"],
+                    )
+                    if period.get("discount_exponent_source") is not None
+                    else source
+                )
+                inputs.append(
+                    _base_record(
+                        input_id=f"{scenario_name}-y{index}-discount-exponent",
+                        name=f"{scenario_name.title()} {period_label} discount exponent",
+                        value=discount_exponent,
+                        source=exponent_source,
+                        period=period_label,
+                        currency="N/A",
+                        unit="years",
+                        confirm_inputs=confirm_inputs,
+                        input_group="dcf_timing",
+                        scenario=scenario_name,
+                        period_index=index,
+                        field="discount_exponent",
+                        timing_basis=discount_timing["basis"],
+                    )
+                )
             for field_name, label, field_unit in PERIOD_FIELDS:
                 inputs.append(
                     _base_record(
@@ -819,6 +987,185 @@ def _find_model(
     return value
 
 
+def _confirmed_timing_text(item: Mapping[str, Any], *, field: str) -> str:
+    if item.get("status") != "confirmed_input" or item.get("human_confirmed") is not True:
+        raise InputGateError(f"{item.get('input_id')} is not a human-confirmed timing input")
+    _text(item.get("source_id"), f"{field}.source_id", limit=160)
+    _text(item.get("locator"), f"{field}.locator", limit=240)
+    _iso_date(item.get("as_of"), f"{field}.as_of")
+    return _text(item.get("value"), field, limit=80)
+
+
+def _stored_discount_timing(
+    stored_inputs: Sequence[Mapping[str, Any]],
+    models: Mapping[str, ValuationInput],
+    *,
+    valuation_date: date,
+) -> dict[str, Any]:
+    """Revalidate the immutable timing contract immediately before calculation."""
+
+    scenario_rows: dict[str, list[dict[str, Any]]] = {}
+    signatures: set[tuple[tuple[str | None, str | None], ...]] = set()
+    explicit_scenarios: list[str] = []
+    source_input_ids: set[str] = set()
+    for scenario_name in SCENARIO_ORDER:
+        forecast_indexes = sorted(
+            {
+                int(item["period_index"])
+                for item in stored_inputs
+                if item.get("input_group") == "dcf"
+                and item.get("scenario") == scenario_name
+                and isinstance(item.get("period_index"), int)
+            }
+        )
+        if not forecast_indexes:
+            raise ValuationHardFailure(
+                "forecast_missing", f"{scenario_name} has no stored DCF forecast periods"
+            )
+        timing_rows = [
+            item
+            for item in stored_inputs
+            if item.get("input_group") == "dcf_timing"
+            and item.get("scenario") == scenario_name
+            and isinstance(item.get("period_index"), int)
+        ]
+        exponent_by_index = {
+            int(item["period_index"]): item
+            for item in timing_rows
+            if item.get("field") == "discount_exponent"
+        }
+        period_end_by_index = {
+            int(item["period_index"]): item
+            for item in timing_rows
+            if item.get("field") == "period_end"
+        }
+        if len(exponent_by_index) != sum(
+            item.get("field") == "discount_exponent" for item in timing_rows
+        ) or len(period_end_by_index) != sum(
+            item.get("field") == "period_end" for item in timing_rows
+        ):
+            raise ValuationHardFailure(
+                "duplicate_discount_timing_input",
+                f"{scenario_name} contains duplicate DCF timing inputs",
+            )
+        exponent_indexes = sorted(exponent_by_index)
+        period_end_indexes = sorted(period_end_by_index)
+        if exponent_indexes and exponent_indexes != forecast_indexes:
+            raise ValuationHardFailure(
+                "discount_timing_inputs_incomplete",
+                f"{scenario_name} must retain one discount exponent per forecast period",
+            )
+        if period_end_indexes and period_end_indexes != forecast_indexes:
+            raise ValuationHardFailure(
+                "discount_period_ends_incomplete",
+                f"{scenario_name} must retain one structured period end per forecast period",
+            )
+        if exponent_indexes:
+            explicit_scenarios.append(scenario_name)
+        rows: list[dict[str, Any]] = []
+        prior_exponent: Decimal | None = None
+        prior_period_end: date | None = None
+        for index in forecast_indexes:
+            exponent_item = exponent_by_index.get(index)
+            period_end_item = period_end_by_index.get(index)
+            exponent: Decimal | None = None
+            exponent_input_id: str | None = None
+            period_end_value: date | None = None
+            period_end_input_id: str | None = None
+            if exponent_item is not None:
+                exponent_input_id = str(exponent_item["input_id"])
+                exponent_model = models.get(exponent_input_id)
+                if exponent_model is None:
+                    raise ValuationHardFailure(
+                        "discount_timing_input_unreadable",
+                        f"Missing numeric model input {exponent_input_id}",
+                    )
+                exponent = exponent_model.value
+                if exponent <= 0 or exponent > MAX_DISCOUNT_EXPONENT:
+                    raise ValuationHardFailure(
+                        "invalid_discount_exponent",
+                        "Discount exponents must be greater than zero and no more than 100 years",
+                    )
+                if prior_exponent is not None and exponent <= prior_exponent:
+                    raise ValuationHardFailure(
+                        "discount_exponents_not_increasing",
+                        "Discount exponents must be strictly increasing in forecast order",
+                    )
+                prior_exponent = exponent
+                source_input_ids.add(exponent_input_id)
+            if period_end_item is not None:
+                period_end_input_id = str(period_end_item["input_id"])
+                period_end_value = date.fromisoformat(
+                    _iso_date(
+                        _confirmed_timing_text(
+                            period_end_item,
+                            field=period_end_input_id,
+                        ),
+                        period_end_input_id,
+                    )
+                )
+                if prior_period_end is not None and period_end_value <= prior_period_end:
+                    raise ValuationHardFailure(
+                        "discount_period_ends_not_increasing",
+                        "Structured DCF period ends must be strictly increasing",
+                    )
+                prior_period_end = period_end_value
+                source_input_ids.add(period_end_input_id)
+            rows.append(
+                {
+                    "period_index": index,
+                    "period_end": period_end_value.isoformat() if period_end_value else None,
+                    "period_end_input_id": period_end_input_id,
+                    "discount_exponent": format(exponent, "f") if exponent is not None else None,
+                    "discount_exponent_input_id": exponent_input_id,
+                }
+            )
+        scenario_rows[scenario_name] = rows
+        signatures.add(
+            tuple(
+                (row["period_end"], row["discount_exponent"])
+                for row in rows
+            )
+        )
+
+    if explicit_scenarios and len(explicit_scenarios) != len(SCENARIO_ORDER):
+        raise ValuationHardFailure(
+            "discount_timing_scenario_conflict",
+            "Every DCF scenario must retain the same complete timing contract",
+        )
+    if len(signatures) != 1:
+        raise ValuationHardFailure(
+            "discount_timing_scenario_conflict",
+            "Base, Downside, and Upside period ends and discount exponents must align",
+        )
+    if explicit_scenarios:
+        basis = "explicit_per_period"
+    else:
+        rows = scenario_rows[SCENARIO_ORDER[0]]
+        expected_period_ends = tuple(
+            date(valuation_date.year + index, 12, 31).isoformat()
+            for index in range(1, len(rows) + 1)
+        )
+        actual_period_ends = tuple(row["period_end"] for row in rows)
+        if (
+            (valuation_date.month, valuation_date.day) != (12, 31)
+            or any(value is None for value in actual_period_ends)
+            or actual_period_ends != expected_period_ends
+        ):
+            raise ValuationHardFailure(
+                "discount_timing_inputs_missing",
+                "Confirmed DCF timing requires a source-bearing discount exponent for every period; positional 1..N compatibility is limited to a December 31 valuation date with consecutive structured December 31 period ends",
+            )
+        basis = "validated_annual_period_end"
+    return {
+        "basis": basis,
+        "valuation_date": valuation_date.isoformat(),
+        "scenarios": scenario_rows,
+        "source_input_ids": sorted(source_input_ids),
+        "scenario_consistent": True,
+    }
+
+
 def _scenario(
     name: str,
     stored_inputs: Sequence[Mapping[str, Any]],
@@ -839,6 +1186,13 @@ def _scenario(
         key=lambda item: (int(item["period_index"]), str(item.get("field"))),
     )
     indexes = sorted({int(item["period_index"]) for item in period_rows})
+    timing_rows = [
+        item
+        for item in stored_inputs
+        if item.get("input_group") == "dcf_timing"
+        and item.get("scenario") == name
+        and isinstance(item.get("period_index"), int)
+    ]
     periods: list[FCFFPeriod] = []
     for index in indexes:
         by_field = {
@@ -848,6 +1202,13 @@ def _scenario(
         }
         if set(by_field) != {item[0] for item in PERIOD_FIELDS}:
             raise ValuationWorkflowError(f"{name} forecast period {index} is incomplete")
+        timing_by_field = {
+            str(item["field"]): item
+            for item in timing_rows
+            if int(item["period_index"]) == index
+        }
+        exponent_record = timing_by_field.get("discount_exponent")
+        period_end_record = timing_by_field.get("period_end")
         periods.append(
             FCFFPeriod(
                 period=by_field["ebit"].period,
@@ -856,6 +1217,18 @@ def _scenario(
                 depreciation_amortization=by_field["depreciation_amortization"],
                 capex=by_field["capex"],
                 change_in_nwc=by_field["change_in_nwc"],
+                discount_exponent=(
+                    None
+                    if exponent_record is None
+                    else models[str(exponent_record["input_id"])]
+                ),
+                period_end=(
+                    None
+                    if period_end_record is None
+                    else date.fromisoformat(
+                        _iso_date(period_end_record.get("value"), "period_end")
+                    )
+                ),
             )
         )
     period_labels = [period.period for period in periods]
@@ -1232,7 +1605,8 @@ def calculate_screen_from_version(
             *(
                 str(item["input_id"])
                 for item in stored_inputs
-                if "dcf_fcff" in selected_methods and item.get("input_group") in {"dcf", "bridge"}
+                if "dcf_fcff" in selected_methods
+                and item.get("input_group") in {"dcf", "dcf_timing", "bridge"}
             ),
             *(
                 str(item["input_id"])
@@ -1254,7 +1628,7 @@ def calculate_screen_from_version(
     amount_units = {
         item.unit
         for item in models.values()
-        if item.unit not in {"ratio", "multiple", "shares"}
+        if item.unit not in {"ratio", "multiple", "shares", "years"}
         and not item.unit.endswith("_shares")
         and not item.unit.endswith("_per_share")
     }
@@ -1290,6 +1664,11 @@ def calculate_screen_from_version(
     methods: dict[str, Any] = {}
     method_ranges: list[dict[str, Any]] = []
     if "dcf_fcff" in selected_methods:
+        discount_timing = _stored_discount_timing(
+            stored_inputs,
+            models,
+            valuation_date=valuation_date,
+        )
         scenarios = tuple(
             _scenario(
                 name,
@@ -1400,6 +1779,7 @@ def calculate_screen_from_version(
         )
         methods["dcf"] = {
             "suite": _json_value(suite),
+            "discount_timing": discount_timing,
             "ev_to_equity": _json_value(dcf_bridges),
             "sensitivity": _json_value(sensitivity),
             "sensitivities": {

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "data_classification": "Synthetic",
+  "pack_id": "SYN-R5-XIHENG-2026-0630",
+  "synthetic_notice": "All entities, people, sources, approvals, periods and amounts in this file are Synthetic and created only for evaluation.",
+  "target": {
+    "data_classification": "Synthetic",
+    "target_legal_entity": "曦衡高效热能装备（苏州）有限公司",
+    "target_english_name": "Xiheng High-Efficiency Thermal Equipment (Suzhou) Co., Ltd.",
+    "entity_status": "Synthetic private company",
+    "jurisdiction": "PRC",
+    "business_model": "mature_equipment_manufacturing",
+    "business_description": "Synthetic mature manufacturer of industrial heat-pump skids, waste-heat recovery modules and related controls.",
+    "fiscal_year_end": "12-31"
+  },
+  "transaction": {
+    "data_classification": "Synthetic",
+    "buyer_legal_entity": "澄曜产业升级控股有限公司",
+    "transaction_scope": "100% equity acquisition",
+    "equity_interest_acquired_ratio": "1.000",
+    "perimeter": "Standalone target legal entity including its manufacturing operations, operating assets, working capital, employees, core intellectual property, customer contracts and ordinary-course liabilities.",
+    "excluded_items": "Seller-group tax attributes, seller transaction expenses, intercompany balances not settled at completion and buyer-specific synergies.",
+    "standalone_value_only": true,
+    "synergy_included": false
+  },
+  "valuation_case": {
+    "data_classification": "Synthetic",
+    "valuation_date": "2026-06-30",
+    "base_currency": "CNY",
+    "amount_unit": "CNYm",
+    "methods": [
+      "dcf_fcff",
+      "trading_comps"
+    ],
+    "discount_convention": "period_end",
+    "intended_output": "Deterministic P0 screen after explicit FA human confirmation"
+  },
+  "authorization": {
+    "data_classification": "Synthetic",
+    "authorization_record_id": "SYN-R5-AUTH-001",
+    "authorization_date": "2026-06-30",
+    "authorizing_role": "Synthetic target data owner",
+    "authorized_use": "Internal transaction analysis and deterministic screen testing only",
+    "internal_analysis_authorized": true,
+    "public_release_authorized": false,
+    "external_distribution_authorized": false,
+    "client_circulation_authorized": false,
+    "formal_valuation_opinion_authorized": false,
+    "agent_can_approve": false,
+    "fa_input_confirmation_required": true,
+    "fa_input_confirmation_status": "pending"
+  },
+  "reliance_boundaries": {
+    "data_classification": "Synthetic",
+    "screen_grade_only": true,
+    "formal_valuation_opinion_produced": false,
+    "fairness_opinion_produced": false,
+    "human_review_required": true,
+    "agent_approval_prohibited": true,
+    "public_release_prohibited": true
+  },
+  "human_action_required": {
+    "data_classification": "Synthetic",
+    "responsible_role": "FA human",
+    "action": "Review sources, periods, units, scenario judgments, peer selection and bridge classifications; only the FA human may explicitly confirm inputs in the trusted product workflow.",
+    "status": "open"
+  }
+}

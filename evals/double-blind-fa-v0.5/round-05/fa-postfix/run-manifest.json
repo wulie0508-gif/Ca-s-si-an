@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R05-FA-POSTFIX-20260804-162622Z",
+  "round": "05",
+  "phase": "independent_postfix_replay",
+  "data_classification": "Synthetic",
+  "started_at_utc": "2026-08-04T16:26:22.344696Z",
+  "completed_at_utc": "2026-08-04T16:45:14.299360Z",
+  "software": {
+    "branch": "agent/valuation-workstation-v0.5",
+    "baseline_commit": "b64c66e",
+    "tested_state": "working_tree_with_round_05_targeted_fix",
+    "source_version": "0.5.0",
+    "installed_distribution_version": "0.5.0"
+  },
+  "role_separation": {
+    "fresh_no_history_FA_parent": true,
+    "fresh_read_only_input_extractor_child": true,
+    "fresh_read_only_runtime_mapper_child": true,
+    "company_generation_thread_reused": false,
+    "engineering_thread_reused": false,
+    "hidden_truth_read": false
+  },
+  "allowed_inputs": [
+    "round-05/company-submission",
+    "round-05/company-supplement",
+    "round-05/fa-initial/question-register.json",
+    "round-05/fa-supplement-baseline/question_register_after.jsonl",
+    "Round 05 post-fix product code and public HTTP contract"
+  ],
+  "forbidden_inputs": [
+    "other_round_company_materials",
+    "hidden_company_truth",
+    "private_coordinator_notes",
+    "formal_approval_or_publication_authority"
+  ],
+  "execution": {
+    "transport": "real_loopback_HTTP",
+    "ephemeral_port": 55418,
+    "port_listeners_after_run": 0,
+    "workspace_isolated": true,
+    "temporary_directory_removed": true,
+    "browser_run_separate_from_FA_HTTP_replay": true
+  },
+  "authority_boundary": {
+    "local_UI_actor_is_fixed_test_identity": "local-fa-ui",
+    "real_human_identity_proved": false,
+    "agent_approved": false,
+    "formal_valuation_opinion": false,
+    "public_release_authorized": false
+  }
+}

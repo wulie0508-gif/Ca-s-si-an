@@ -233,6 +233,12 @@ def _workflow_screen() -> dict[str, object]:
     scenarios = {}
     for scenario, values in scenario_assumptions.items():
         ebit_values, wacc, growth, terminal_metric, exit_multiple = values
+        period_specs = [
+            ("H2 2026E", "2026-12-31", "0.5", ebit_values[0]),
+            ("FY2027", "2027-12-31", "1.5", ebit_values[0]),
+            ("FY2028", "2028-12-31", "2.5", ebit_values[1]),
+            ("FY2029", "2029-12-31", "3.5", ebit_values[2]),
+        ]
         scenarios[scenario] = {
             "wacc": wacc,
             "terminal_growth": growth,
@@ -240,14 +246,16 @@ def _workflow_screen() -> dict[str, object]:
             "exit_multiple": exit_multiple,
             "periods": [
                 {
-                    "period": f"FY{2026 + index}",
+                    "period": period,
+                    "period_end": period_end,
+                    "discount_exponent": exponent,
                     "ebit": ebit,
                     "tax_rate": "0.25",
                     "depreciation_amortization": "10",
-                    "capex": "22" if index == 1 else "20",
-                    "change_in_nwc": "7" if index == 1 else "5",
+                    "capex": "22" if period == "H2 2026E" else "20",
+                    "change_in_nwc": "7" if period == "H2 2026E" else "5",
                 }
-                for index, ebit in enumerate(ebit_values, start=1)
+                for period, period_end, exponent, ebit in period_specs
             ],
         }
     def financial_row(
@@ -284,7 +292,7 @@ def _workflow_screen() -> dict[str, object]:
         "source": {
             "source_id": "management-model-v3",
             "locator": "Forecast and bridge tabs; reviewed 2026-08-03",
-            "as_of": "2026-08-03",
+            "as_of": "2026-06-30",
         },
         "financials": {
             "historical": [
@@ -553,7 +561,7 @@ def test_real_dealstore_workflow_shape_exports_formula_model_not_empty_shell(
         target="Workflow Target",
         transaction_scope="100% equity acquisition",
         currency="USD",
-        valuation_date="2026-08-03",
+        valuation_date="2026-06-30",
         owner="FA Team",
         confidentiality_level="confidential",
         actor=actor,
@@ -564,7 +572,7 @@ def test_real_dealstore_workflow_shape_exports_formula_model_not_empty_shell(
         deal["deal_id"],
         target_legal_entity="Workflow Target Co., Ltd.",
         transaction_scope="100% equity acquisition",
-        valuation_date="2026-08-03",
+        valuation_date="2026-06-30",
         base_currency="USD",
         methods=["trading_comps", "dcf_fcff"],
         actor=actor,
@@ -615,4 +623,16 @@ def test_real_dealstore_workflow_shape_exports_formula_model_not_empty_shell(
     assert "management-model-v3" in _worksheet_text(payload, 7)
     assert "wacc_above_terminal_growth" in _worksheet_text(payload, 8)
     dcf_formulas = _worksheet_root(payload, 5).findall(f".//{{{_MAIN_NS}}}f")
-    assert sum("'Financials'!J" in (formula.text or "") for formula in dcf_formulas) == 9
+    assert sum("'Financials'!J" in (formula.text or "") for formula in dcf_formulas) == 12
+    assert "explicit_per_period" in _worksheet_text(payload, 5)
+    assert "2026-12-31" in _worksheet_text(payload, 5)
+    assert "base-y1-discount-exponent" in _worksheet_text(payload, 5)
+    assert "management-model-v3" in _worksheet_text(payload, 5)
+    assert "Forecast and bridge tabs; reviewed 2026-08-03" in _worksheet_text(payload, 5)
+    dcf = _worksheet_root(payload, 5)
+    assert dcf.find(f".//{{{_MAIN_NS}}}c[@r='C8']/{{{_MAIN_NS}}}v").text == "0.5"
+    assert dcf.find(f".//{{{_MAIN_NS}}}c[@r='C11']/{{{_MAIN_NS}}}v").text == "3.5"
+    assert dcf.find(f".//{{{_MAIN_NS}}}c[@r='D8']/{{{_MAIN_NS}}}f").text == (
+        "1/(1+$B$5)^C8"
+    )
+    assert any((formula.text or "").endswith("*D11") for formula in dcf_formulas)
