@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "round": "round-03",
+  "case_id": "case-20260804-405f4af91c",
+  "data_status": "Synthetic",
+  "business_evidence_conclusion": "Not ready for factual reliance; candidate evidence only, pending the eight exact questions and human review.",
+  "native_control_detection_score": {
+    "score": 4.0,
+    "maximum": 10.0,
+    "not_a_company_rating": true,
+    "passes": ["all files ingested and actual upload digests recorded","candidate-only/human-review boundary preserved","no Deal, valuation, rating, or financial calculation produced"],
+    "partials": ["generic source-precedence question raised without reading authority metadata","cash restriction question raised but stated cash was not extracted"],
+    "fails": ["declared hash mismatch not detected","authority/version/effective/approval/signature precedence not detected","duplicates not detected","cross-file contradictions not detected","financial preflight falsely triggered by generic as_of_date metadata"]
+  },
+  "native_observations": {
+    "artifacts_candidate_ready": 8,
+    "artifact_role": "generic_supporting for all eight",
+    "financial_preflight": "applicable and blocked",
+    "detected_financial_artifacts": ["artifact-0002","artifact-0003","artifact-0004","artifact-0005","artifact-0006","artifact-0007","artifact-0008"],
+    "false_trigger": "Contract, corporate and provenance registers were treated as financial because generic as_of_date rows became basis records.",
+    "forecast_status": "not_present despite two explicit board-plan files",
+    "cash_candidates": 0,
+    "native_questions": ["R02-Q01","R02-Q03","R02-Q06","R02-Q08"]
+  },
+  "fa_findings": [
+    {"finding_id":"R03-F01","severity":"critical","finding":"07 provenance/duplicate index actual SHA-256 ends d0b3 while the manifest declares d0b4."},
+    {"finding_id":"R03-F02","severity":"critical","finding":"P2601 final acceptance and RMB 1.1m holdback conflict with the management claim; no final acceptance certificate exists in the pack."},
+    {"finding_id":"R03-F03","severity":"critical","finding":"P2602 requires a separate PO and P2603 is conditional/non-binding; neither supports the claimed contracted/confirmed status."},
+    {"finding_id":"R03-F04","severity":"critical","finding":"Forecast v1.1 is newer but unsigned/unapproved; v1.0 is older but signed, approved and effective. Authority, not recency, must govern."},
+    {"finding_id":"R03-F05","severity":"critical","finding":"Available cash 4.4 lacks account, entity, as-of and restriction proof."},
+    {"finding_id":"R03-F06","severity":"high","finding":"Corporate v1.2 is stale/unapproved; v2.0 changes CEO/ESOP ownership and discloses IP pledges, joint applicants and no definitive SEA licence."},
+    {"finding_id":"R03-F07","severity":"high","finding":"Two P2602 filenames share one declared underlying content hash and must be deduplicated; underlying documents are not supplied."}
+  ],
+  "question_count": 8,
+  "recompute_boundary": "Only affected claim, evidence, duplicate, forecast, cash, ownership, IP and licence scopes may be recomputed after accepted evidence; no calculation was run in this round."
+}

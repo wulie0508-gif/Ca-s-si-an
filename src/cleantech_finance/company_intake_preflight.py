@@ -84,6 +84,31 @@ _UNKNOWN_VALUES = frozenset(
     {"", "unknown", "not specified", "not available", "n/a", "na", "未说明", "未知"}
 )
 _APPROVED_VALUES = frozenset({"approved", "board approved", "已批准", "批准"})
+_FINANCIAL_MEASURE_FIELDS = frozenset(
+    {
+        "amount",
+        "balance",
+        "value",
+        "source_value",
+        "net_sales_excluding_vat",
+        "vat_amount",
+        "gross_sales_including_vat",
+        "revenue",
+        "cost_of_revenue",
+        "gross_profit",
+        "operating_expense",
+        "management_adjusted_ebitda",
+    }
+)
+_FORECAST_MEASURE_FIELDS = frozenset(
+    {
+        "revenue",
+        "cost_of_revenue",
+        "gross_profit",
+        "operating_expense",
+        "management_adjusted_ebitda",
+    }
+)
 
 
 def _clean(value: Any, *, limit: int = 320) -> str:
@@ -100,14 +125,28 @@ def _first(row: Mapping[str, Any], *fields: str) -> str:
 
 def _period(row: Mapping[str, Any]) -> dict[str, str] | None:
     value = {
-        "label": _first(row, "period_label", "declared_period_label"),
+        "label": _first(row, "period_label", "period", "declared_period_label"),
         "start": _first(row, "period_start"),
         "end": _first(row, "period_end"),
     }
     return value if any(value.values()) else None
 
 
-def _basis_record(row: Mapping[str, Any], row_number: int) -> dict[str, Any] | None:
+def _looks_financial_row(row: Mapping[str, Any]) -> bool:
+    return any(
+        field in row and _clean(row.get(field))
+        for field in _FINANCIAL_MEASURE_FIELDS
+    )
+
+
+def _basis_record(
+    row: Mapping[str, Any],
+    row_number: int,
+    *,
+    financial_shape: bool,
+) -> dict[str, Any] | None:
+    if not financial_shape:
+        return None
     record: dict[str, Any] = {
         "row_number": row_number,
         "entity_scope": _first(row, "entity_scope", "source_scope", "declared_entity_scope"),
@@ -141,8 +180,13 @@ def _cash_candidate(row: Mapping[str, Any], row_number: int) -> dict[str, Any] |
 
 
 def _forecast_candidate(row: Mapping[str, Any], row_number: int) -> dict[str, Any] | None:
-    version = _first(row, "forecast_version")
-    if not version:
+    has_forecast_measure = any(
+        field in row and _clean(row.get(field))
+        for field in _FORECAST_MEASURE_FIELDS
+    )
+    period = _first(row, "period_label", "period")
+    version = _first(row, "forecast_version", "version")
+    if not version or not period or not has_forecast_measure:
         return None
     return {
         "row_number": row_number,
@@ -150,7 +194,7 @@ def _forecast_candidate(row: Mapping[str, Any], row_number: int) -> dict[str, An
         "as_of_date": _first(row, "as_of_date"),
         "approval_status": _first(row, "approval_status"),
         "entity_scope": _first(row, "entity_scope"),
-        "period_label": _first(row, "period_label"),
+        "period_label": period,
         "currency": _first(row, "currency"),
         "unit": _first(row, "unit"),
         "vat_basis": _first(row, "tax_basis"),
@@ -172,7 +216,11 @@ def _parse_csv(text: str) -> dict[str, Any]:
         if row_number > MAX_STRUCTURED_ROWS + 1:
             break
         row = {str(key or "").strip(): value for key, value in raw_row.items()}
-        if record := _basis_record(row, row_number):
+        if record := _basis_record(
+            row,
+            row_number,
+            financial_shape=_looks_financial_row(row),
+        ):
             basis_records.append(record)
         if cash := _cash_candidate(row, row_number):
             cash_candidates.append(cash)
@@ -211,7 +259,7 @@ def _manifest_file_record(item: Mapping[str, Any], index: int) -> dict[str, Any]
         "declared_unit": item.get("declared_unit"),
         "declared_tax_basis": item.get("declared_tax_basis"),
     }
-    record = _basis_record(row, index)
+    record = _basis_record(row, index, financial_shape=True)
     if record is not None:
         record["declared_filename"] = _clean(item.get("filename"))
     return record

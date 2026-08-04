@@ -28,12 +28,16 @@ from .acquisition_workflow import (
     acquisition_workflow_not_applicable,
     diagnose_acquisition_readiness,
 )
+from .company_intake_evidence_control import (
+    diagnose_company_intake_evidence_control,
+    parse_structured_evidence_metadata,
+)
 from .company_intake_preflight import (
     diagnose_company_intake_financial_basis,
     parse_structured_financial_metadata,
 )
 
-MAX_CASE_FILES = 20
+MAX_CASE_FILES = 32
 MAX_FILE_BYTES = 20 * 1024 * 1024
 MAX_TOTAL_FILE_BYTES = 32 * 1024 * 1024
 MAX_ARCHIVE_ENTRIES = 4_000
@@ -46,6 +50,7 @@ ALLOWED_MATERIAL_SUFFIXES = frozenset(
         ".htm",
         ".html",
         ".json",
+        ".jsonl",
         ".md",
         ".pdf",
         ".pptx",
@@ -287,7 +292,7 @@ def _openxml_text(payload: bytes, suffix: str) -> str:
 def _extract_text(file_name: str, payload: bytes) -> tuple[str, list[str]]:
     suffix = Path(file_name).suffix.casefold()
     warnings: list[str] = []
-    if suffix in {".txt", ".md", ".csv", ".json"}:
+    if suffix in {".txt", ".md", ".csv", ".json", ".jsonl"}:
         return _decode_text(payload)[:MAX_TEXT_SCAN_CHARS], warnings
     if suffix in {".html", ".htm"}:
         parser = _VisibleTextParser()
@@ -567,6 +572,7 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
         if (
             "profile_hints" not in recognition
             or "structured_financial_metadata" not in recognition
+            or "structured_evidence_metadata" not in recognition
         ):
             artifact_id = str(artifact.get("id") or "")
             extract_path = case_path / "extracts" / f"{artifact_id}.txt"
@@ -580,6 +586,10 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
             if "structured_financial_metadata" not in recognition:
                 recognition["structured_financial_metadata"] = (
                     parse_structured_financial_metadata(file_name, extract)
+                )
+            if "structured_evidence_metadata" not in recognition:
+                recognition["structured_evidence_metadata"] = (
+                    parse_structured_evidence_metadata(file_name, extract)
                 )
         artifact["recognition"] = recognition
         artifacts.append(artifact)
@@ -598,10 +608,14 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
         enriched["profile_hints"],
     )
     if workflow_type == "company_intake":
+        enriched["evidence_control_diagnostic"] = (
+            diagnose_company_intake_evidence_control(artifacts)
+        )
         enriched["financial_basis_preflight"] = (
             diagnose_company_intake_financial_basis(artifacts)
         )
     else:
+        enriched.pop("evidence_control_diagnostic", None)
         enriched.pop("financial_basis_preflight", None)
     normalized_workflow: list[dict[str, Any]] = []
     for raw_step in payload.get("workflow") or []:
@@ -764,6 +778,25 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         and financial_calculation.get("status") == "blocked"
         and bool(financial_questions)
     )
+    evidence_control = payload.get("evidence_control_diagnostic")
+    if workflow_type == "company_intake" and not isinstance(
+        evidence_control, dict
+    ):
+        evidence_control = diagnose_company_intake_evidence_control(artifacts)
+    if not isinstance(evidence_control, dict):
+        evidence_control = {}
+    evidence_questions = [
+        item
+        for item in evidence_control.get("questions") or []
+        if isinstance(item, dict)
+    ]
+    evidence_integrity = evidence_control.get("integrity_gate")
+    if not isinstance(evidence_integrity, dict):
+        evidence_integrity = {}
+    evidence_integrity_blocked = (
+        workflow_type == "company_intake"
+        and evidence_integrity.get("status") == "blocked"
+    )
     if needs_processing:
         operational_status = {
             "id": "materials_need_processing",
@@ -773,6 +806,15 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
             "id": "resolve_material_extraction",
             "label_zh": "处理无法抽取的材料",
         }
+    elif evidence_integrity_blocked:
+        operational_status = {
+            "id": "evidence_control_review_required",
+            "label_zh": "证据控制待复核",
+        }
+        next_action = {
+            "id": "review_evidence_control_questions",
+            "label_zh": "复核证据完整性与版本",
+        }
     elif financial_basis_blocked:
         operational_status = {
             "id": "financial_basis_blocked",
@@ -781,6 +823,15 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         next_action = {
             "id": "review_financial_basis_questions",
             "label_zh": "复核财务口径问题",
+        }
+    elif workflow_type == "company_intake" and evidence_questions:
+        operational_status = {
+            "id": "evidence_control_review_required",
+            "label_zh": "证据控制待复核",
+        }
+        next_action = {
+            "id": "review_evidence_control_questions",
+            "label_zh": "复核证据完整性与版本",
         }
     elif acquisition_is_applicable and critical_gaps:
         operational_status = {
@@ -879,6 +930,34 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
                 financial_preflight.get("candidate_response_receipts") or []
             ),
             "authority": "preflight_projection_only",
+        },
+        "evidence_control": {
+            "applicability": evidence_control.get("applicability"),
+            "integrity_status": evidence_integrity.get("status"),
+            "blocking_question_ids": list(
+                evidence_integrity.get("blocking_question_ids") or []
+            ),
+            "open_question_count": len(evidence_questions),
+            "question_ids": [item.get("id") for item in evidence_questions],
+            "quarantined_artifact_ids": list(
+                evidence_control.get("manifest_reconciliation", {}).get(
+                    "quarantined_artifact_ids"
+                )
+                or []
+            ),
+            "actual_duplicate_group_count": len(
+                evidence_control.get("actual_payload_duplicate_groups") or []
+            ),
+            "declared_duplicate_group_count": len(
+                evidence_control.get("declared_underlying_candidate_groups") or []
+            ),
+            "conflict_count": len(
+                evidence_control.get("structured_conflicts") or []
+            ),
+            "candidate_response_receipt_count": len(
+                evidence_control.get("candidate_response_receipts") or []
+            ),
+            "authority": "evidence_control_projection_only",
         },
         "acquisition": {
             "applicability": dict(applicability),
@@ -989,7 +1068,6 @@ class CaseWorkspaceStore:
             )
 
         prepared: list[tuple[str, bytes, str]] = []
-        seen_names: set[str] = set()
         for raw_name, payload, media_type in files:
             name = _safe_file_name(raw_name)
             if not payload:
@@ -998,10 +1076,6 @@ class CaseWorkspaceStore:
                 raise MaterialValidationError(
                     f"Material exceeds {MAX_FILE_BYTES} bytes: {name}"
                 )
-            key = name.casefold()
-            if key in seen_names:
-                raise MaterialValidationError(f"Duplicate material file name: {name}")
-            seen_names.add(key)
             prepared.append((name, payload, media_type))
 
         normalized_name = re.sub(r"\s+", " ", case_name).strip()
@@ -1032,6 +1106,9 @@ class CaseWorkspaceStore:
                 roles, signals = _candidate_roles(name, extracted_text)
                 profile_hints = _profile_hints(name, extracted_text)
                 structured_financial_metadata = parse_structured_financial_metadata(
+                    name, extracted_text
+                )
+                structured_evidence_metadata = parse_structured_evidence_metadata(
                     name, extracted_text
                 )
                 if extracted_text.strip():
@@ -1068,6 +1145,9 @@ class CaseWorkspaceStore:
                             "profile_hints": profile_hints,
                             "structured_financial_metadata": (
                                 structured_financial_metadata
+                            ),
+                            "structured_evidence_metadata": (
+                                structured_evidence_metadata
                             ),
                             "text_extracted": bool(extracted_text.strip()),
                             "extracted_character_count": len(extracted_text),
@@ -1107,6 +1187,11 @@ class CaseWorkspaceStore:
                 ),
                 "financial_basis_preflight": (
                     diagnose_company_intake_financial_basis(artifacts)
+                    if normalized_workflow_type == "company_intake"
+                    else None
+                ),
+                "evidence_control_diagnostic": (
+                    diagnose_company_intake_evidence_control(artifacts)
                     if normalized_workflow_type == "company_intake"
                     else None
                 ),

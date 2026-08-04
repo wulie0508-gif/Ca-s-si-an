@@ -2065,12 +2065,13 @@ dialog::backdrop {
   font-weight: 760;
 }
 
-.workspace-signals small {
+.workspace-signals .workspace-signal-note {
   display: block;
   margin-top: 0.3rem;
   overflow-wrap: anywhere;
   color: var(--ink-soft);
   font-size: 0.7rem;
+  font-weight: 400;
 }
 
 .key-question-list {

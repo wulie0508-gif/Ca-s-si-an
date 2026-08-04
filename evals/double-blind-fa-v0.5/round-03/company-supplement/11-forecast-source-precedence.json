@@ -1,0 +1,31 @@
+{
+  "document_type": "Synthetic forecast source-precedence declaration",
+  "data_status": "Synthetic",
+  "synthetic": true,
+  "declaration_id": "SYN-R03-SUP-FCST-001",
+  "response_date": "2026-08-04",
+  "current_company_precedence": {
+    "selected_version": "1.0",
+    "document_id": "SYN-BOARD-PLAN-APPROVED",
+    "as_of_date": "2026-06-30",
+    "stated_effective_date": "2026-07-05",
+    "stated_approval_reference": "SYN-BRD-RES-2026-07-05",
+    "status": "Current authorized forecast in the available Synthetic enterprise records",
+    "assertion_boundary": "Unverified Synthetic board copy; underlying approval resolution and standalone signature page are not available in this supplement"
+  },
+  "supersession_candidate": {
+    "version": "1.1",
+    "document_id": "SYN-BOARD-PLAN-DRAFT",
+    "as_of_date": "2026-07-25",
+    "status": "Unsigned draft not approved",
+    "authorized_for_baseline_use": false
+  },
+  "precedence_rule": "Use v1.0 as the company-declared forecast baseline unless and until a later forecast is supported by an approval resolution and signed approved version. Recency alone does not override approval status.",
+  "requested_document_availability": {
+    "board_approval_resolution": "Not available as a separate underlying file",
+    "signed_approved_forecast_or_signature_page": "Not available beyond the approval and signature metadata in the initial v1.0 CSV",
+    "effective_date_confirmation": "Available only as enterprise-held metadata stating 2026-07-05",
+    "row_bridge": "Provided in 12-forecast-v1.0-to-v1.1-bridge.csv"
+  },
+  "responsible_owner": "Synthetic company secretary and finance roles"
+}

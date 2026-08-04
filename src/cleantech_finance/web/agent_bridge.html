@@ -89,7 +89,7 @@
               >
               <span class="upload-symbol" aria-hidden="true">+</span>
               <strong>拖入一家企业的资料</strong>
-              <small>也可以点击选择。最多 20 个文件，合计不超过 32 MB。</small>
+              <small>也可以点击选择。最多 32 个文件，合计不超过 32 MB。</small>
             </label>
 
             <div class="upload-queue" id="upload-queue" aria-live="polite">
@@ -859,6 +859,19 @@
                 </button>
               </div>
 
+              <section class="acquisition-section evidence-control-section" aria-labelledby="evidence-control-title">
+                <div class="section-heading compact-heading">
+                  <div>
+                    <h2 id="evidence-control-title">证据控制</h2>
+                    <p>逐文件核对声明与实际字节，并分开展示重复、版本权威和显式结构冲突；不自动选定事实。</p>
+                  </div>
+                  <span class="diagnostic-state" id="evidence-control-state">尚未生成</span>
+                </div>
+                <p id="evidence-control-summary">正在读取清单、实际哈希与版本控制字段。</p>
+                <ul class="key-question-list" id="evidence-control-signals"></ul>
+                <small id="evidence-control-responses"></small>
+              </section>
+
               <section class="acquisition-section financial-basis-section" aria-labelledby="financial-basis-title">
                 <div class="section-heading compact-heading">
                   <div>
@@ -891,17 +904,17 @@
                   <div>
                     <dt>当前工作焦点</dt>
                     <dd id="acquisition-current-stage">尚未生成</dd>
-                    <small>由候选材料覆盖推导，不是人工确认的 deal stage</small>
+                    <dd class="workspace-signal-note">由候选材料覆盖推导，不是人工确认的 deal stage</dd>
                   </div>
                   <div>
                     <dt>关键材料缺口</dt>
                     <dd id="acquisition-gap-count">尚未生成</dd>
-                    <small id="acquisition-gap-summary"></small>
+                    <dd class="workspace-signal-note" id="acquisition-gap-summary"></dd>
                   </div>
                   <div>
                     <dt>是否建议访谈</dt>
                     <dd id="acquisition-interview">尚未生成</dd>
-                    <small id="acquisition-interview-reason"></small>
+                    <dd class="workspace-signal-note" id="acquisition-interview-reason"></dd>
                   </div>
                 </dl>
               </section>
@@ -924,7 +937,7 @@
                     <p>这里只显示真实返回的候选状态，详细来源可在“资源”页签查看。</p>
                   </div>
                 </div>
-                <div class="company-resource-band" aria-label="企业资源匹配状态">
+                <div class="company-resource-band" role="region" aria-label="企业资源匹配状态">
                   <section>
                     <span>Policy</span>
                     <h3>政策</h3>

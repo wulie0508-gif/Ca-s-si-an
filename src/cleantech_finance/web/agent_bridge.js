@@ -313,6 +313,10 @@ const elements = {
   nextActionTitle: document.querySelector("#next-action-title"),
   nextActionReason: document.querySelector("#next-action-reason"),
   nextActionButton: document.querySelector("#next-action-button"),
+  evidenceControlState: document.querySelector("#evidence-control-state"),
+  evidenceControlSummary: document.querySelector("#evidence-control-summary"),
+  evidenceControlSignals: document.querySelector("#evidence-control-signals"),
+  evidenceControlResponses: document.querySelector("#evidence-control-responses"),
   financialBasisState: document.querySelector("#financial-basis-state"),
   financialBasisSummary: document.querySelector("#financial-basis-summary"),
   financialBasisDimensions: document.querySelector(
@@ -3513,6 +3517,94 @@ function financialBasisValue(value) {
   return String(value || "未说明");
 }
 
+function renderEvidenceControlDiagnostic(casePayload) {
+  const diagnostic =
+    casePayload?.evidence_control_diagnostic &&
+    typeof casePayload.evidence_control_diagnostic === "object"
+      ? casePayload.evidence_control_diagnostic
+      : null;
+  const applicable = diagnostic?.applicability?.status === "applicable";
+  elements.evidenceControlSignals.replaceChildren();
+  if (!applicable) {
+    elements.evidenceControlState.textContent = diagnostic ? "不适用" : "尚未生成";
+    elements.evidenceControlState.dataset.state = "unavailable";
+    elements.evidenceControlSummary.textContent = diagnostic
+      ? "未检测到明示的清单、文档控制、重复索引或结构化回复。"
+      : "正在读取清单、实际哈希与版本控制字段。";
+    elements.evidenceControlSignals.append(
+      node("li", "question-empty", "系统没有从自由正文或文件名推断证据权威。"),
+    );
+    elements.evidenceControlResponses.textContent = "";
+    return diagnostic;
+  }
+
+  const integrity = diagnostic?.integrity_gate?.status || "not_declared";
+  const reconciliation = diagnostic?.manifest_reconciliation || {};
+  const statusCounts = reconciliation?.status_counts || {};
+  const actualDuplicates = Array.isArray(
+    diagnostic?.actual_payload_duplicate_groups,
+  )
+    ? diagnostic.actual_payload_duplicate_groups
+    : [];
+  const declaredDuplicates = Array.isArray(
+    diagnostic?.declared_underlying_candidate_groups,
+  )
+    ? diagnostic.declared_underlying_candidate_groups
+    : [];
+  const families = Array.isArray(diagnostic?.document_control_families)
+    ? diagnostic.document_control_families
+    : [];
+  const selectionFamilies = families.filter(
+    (family) => family?.requires_human_selection === true,
+  );
+  const conflicts = Array.isArray(diagnostic?.structured_conflicts)
+    ? diagnostic.structured_conflicts
+    : [];
+  const questions = Array.isArray(diagnostic?.questions)
+    ? diagnostic.questions
+    : [];
+  const receipts = Array.isArray(diagnostic?.candidate_response_receipts)
+    ? diagnostic.candidate_response_receipts
+    : [];
+  const quarantined = Array.isArray(reconciliation?.quarantined_artifact_ids)
+    ? reconciliation.quarantined_artifact_ids
+    : [];
+
+  elements.evidenceControlState.textContent =
+    integrity === "blocked"
+      ? "输入完整性阻断"
+      : questions.length
+        ? "待人工复核"
+        : "候选控制已整理";
+  elements.evidenceControlState.dataset.state =
+    integrity === "blocked" ? "unavailable" : "available";
+  elements.evidenceControlSummary.textContent =
+    `${questions.length} 个控制问题；${quarantined.length} 份材料处于隔离。` +
+    " 系统未自动修正哈希、选择权威版本或解决冲突。";
+
+  const signalRows = [
+    [
+      "清单核验",
+      `matched ${statusCounts.matched || 0} · mismatch ${statusCounts.mismatch || 0}`,
+    ],
+    [
+      "重复候选",
+      `实际字节组 ${actualDuplicates.length} · 底层声明组 ${declaredDuplicates.length}`,
+    ],
+    ["版本与权威", `${selectionFamilies.length} 个 family 等待人工选择`],
+    ["显式结构冲突", `${conflicts.length} 项 unresolved`],
+  ];
+  signalRows.forEach(([label, value]) => {
+    const item = node("li");
+    item.append(node("strong", "", label), node("span", "", value));
+    elements.evidenceControlSignals.append(item);
+  });
+  elements.evidenceControlResponses.textContent = receipts.length
+    ? `已记录 ${receipts.length} 个候选回复回执；均未自动接受为事实或关闭问题。`
+    : "尚未收到结构化问题回复；上传材料不会自动关闭问题。";
+  return diagnostic;
+}
+
 function renderFinancialBasisPreflight(casePayload) {
   const diagnostic =
     casePayload?.financial_basis_preflight &&
@@ -3717,6 +3809,7 @@ function renderCaseLoadingState() {
     node("div", "result-empty", "正在读取能力边界"),
   );
   renderAcquisitionDiagnostic({});
+  renderEvidenceControlDiagnostic({});
   renderFinancialBasisPreflight({});
 }
 
@@ -3749,19 +3842,24 @@ function renderCase(casePayload) {
   elements.caseMaterialCount.textContent = `${artifacts.length} 份`;
   elements.caseUpdatedAt.textContent = formatDate(casePayload.updated_at);
   const diagnostic = renderAcquisitionDiagnostic(casePayload);
+  renderEvidenceControlDiagnostic(casePayload);
   renderFinancialBasisPreflight(casePayload);
   const diagnosticNextAction =
     displayLabel(diagnostic?.next_action) || diagnostic?.next_action_label;
   elements.nextActionTitle.textContent =
-    diagnosticNextAction || summary.next_action?.label_zh || "查看资源建议";
+    summary.next_action?.label_zh || diagnosticNextAction || "查看资源建议";
   elements.nextActionReason.textContent =
     summary.operational_status?.id === "materials_need_processing"
       ? "至少一份材料无法提取文本，需要 OCR 或确认。"
+      : summary.next_action?.id === "review_evidence_control_questions"
+        ? "声明哈希、重复材料、版本权威或显式结构冲突需要人工复核。"
       : summary.next_action?.id === "review_financial_basis_questions"
         ? "主体、期间、单位、税基、现金或预测口径需要人工确认。"
         : "材料已归档，可以查看知识库与政策参考。";
   elements.nextActionButton.textContent =
-    summary.next_action?.id === "review_financial_basis_questions"
+    summary.next_action?.id === "review_evidence_control_questions"
+      ? "查看证据控制"
+      : summary.next_action?.id === "review_financial_basis_questions"
       ? "查看口径问题"
       : summary.operational_status?.id === "reference_search_run"
       ? "更新资源建议"
@@ -4145,6 +4243,17 @@ async function openSuggestionsAndRun() {
 }
 
 async function handleNextAction() {
+  if (
+    appState.currentCase?.dashboard?.next_action?.id ===
+    "review_evidence_control_questions"
+  ) {
+    setCaseTab("overview");
+    elements.evidenceControlState.closest("section")?.scrollIntoView({
+      block: "start",
+      behavior: "smooth",
+    });
+    return;
+  }
   if (
     appState.currentCase?.dashboard?.next_action?.id ===
     "review_financial_basis_questions"

@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R03-FA-SUPPLEMENT-BASELINE-20260804",
+  "round": "03",
+  "phase": "pre_fix_supplement_baseline",
+  "role": "FA",
+  "run_mode": "double_blind_strict_whitelist",
+  "purpose": "Capture the pre-fix product response to the Round 3 initial submission plus company supplement without creating a Deal, valuation, calculation, rating, fact acceptance or publication.",
+  "product": {
+    "name": "CleanTech Finance",
+    "version": "0.5.0",
+    "http_base_url": "http://127.0.0.1:8892",
+    "workflow_type": "company_intake",
+    "primary_case_id": "case-20260804-cb065319bc",
+    "duplicate_control_case_id": "case-20260804-b122748436",
+    "policy_catalog": {
+      "path": "local-data/policies/NEXBridge_policy_catalog_pending_review_20260730.xlsx",
+      "catalog_state": "quarantined",
+      "record_count": 73,
+      "eligible_count": 0,
+      "reference_state": "unconfirmed",
+      "reference_count": 0,
+      "human_review_required": true
+    }
+  },
+  "runtime": {
+    "fresh_temp_root": "C:/Users/huawei/AppData/Local/Temp/ctf-r03-baseline-416d8e0183fa42f8a3fa0d2a4ccd9a39",
+    "listener_port": 8892,
+    "listener_pid": 24808,
+    "listener_stopped_exact_pid": true,
+    "listener_released": true,
+    "remaining_listener_count": 0
+  },
+  "timestamps_utc": {
+    "listener_started": null,
+    "listener_started_note": "The listener start timestamp was not emitted with a timestamp and is intentionally not inferred.",
+    "primary_case_created": "2026-08-04T13:12:00.054322Z",
+    "duplicate_control_case_created": "2026-08-04T13:12:55.601253Z",
+    "listener_stopped_and_verified": "2026-08-04T13:14:56.9195056Z"
+  },
+  "read_allowlist": [
+    "evals/double-blind-fa-v0.5/protocol.md",
+    "evals/double-blind-fa-v0.5/round-03/company-submission/",
+    "evals/double-blind-fa-v0.5/round-03/fa-initial/question_register.jsonl",
+    "evals/double-blind-fa-v0.5/round-03/company-supplement/",
+    "src/cleantech_finance/company_intake_preflight.py",
+    "src/cleantech_finance/workspace_service.py",
+    "src/cleantech_finance/agent_bridge.py",
+    "src/cleantech_finance/cli.py",
+    "pyproject.toml",
+    "C:/Users/huawei/.codex/skills/audit-cleantech-finance/SKILL.md"
+  ],
+  "forbidden_sources_not_read": true,
+  "forbidden_source_classes": [
+    "round-03/fa-initial files other than question_register.jsonl",
+    "round-03/engineering-review/",
+    "round-03/fa-postfix/",
+    "round-04/",
+    "round-05/",
+    "Git diff, history, messages or hidden truth"
+  ],
+  "execution_controls": {
+    "product_source_modified": false,
+    "default_company_intake_used": true,
+    "origin_header": "http://127.0.0.1:8892",
+    "referer_header": "http://127.0.0.1:8892/",
+    "all_source_bytes_hashed_sha256": true,
+    "all_21_source_files_sent_in_full_probe": true,
+    "full_21_file_case_rejected_by_product": true,
+    "primary_case_used_exact_byte_fold_to_fit_20_file_limit": true,
+    "jsonl_payload_bytes_preserved_under_txt_transport_names": true,
+    "specialist_thread_reused_due_to_capacity": true,
+    "specialist_thread_reuse_disclosed": true
+  },
+  "prohibited_outputs": {
+    "deal_created": false,
+    "valuation_created": false,
+    "financial_calculation_performed": false,
+    "investment_rating_created": false,
+    "credit_rating_created": false,
+    "aggregate_risk_rating_created": false,
+    "public_release_authorized": false
+  },
+  "output_directory": "evals/double-blind-fa-v0.5/round-03/fa-supplement-baseline/",
+  "outputs": [
+    "run_manifest.json",
+    "input_manifest.json",
+    "events.jsonl",
+    "question_register_after.jsonl",
+    "round_baseline_summary.json",
+    "supplement-test-report.md"
+  ]
+}

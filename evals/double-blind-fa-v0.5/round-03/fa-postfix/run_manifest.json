@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "R03-FA-POSTFIX-20260804",
+  "round": "round-03",
+  "role": "independent_fa_evidence_integrity_postfix_replayer",
+  "specialist_reuse_disclosure": "Reused the security/evidence-boundary specialist thread; the specialist did not participate in Round 3 data generation or the engineering fix.",
+  "scope_control": {
+    "allowed_reads": [
+      "evals/double-blind-fa-v0.5/protocol.md",
+      "evals/double-blind-fa-v0.5/round-03/company-submission/",
+      "evals/double-blind-fa-v0.5/round-03/company-supplement/",
+      "evals/double-blind-fa-v0.5/round-03/fa-supplement-baseline/round_baseline_summary.json",
+      "evals/double-blind-fa-v0.5/round-03/engineering-review/fix-plan.json",
+      "current runtime product source/config required for execution",
+      "relevant skill instructions",
+      "own runtime and fa-postfix output"
+    ],
+    "prohibited_reads": ["round-04", "round-05", "hidden truth", "Git diff/history", "other agents' messages or outputs"],
+    "prohibited_actions": ["code modification", "Git commit", "Deal creation", "valuation", "financial calculation", "rating", "publication"],
+    "scope_respected": true
+  },
+  "runtime": {
+    "base_url": "http://127.0.0.1:8893",
+    "origin": "http://127.0.0.1:8893",
+    "referer": "http://127.0.0.1:8893/",
+    "workflow_type": "company_intake",
+    "workspace": "C:/Users/huawei/AppData/Local/Temp/ctf-r03-postfix-final-12223fe5c9fe4edda0ce7c95d94cb7bb/workspace",
+    "audit_log": "C:/Users/huawei/AppData/Local/Temp/ctf-r03-postfix-final-12223fe5c9fe4edda0ce7c95d94cb7bb/bridge-audit.jsonl",
+    "started_at_utc": "2026-08-04T13:58:02.9596965Z",
+    "post_at_utc": "2026-08-04T13:58:27.043506Z",
+    "case_get_at_utc": "2026-08-04T13:58:38Z",
+    "dashboard_get_at_utc": "2026-08-04T13:58:38Z",
+    "case_id": "case-20260804-aebb5f7120",
+    "listener_pid": 42272,
+    "listener_stopped": true,
+    "port_released": true,
+    "ended_at_utc": "2026-08-04T14:01:17.1955895Z"
+  },
+  "http_results": {
+    "post_case": 201,
+    "get_case": 200,
+    "get_dashboard": 200,
+    "uploaded_file_count": 21,
+    "artifact_count": 21
+  },
+  "result": {
+    "scoped_replay_gate": "pass",
+    "passed_assertions": 17,
+    "total_assertions": 17,
+    "case_input_integrity_gate": "blocked_as_expected",
+    "meaning": "This is a scoped evidence-control regression gate, not a company score, investment/credit/risk rating, valuation conclusion, or total product rating."
+  },
+  "output_files": ["run_manifest.json", "input_manifest.json", "events.jsonl", "assertions.jsonl", "round_postfix_summary.json", "postfix-test-report.md"]
+}
