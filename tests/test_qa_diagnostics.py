@@ -14,6 +14,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 from cleantech_finance.cli import main
 from cleantech_finance.qa_diagnostics import (
+    QA_CASE_SCHEMA_PATH,
     build_company_profile,
     new_qa_case,
     next_qa_question,
@@ -30,6 +31,12 @@ from cleantech_finance.qa_loop import (
 from cleantech_finance.qa_reporting import write_qa_artifacts
 
 ROOT = Path(__file__).parents[1]
+
+
+def test_qa_case_schema_is_packaged_and_matches_operator_copy() -> None:
+    assert json.loads(QA_CASE_SCHEMA_PATH.read_text(encoding="utf-8")) == json.loads(
+        (ROOT / "schemas" / "qa-case.schema.json").read_text(encoding="utf-8")
+    )
 
 
 def _file_sha256(path: Path) -> str:

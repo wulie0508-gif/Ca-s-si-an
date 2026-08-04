@@ -244,6 +244,95 @@ def test_policy_hard_filters_are_always_applied() -> None:
     }
 
 
+def test_policy_date_window_uses_its_end_date_and_keeps_source_provenance(
+    tmp_path: Path,
+) -> None:
+    catalog = tmp_path / "policy-window.csv"
+    catalog.write_text(
+        "policy_id,title,review_status,valid_until,industry_tags,provider,source_url\n"
+        "P073,上海绿色技术目录,approved,2026-07-01 至 2030-12-31,clean energy,"
+        "上海市发展和改革委员会,https://fgw.sh.gov.cn/example\n",
+        encoding="utf-8",
+    )
+
+    result = match_catalog(
+        catalog,
+        category="policy",
+        profile_tags={"industry": ["clean energy"]},
+        as_of="2026-08-02",
+    )
+
+    assert [item["item_id"] for item in result["matches"]] == ["P073"]
+    assert result["matches"][0]["provider"] == "上海市发展和改革委员会"
+    assert result["matches"][0]["source_url"] == "https://fgw.sh.gov.cn/example"
+
+
+def test_one_physical_catalog_field_cannot_inflate_multiple_match_dimensions(
+    tmp_path: Path,
+) -> None:
+    catalog = tmp_path / "single-theme-field.csv"
+    catalog.write_text(
+        "course_id,title,关键主题标签\n"
+        "COURSE-ONE,清洁能源专题,clean energy\n",
+        encoding="utf-8",
+    )
+
+    result = match_catalog(
+        catalog,
+        category="course",
+        profile_tags={
+            "need": ["clean energy"],
+            "technology": ["clean energy"],
+            "market": ["clean energy"],
+        },
+        as_of="2026-08-02",
+    )
+
+    match = result["matches"][0]
+    assert match["match_score"] == 3.0
+    assert [item["dimension"] for item in match["rationale"]] == ["need"]
+    assert match["rationale"][0]["source_field"] == "关键主题标签"
+    assert result["rules"]["duplicate_source_field_counting"] == "once_per_row"
+
+
+def test_modern_course_catalog_enforces_publication_activity_expiry_and_simulation(
+    tmp_path: Path,
+) -> None:
+    catalog = tmp_path / "course-gates.csv"
+    catalog.write_text(
+        "course_id,title,review_status,active_status,valid_until,data_class,"
+        "simulation_only,disclosure_label,industry_tags\n"
+        "COURSE-OK,模拟课程一,synthetic_fixture,active,2030-12-31,"
+        "synthetic_fixture,true,模拟课程且不代表真实课程,clean energy\n"
+        "COURSE-PENDING,待发布,pending,active,2030-12-31,,false,,clean energy\n"
+        "COURSE-INACTIVE,已停用,published,inactive,2030-12-31,,false,,clean energy\n"
+        "COURSE-EXPIRED,已过期,published,active,2020-01-01,,false,,clean energy\n"
+        "COURSE-BAD-SIM,错误模拟,published,active,2030-12-31,"
+        "synthetic_fixture,false,模拟说明,clean energy\n"
+        "COURSE-NO-DISCLOSURE,缺失披露,synthetic_fixture,active,2030-12-31,"
+        "synthetic_fixture,true,,clean energy\n",
+        encoding="utf-8",
+    )
+
+    result = match_catalog(
+        catalog,
+        category="course",
+        profile_tags={"industry": ["clean energy"]},
+        as_of="2026-08-02",
+    )
+
+    assert [item["item_id"] for item in result["matches"]] == ["COURSE-OK"]
+    assert {item["reason"] for item in result["excluded"]} == {
+        "review_status_not_published",
+        "course_not_active",
+        "expired",
+        "synthetic_contract_invalid",
+        "synthetic_disclosure_missing",
+    }
+    assert result["matches"][0]["simulation_only"] is True
+    assert result["matches"][0]["automatic_enrollment"] is False
+
+
 def test_xlsx_catalog_is_read_without_optional_excel_dependencies(tmp_path: Path) -> None:
     workbook = tmp_path / "courses.xlsx"
     shared = [

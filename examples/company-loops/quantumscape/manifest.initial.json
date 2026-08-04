@@ -1,0 +1,244 @@
+{
+  "subject": {
+    "organization": "QuantumScape Corporation",
+    "technology": "Solid-state lithium-metal battery technology",
+    "ticker": "QS",
+    "cik": "0001811414",
+    "identity": {
+      "entity_id": "sec-cik-0001811414",
+      "scheme": "sec_cik",
+      "value": "0001811414",
+      "legal_name": "QuantumScape Corporation",
+      "display_name": "QuantumScape",
+      "display_name_zh": "QuantumScape",
+      "legal_name_citation": {
+        "source_id": "quantumscape-2025-10k",
+        "locator": "Form 10-K cover, PDF page 1"
+      },
+      "aliases": []
+    }
+  },
+  "assessment": {
+    "as_of": "2026-03-01",
+    "horizon_years": 5,
+    "geography": "Global",
+    "value_chain_scope": "Pre-commercial solid-state lithium-metal battery development"
+  },
+  "sources": [
+    {
+      "id": "quantumscape-2025-10k",
+      "path": "../../../local-data/blind-evals/real/quantumscape/sources/quantumscape-2025-10k.pdf",
+      "url": "https://ir.quantumscape.com/static-files/215ea548-1576-4ea0-8b50-bb6234e50a19",
+      "title": "QuantumScape Corporation 2025 Annual Report",
+      "publisher": "QuantumScape Corporation",
+      "published": "2026-02-26",
+      "kind": "regulatory_filing",
+      "role": "subject",
+      "subject_entity_id": "sec-cik-0001811414"
+    }
+  ],
+  "applicability_context": {
+    "contract_version": "1.0.0",
+    "commercialization_stage": {
+      "state": "pre_commercial",
+      "as_of": "2025-12-31",
+      "basis": [
+        {
+          "source_id": "quantumscape-2025-10k",
+          "locator": "Note 1, Nature of Business—Organization, PDF page 71 (printed page 69): planned principal operations had not commenced"
+        }
+      ]
+    },
+    "recognized_operating_revenue": {
+      "state": "none_recognized",
+      "periods": [
+        "FY2024",
+        "FY2025"
+      ],
+      "basis": [
+        {
+          "source_id": "quantumscape-2025-10k",
+          "locator": "Note 1, Nature of Business—Organization, PDF page 71 (printed page 69): no revenue from principal business activities as of 2025-12-31"
+        },
+        {
+          "source_id": "quantumscape-2025-10k",
+          "locator": "Item 7, Overview and Key Trends, PDF page 54 (printed page 52): development-stage and pre-revenue company with no revenue to date"
+        }
+      ]
+    }
+  },
+  "financials": {
+    "currency": "USD",
+    "periods": [
+      {
+        "period": "FY2024",
+        "fiscal_year": 2024,
+        "period_type": "annual",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "duration_days": 366,
+        "facts": {
+          "net_income": {
+            "value": -477942000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Statements of Operations and Comprehensive Income (Loss), FY2024 comparative column, PDF page 68 (printed page 66), USD thousands",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "consolidated"
+            }
+          },
+          "operating_cash_flow": {
+            "value": -274555000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Statements of Cash Flows, Net cash used in operating activities, FY2024 comparative column, PDF page 70 (printed page 68), USD thousands",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            }
+          },
+          "capex": {
+            "value": 62247000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Statements of Cash Flows, Purchases of property and equipment, FY2024 reclassified comparative column, PDF page 70 (printed page 68), positive cash-outflow magnitude",
+            "accounting_scope": "consolidated"
+          },
+          "cash_and_equivalents": {
+            "value": 140866000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Balance Sheets, Cash and cash equivalents, 2024-12-31 comparative column, PDF page 67 (printed page 65), excluding marketable securities",
+            "accounting_scope": "consolidated"
+          }
+        }
+      },
+      {
+        "period": "FY2025",
+        "fiscal_year": 2025,
+        "period_type": "annual",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "duration_days": 365,
+        "facts": {
+          "net_income": {
+            "value": -435050000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Statements of Operations and Comprehensive Income (Loss), Net loss, FY2025, PDF page 68 (printed page 66), USD thousands",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "consolidated"
+            }
+          },
+          "operating_cash_flow": {
+            "value": -242473000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Statements of Cash Flows, Net cash used in operating activities, FY2025, PDF page 70 (printed page 68), USD thousands",
+            "accounting_scope": "consolidated",
+            "statement_scope": {
+              "operations": "total_operations",
+              "attribution": "not_applicable"
+            }
+          },
+          "capex": {
+            "value": 36277000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Statements of Cash Flows, Purchases of property and equipment, FY2025, PDF page 70 (printed page 68), positive cash-outflow magnitude",
+            "accounting_scope": "consolidated"
+          },
+          "cash_and_equivalents": {
+            "value": 230524000,
+            "source_id": "quantumscape-2025-10k",
+            "locator": "Consolidated Balance Sheets, Cash and cash equivalents, 2025-12-31, PDF page 67 (printed page 65), excluding marketable securities",
+            "accounting_scope": "consolidated"
+          }
+        }
+      }
+    ]
+  },
+  "auxiliary_validation": {
+    "enabled": false,
+    "selected_source_ids": []
+  },
+  "judgment_context": {
+    "contract_version": "0.3.0",
+    "prepared_by": "independent public-company blind loop",
+    "prepared_at": "2026-03-01",
+    "subindustry": {
+      "scope_id": "pre-commercial-solid-state-lithium-metal-battery-development",
+      "name": "Pre-commercial solid-state lithium-metal battery development",
+      "name_zh": "预商业化固态锂金属电池技术开发",
+      "value_chain_position": "Battery technology development and prospective licensing/manufacturing",
+      "value_chain_position_zh": "电池技术开发及拟议的许可与制造商业化",
+      "summary": "QuantumScape develops solid-state lithium-metal battery technology and had not commenced planned principal operations or derived revenue from principal business activities as of 2025-12-31.",
+      "summary_zh": "QuantumScape 开发固态锂金属电池技术；截至 2025 年 12 月 31 日，计划中的主营业务尚未开始，也尚未从主营业务取得收入。",
+      "basis": [
+        {
+          "source_id": "quantumscape-2025-10k",
+          "locator": "Item 1, Growth Strategy, PDF page 14 (printed page 12); Note 1, PDF page 71 (printed page 69)"
+        }
+      ]
+    },
+    "dimensions": {
+      "cash-runway": {
+        "benchmark": {
+          "scope": "The subject's own two-year operating-cash-use direction is primary; no universal runway threshold or peer percentile is used.",
+          "scope_zh": "优先观察企业自身连续两年的经营现金消耗方向；不采用统一现金跑道阈值或同行百分位。",
+          "observations": [
+            {
+              "comparison_type": "subject_history",
+              "entity": "QuantumScape Corporation",
+              "business_model": "Pre-commercial battery technology development",
+              "metric": "Operating cash flow",
+              "period": "FY2025",
+              "value": -242473000,
+              "unit": "USD",
+              "display_value": "USD -242.473m",
+              "citation": {
+                "source_id": "quantumscape-2025-10k",
+                "locator": "Consolidated Statements of Cash Flows, FY2025, PDF page 70 (printed page 68)"
+              }
+            },
+            {
+              "comparison_type": "subject_history",
+              "entity": "QuantumScape Corporation",
+              "business_model": "Pre-commercial battery technology development",
+              "metric": "Operating cash flow",
+              "period": "FY2024",
+              "value": -274555000,
+              "unit": "USD",
+              "display_value": "USD -274.555m",
+              "citation": {
+                "source_id": "quantumscape-2025-10k",
+                "locator": "Consolidated Statements of Cash Flows, FY2024 comparative column, PDF page 70 (printed page 68)"
+              }
+            }
+          ],
+          "limitations": [
+            "Historical cash use and cash-only runway do not include marketable securities, future milestone receipts, financing access, or the capital needs of alternative commercialization models."
+          ],
+          "limitations_zh": [
+            "历史现金消耗和仅现金口径的跑道未包含有价证券、未来里程碑回款、融资能力或不同商业化模式的资本需求。"
+          ]
+        },
+        "gaps": [
+          {
+            "kind": "evidence_gap",
+            "text": "The deterministic core does not build a forward schedule of R&D, pilot-line, commercialization, or financing cash needs.",
+            "text_zh": "确定性核心尚未建立研发、试制线、商业化或融资现金需求的前瞻计划。"
+          },
+          {
+            "kind": "human_judgment",
+            "text": "Assess whether the latest reduction in operating cash use is durable through the next technical and commercialization milestones.",
+            "text_zh": "需人工判断最近一期经营现金消耗下降能否持续覆盖下一轮技术与商业化里程碑。"
+          },
+          {
+            "kind": "verification",
+            "text": "Verify unrestricted liquidity, marketable-security maturities, contractual milestone receipts, commitments, and financing alternatives before using the cash observation.",
+            "text_zh": "使用现金观察前，需核验非受限流动性、有价证券期限、合同里程碑回款、承诺事项与融资替代方案。"
+          }
+        ]
+      }
+    }
+  }
+}

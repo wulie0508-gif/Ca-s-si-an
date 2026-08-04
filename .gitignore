@@ -19,6 +19,7 @@ outputs/release-gate-v0.2.1/sungrow/*
 outputs/release-gate-v0.2.1/enphase/*
 !outputs/release-gate-v0.2.1/sungrow/report.html
 !outputs/release-gate-v0.2.1/enphase/report.html
+local-data/
 tmp/
 *.pdf
 .env

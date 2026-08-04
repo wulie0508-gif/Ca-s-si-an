@@ -131,7 +131,45 @@ Set-Location 'D:\NEX_企业知识库'
 
 报告结尾固定包含“进 / 不进 / 补充信息后再议”的**建议**、核心理由、待人工确认项和若进时的资源推荐。建议不是决策。
 
-## 6. Leader 点头或打回
+## 6. 本地案例工作台、NEX RAG 与 Codex Agent Bridge
+
+Bridge 的主入口已经从“填写政策标签”调整为“创建案例并上传材料”。服务端在 Git 忽略的本地目录保存原文件，记录 SHA-256、版本与媒体类型，并对 PDF、OpenXML、文本、JSON 和 HTML 做受限文本抽取。材料角色只标记为 `routing_hint_only`；原文件、抽取文本和 Agent 解读都不会自动成为事实，也不会自动写入 NEX RAG。
+
+NEX 默认通过 `http://127.0.0.1:8000` 只读接入。`/api/health` 分开返回 Bridge、政策目录和 RAG 状态；RAG 在线不代表当前案例一定命中合格证据。检索响应固定为 `candidate_only`，引用仍需人工复核。
+
+政策解析器继续扫描工作簿全部 Sheet，在前 50 个非空行中识别同时包含政策 ID 和名称的正式表头；输出固定记录文件 SHA-256、Sheet、原始表头行和每条记录的原始行号。它不会默认把第一张封面或复核控制台当成政策表。
+
+先做只读检查：
+
+```powershell
+.\.venv-new\Scripts\python.exe -m cleantech_finance.cli policy inspect `
+  local-data\policies\catalog.xlsx --as-of 2026-07-31
+```
+
+如需让当前 Codex 会话使用自己的模型阅读经授权的材料文本、查询 NEX 候选证据并调用确定性政策匹配，无需另配模型 API。启动只监听本机回环地址的 Bridge：
+
+```powershell
+.\.venv-new\Scripts\python.exe -m cleantech_finance.cli bridge `
+  local-data\policies\catalog.xlsx `
+  --policy-attestation local-data\policy-confirmations\catalog.json `
+  --course-catalog local-data\resources\courses.csv `
+  --mentor-catalog local-data\resources\mentors.csv `
+  --host 127.0.0.1 --port 8765
+```
+
+打开 `http://127.0.0.1:8765/`。Agent 先通过 `/api/agent/authorization-requests` 发起包含 actor、purpose、case 与 scopes 的请求；用户页面显示真实请求且授权项默认不勾选。请求密钥只交给 Agent，页面不接收最终 Bearer Token；批准后只能一次性交换 30 分钟短期令牌，并支持立即撤销。审计日志只保存不可逆指纹。
+
+可授权的 Agent scope 为 `case:read`、`material:read`、`rag:query`、`policy:read`、`policy:match` 和 `policy:reference`。其中材料接口只返回受控抽取文本，不返回原始二进制；结果标记为 `source_material_not_verified_fact`。Bridge 不公开证据审核通过、补件接受、决策批准或发布接口。逐行政策硬匹配仍要求受控复核状态；项目方对目录作出的 SHA-256 绑定确认仅允许生成参考建议，不能确认单条申报资格，且始终要求按官方实时信息核验。
+
+人类工作台使用 `Dashboard → Company Workspace → Next Action`。八阶段轨道表示候选材料准备度，不表示接触、LOI、签约、审批、交割或整合的真实交易进度；真实 deal stage 只能由有权用户确认。Dashboard 量化显示候选材料覆盖、关键缺口和商业模式验证性访谈的准备状态，所有百分比均不得解释为投资、信用或综合风险评分。
+
+`Resources` 只浏览真实接入的政策、课程和导师目录。课程与导师未接入时明确显示 `not_connected`，空目录显示 `empty_catalog`，不填充示例。导师目录还必须通过可用性、授权、利益冲突和有效期硬门槛；匹配结果仅为候选，不打综合分、不自动分配或联系。课程和导师字段模板分别位于 `templates/course-catalog-template.csv` 与 `templates/mentor-catalog-template.csv`。
+
+跨境并购的八阶段、五条贯穿工作流、每阶段材料/字段/责任/决策门和条件化中美监管门见 `docs/cross-border-acquisition-workflow-2026-08-02.md`。当前完整本地产品不能原样部署到 Vercel；源码体积不是阻断项，但本地持久工作区、私有 RAG、4.18 GB SQLite、模型与上传边界需要先拆分，详见 `docs/vercel-deployment-assessment-2026-08-02.md`。
+
+完整案例 Skill 位于 `skills/cleantech-workflow-bridge/`；原政策专用 Skill 继续保留用于独立工作簿检查。
+
+## 7. Leader 点头或打回
 
 ```powershell
 # analyst 提交

@@ -1,8 +1,8 @@
 # CleanTech Finance（中文说明）
 
-[![版本](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)
+[![版本](https://img.shields.io/badge/version-0.5.0-f97316)](pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?logo=python&logoColor=white)](pyproject.toml)
-[![测试](https://img.shields.io/badge/tests-155%20passing-17865b)](tests)
+[![测试](https://img.shields.io/badge/tests-361%20passing-17865b)](tests)
 [![许可证](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
 > **先看产品故事：** [GitHub 宣传页](SHOWCASE.md) · [英文 README](README.md) · [当前项目状态](docs/project-status-validation-receipt-2026-07-18.md)
@@ -30,6 +30,12 @@
 29/29 与 28/28 只证明两维的事实抽取、页码、公式、引用和护栏通过测试，不代表投资判断准确。
 
 v0.3 的正式五格卡将各格标题、锁定判断框架、规则路径与理由、信号说明、第 5 格缺口和底部免责声明中英并置；数字、页码、来源标题和链接保持原始口径。
+
+## v0.5 交易与估值工作站
+
+本地工作站现已加入独立 Deal、人工确认阶段、来源化估值输入、FCFF DCF、Trading Comps、EV→Equity、三情景与敏感性、不可变版本、FA 复核、内部使用批准和 XLSX 导出。Calculation Integrity 与 Decision Readiness 分开呈现，估值方法不机械加权，也不输出投资建议或正式估值意见。
+
+[公开 Vercel 预览](https://cleantech-finance-workstation.vercel.app/#deals) 只提供浏览器本地 DCF 初算和可选的自填倍数交叉检查：不上传、不保存、不绑定来源和版本，最高为 `screen_grade`。正式工作仍在本地受控版完成。完整边界见 [v0.5.0 发布说明](docs/RELEASE_NOTES_v0.5.0.md)。
 
 ## 最小演示
 

@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from datetime import date
 from typing import Any
 
 from .fact_semantics import (
@@ -19,7 +20,10 @@ from .fact_semantics import (
     select_net_income_fact,
 )
 
-RULE_LIBRARY_VERSION = "0.3.1"
+RULE_LIBRARY_VERSION = "0.3.2"
+APPLICABILITY_CONTRACT_VERSION = "1.0.0"
+APPLICABILITY_POLICY_ID = "pre-commercial-no-recognized-operating-revenue"
+APPLICABILITY_POLICY_VERSION = "1.0.0"
 VALID_RULE_STATUSES = {"authored", "validated"}
 VALID_SIGNALS = {"red", "amber", "green"}
 FORBIDDEN_SCOPES = {"", "*", "all", "any", "global"}
@@ -70,10 +74,215 @@ _PROFITABILITY_SCOPES = (
     "wind-blade-contract-manufacturing",
 )
 ASSET_OWNER_SCOPE = "contracted-renewable-generation-and-storage-asset-owner"
-_CASH_SCOPES = (*_PROFITABILITY_SCOPES, ASSET_OWNER_SCOPE)
+PRE_COMMERCIAL_TECHNOLOGY_SCOPE = (
+    "pre-commercial-solid-state-lithium-metal-battery-development"
+)
+_CASH_SCOPES = (
+    *_PROFITABILITY_SCOPES,
+    ASSET_OWNER_SCOPE,
+    PRE_COMMERCIAL_TECHNOLOGY_SCOPE,
+)
+
+_PRE_COMMERCIAL_APPLICABILITY_POLICY = {
+    "policy_id": APPLICABILITY_POLICY_ID,
+    "policy_version": APPLICABILITY_POLICY_VERSION,
+    "dimension_id": "profitability-unit-economics",
+    "subindustry_scope": PRE_COMMERCIAL_TECHNOLOGY_SCOPE,
+    "required_contract_version": APPLICABILITY_CONTRACT_VERSION,
+    "required_commercialization_stage": "pre_commercial",
+    "required_recognized_operating_revenue": "none_recognized",
+    "required_evidence_role": "subject",
+    "period_policy": "recognized-revenue assertion covers every financial period",
+    "date_policy": "commercialization-stage as_of is not later than assessment as_of",
+}
 
 
-def dimension_applicability(dimension_id: str, scope_id: str) -> dict[str, Any]:
+def _digest(payload: dict[str, Any]) -> str:
+    return "sha256:" + hashlib.sha256(
+        json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
+APPLICABILITY_POLICY_DIGEST = _digest(_PRE_COMMERCIAL_APPLICABILITY_POLICY)
+
+
+def validate_applicability_context(
+    context: dict[str, Any] | None,
+    *,
+    assessment_as_of: str,
+    financial_periods: list[str],
+    subject_source_ids: set[str],
+) -> dict[str, Any]:
+    """Validate cited pre-commercial applicability inputs without deriving an outcome.
+
+    The manifest is allowed to supply evidence inputs only.  Policy-owned outcome,
+    signal, and reason fields are deliberately absent from this contract.
+    """
+
+    if context is None:
+        return {
+            "status": "not_provided",
+            "contract_version": None,
+            "inputs": None,
+            "validation": {"passed": True, "errors": []},
+        }
+    errors: list[str] = []
+    if not isinstance(context, dict):
+        return {
+            "status": "invalid",
+            "contract_version": None,
+            "inputs": None,
+            "validation": {
+                "passed": False,
+                "errors": ["applicability_context must be an object"],
+            },
+        }
+
+    forbidden = {"outcome", "signal", "reason", "reason_zh", "reason_code"}.intersection(
+        context
+    )
+    if forbidden:
+        errors.append(
+            "applicability_context cannot provide policy-owned fields: "
+            + ", ".join(sorted(forbidden))
+        )
+    unknown_context_fields = set(context) - {
+        "contract_version",
+        "commercialization_stage",
+        "recognized_operating_revenue",
+    }
+    if unknown_context_fields:
+        errors.append(
+            "applicability_context contains unsupported fields: "
+            + ", ".join(sorted(unknown_context_fields))
+        )
+    if context.get("contract_version") != APPLICABILITY_CONTRACT_VERSION:
+        errors.append(
+            "applicability_context.contract_version must be "
+            f"'{APPLICABILITY_CONTRACT_VERSION}'"
+        )
+
+    stage = context.get("commercialization_stage")
+    if not isinstance(stage, dict):
+        stage = {}
+        errors.append("applicability_context.commercialization_stage must be an object")
+    else:
+        unknown_stage_fields = set(stage) - {"state", "as_of", "basis"}
+        if unknown_stage_fields:
+            errors.append(
+                "commercialization_stage contains unsupported fields: "
+                + ", ".join(sorted(unknown_stage_fields))
+            )
+    revenue = context.get("recognized_operating_revenue")
+    if not isinstance(revenue, dict):
+        revenue = {}
+        errors.append(
+            "applicability_context.recognized_operating_revenue must be an object"
+        )
+    else:
+        unknown_revenue_fields = set(revenue) - {"state", "periods", "basis"}
+        if unknown_revenue_fields:
+            errors.append(
+                "recognized_operating_revenue contains unsupported fields: "
+                + ", ".join(sorted(unknown_revenue_fields))
+            )
+    if stage.get("state") != "pre_commercial":
+        errors.append("commercialization_stage.state must be 'pre_commercial'")
+    if revenue.get("state") != "none_recognized":
+        errors.append(
+            "recognized_operating_revenue.state must be 'none_recognized'"
+        )
+
+    stage_as_of = stage.get("as_of")
+    try:
+        parsed_stage_as_of = date.fromisoformat(stage_as_of)
+        parsed_assessment_as_of = date.fromisoformat(assessment_as_of)
+    except (TypeError, ValueError):
+        errors.append(
+            "commercialization_stage.as_of and assessment.as_of must be valid ISO dates"
+        )
+    else:
+        if parsed_stage_as_of > parsed_assessment_as_of:
+            errors.append(
+                "commercialization_stage.as_of cannot be later than assessment.as_of"
+            )
+
+    claimed_periods = revenue.get("periods")
+    if not isinstance(claimed_periods, list) or not claimed_periods or any(
+        not isinstance(item, str) or not item for item in claimed_periods
+    ):
+        errors.append(
+            "recognized_operating_revenue.periods must be a non-empty list of period ids"
+        )
+        normalized_periods: list[str] = []
+    else:
+        normalized_periods = sorted(set(claimed_periods))
+        missing_periods = sorted(set(financial_periods) - set(normalized_periods))
+        if missing_periods:
+            errors.append(
+                "recognized_operating_revenue.periods must cover all financial periods; "
+                "missing: " + ", ".join(missing_periods)
+            )
+    if not financial_periods:
+        errors.append(
+            "applicability_context requires financial periods for coverage validation"
+        )
+
+    def validate_basis(field: str, raw: Any) -> list[dict[str, str]]:
+        normalized: list[dict[str, str]] = []
+        if not isinstance(raw, list) or not raw:
+            errors.append(f"{field}.basis must contain at least one citation")
+            return normalized
+        for index, citation in enumerate(raw, start=1):
+            if not isinstance(citation, dict):
+                errors.append(f"{field}.basis[{index}] must be a citation object")
+                continue
+            source_id = citation.get("source_id")
+            locator = citation.get("locator")
+            if not isinstance(source_id, str) or not source_id:
+                errors.append(f"{field}.basis[{index}] requires source_id")
+                continue
+            if source_id not in subject_source_ids:
+                errors.append(
+                    f"{field}.basis may cite same-subject role=subject sources only; "
+                    f"'{source_id}' is not eligible"
+                )
+            if not isinstance(locator, str) or not locator:
+                errors.append(f"{field}.basis[{index}] requires locator")
+                continue
+            normalized.append({"source_id": source_id, "locator": locator})
+        return sorted(normalized, key=lambda item: (item["source_id"], item["locator"]))
+
+    stage_basis = validate_basis("commercialization_stage", stage.get("basis"))
+    revenue_basis = validate_basis(
+        "recognized_operating_revenue", revenue.get("basis")
+    )
+    inputs = {
+        "contract_version": context.get("contract_version"),
+        "commercialization_stage": {
+            "state": stage.get("state"),
+            "as_of": stage_as_of,
+            "basis": stage_basis,
+        },
+        "recognized_operating_revenue": {
+            "state": revenue.get("state"),
+            "periods": normalized_periods,
+            "basis": revenue_basis,
+        },
+    }
+    return {
+        "status": "validated" if not errors else "invalid",
+        "contract_version": context.get("contract_version"),
+        "inputs": inputs,
+        "validation": {"passed": not errors, "errors": errors},
+    }
+
+
+def dimension_applicability(
+    dimension_id: str,
+    scope_id: str,
+    applicability_context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     if dimension_id == "profitability-unit-economics" and scope_id == ASSET_OWNER_SCOPE:
         return {
             "status": "not_applicable",
@@ -86,6 +295,44 @@ def dimension_applicability(dimension_id: str, scope_id: str) -> dict[str, Any]:
                 "制造业毛利率单位经济性不适用于合约型发电资产所有者；其营业成本概念"
                 "未覆盖重要折旧及资产层面经济性。"
             ),
+        }
+    if (
+        dimension_id == "profitability-unit-economics"
+        and scope_id == PRE_COMMERCIAL_TECHNOLOGY_SCOPE
+        and (applicability_context or {}).get("status") == "validated"
+    ):
+        inputs = (applicability_context or {})["inputs"]
+        period_text = ", ".join(inputs["recognized_operating_revenue"]["periods"])
+        digest_inputs = {
+            "dimension_id": dimension_id,
+            "scope_id": scope_id,
+            **inputs,
+        }
+        return {
+            "status": "not_yet_applicable",
+            "signal": None,
+            "reason_code": "pre_commercial_no_recognized_operating_revenue",
+            "reason": (
+                "Profitability and unit economics are not yet applicable as of "
+                f"{inputs['commercialization_stage']['as_of']}: cited same-subject evidence "
+                "classifies the technology as pre-commercial and states that no operating "
+                f"revenue was recognized for {period_text}. Missing revenue was not converted "
+                "to zero."
+            ),
+            "reason_zh": (
+                f"截至 {inputs['commercialization_stage']['as_of']}，盈利与单位经济性暂不适用："
+                "同一主体来源的引用证据表明该技术仍处于预商业化阶段，且在 "
+                f"{period_text} 未确认经营收入。缺失收入未被补记为零。"
+            ),
+            "basis": [
+                *inputs["commercialization_stage"]["basis"],
+                *inputs["recognized_operating_revenue"]["basis"],
+            ],
+            "policy_id": APPLICABILITY_POLICY_ID,
+            "policy_version": APPLICABILITY_POLICY_VERSION,
+            "policy_digest": APPLICABILITY_POLICY_DIGEST,
+            "inputs_digest": _digest(digest_inputs),
+            "inputs": inputs,
         }
     return {"status": "applicable", "reason": None, "reason_zh": None}
 
@@ -545,12 +792,19 @@ def derive_rule_inputs(dimension_id: str, financials: dict[str, Any]) -> dict[st
     }
 
 
-def evaluate_rule(dimension_id: str, scope_id: str, financials: dict[str, Any]) -> dict[str, Any]:
+def evaluate_rule(
+    dimension_id: str,
+    scope_id: str,
+    financials: dict[str, Any],
+    applicability_context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """Evaluate one validated rule branch and fail closed if scope/inputs do not match."""
 
     if not scope_id or scope_id.strip().lower() in FORBIDDEN_SCOPES:
         raise ValueError("Deterministic rule evaluation requires an explicit subindustry scope")
-    applicability = dimension_applicability(dimension_id, scope_id)
+    applicability = dimension_applicability(
+        dimension_id, scope_id, applicability_context
+    )
     if applicability["status"] != "applicable":
         raise ValueError(
             f"Dimension '{dimension_id}' is not applicable in scope '{scope_id}': "

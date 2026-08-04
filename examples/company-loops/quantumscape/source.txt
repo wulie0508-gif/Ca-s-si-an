@@ -1,0 +1,39 @@
+QUANTUMSCAPE CORPORATION — FY2025 OFFICIAL-SOURCE FACT PACK
+
+Primary source: QuantumScape Corporation 2025 Form 10-K / 2025 Annual Report
+Official investor-relations URL: https://ir.quantumscape.com/static-files/215ea548-1576-4ea0-8b50-bb6234e50a19
+SEC filing URL: https://www.sec.gov/Archives/edgar/data/1811414/000119312526071556/qs-20251231.htm
+Verified PDF SHA-256: 3868e25fe35806379c0878d25159ac9f8007226a7fb9ff7c4e7243de3c76c5fe
+Cross-check source: QuantumScape Corporation 2024 Form 10-K / 2024 Annual Report
+Official investor-relations URL: https://ir.quantumscape.com/static-files/f0dee583-54fe-41b9-8764-a3bffc8f07e6
+Verified PDF SHA-256: ed600623a89eefea897a43bac53842366309b4f11d984d1265e5d1a1292e0b3b
+
+This is a normalized local extract for deterministic offline testing. Values are USD. Page references below use PDF page number followed by the annual report's printed page in parentheses. The full official PDFs and their SHA-256 receipts were independently checked before this extract was prepared.
+
+Entity and business classification — FY2025 Form 10-K cover, Item 1, and Note 1
+Legal registrant: QuantumScape Corporation. SEC CIK: 0001811414. Ticker: QS.
+The company develops and seeks to commercialize solid-state lithium-metal battery technology. Its possible commercialization paths include technology licensing, company-owned manufacturing, and joint ventures.
+At 2025-12-31, planned principal operations had not commenced and the company had not derived revenue from principal business activities. See PDF page 71 (69). Management also described the company as development-stage and pre-revenue with no revenue to date. See PDF page 54 (52).
+
+Missing-versus-zero control — Consolidated Statements of Operations
+The FY2025 statement at PDF page 68 (66) contains no revenue, cost-of-revenue, or gross-profit line. The FY2024 comparative column has the same boundary. These three fields are absent and must remain missing; none is a numeric zero.
+
+Consolidated Statements of Operations — PDF page 68 (66), USD thousands
+FY2025 net loss: (435,050,000)
+FY2024 net loss: (477,942,000)
+
+Consolidated Statements of Cash Flows — PDF page 70 (68), USD thousands
+FY2025 net cash used in operating activities: (242,473,000)
+FY2024 net cash used in operating activities: (274,555,000)
+FY2025 purchases of property and equipment: (36,277,000)
+FY2024 purchases of property and equipment, latest comparative presentation: (62,247,000)
+
+The FY2024 Form 10-K originally presented purchases of property and equipment as (62,131,000). The FY2025 Form 10-K reclassified 116,000 to the investing-activities "Other" line while preserving FY2024 net investing cash flow. This fact pack uses the latest comparative presentation and retains the difference as a verification note; it does not silently merge the two values.
+
+Consolidated Balance Sheets — PDF page 67 (65), USD thousands
+FY2025 cash and cash equivalents: 230,524,000
+FY2024 cash and cash equivalents: 140,866,000
+FY2025 current marketable securities: 740,283,000
+FY2024 current marketable securities: 769,901,000
+
+Cash and cash equivalents are kept separate from marketable securities. The simple cash-runway calculation in this test uses cash and cash equivalents only and is not a complete liquidity or forward funding assessment.

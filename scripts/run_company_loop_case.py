@@ -12,12 +12,23 @@ from typing import Any
 from cleantech_finance.audit import run_audit
 from cleantech_finance.reporting import write_artifacts
 
+try:
+    from scripts.run_company_loop_registry import (
+        extract_dimension_outcomes,
+        validate_registry_contract,
+    )
+except ModuleNotFoundError:  # Direct execution: python scripts/run_company_loop_case.py
+    from run_company_loop_registry import (  # type: ignore[no-redef]
+        extract_dimension_outcomes,
+        validate_registry_contract,
+    )
+
 ROOT = Path(__file__).parents[1]
 REGISTRY = ROOT / "evals" / "company-loops-v0.3.json"
 
 
 def _cases() -> dict[str, dict[str, Any]]:
-    rows = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    rows = validate_registry_contract(json.loads(REGISTRY.read_text(encoding="utf-8")))
     return {str(row["id"]): row for row in rows}
 
 
@@ -29,16 +40,12 @@ def run_case(
 ) -> dict[str, Any]:
     cases = _cases()
     if case_id not in cases:
-        raise ValueError(
-            f"Unknown case '{case_id}'. Allowed cases: {', '.join(sorted(cases))}"
-        )
+        raise ValueError(f"Unknown case '{case_id}'. Allowed cases: {', '.join(sorted(cases))}")
     case = cases[case_id]
     manifest_path = (ROOT / case["manifest"]).resolve()
     payload = json.loads(manifest_path.read_text(encoding="utf-8"))
     available = sorted(
-        source["id"]
-        for source in payload["sources"]
-        if source.get("role") == "auxiliary"
+        source["id"] for source in payload["sources"] if source.get("role") == "auxiliary"
     )
     configured = payload.get("auxiliary_validation") or {}
     if disable_auxiliary and selected_source_ids:
@@ -54,14 +61,11 @@ def run_case(
         raise ValueError(
             "Selected source(s) are not available for this case: " + ", ".join(invalid)
         )
-    configured_fact_sources = {
-        fact.get("source_id") for fact in configured.get("facts") or []
-    }
+    configured_fact_sources = {fact.get("source_id") for fact in configured.get("facts") or []}
     missing_facts = sorted(set(selected) - configured_fact_sources)
     if missing_facts:
         raise ValueError(
-            "Selected source(s) have no configured auxiliary facts: "
-            + ", ".join(missing_facts)
+            "Selected source(s) have no configured auxiliary facts: " + ", ".join(missing_facts)
         )
 
     configured["enabled"] = bool(selected)
@@ -69,9 +73,7 @@ def run_case(
     payload["auxiliary_validation"] = configured
     cash_context = payload.get("cash_conversion_context")
     if cash_context is not None:
-        cash_fact_sources = {
-            fact.get("source_id") for fact in cash_context.get("facts") or []
-        }
+        cash_fact_sources = {fact.get("source_id") for fact in cash_context.get("facts") or []}
         cash_context["enabled"] = bool(set(selected) & cash_fact_sources)
 
     temporary_name: str | None = None
@@ -96,6 +98,7 @@ def run_case(
                 "Selected-source audit failed validation: "
                 + "; ".join(audit["validation"]["errors"])
             )
+        outcomes = extract_dimension_outcomes(audit)
         target = Path(output_dir) if output_dir else ROOT / case["output_dir"]
         if not target.is_absolute():
             target = ROOT / target
@@ -110,9 +113,11 @@ def run_case(
         "selected_source_ids": selected,
         "ignored_source_ids": sorted(set(available) - set(selected)),
         "auxiliary_status": audit["auxiliary_validation"]["status"],
+        "outcomes": outcomes,
         "signals": {
-            card["dimension_id"]: card["signal"]
-            for card in audit["judgment_layer"]["cards"]
+            dimension_id: outcome["signal"]
+            for dimension_id, outcome in outcomes.items()
+            if outcome["status"] == "evaluated"
         },
         "output_dir": str(target.resolve()),
         "artifacts": artifacts,

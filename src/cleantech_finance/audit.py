@@ -20,7 +20,7 @@ from .ingest import ingest_sources, load_manifest
 from .judgment import build_judgment_layer
 from .models import Dimension, DimensionResult
 from .retrieval import EvidenceRetriever
-from .rules import dimension_applicability
+from .rules import dimension_applicability, validate_applicability_context
 
 
 def _result_for(retriever: EvidenceRetriever, dimension: Dimension, top_k: int) -> DimensionResult:
@@ -123,17 +123,40 @@ def run_audit(
     scope_id = str(
         (manifest.get("judgment_context") or {}).get("subindustry", {}).get("scope_id") or ""
     )
+    applicability_context = validate_applicability_context(
+        manifest.get("applicability_context"),
+        assessment_as_of=as_of,
+        financial_periods=[
+            str(period.get("period") or "")
+            for period in (financials or {}).get("periods", [])
+            if period.get("period")
+        ],
+        subject_source_ids={source.id for source in sources if source.role == "subject"},
+    )
+    applicability_by_dimension = {
+        dimension_id: dimension_applicability(
+            dimension_id, scope_id, applicability_context
+        )
+        for dimension_id in ("profitability-unit-economics", "cash-runway")
+    }
     inapplicable_dimensions = {
         dimension_id
-        for dimension_id in ("profitability-unit-economics", "cash-runway")
-        if dimension_applicability(dimension_id, scope_id)["status"] == "not_applicable"
+        for dimension_id, outcome in applicability_by_dimension.items()
+        if outcome["status"] in {"not_applicable", "not_yet_applicable"}
     }
     financial_analysis = derive_financial_metrics(
         financials,
         {source.id for source in sources if source.role == "subject"},
         inapplicable_dimensions,
+        applicability_by_dimension,
     )
-    judgment_layer = build_judgment_layer(manifest, financials, sources, selected_ids)
+    judgment_layer = build_judgment_layer(
+        manifest,
+        financials,
+        sources,
+        selected_ids,
+        applicability_context=applicability_context,
+    )
     auxiliary_validation = validate_auxiliary_sources(manifest, sources, financials)
     cash_conversion_context = build_cash_conversion_context(
         manifest,
@@ -179,6 +202,7 @@ def run_audit(
         ],
         "financial_analysis": financial_analysis,
         "financial_fact_extraction": auto_extraction,
+        "applicability_context": applicability_context,
         "judgment_layer": judgment_layer,
         "auxiliary_validation": auxiliary_validation,
         "cash_conversion_context": cash_conversion_context,
@@ -225,6 +249,44 @@ def validate_audit(audit: dict[str, Any]) -> dict[str, Any]:
     judgment = audit.get("judgment_layer", {})
     if not judgment.get("validation", {}).get("passed", True):
         errors.extend(judgment["validation"].get("errors", []))
+    applicability = audit.get("applicability_context", {})
+    if not applicability.get("validation", {}).get("passed", True):
+        errors.extend(applicability["validation"].get("errors", []))
+    for outcome in judgment.get("dimension_outcomes", []):
+        outcome_status = outcome.get("status")
+        outcome_basis = outcome.get("basis", [])
+        if outcome_status in {"not_applicable", "not_yet_applicable"}:
+            if outcome.get("signal") is not None:
+                errors.append(
+                    f"{outcome_status} outcome must have a null signal"
+                )
+            if not outcome_basis:
+                errors.append(f"{outcome_status} outcome requires cited basis")
+        if outcome_status == "not_yet_applicable":
+            for field in (
+                "reason_code",
+                "reason",
+                "reason_zh",
+                "policy_id",
+                "policy_version",
+                "policy_digest",
+                "inputs_digest",
+            ):
+                if not outcome.get(field):
+                    errors.append(
+                        f"not_yet_applicable outcome is missing '{field}'"
+                    )
+        for citation in outcome_basis:
+            citation_count += 1
+            if citation.get("source_id") not in source_ids:
+                errors.append(
+                    "Unknown applicability-outcome source: "
+                    f"{citation.get('source_id')}"
+                )
+            if not citation.get("locator") or not citation.get("url"):
+                errors.append(
+                    "Applicability-outcome citation is missing a locator or URL"
+                )
     auxiliary = audit.get("auxiliary_validation", {})
     if not auxiliary.get("validation", {}).get("passed", True):
         errors.extend(auxiliary["validation"].get("errors", []))

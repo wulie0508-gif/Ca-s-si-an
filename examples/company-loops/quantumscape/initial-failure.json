@@ -1,0 +1,15 @@
+{
+  "captured_before_generalization_fix": true,
+  "manifest": "examples/company-loops/quantumscape/manifest.initial.json",
+  "selected_dimensions": [
+    "cash-runway",
+    "profitability-unit-economics"
+  ],
+  "validation_passed": false,
+  "errors": [
+    "Missing judgment context for 'profitability-unit-economics'",
+    "Expected exactly one validated rule for 'cash-runway' in scope 'pre-commercial-solid-state-lithium-metal-battery-development', found 0"
+  ],
+  "observed_boundary": "The old product could calculate cash facts but could neither represent a cited pre-commercial profitability state nor route the independent cash rule for this exact scope.",
+  "zero_policy": "Revenue, cost of revenue, and gross profit were absent from the audited statement and remained omitted; none was coerced to zero."
+}

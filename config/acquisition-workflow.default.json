@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "rule_version": "acquisition-workflow-1.1.0",
+  "criticality_weights": {
+    "critical": 3,
+    "important": 2,
+    "supporting": 1
+  },
+  "interview": {
+    "maximum_questions": 8,
+    "minimum_completeness_ratio": 0.3,
+    "required_entry_requirement_ids": [
+      "acquisition_thesis",
+      "transaction_parameters",
+      "industry_map",
+      "target_business_profile",
+      "commercial_model_baseline"
+    ]
+  },
+  "recognized_candidate_roles": [
+    "company_identity",
+    "financial_core",
+    "esg_impact",
+    "technology_arl",
+    "market_export",
+    "policy_resource",
+    "governance_legal",
+    "generic_supporting"
+  ],
+  "recognized_profile_fields": [
+    "industry",
+    "stage",
+    "technology",
+    "geography",
+    "market",
+    "need"
+  ]
+}

@@ -8,9 +8,9 @@
 
 **Local-first diligence infrastructure for clean technology companies.**
 
-[![Version](https://img.shields.io/badge/version-0.4.0-f97316)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.5.0-f97316)](pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-0f2740?logo=python&logoColor=white)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-155%20passing-17865b)](tests)
+[![Tests](https://img.shields.io/badge/tests-361%20passing-17865b)](tests)
 [![License](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
 [Product story](SHOWCASE.md) · [中文说明](README.zh-CN.md) · [System guide](docs/enterprise-assessment-system.md) · [Validation report](docs/enterprise-assessment-integration-report-2026-07-30.md)
@@ -30,7 +30,7 @@ source-level provenance, and keeps every consequential decision reviewable.
 
 > It does not replace judgment. It makes judgment inspectable.
 
-The current release combines three working layers:
+The current release combines four working layers:
 
 - **Financial evidence** — two end-to-end validated dimensions with reproducible
   calculations and fixed five-cell evidence cards.
@@ -38,6 +38,8 @@ The current release combines three working layers:
   evidence, gaps, triage, and a versioned human decision workflow.
 - **Controlled automation** — deterministic matching and allowlist-bound Agent
   assistance whose outputs remain candidate evidence until reviewed.
+- **Deal and valuation execution** — separate Deal scopes, source-gated FCFF DCF
+  and Trading Comps, immutable versions, human review, and auditable XLSX export.
 
 There is no aggregate score, investment recommendation, credit rating, or
 automated ARL score. ESG, clean-technology impact, export readiness, and the
@@ -115,7 +117,7 @@ Python 3.10+ is required.
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux: source .venv/bin/activate
-python -m pip install -e ".[pdf]"
+python -m pip install -e ".[pdf,policy]"
 ```
 
 The public examples use Sungrow as the subject and Enphase as an adjacent equipment reference, then reverse the roles for reproduction. Download both filings and run the ordered gate:
@@ -263,6 +265,129 @@ formal ESG assurance, or automated ARL score. Existing red/amber/green finance
 evidence signals remain independent and cannot be aggregated. See
 [the local workbench guide](docs/local-company-workbench.md).
 
+## Agent-first local case workspace
+
+The loopback Bridge now starts from one user action: upload company materials.
+It stores them under the ignored local workspace, records SHA-256 and version,
+extracts supported text, and proposes document roles for human review. It does
+not upload the files to a model provider or automatically ingest them into RAG.
+
+Codex can use its own model and compute through a scoped Agent contract; no
+separate model API key is required. The Bridge supplies deterministic storage,
+material text, NEX candidate retrieval, maturity-aware module routing, and the
+existing policy hard filters.
+
+```powershell
+cleantech-finance policy inspect local-data\policies\catalog.xlsx
+cleantech-finance bridge local-data\policies\catalog.xlsx `
+  --policy-attestation local-data\policy-confirmations\catalog.json `
+  --policy-update-feed local-data\policy-updates\shanghai\candidate-feed.csv `
+  --course-catalog local-data\resources\courses.csv `
+  --mentor-catalog local-data\resources\mentors.csv
+```
+
+Refresh the curated Shanghai official-source candidate feed separately:
+
+```powershell
+cleantech-finance policy sync config\shanghai-policy-sources.json `
+  --out local-data\policy-updates\shanghai `
+  --as-of 2026-08-02
+```
+
+Open `http://127.0.0.1:8765/` to review the catalog state and grant short-lived,
+revocable scopes. For direct Agent use, Codex first creates an authorization
+request; the workbench shows the actor, purpose, case, and requested scopes with
+all controls unchecked. The request secret stays with Codex, the page never
+receives the final Bearer token, and the approved request can be exchanged only
+once. See `skills/cleantech-workflow-bridge/`.
+
+The Bridge can expose case metadata, explicitly authorized extracted material
+text, and candidate RAG or policy results. It cannot verify evidence, accept a
+supplement, approve a decision, change the policy catalog, issue an investment
+or credit rating, or publish. A workbook containing only pending-review rows
+still loads as `quarantined` and produces zero eligible policy matches.
+
+The human interface is intentionally compressed to `Dashboard → Company
+Workspace → Next Action`. The dashboard is searchable and shows candidate
+material readiness, critical gaps, and whether the current material set is
+sufficient to schedule a business-model validation interview. Material
+readiness is not transaction progress: an Agent cannot infer that outreach,
+LOI, signing, approval, closing, or integration has happened from document
+coverage. The eight-stage acquisition readiness model, five cross-cutting
+workstreams, required materials, fields, roles, and conditional regulatory
+gates are documented in
+[the cross-border acquisition workflow spec](docs/cross-border-acquisition-workflow-2026-08-02.md).
+
+`Resources` browses connected policy, course, and mentor catalogs. Empty or
+disconnected catalogs remain visibly empty. Explicit synthetic fixtures may be
+connected for simulation, but are always labeled and never presented as real
+people or live courses. Policy rows confirmed by a hash-bound project
+attestation remain reference-only and require live official verification. A
+separate official-source update feed remains quarantined pending human review.
+Mentor candidates must pass availability, consent, conflict, and validity gates;
+they are never automatically assigned or contacted. Empty update templates are available in
+`templates/course-catalog-template.csv` and
+`templates/mentor-catalog-template.csv`. See
+[the FA resource workflow](docs/fa-resource-workflow-2026-08-02.md) and the
+[independent resource-matching blind-test record](docs/resource-matching-blind-validation-2026-08-03.md).
+
+The current full local deployment cannot be lifted unchanged into Vercel. The
+deployable source is small, but the persistent local workspace, private RAG,
+large SQLite index, model assets, and upload path need a split cloud
+architecture before real company data can be hosted safely. See
+[the Vercel deployment assessment](docs/vercel-deployment-assessment-2026-08-02.md).
+
+## Deal execution and screen-grade valuation cockpit
+
+The loopback workbench now has a separate `Deals` surface at
+`http://127.0.0.1:8765/?view=deals`. A Deal is independent from a Company or
+Case, so different buyers, scopes, valuation dates, and currencies do not
+overwrite the enterprise evidence record.
+
+The P0 workflow can create a Deal, record a human-confirmed transaction stage,
+open a valuation case, confirm source-bearing inputs, run deterministic Trading
+Comps and FCFF DCF calculations, preserve immutable versions, record FA review,
+mark a version for internal use, and export an auditable XLSX. EV-to-Equity,
+Base/Downside/Upside, WACC × terminal-growth and WACC × exit-multiple
+sensitivities are formula-driven. Calculation Integrity and Decision Readiness
+remain separate; methods are not secretly weighted into a single value.
+
+The public [Vercel preview](https://cleantech-finance-workstation.vercel.app/#deals)
+now includes a browser-local DCF arithmetic sandbox and an optional user-entered
+multiple cross-check. It makes no network request and stores nothing. Its output
+is an unversioned `screen_grade` convenience calculation, not the source-bearing
+local workflow, an investment recommendation, or a formal valuation opinion.
+
+The input contract can also preserve at least three historical periods, one
+LTM period, and three to five forecast periods across Revenue, EBITDA, EBIT,
+tax, D&A, CapEx, change in NWC, and FCFF. Reported, Adjusted, Management, and
+Analyst Estimate rows can coexist for the same period without inflating period
+coverage, and each field can carry its own source. Listed-peer EV can be
+derived from source-bearing share price, fully diluted shares, cash, debt, and
+other bridge items; direct EV/equity inputs remain a disclosed legacy option
+and cannot be mixed with the derived path for the same peer.
+
+The browser cannot submit calculation output. It can only submit inputs and
+concurrency metadata; the server reconstructs every calculation from the
+stored version. The public Deal Store calculation method also accepts no caller-
+supplied calculation object. Candidate or Agent-derived inputs cannot enter formulas until
+a human explicitly confirms them. The Agent manifest contains no valuation
+review or approval operation.
+
+Review and approval append new versions and re-derive Decision Readiness.
+Hard failures, placeholders, failed calculation integrity, or readiness blockers
+prevent internal approval. UI retries retain one idempotency key until the
+operation and subsequent refresh succeed.
+
+This remains a local, screen-grade P0. The loopback server has no authenticated
+team identity, so external approval is disabled. Precedent Transactions,
+project-level DCF/NAV, reverse DCF, revenue-growth × EBIT-margin sensitivity,
+the complete financial-contract editor in the current browser UI, and real-deal
+reference-model tie-out are not implemented. Legacy screens that omit the new
+contract remain calculable but carry an explicit readiness warning. See the
+[P0 implementation and review note](docs/deal-execution-valuation-cockpit-p0-2026-08-03.md).
+See also the [v0.5.0 release notes](docs/RELEASE_NOTES_v0.5.0.md).
+
 ## Traceable QA diagnostic and routing layer
 
 The QA layer turns a human-selected company's exact answers and supplied public
@@ -395,7 +520,7 @@ docs/                    method and evaluation notes
 ## Development
 
 ```bash
-python -m pip install -e ".[pdf,dev]"
+python -m pip install -e ".[pdf,policy,docs,dev]"
 pytest
 ruff check .
 python scripts/evaluate_audit.py \
