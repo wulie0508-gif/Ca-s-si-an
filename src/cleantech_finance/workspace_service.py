@@ -28,6 +28,10 @@ from .acquisition_workflow import (
     acquisition_workflow_not_applicable,
     diagnose_acquisition_readiness,
 )
+from .company_intake_authorization import (
+    diagnose_company_intake_authorization,
+    parse_structured_authorization_metadata,
+)
 from .company_intake_evidence_control import (
     diagnose_company_intake_evidence_control,
     parse_structured_evidence_metadata,
@@ -573,6 +577,7 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
             "profile_hints" not in recognition
             or "structured_financial_metadata" not in recognition
             or "structured_evidence_metadata" not in recognition
+            or "structured_authorization_metadata" not in recognition
         ):
             artifact_id = str(artifact.get("id") or "")
             extract_path = case_path / "extracts" / f"{artifact_id}.txt"
@@ -590,6 +595,10 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
             if "structured_evidence_metadata" not in recognition:
                 recognition["structured_evidence_metadata"] = (
                     parse_structured_evidence_metadata(file_name, extract)
+                )
+            if "structured_authorization_metadata" not in recognition:
+                recognition["structured_authorization_metadata"] = (
+                    parse_structured_authorization_metadata(file_name, extract)
                 )
         artifact["recognition"] = recognition
         artifacts.append(artifact)
@@ -611,11 +620,19 @@ def _enrich_manifest(case_path: Path, payload: dict[str, Any]) -> dict[str, Any]
         enriched["evidence_control_diagnostic"] = (
             diagnose_company_intake_evidence_control(artifacts)
         )
+        enriched["authorization_diagnostic"] = diagnose_company_intake_authorization(
+            artifacts,
+            as_of=(
+                enriched.get("authorization_diagnostic_as_of")
+                or enriched.get("created_at")
+            ),
+        )
         enriched["financial_basis_preflight"] = (
             diagnose_company_intake_financial_basis(artifacts)
         )
     else:
         enriched.pop("evidence_control_diagnostic", None)
+        enriched.pop("authorization_diagnostic", None)
         enriched.pop("financial_basis_preflight", None)
     normalized_workflow: list[dict[str, Any]] = []
     for raw_step in payload.get("workflow") or []:
@@ -797,6 +814,30 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         workflow_type == "company_intake"
         and evidence_integrity.get("status") == "blocked"
     )
+    authorization = payload.get("authorization_diagnostic")
+    if workflow_type == "company_intake" and not isinstance(authorization, dict):
+        authorization = diagnose_company_intake_authorization(
+            artifacts,
+            as_of=(
+                payload.get("authorization_diagnostic_as_of")
+                or payload.get("created_at")
+            ),
+        )
+    if not isinstance(authorization, dict):
+        authorization = {}
+    authorization_questions = [
+        item
+        for item in authorization.get("questions") or []
+        if isinstance(item, dict)
+    ]
+    authorization_status = authorization.get("authorization_status")
+    if not isinstance(authorization_status, dict):
+        authorization_status = {}
+    authorization_blocked = (
+        workflow_type == "company_intake"
+        and authorization_status.get("status") == "blocked"
+        and bool(authorization_questions)
+    )
     if needs_processing:
         operational_status = {
             "id": "materials_need_processing",
@@ -814,6 +855,15 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
         next_action = {
             "id": "review_evidence_control_questions",
             "label_zh": "复核证据完整性与版本",
+        }
+    elif authorization_blocked:
+        operational_status = {
+            "id": "content_authorization_review_required",
+            "label_zh": "内容使用授权待复核",
+        }
+        next_action = {
+            "id": "review_content_authorization",
+            "label_zh": "复核内容使用授权",
         }
     elif financial_basis_blocked:
         operational_status = {
@@ -959,6 +1009,29 @@ def _case_summary(payload: dict[str, Any]) -> dict[str, Any]:
             ),
             "authority": "evidence_control_projection_only",
         },
+        "content_authorization": {
+            "applicability": authorization.get("applicability"),
+            "status": authorization_status.get("status"),
+            "diagnostic_as_of": authorization.get("diagnostic_as_of"),
+            "blocking_question_ids": list(
+                authorization_status.get("blocking_question_ids") or []
+            ),
+            "open_question_count": len(authorization_questions),
+            "question_ids": [item.get("id") for item in authorization_questions],
+            "blocked_request_count": sum(
+                item.get("blocked") is True
+                for item in authorization.get("content_use_requests") or []
+                if isinstance(item, dict)
+            ),
+            "override_conflict_count": len(
+                authorization.get("override_conflicts") or []
+            ),
+            "candidate_response_receipt_count": len(
+                authorization.get("candidate_response_receipts") or []
+            ),
+            "public_release_authorized": False,
+            "authority": "content_authorization_projection_only",
+        },
         "acquisition": {
             "applicability": dict(applicability),
             "material_readiness_percent": (
@@ -1095,6 +1168,7 @@ class CaseWorkspaceStore:
         extracts_path.mkdir()
 
         artifacts: list[dict[str, Any]] = []
+        authorization_diagnostic_as_of = _utc_now()
         try:
             for index, (name, payload, supplied_media_type) in enumerate(prepared, start=1):
                 artifact_id = f"artifact-{index:04d}"
@@ -1110,6 +1184,9 @@ class CaseWorkspaceStore:
                 )
                 structured_evidence_metadata = parse_structured_evidence_metadata(
                     name, extracted_text
+                )
+                structured_authorization_metadata = (
+                    parse_structured_authorization_metadata(name, extracted_text)
                 )
                 if extracted_text.strip():
                     (extracts_path / f"{artifact_id}.txt").write_text(
@@ -1149,6 +1226,9 @@ class CaseWorkspaceStore:
                             "structured_evidence_metadata": (
                                 structured_evidence_metadata
                             ),
+                            "structured_authorization_metadata": (
+                                structured_authorization_metadata
+                            ),
                             "text_extracted": bool(extracted_text.strip()),
                             "extracted_character_count": len(extracted_text),
                             "warnings": warnings,
@@ -1170,6 +1250,7 @@ class CaseWorkspaceStore:
                 "owner": normalized_owner or None,
                 "created_at": _utc_now(),
                 "updated_at": _utc_now(),
+                "authorization_diagnostic_as_of": authorization_diagnostic_as_of,
                 "artifacts": artifacts,
                 "profile_hints": {
                     "tags": _merge_profile_hints(artifacts),
@@ -1192,6 +1273,14 @@ class CaseWorkspaceStore:
                 ),
                 "evidence_control_diagnostic": (
                     diagnose_company_intake_evidence_control(artifacts)
+                    if normalized_workflow_type == "company_intake"
+                    else None
+                ),
+                "authorization_diagnostic": (
+                    diagnose_company_intake_authorization(
+                        artifacts,
+                        as_of=authorization_diagnostic_as_of,
+                    )
                     if normalized_workflow_type == "company_intake"
                     else None
                 ),

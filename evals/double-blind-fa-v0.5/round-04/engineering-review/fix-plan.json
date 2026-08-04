@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0.0",
+  "round": "04",
+  "phase": "pre_fix_plan",
+  "specialist_thread": {
+    "reused_existing_engineering_specialist": true,
+    "participated_in_company_generation": false,
+    "participated_in_fa_initial_test": false
+  },
+  "read_scope": {
+    "allowed": [
+      "evals/double-blind-fa-v0.5/protocol.md",
+      "evals/double-blind-fa-v0.5/round-04/company-submission/",
+      "evals/double-blind-fa-v0.5/round-04/fa-initial/",
+      "src/",
+      "tests/",
+      "audit-cleantech-finance skill instructions"
+    ],
+    "not_read": [
+      "evals/double-blind-fa-v0.5/round-04/company-supplement/",
+      "evals/double-blind-fa-v0.5/round-04/fa-postfix/",
+      "evals/double-blind-fa-v0.5/round-05/",
+      "Git diff/history",
+      "other Agent output"
+    ]
+  },
+  "root_causes": [
+    {
+      "id": "R04-ENG-01",
+      "severity": "S2",
+      "title": "No independent six-permission company-intake authorization schema",
+      "locations": [
+        "src/cleantech_finance/company_intake_evidence_control.py::_CONTROL_FIELDS",
+        "src/cleantech_finance/company_intake_evidence_control.py::_document_control",
+        "src/cleantech_finance/company_intake_evidence_control.py::_parse_csv"
+      ]
+    },
+    {
+      "id": "R04-ENG-02",
+      "severity": "S1",
+      "title": "No deterministic expired, denied, missing, limited, or exact-scope action gates"
+    },
+    {
+      "id": "R04-ENG-03",
+      "severity": "S1",
+      "title": "Content-use requests are not reconciled to controlling authorization by exact reference"
+    },
+    {
+      "id": "R04-ENG-04",
+      "severity": "S2",
+      "title": "Explicit no-authority Agent override attempt is not isolated as a conflict"
+    },
+    {
+      "id": "R04-ENG-05",
+      "severity": "S2",
+      "title": "Transcript candidates do not expose statement-versus-fact evidence gaps"
+    },
+    {
+      "id": "R04-ENG-06",
+      "severity": "S2",
+      "title": "Dashboard lacks authorization-review priority after evidence-integrity blockers"
+    }
+  ],
+  "implementation": {
+    "new_module": "src/cleantech_finance/company_intake_authorization.py",
+    "canonical_permissions": [
+      "recording",
+      "internal_analysis",
+      "public_release",
+      "brand_and_logo",
+      "translation",
+      "ai_media"
+    ],
+    "structured_formats_only": ["csv", "json", "jsonl"],
+    "prose_permission_inference": false,
+    "diagnostic_as_of": "explicit persisted case timestamp, with timezone-aware UTC fallback",
+    "record_authority": "unverified_candidate_only",
+    "request_resolution": "exact authorization_reference plus exact permission and scope fields",
+    "selected_authorization_automatically": false,
+    "candidate_receipt_accepted_automatically": false,
+    "question_closed_automatically": false
+  },
+  "permission_state_contract": {
+    "expired": "blocked",
+    "denied": "blocked",
+    "missing": "blocked",
+    "not_yet_effective": "blocked",
+    "limited": "blocked unless the exact request content, audience and scope are explicitly covered; still candidate-only",
+    "granted_scoped": "candidate for the exact request only; never a general permission"
+  },
+  "request_contract": {
+    "exact_reference_required": true,
+    "request_status_is_authority": false,
+    "manifest_summary_is_external_truth": false,
+    "management_register_is_external_truth": false,
+    "unmatched_or_type_mismatched_reference": "blocked",
+    "scope_expansion": "blocked"
+  },
+  "agent_override_contract": {
+    "detect_exact_fields": [
+      "artifact_type",
+      "source_authority",
+      "approval_status",
+      "signature_status",
+      "candidate_payload permission booleans",
+      "authority_boundary booleans"
+    ],
+    "treatment": "isolated_untrusted_override_candidate",
+    "may_change_deterministic_authorization": false
+  },
+  "questions": [
+    {"id": "R04-Q01", "boundary": "recording", "recompute_scope": ["recording_gate", "recording_requests", "dashboard_next_action"]},
+    {"id": "R04-Q02", "boundary": "internal_analysis", "recompute_scope": ["internal_analysis_gate", "audience_scope", "privacy_scope"]},
+    {"id": "R04-Q03", "boundary": "public_release", "recompute_scope": ["public_release_gate", "publication_requests", "output_availability"]},
+    {"id": "R04-Q04", "boundary": "brand_and_logo", "recompute_scope": ["brand_gate", "brand_requests", "publication_gate"]},
+    {"id": "R04-Q05", "boundary": "translation", "recompute_scope": ["translation_gate", "translation_requests", "publication_gate"]},
+    {"id": "R04-Q06", "boundary": "ai_media", "recompute_scope": ["ai_media_gate", "privacy_scope", "ai_requests"]},
+    {"id": "R04-Q07", "boundary": "interview_statement_candidate_evidence", "recompute_scope": ["claim_gaps", "evidence_questions", "interview_preparation"]},
+    {"id": "R04-Q08", "boundary": "agent_candidate_authority", "recompute_scope": ["override_conflicts", "candidate_quarantine", "dashboard_next_action"]}
+  ],
+  "dashboard_priority": [
+    "material extraction failure",
+    "evidence-control integrity mismatch or quarantine",
+    "content-use authorization review",
+    "financial or acquisition evidence review",
+    "reference suggestions"
+  ],
+  "forbidden_automation": [
+    "No permission inference from Markdown or prose",
+    "No permission inheritance across permission types",
+    "No automatic acceptance of a manifest summary, management register, workflow request, or Agent candidate",
+    "No automatic question closure or response acceptance",
+    "No publication, translation, AI media generation, Deal, valuation, rating, or release"
+  ],
+  "focused_tests": [
+    "six permission states at a fixed as_of",
+    "negative prose-only detection",
+    "exact reference and permission mismatch",
+    "limited exact-scope versus expansion",
+    "Agent override isolation",
+    "transcript candidate evidence gap",
+    "stable question and receipt order",
+    "case as_of persistence and dashboard priority",
+    "API projection and static UI safety boundary",
+    "Round 2/3 focused regressions"
+  ]
+}

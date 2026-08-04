@@ -2,3 +2,5 @@
 *.html text eol=lf
 *.json text eol=lf
 *.py text eol=lf
+# Preserve intentional Markdown hard breaks in byte-hashed Round 4 fixtures.
+evals/double-blind-fa-v0.5/round-04/company-submission/*.md whitespace=-blank-at-eol

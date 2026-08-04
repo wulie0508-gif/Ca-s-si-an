@@ -1,0 +1,91 @@
+{
+  "synthetic": true,
+  "data_status": "Synthetic",
+  "document_type": "Enterprise-prepared Synthetic content-request disposition register",
+  "register_id": "SYN-R04-CONTENT-DISPOSITION-01",
+  "version": "1.0",
+  "recorded_at": "2026-08-04T15:15:00+08:00",
+  "source_authority": "Enterprise internal workflow statement only",
+  "assertion_status": "Management Statement—Unverified",
+  "signature_status": "Unsigned",
+  "contains_external_authority_proof": false,
+  "requests": [
+    {
+      "request_id": "SYN-REQ-PUB-01",
+      "permission_type": "Public release",
+      "controlling_authorization": "SYN-AUTH-PUB-01",
+      "controlling_decision": "Denied",
+      "original_request_status": "Rejected / explicitly denied",
+      "current_disposition": "Withdrawn and closed",
+      "disposition_at": "2026-08-04T15:00:00+08:00",
+      "content_scope": [
+        "03-interview-transcript.md",
+        "05-marketing-draft.md",
+        "Synthetic interview audio",
+        "Interview quotations",
+        "Synthetic contact information"
+      ],
+      "requested_channels": [
+        "Website",
+        "Social media",
+        "Press"
+      ],
+      "new_replacement_authorization_supplied": false,
+      "execution_confirmation": {
+        "public_release_executed": false,
+        "quotation_published": false,
+        "audio_published": false,
+        "transcript_published": false,
+        "contact_information_published": false
+      },
+      "current_control": "Fail closed; the Synthetic denial remains controlling"
+    },
+    {
+      "request_id": "SYN-REQ-TRANS-01",
+      "permission_type": "Translation",
+      "controlling_authorization": "SYN-AUTH-TRANS-00",
+      "controlling_decision": "Missing / not authorized",
+      "original_request_status": "Blocked / authorization missing",
+      "current_disposition": "Closed / not pursued",
+      "disposition_at": "2026-08-04T15:10:00+08:00",
+      "content_scope": [
+        "03-interview-transcript.md",
+        "05-marketing-draft.md",
+        "Interview quotations"
+      ],
+      "new_translation_authorization_supplied": false,
+      "execution_confirmation": {
+        "human_translation_for_distribution_executed": false,
+        "machine_translation_for_distribution_executed": false,
+        "translated_content_distributed": false
+      },
+      "current_control": "Fail closed; no distribution translation will be requested or performed without independent authorization"
+    },
+    {
+      "request_id": "SYN-REQ-AI-01",
+      "permission_type": "AI media",
+      "controlling_authorization": "SYN-AUTH-AI-01",
+      "controlling_decision": "Denied",
+      "original_request_status": "Rejected / explicitly denied",
+      "current_disposition": "Withdrawn and closed",
+      "disposition_at": "2026-08-04T15:15:00+08:00",
+      "content_scope": [
+        "Synthetic interview voice",
+        "Synthetic interviewee likeness",
+        "03-interview-transcript.md",
+        "Synthetic interview recording"
+      ],
+      "new_replacement_authorization_supplied": false,
+      "execution_confirmation": {
+        "voice_clone_generated": false,
+        "avatar_generated": false,
+        "lip_sync_generated": false,
+        "synthetic_endorsement_generated": false,
+        "generative_advertising_generated": false,
+        "out_of_scope_model_training_executed": false
+      },
+      "current_control": "Fail closed; the Synthetic denial remains controlling"
+    }
+  ],
+  "evidentiary_limit": "This is a Synthetic enterprise withdrawal and non-execution record. It is not a signed replacement authorization, external audit, platform log, or third-party proof."
+}

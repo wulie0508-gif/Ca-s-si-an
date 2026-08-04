@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "round": "04",
+  "phase": "fa_postfix",
+  "case_id": "case-20260804-f49209cc30",
+  "revision": 1,
+  "conclusion": "scoped_regression_passed_with_coverage_note",
+  "conclusion_boundary": "This is a scoped Round 4 authorization regression result, not an enterprise, product, investment, credit, valuation, or risk rating.",
+  "specialist_disclosure": {
+    "same_fa_specialist_task_reused": true,
+    "participated_in_engineering_fix": false,
+    "participated_in_company_supplement_generation": false
+  },
+  "assertions": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "file": "assertions.jsonl"
+  },
+  "http_and_integrity": {
+    "multipart_post_attempts": 1,
+    "multipart_post_status": 201,
+    "case_get_status": 200,
+    "dashboard_get_status": 200,
+    "artifact_count": 16,
+    "all_artifact_hashes_match": true,
+    "manifest_reconciliation_status": "passed",
+    "manifest_declaration_entry_count": 14,
+    "same_name_manifests_preserved": true,
+    "native_jsonl_preserved": true
+  },
+  "authorization": {
+    "diagnostic_present": true,
+    "diagnostic_as_of": "2026-08-04T14:57:16.124308Z",
+    "as_of_persisted_across_post_case_dashboard_and_workspace": true,
+    "status": "blocked",
+    "permission_matrix": [
+      {"permission":"recording","status":"expired","general_action_authorized":false},
+      {"permission":"internal_analysis","status":"active_scoped_grant","general_action_authorized":false},
+      {"permission":"public_release","status":"denied","general_action_authorized":false},
+      {"permission":"brand_and_logo","status":"mixed_scope_control","candidate_states":["denied","limited"],"general_action_authorized":false},
+      {"permission":"translation","status":"missing","general_action_authorized":false},
+      {"permission":"ai_media","status":"denied","general_action_authorized":false}
+    ],
+    "questions": {
+      "ids": ["R04-Q01","R04-Q02","R04-Q03","R04-Q04","R04-Q05","R04-Q06","R04-Q07","R04-Q08"],
+      "open_count": 8,
+      "closed_count": 0,
+      "accepted_as_resolved_count": 0
+    },
+    "candidate_receipts": {
+      "count": 8,
+      "accepted_as_authorization_count": 0,
+      "accepted_as_fact_count": 0,
+      "question_closed_count": 0
+    },
+    "content_requests": {
+      "count": 6,
+      "blocked_count": 6,
+      "accepted_as_authorized_action_count": 0,
+      "action_executed_count": 0
+    },
+    "agent_override": {
+      "conflict_count": 1,
+      "isolated": true,
+      "quarantined_artifact_ids": ["artifact-0006"],
+      "permission_results_affected": false,
+      "downstream_action_executed": false
+    },
+    "interview_statement": {
+      "evidence_gap_count": 1,
+      "statement_made_candidate": true,
+      "accepted_as_fact": false,
+      "fact_verified": false
+    }
+  },
+  "dashboard": {
+    "next_action": "review_content_authorization",
+    "authorization_status": "blocked",
+    "blocked_request_count": 6,
+    "open_question_count": 8,
+    "responsible_actor_type": "human"
+  },
+  "preserved_boundaries": {
+    "evidence_integrity_status": "passed",
+    "evidence_promotion_allowed": false,
+    "financial_calculation_status": "not_applicable",
+    "financial_calculation_performed": false,
+    "deal_count": 0,
+    "deal_or_valuation_created": false,
+    "external_approval_enabled": false,
+    "aggregate_rating_produced": false,
+    "investment_rating_produced": false,
+    "credit_rating_produced": false,
+    "public_release_authorized": false,
+    "translation_performed": false,
+    "ai_media_generated": false
+  },
+  "coverage_notes": [
+    "The HTTP fixture contained two requests declared by the company as allowed within scope; both remained blocked and unaccepted because the exact structured fields did not match.",
+    "No HTTP request produced within_explicit_scope_candidate=true. The current _resolve_request exact-match branch was inspected and remains blocked, requires human acceptance, sets accepted_as_authorized_action=false, and executes no action."
+  ],
+  "residual_observations": [
+    {
+      "severity": "OBS",
+      "observation": "The HTTP dashboard and embedded case dashboard correctly use review_content_authorization, while the case top-level next_action remains confirm_material_scope.",
+      "impact_on_requested_assertion": "none; the requested dashboard projection passed"
+    }
+  ],
+  "shutdown": {
+    "start_process_pid": 12564,
+    "listener_pid": 22792,
+    "both_stopped": true,
+    "port_8903_listener_count": 0
+  }
+}

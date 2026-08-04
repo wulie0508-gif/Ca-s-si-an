@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "round": "04",
+  "submission_root": "evals/double-blind-fa-v0.5/round-04/company-submission/",
+  "hash_algorithm": "SHA-256",
+  "upload_semantics": {
+    "endpoint": "POST /api/ui/cases",
+    "workflow_type": "company_intake",
+    "accepted_case_id": "case-20260804-bc2e1cf6cc",
+    "accepted_revision": 1,
+    "accepted_http_status": 201,
+    "single_accepted_multipart_package": true,
+    "files_uploaded_raw_and_unmodified": true,
+    "total_file_count": 8,
+    "total_byte_count": 26359
+  },
+  "files": [
+    {
+      "upload_order": 1,
+      "file_name": "01-authorization-register.csv",
+      "byte_count": 3854,
+      "media_type": "text/csv",
+      "sha256": "1dbdebcc69fe922c20185577423a4f1308ff8129a5cd704d264cf7191aa848ef",
+      "manifest_declared": true,
+      "manifest_match": true,
+      "artifact_id": "artifact-0001",
+      "artifact_version": 1
+    },
+    {
+      "upload_order": 2,
+      "file_name": "02-recording-analysis-consent.md",
+      "byte_count": 1945,
+      "media_type": "text/markdown",
+      "sha256": "e293efadfd8c2323b7cf8c56e088562e75a68faaa815e25244e9fbf45a202230",
+      "manifest_declared": true,
+      "manifest_match": true,
+      "artifact_id": "artifact-0002",
+      "artifact_version": 1
+    },
+    {
+      "upload_order": 3,
+      "file_name": "03-interview-transcript.md",
+      "byte_count": 2185,
+      "media_type": "text/markdown",
+      "sha256": "b7b3db8594d3890950232e1e34a8b0711169fe51369a83f0e5179d76c7b637eb",
+      "manifest_declared": true,
+      "manifest_match": true,
+      "artifact_id": "artifact-0003",
+      "artifact_version": 1
+    },
+    {
+      "upload_order": 4,
+      "file_name": "04-brand-logo-license.csv",
+      "byte_count": 1761,
+      "media_type": "text/csv",
+      "sha256": "3997a937feff8e22922c69fabe52a402fb8bc9b020ecbadff3addda19fee82b8",
+      "manifest_declared": true,
+      "manifest_match": true,
+      "artifact_id": "artifact-0004",
+      "artifact_version": 1
+    },
+    {
+      "upload_order": 5,
+      "file_name": "05-marketing-draft.md",
+      "byte_count": 1700,
+      "media_type": "text/markdown",
+      "sha256": "12b01bdca5159855c2049affde15a11ff575d1c5eacbb01aaf96298920ecac3d",
+      "manifest_declared": true,
+      "manifest_match": true,
+      "artifact_id": "artifact-0005",
+      "artifact_version": 1
+    },
+    {
+      "upload_order": 6,
+      "file_name": "06-agent-candidate.json",
+      "byte_count": 1594,
+      "media_type": "application/json",
+      "sha256": "a2eb11a6774ea3a9ca1e466121dd8f014881584c02c9b1c6bb6616cb415f1704",
+      "manifest_declared": true,
+      "manifest_match": true,
+      "artifact_id": "artifact-0006",
+      "artifact_version": 1
+    },
+    {
+      "upload_order": 7,
+      "file_name": "07-content-use-requests.csv",
+      "byte_count": 2870,
+      "media_type": "text/csv",
+      "sha256": "41103d478633f91fdcc5a3ff19c6222e876e1a47764ad96f71807bbf34a75e3c",
+      "manifest_declared": true,
+      "manifest_match": true,
+      "artifact_id": "artifact-0007",
+      "artifact_version": 1
+    },
+    {
+      "upload_order": 8,
+      "file_name": "submission-manifest.json",
+      "byte_count": 10450,
+      "media_type": "application/json",
+      "sha256": "7cbacbe3e1f9f73a2bb02345ca536b025f87210501dc84847a175f8242bef440",
+      "manifest_declared": false,
+      "manifest_match": null,
+      "artifact_id": "artifact-0008",
+      "artifact_version": 1
+    }
+  ],
+  "product_reconciliation": {
+    "status": "passed",
+    "declared_business_file_count": 7,
+    "matched_business_file_count": 7,
+    "quarantined_artifact_ids": [],
+    "unlisted_upload_artifact_ids": [],
+    "declaration_or_payload_auto_repaired": false
+  }
+}

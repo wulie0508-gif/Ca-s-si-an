@@ -317,6 +317,18 @@ const elements = {
   evidenceControlSummary: document.querySelector("#evidence-control-summary"),
   evidenceControlSignals: document.querySelector("#evidence-control-signals"),
   evidenceControlResponses: document.querySelector("#evidence-control-responses"),
+  contentAuthorizationState: document.querySelector(
+    "#content-authorization-state",
+  ),
+  contentAuthorizationSummary: document.querySelector(
+    "#content-authorization-summary",
+  ),
+  contentAuthorizationPermissions: document.querySelector(
+    "#content-authorization-permissions",
+  ),
+  contentAuthorizationRequests: document.querySelector(
+    "#content-authorization-requests",
+  ),
   financialBasisState: document.querySelector("#financial-basis-state"),
   financialBasisSummary: document.querySelector("#financial-basis-summary"),
   financialBasisDimensions: document.querySelector(
@@ -3605,6 +3617,85 @@ function renderEvidenceControlDiagnostic(casePayload) {
   return diagnostic;
 }
 
+function renderContentAuthorizationDiagnostic(casePayload) {
+  const diagnostic =
+    casePayload?.authorization_diagnostic &&
+    typeof casePayload.authorization_diagnostic === "object"
+      ? casePayload.authorization_diagnostic
+      : null;
+  const applicable = diagnostic?.applicability?.status === "applicable";
+  elements.contentAuthorizationPermissions.replaceChildren();
+  if (!applicable) {
+    elements.contentAuthorizationState.textContent = diagnostic
+      ? "不适用"
+      : "尚未生成";
+    elements.contentAuthorizationState.dataset.state = "unavailable";
+    elements.contentAuthorizationSummary.textContent = diagnostic
+      ? "未检测到 CSV、JSON 或 JSONL 明示的内容使用授权字段。"
+      : "正在读取结构化授权、内容使用请求与 authority 边界。";
+    elements.contentAuthorizationPermissions.append(
+      node("li", "question-empty", "系统没有从 Markdown、访谈或营销正文推断许可。"),
+    );
+    elements.contentAuthorizationRequests.textContent = "";
+    return diagnostic;
+  }
+
+  const matrix = Array.isArray(diagnostic?.permission_matrix)
+    ? diagnostic.permission_matrix
+    : [];
+  const questions = Array.isArray(diagnostic?.questions)
+    ? diagnostic.questions
+    : [];
+  const requests = Array.isArray(diagnostic?.content_use_requests)
+    ? diagnostic.content_use_requests
+    : [];
+  const blockedRequests = requests.filter((request) => request?.blocked === true);
+  const conflicts = Array.isArray(diagnostic?.override_conflicts)
+    ? diagnostic.override_conflicts
+    : [];
+  const receipts = Array.isArray(diagnostic?.candidate_response_receipts)
+    ? diagnostic.candidate_response_receipts
+    : [];
+  const blocked = diagnostic?.authorization_status?.status === "blocked";
+  elements.contentAuthorizationState.textContent = blocked
+    ? "授权阻断"
+    : "待人工复核";
+  elements.contentAuthorizationState.dataset.state = blocked
+    ? "unavailable"
+    : "available";
+  elements.contentAuthorizationSummary.textContent =
+    `${questions.length} 个授权问题；${blockedRequests.length} 个请求保持 blocked；` +
+    `${conflicts.length} 个无 authority override candidate 已隔离。`;
+
+  const statusLabels = {
+    expired: "已过期",
+    active_scoped_grant: "限域有效候选",
+    denied: "已拒绝",
+    limited: "有限授权候选",
+    mixed_scope_control: "分范围授权 / 拒绝并存",
+    missing: "缺失 / 未授权",
+    not_yet_effective: "尚未生效",
+    unrecognized: "状态无法识别",
+  };
+  matrix.forEach((permission) => {
+    const item = node("li");
+    item.append(
+      node("strong", "", permission?.label_zh || permission?.permission || "权限"),
+      node(
+        "span",
+        "",
+        `${statusLabels[permission?.status] || permission?.status || "未知"} · ` +
+          `${permission?.candidate_count || 0} 个未核验候选`,
+      ),
+    );
+    elements.contentAuthorizationPermissions.append(item);
+  });
+  elements.contentAuthorizationRequests.textContent =
+    `诊断时点 ${diagnostic?.diagnostic_as_of || "未说明"}。` +
+    `候选回复 ${receipts.length} 个；未自动接受、关闭问题、发布、翻译或生成 AI 媒体。`;
+  return diagnostic;
+}
+
 function renderFinancialBasisPreflight(casePayload) {
   const diagnostic =
     casePayload?.financial_basis_preflight &&
@@ -3843,6 +3934,7 @@ function renderCase(casePayload) {
   elements.caseUpdatedAt.textContent = formatDate(casePayload.updated_at);
   const diagnostic = renderAcquisitionDiagnostic(casePayload);
   renderEvidenceControlDiagnostic(casePayload);
+  renderContentAuthorizationDiagnostic(casePayload);
   renderFinancialBasisPreflight(casePayload);
   const diagnosticNextAction =
     displayLabel(diagnostic?.next_action) || diagnostic?.next_action_label;
@@ -3853,12 +3945,16 @@ function renderCase(casePayload) {
       ? "至少一份材料无法提取文本，需要 OCR 或确认。"
       : summary.next_action?.id === "review_evidence_control_questions"
         ? "声明哈希、重复材料、版本权威或显式结构冲突需要人工复核。"
+      : summary.next_action?.id === "review_content_authorization"
+        ? "内容使用请求受到过期、拒绝、缺失、有限范围或无 authority 候选的约束。"
       : summary.next_action?.id === "review_financial_basis_questions"
         ? "主体、期间、单位、税基、现金或预测口径需要人工确认。"
         : "材料已归档，可以查看知识库与政策参考。";
   elements.nextActionButton.textContent =
     summary.next_action?.id === "review_evidence_control_questions"
       ? "查看证据控制"
+      : summary.next_action?.id === "review_content_authorization"
+      ? "查看授权控制"
       : summary.next_action?.id === "review_financial_basis_questions"
       ? "查看口径问题"
       : summary.operational_status?.id === "reference_search_run"
@@ -4260,6 +4356,17 @@ async function handleNextAction() {
   ) {
     setCaseTab("overview");
     elements.financialBasisState.closest("section")?.scrollIntoView({
+      block: "start",
+      behavior: "smooth",
+    });
+    return;
+  }
+  if (
+    appState.currentCase?.dashboard?.next_action?.id ===
+    "review_content_authorization"
+  ) {
+    setCaseTab("overview");
+    elements.contentAuthorizationState.closest("section")?.scrollIntoView({
       block: "start",
       behavior: "smooth",
     });

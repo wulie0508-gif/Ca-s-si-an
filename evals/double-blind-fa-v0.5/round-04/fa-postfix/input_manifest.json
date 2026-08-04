@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "round": "04",
+  "phase": "fa_postfix",
+  "hash_algorithm": "SHA-256",
+  "upload": {
+    "endpoint": "POST /api/ui/cases",
+    "workflow_type": "company_intake",
+    "case_type": "qa",
+    "case_id": "case-20260804-f49209cc30",
+    "revision": 1,
+    "http_status": 201,
+    "single_multipart_request": true,
+    "files_uploaded_raw_and_unmodified": true,
+    "file_count": 16,
+    "total_byte_count": 69940,
+    "all_local_to_artifact_hashes_match": true
+  },
+  "files": [
+    {"upload_order":1,"origin":"company-submission","file_name":"01-authorization-register.csv","byte_count":3854,"media_type":"text/csv","sha256":"1dbdebcc69fe922c20185577423a4f1308ff8129a5cd704d264cf7191aa848ef","artifact_id":"artifact-0001","artifact_match":true},
+    {"upload_order":2,"origin":"company-submission","file_name":"02-recording-analysis-consent.md","byte_count":1945,"media_type":"text/markdown","sha256":"e293efadfd8c2323b7cf8c56e088562e75a68faaa815e25244e9fbf45a202230","artifact_id":"artifact-0002","artifact_match":true},
+    {"upload_order":3,"origin":"company-submission","file_name":"03-interview-transcript.md","byte_count":2185,"media_type":"text/markdown","sha256":"b7b3db8594d3890950232e1e34a8b0711169fe51369a83f0e5179d76c7b637eb","artifact_id":"artifact-0003","artifact_match":true},
+    {"upload_order":4,"origin":"company-submission","file_name":"04-brand-logo-license.csv","byte_count":1761,"media_type":"text/csv","sha256":"3997a937feff8e22922c69fabe52a402fb8bc9b020ecbadff3addda19fee82b8","artifact_id":"artifact-0004","artifact_match":true},
+    {"upload_order":5,"origin":"company-submission","file_name":"05-marketing-draft.md","byte_count":1700,"media_type":"text/markdown","sha256":"12b01bdca5159855c2049affde15a11ff575d1c5eacbb01aaf96298920ecac3d","artifact_id":"artifact-0005","artifact_match":true},
+    {"upload_order":6,"origin":"company-submission","file_name":"06-agent-candidate.json","byte_count":1594,"media_type":"application/json","sha256":"a2eb11a6774ea3a9ca1e466121dd8f014881584c02c9b1c6bb6616cb415f1704","artifact_id":"artifact-0006","artifact_match":true},
+    {"upload_order":7,"origin":"company-submission","file_name":"07-content-use-requests.csv","byte_count":2870,"media_type":"text/csv","sha256":"41103d478633f91fdcc5a3ff19c6222e876e1a47764ad96f71807bbf34a75e3c","artifact_id":"artifact-0007","artifact_match":true},
+    {"upload_order":8,"origin":"company-submission","file_name":"submission-manifest.json","byte_count":10450,"media_type":"application/json","sha256":"7cbacbe3e1f9f73a2bb02345ca536b025f87210501dc84847a175f8242bef440","artifact_id":"artifact-0008","artifact_match":true},
+    {"upload_order":9,"origin":"company-supplement","file_name":"01-authorization-scope-confirmation.csv","byte_count":5138,"media_type":"text/csv","sha256":"7ae9ea0cc1a4effd459859ddd1023d5efbbb03f23cb9af837c530cc525fda15f","artifact_id":"artifact-0009","artifact_match":true},
+    {"upload_order":10,"origin":"company-supplement","file_name":"02-internal-team-workspace-register.csv","byte_count":4916,"media_type":"text/csv","sha256":"f8057e2bd67e60920b497cf9b183f50d9e3a32b108bfc454b0a36a7133e3da7e","artifact_id":"artifact-0010","artifact_match":true},
+    {"upload_order":11,"origin":"company-supplement","file_name":"03-content-request-withdrawals.json","byte_count":3640,"media_type":"application/json","sha256":"3be9cc6b1cf72aa5d18329dfefc827f887f1a727d9c02fd52028dcbfd5fe899c","artifact_id":"artifact-0011","artifact_match":true},
+    {"upload_order":12,"origin":"company-supplement","file_name":"04-interview-claim-evidence-gap.csv","byte_count":3455,"media_type":"text/csv","sha256":"a0c31361d6a0b12d816c120e9cd5de5a6e33cc52b1a51e998e7ba4e762c8e43e","artifact_id":"artifact-0012","artifact_match":true},
+    {"upload_order":13,"origin":"company-supplement","file_name":"05-agent-candidate-quarantine.json","byte_count":3108,"media_type":"application/json","sha256":"278090e94dcbbccd8fb59fc1c914c953534692ab46defcd1b6d6c5f0ae903e24","artifact_id":"artifact-0013","artifact_match":true},
+    {"upload_order":14,"origin":"company-supplement","file_name":"company-action-log.jsonl","byte_count":7555,"media_type":"application/x-ndjson","sha256":"bf3a12bd82f9d3b3b4fa89ade5e0dae07a949e7ca880b731bba45a0375f261e9","artifact_id":"artifact-0014","artifact_match":true},
+    {"upload_order":15,"origin":"company-supplement","file_name":"response-register.jsonl","byte_count":11476,"media_type":"application/x-ndjson","sha256":"ecd59879e3dd463a869109b19ebc92f8d2d1e4b41e50d6da414daf5dc4c6dba0","artifact_id":"artifact-0015","artifact_match":true},
+    {"upload_order":16,"origin":"company-supplement","file_name":"submission-manifest.json","byte_count":4293,"media_type":"application/json","sha256":"67b028e88ae1655ba255cb64babaf0ac48d6a73e1a48fb48a2202af554fcd30b","artifact_id":"artifact-0016","artifact_match":true}
+  ],
+  "preservation_checks": {
+    "same_name_manifest_count": 2,
+    "same_name_manifests_preserved_as_distinct_artifacts": true,
+    "jsonl_file_count": 2,
+    "jsonl_files_preserved_without_conversion": true,
+    "product_manifest_reconciliation_status": "passed",
+    "product_manifest_declaration_entry_count": 14,
+    "product_unlisted_upload_artifact_ids": []
+  }
+}

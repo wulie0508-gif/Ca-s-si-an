@@ -1,0 +1,101 @@
+{
+  "manifest_type": "synthetic_company_round_04_supplement",
+  "synthetic": true,
+  "data_status": "Synthetic",
+  "submission_id": "SYN-DBFA-R04-CYTS-SUP-001",
+  "version": "1.0.0",
+  "submitted_at": "2026-08-04T15:35:00+08:00",
+  "source_class": "Enterprise-prepared Synthetic supplement",
+  "source_authority": "Enterprise internal confirmations and workflow records only, except where a payload explicitly references a pre-existing Unverified Synthetic authorization copy",
+  "assertion_status": "Management Statement—Unverified unless a pre-existing Synthetic authorization instrument controls a permission field",
+  "signature_status": "Unsigned",
+  "contains_external_authority_proof": false,
+  "response_summary": {
+    "question_count": 8,
+    "answered": 7,
+    "partial": 1,
+    "contradicted": 0,
+    "not_available": 0,
+    "open": 0,
+    "partial_question_ids": [
+      "R04-FA-Q07"
+    ],
+    "partial_reason": "The three interview/marketing claims have no available first-party proof; they remain Management Statement—Unverified."
+  },
+  "files": [
+    {
+      "filename": "01-authorization-scope-confirmation.csv",
+      "media_type": "text/csv",
+      "byte_count": 5138,
+      "sha256": "7ae9ea0cc1a4effd459859ddd1023d5efbbb03f23cb9af837c530cc525fda15f",
+      "synthetic": true,
+      "document_type": "Six-permission current decision and scope confirmation"
+    },
+    {
+      "filename": "02-internal-team-workspace-register.csv",
+      "media_type": "text/csv",
+      "byte_count": 4916,
+      "sha256": "f8057e2bd67e60920b497cf9b183f50d9e3a32b108bfc454b0a36a7133e3da7e",
+      "synthetic": true,
+      "document_type": "Named internal diligence team and named company workspace/system scope register"
+    },
+    {
+      "filename": "03-content-request-withdrawals.json",
+      "media_type": "application/json",
+      "byte_count": 3640,
+      "sha256": "3be9cc6b1cf72aa5d18329dfefc827f887f1a727d9c02fd52028dcbfd5fe899c",
+      "synthetic": true,
+      "document_type": "Public-release and AI-media withdrawals plus translation non-pursuit/non-execution record"
+    },
+    {
+      "filename": "04-interview-claim-evidence-gap.csv",
+      "media_type": "text/csv",
+      "byte_count": 3455,
+      "sha256": "a0c31361d6a0b12d816c120e9cd5de5a6e33cc52b1a51e998e7ba4e762c8e43e",
+      "synthetic": true,
+      "document_type": "Item-level first-party evidence gap register for three unverified management claims"
+    },
+    {
+      "filename": "05-agent-candidate-quarantine.json",
+      "media_type": "application/json",
+      "byte_count": 3108,
+      "sha256": "278090e94dcbbccd8fb59fc1c914c953534692ab46defcd1b6d6c5f0ae903e24",
+      "synthetic": true,
+      "document_type": "Agent candidate and request quarantine/rejection and downstream non-execution record"
+    },
+    {
+      "filename": "response-register.jsonl",
+      "media_type": "application/x-ndjson",
+      "byte_count": 11476,
+      "sha256": "ecd59879e3dd463a869109b19ebc92f8d2d1e4b41e50d6da414daf5dc4c6dba0",
+      "synthetic": true,
+      "document_type": "Eight-question verbatim enterprise response register"
+    },
+    {
+      "filename": "company-action-log.jsonl",
+      "media_type": "application/x-ndjson",
+      "byte_count": 7555,
+      "sha256": "bf3a12bd82f9d3b3b4fa89ade5e0dae07a949e7ca880b731bba45a0375f261e9",
+      "synthetic": true,
+      "document_type": "Enterprise read, action, and non-action log"
+    }
+  ],
+  "integrity_metadata": {
+    "digest_algorithm": "SHA-256",
+    "payload_count": 7,
+    "payload_total_bytes": 39288,
+    "digest_scope": "Seven payload files in this company-supplement directory only",
+    "manifest_self_digest_included": false,
+    "integrity_values_are_authorization": false
+  },
+  "validation_summary": {
+    "json_files_parsed": true,
+    "jsonl_files_parsed_line_by_line": true,
+    "response_question_ids_unique": true,
+    "question_verbatim_ordinal_matches": 8,
+    "authorization_permission_rows": 6,
+    "team_workspace_rows": 7,
+    "interview_claim_gap_rows": 3
+  },
+  "evidentiary_limit": "All supplement payloads are Synthetic. Enterprise confirmations, internal inventories, withdrawal records, evidence-gap records, quarantine records, hashes and byte counts are not external authority proof and do not create or expand permission."
+}

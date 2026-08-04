@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R04-FA-POSTFIX-20260804T145607Z",
+  "round": "04",
+  "phase": "fa_postfix",
+  "role": "independent_fa_scoped_regression",
+  "specialist_disclosure": {
+    "reused_same_fa_specialist_task": true,
+    "participated_in_fa_initial_test": true,
+    "participated_in_engineering_fix": false,
+    "participated_in_company_supplement_generation": false
+  },
+  "data_classification": {
+    "business_materials": "Synthetic",
+    "telemetry": "Real local CLI, process, HTTP, filesystem hash, persisted case, and dashboard observations",
+    "hidden_truth_used": false
+  },
+  "skill": {
+    "name": "audit-cleantech-finance",
+    "instruction_file_read_completely_for_this_replay": true,
+    "candidate_and_authority_boundaries_applied": true
+  },
+  "read_scope": {
+    "allowed": [
+      "evals/double-blind-fa-v0.5/protocol.md",
+      "evals/double-blind-fa-v0.5/round-04/company-submission/",
+      "evals/double-blind-fa-v0.5/round-04/company-supplement/",
+      "evals/double-blind-fa-v0.5/round-04/fa-initial/question_register.jsonl",
+      "evals/double-blind-fa-v0.5/round-04/engineering-review/fix-plan.json",
+      "current src needed to run or verify the Bridge contract",
+      "audit-cleantech-finance skill instructions",
+      "this run's fa-postfix and temporary runtime"
+    ],
+    "forbidden": [
+      "Round 5",
+      "Git diff, status, log, history, or repository metadata",
+      "other Agent output not expressly listed above",
+      "other Round 4 FA initial files"
+    ],
+    "git_accessed": false
+  },
+  "write_scope": {
+    "repository_output_directory": "evals/double-blind-fa-v0.5/round-04/fa-postfix/",
+    "repository_files_written": [
+      "run_manifest.json",
+      "input_manifest.json",
+      "events.jsonl",
+      "assertions.jsonl",
+      "round_postfix_summary.json",
+      "postfix-test-report.md"
+    ],
+    "product_source_modified": false,
+    "git_commit_created": false
+  },
+  "software": {
+    "distribution": "cleantech-finance",
+    "installed_distribution_version": "0.4.0",
+    "bridge_executable": "D:/找回的文件_20260715/项目与资料/Nexus/cleantech-finance/.venv-new/Scripts/cleantech-finance.exe"
+  },
+  "runtime": {
+    "temporary_root": "C:/Users/huawei/AppData/Local/Temp/ctf-r04-postfix-4bc94ac580e74ad187ac48ab5efb68e6",
+    "workspace_root": "C:/Users/huawei/AppData/Local/Temp/ctf-r04-postfix-4bc94ac580e74ad187ac48ab5efb68e6/workspace",
+    "catalog_classification": "Synthetic QA placeholder",
+    "catalog_review_status": "pending",
+    "eligible_policy_rows": 0,
+    "catalog_used_for_business_judgment": false
+  },
+  "network": {
+    "host": "127.0.0.1",
+    "port": 8903,
+    "base_url": "http://127.0.0.1:8903",
+    "loopback_only": true,
+    "port_preflight_checked_at_utc": "2026-08-04T14:56:07.4013232Z",
+    "port_preflight_listener_count": 0
+  },
+  "process": {
+    "started_at_utc": "2026-08-04T14:56:30.0918866Z",
+    "start_process_pid": 12564,
+    "listener_pid": 22792,
+    "listener_command_verified_against_temporary_root": true,
+    "stopped_at_utc": "2026-08-04T15:01:21.3228430Z",
+    "start_process_pid_alive_after_stop": false,
+    "listener_pid_alive_after_stop": false,
+    "port_8903_listener_count_after_stop": 0
+  },
+  "http": {
+    "health_before_status": 200,
+    "multipart_post_attempt_count": 1,
+    "multipart_post_status": 201,
+    "all_sixteen_files_in_one_request": true,
+    "case_id": "case-20260804-f49209cc30",
+    "revision": 1,
+    "case_get_status": 200,
+    "case_get_byte_count": 114068,
+    "case_get_sha256": "8f3e589e245623006fe48344666ef6db0838d66a85ac6f54cc5df4f2cb162457",
+    "dashboard_get_status": 200,
+    "dashboard_get_byte_count": 4546,
+    "dashboard_get_sha256": "8acf1cd81261a37c372be1e8de3410c6d296653ba588618612fc2486d0006db4",
+    "health_after_status": 200,
+    "deals_get_status": 200,
+    "deal_count": 0
+  },
+  "authorization_as_of": {
+    "value": "2026-08-04T14:57:16.124308Z",
+    "equal_in_post_response": true,
+    "equal_in_case_get": true,
+    "equal_in_dashboard": true,
+    "equal_in_persisted_workspace_json": true
+  },
+  "prohibited_actions": {
+    "deal_created": false,
+    "valuation_created": false,
+    "rating_issued": false,
+    "publication_performed": false,
+    "translation_performed": false,
+    "ai_media_generated": false,
+    "authorization_approved_or_changed": false,
+    "candidate_content_accepted_as_fact": false
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "run_id": "R04-FA-INITIAL-20260804T141752Z",
+  "round": "04",
+  "role": "independent_fa",
+  "data_classification": {
+    "business_materials": "Synthetic",
+    "telemetry": "Real local CLI, process, HTTP, filesystem hash, case, and dashboard observations",
+    "hidden_truth_used": false
+  },
+  "protocol": "evals/double-blind-fa-v0.5/protocol.md",
+  "skill": {
+    "name": "audit-cleantech-finance",
+    "instruction_file_read_completely": true,
+    "authority_boundary_applied": true
+  },
+  "read_scope": {
+    "allowed": [
+      "evals/double-blind-fa-v0.5/protocol.md",
+      "evals/double-blind-fa-v0.5/round-04/company-submission/",
+      "README.md and only the src files needed to discover and run the current Bridge HTTP contract",
+      "C:/Users/huawei/.codex/skills/audit-cleantech-finance/SKILL.md",
+      "this run's isolated runtime and output"
+    ],
+    "forbidden": [
+      "company-supplement",
+      "engineering-review",
+      "fa-postfix",
+      "any Round 1, 2, 3, or 5 material",
+      "other Agent output",
+      "Git diff, status, log, history, or repository metadata"
+    ],
+    "git_accessed": false
+  },
+  "write_scope": {
+    "repository_output_directory": "evals/double-blind-fa-v0.5/round-04/fa-initial/",
+    "repository_files_written": [
+      "run_manifest.json",
+      "input_manifest.json",
+      "events.jsonl",
+      "question_register.jsonl",
+      "round_initial_summary.json",
+      "initial-test-report.md"
+    ],
+    "product_source_modified": false,
+    "git_commit_created": false
+  },
+  "software": {
+    "distribution": "cleantech-finance",
+    "installed_distribution_version": "0.4.0",
+    "version_probe": "importlib.metadata.version('cleantech-finance')",
+    "cli_version_flag_supported": false,
+    "cli_version_flag_exit_code": 2,
+    "bridge_executable": "D:/找回的文件_20260715/项目与资料/Nexus/cleantech-finance/.venv-new/Scripts/cleantech-finance.exe"
+  },
+  "runtime": {
+    "temporary_root": "C:/Users/huawei/AppData/Local/Temp/ctf-r04-fa-b206a05006144937bbf415f786d781a4",
+    "workspace_root": "C:/Users/huawei/AppData/Local/Temp/ctf-r04-fa-b206a05006144937bbf415f786d781a4/workspace",
+    "catalog": {
+      "path": "C:/Users/huawei/AppData/Local/Temp/ctf-r04-fa-b206a05006144937bbf415f786d781a4/catalog.csv",
+      "purpose": "Bridge startup only",
+      "classification": "Synthetic QA placeholder",
+      "review_status": "pending",
+      "eligible_policy_rows": 0,
+      "business_judgment_use": false
+    },
+    "audit_log_created": false
+  },
+  "network": {
+    "host": "127.0.0.1",
+    "port": 8901,
+    "base_url": "http://127.0.0.1:8901",
+    "loopback_only": true,
+    "port_preflight": {
+      "checked_at_utc": "2026-08-04T14:17:52.3572769Z",
+      "listener_count": 0
+    },
+    "health": {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200,
+      "service": "cleantech-finance-agent-bridge"
+    }
+  },
+  "process": {
+    "started_at_utc": "2026-08-04T14:18:52.7796678Z",
+    "start_process_pid": 47388,
+    "listener_pid": 13796,
+    "listener_pid_command_verified_against_temporary_root": true,
+    "stopped_at_utc": "2026-08-04T14:23:54.3208908Z",
+    "start_process_pid_alive_after_stop": false,
+    "listener_pid_alive_after_stop": false,
+    "port_8901_listener_count_after_stop": 0
+  },
+  "http_run": {
+    "upload_endpoint": "/api/ui/cases",
+    "workflow_type": "company_intake",
+    "multipart_post_attempts": 2,
+    "accepted_case_creations": 1,
+    "first_attempt": {
+      "status": 400,
+      "error": "invalid_material_upload",
+      "reason": "Case type must be enterprise, demo, qa or unclassified",
+      "case_created": false
+    },
+    "accepted_attempt": {
+      "status": 201,
+      "case_type": "qa",
+      "all_eight_files_in_one_multipart_request": true,
+      "source_bytes_modified": false,
+      "case_id": "case-20260804-bc2e1cf6cc",
+      "revision": 1
+    },
+    "case_get_status": 200,
+    "dashboard_get_status": 200
+  },
+  "prohibited_actions": {
+    "deal_created": false,
+    "valuation_created": false,
+    "rating_issued": false,
+    "publication_performed": false,
+    "translation_performed": false,
+    "ai_media_generated": false,
+    "authorization_approved_or_changed": false,
+    "source_content_assumed_true": false
+  }
+}

@@ -1107,6 +1107,69 @@ def test_bridge_rejects_non_loopback_host(tmp_path: Path) -> None:
         create_agent_bridge_server(workbook, host="0.0.0.0")
 
 
+def test_loopback_bridge_exposes_content_authorization_preflight(
+    tmp_path: Path,
+) -> None:
+    workbook = tmp_path / "policies.xlsx"
+    _write_policy_workbook(workbook)
+    server = create_agent_bridge_server(
+        workbook,
+        port=0,
+        workspace_root=tmp_path / "case-workspace",
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base_url = f"http://127.0.0.1:{server.server_port}"
+    authorization_csv = (
+        ROOT
+        / "evals"
+        / "double-blind-fa-v0.5"
+        / "round-04"
+        / "company-submission"
+        / "01-authorization-register.csv"
+    ).read_bytes()
+    try:
+        status, created = _request_multipart(
+            f"{base_url}/api/ui/cases",
+            case_name="Round 4 authorization bridge",
+            file_name="01-authorization-register.csv",
+            file_payload=authorization_csv,
+            origin=base_url,
+            workflow_type="company_intake",
+        )
+        assert status == 201
+        assert created["authorization_diagnostic"]["authorization_status"][
+            "status"
+        ] == "blocked"
+        assert created["authorization_diagnostic"]["boundaries"][
+            "public_release_authorized"
+        ] is False
+
+        status, detail = _request_json(
+            f"{base_url}/api/ui/cases/{created['case_id']}"
+        )
+        assert status == 200
+        assert detail["dashboard"]["next_action"]["id"] == (
+            "review_content_authorization"
+        )
+        assert detail["authorization_diagnostic"]["authorization_status"][
+            "public_release_authorized"
+        ] is False
+
+        status, dashboard = _request_json(f"{base_url}/api/ui/dashboard")
+        assert status == 200
+        summary = dashboard["cases"][0]
+        assert summary["content_authorization"]["status"] == "blocked"
+        assert summary["content_authorization"]["authority"] == (
+            "content_authorization_projection_only"
+        )
+        assert summary["next_action"]["id"] == "review_content_authorization"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+
+
 def test_workbench_is_local_accessible_and_defaults_to_no_consent() -> None:
     html = (WEB_ROOT / "agent_bridge.html").read_text(encoding="utf-8")
     css = (WEB_ROOT / "agent_bridge.css").read_text(encoding="utf-8")
@@ -1160,6 +1223,12 @@ def test_workbench_is_local_accessible_and_defaults_to_no_consent() -> None:
     assert "Promise.allSettled([manifestPromise, dashboardPromise])" in javascript
     assert "prefers-reduced-motion" in css
     assert "@media" in css
+    assert 'id="content-authorization-state"' in html
+    assert 'id="content-authorization-permissions"' in html
+    assert "renderContentAuthorizationDiagnostic" in javascript
+    assert '"review_content_authorization"' in javascript
+    assert "未自动接受、关闭问题、发布、翻译或生成 AI 媒体" in javascript
+    assert "系统没有从 Markdown、访谈或营销正文推断许可" in javascript
 
 
 def test_workbench_resource_renderer_supports_nested_catalog_contract() -> None:
